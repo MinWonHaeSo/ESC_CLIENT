@@ -41,14 +41,10 @@ jobs:
       - name: Upload /dist to S3
         env:
           BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME}}
-        run: |
-          aws s3 sync \
-            ./dist s3://$BUCKET_NAME
+        run: aws s3 sync ./dist s3://$BUCKET_NAME --delete
 
       # 업로드한 s3 파일을 각 CDN 캐시 무효화하여 리프레시 하기
       - name: CloudFront Invalidation
         env:
           CLOUD_FRONT_ID: ${{ secrets.AWS_CLOUDFRONT_ID}}
-        run: |
-          aws cloudfront create-invalidation \
-            --distribution-id $CLOUD_FRONT_ID --paths "/*"
+        run: aws cloudfront create-invalidation --distribution-id $CLOUD_FRONT_ID --paths "/*"
