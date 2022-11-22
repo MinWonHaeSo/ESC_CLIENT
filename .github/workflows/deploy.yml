@@ -22,7 +22,7 @@ jobs:
           node-version: 14
 
       # npm 패키지 설치
-      - name: install npm dependencies
+      - name: Install Dependencies
         run: yarn install
 
       # 리액트 빌드
@@ -37,13 +37,13 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_S3_SECRET_ACCESS_KEY_ID }}
           aws-region: ap-northeast-2
 
-      # react 빌드한 /build를 s3로 업로드
-      - name: Upload /build to S3
+      # react 빌드한 /dist를 s3로 업로드
+      - name: Upload /dist to S3
         env:
           BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME}}
         run: |
           aws s3 sync \
-            ./build s3://$BUCKET_NAME
+            ./dist s3://$BUCKET_NAME
 
       # 업로드한 s3 파일을 각 CDN 캐시 무효화하여 리프레시 하기
       - name: CloudFront Invalidation
