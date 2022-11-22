@@ -14,6 +14,7 @@ const Counter = () => {
   const [state, setState] = useState<any>({});
   const dispatch = useAppDispatch();
   const count = useSelector((state: RootState) => state.testSlice.value);
+  console.log(count);
   useEffect(() => {
     serviceData().then(data => setState(data));
   }, []);
