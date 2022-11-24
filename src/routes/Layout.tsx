@@ -1,0 +1,37 @@
+import Header from '@/component/Header/Header';
+import palette from '@/lib/styles/palette';
+import styled from '@emotion/styled';
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+
+const Layout = () => {
+  return (
+    <>
+      <HeaderWrapper>
+        <Header />
+      </HeaderWrapper>
+      <MainWrapper>
+        <Outlet />
+      </MainWrapper>
+    </>
+  );
+};
+
+const HeaderWrapper = styled.header`
+  position: fixed;
+  width: 100%;
+  border-bottom: 1px solid ${palette.grey[100]};
+  box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.125);
+  background-color: #fff;
+
+  z-index: 9999;
+  a {
+    display: black;
+  }
+`;
+
+const MainWrapper = styled.main`
+  padding-top: 4rem;
+`;
+
+export default Layout;
