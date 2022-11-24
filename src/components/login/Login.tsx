@@ -8,7 +8,6 @@ import SocialLogin from './SocialLogin';
 interface LoginProps {}
 
 const Login = (props: LoginProps) => {
-  console.log('');
   return (
     <LoginBlock>
       <LoginHeader>
@@ -59,7 +58,7 @@ const LoginHeader = styled.header`
 `;
 
 const LoginSection = styled.section`
-  padding: 0.5rem 3rem;
+  padding: 0.5rem 2rem;
 `;
 
 const Title = styled.h1`

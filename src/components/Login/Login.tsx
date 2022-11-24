@@ -8,7 +8,6 @@ import SocialLogin from './SocialLogin';
 interface LoginProps {}
 
 const Login = (props: LoginProps) => {
-  console.log('');
   return (
     <LoginBlock>
       <LoginHeader>
