@@ -58,7 +58,7 @@ const LoginHeader = styled.header`
 `;
 
 const LoginSection = styled.section`
-  padding: 0.5rem 3rem;
+  padding: 0.5rem 2rem;
 `;
 
 const Title = styled.h1`
