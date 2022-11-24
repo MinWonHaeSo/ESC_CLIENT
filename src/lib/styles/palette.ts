@@ -13,3 +13,5 @@ export const grey = {
 export const pointColor = {
   point: '#ff8a8a',
 };
+
+export default { black, grey, pointColor };

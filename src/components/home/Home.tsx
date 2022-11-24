@@ -1,8 +1,8 @@
 import React from 'react';
 
-interface Props {}
+interface HomeProps {}
 
-const Home = (props: Props) => {
+const Home = (props: HomeProps) => {
   return <div>Home</div>;
 };
 

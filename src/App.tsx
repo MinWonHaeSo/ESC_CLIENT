@@ -1,6 +1,8 @@
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import HomePage from './pages/Homepage';
+import Homepage from './pages/Homepage';
+import NotFoundPage from './pages/NotFoundPage';
+import Layout from './routes/Layout';
 import LoginPage from './pages/LoginPage';
 import { store } from './store/store';
 
@@ -9,7 +11,10 @@ function App() {
     <Provider store={store}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route element={<Layout />}>
+            <Route path="/" element={<Homepage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
           <Route path="/login" element={<LoginPage />} />
         </Routes>
       </BrowserRouter>
