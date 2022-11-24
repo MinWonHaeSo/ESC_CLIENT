@@ -39,7 +39,7 @@ const InputId = styled.input`
   }
 
   &:focus {
-    border: 1px solid ${palette.pointColor.point};
+    border: 1px solid black;
   }
 `;
 
@@ -55,7 +55,7 @@ const InputPassword = styled.input`
   }
 
   &:focus {
-    border: 1px solid ${palette.pointColor.point};
+    border: 1px solid black;
   }
 `;
 
@@ -71,6 +71,9 @@ const FormButton = styled.button`
 
   &:active {
     color: #fff;
-    background-color: ${palette.pointColor.point};
+  }
+
+  &:hover {
+    opacity: 0.75;
   }
 `;
