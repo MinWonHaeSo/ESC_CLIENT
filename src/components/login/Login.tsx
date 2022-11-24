@@ -37,8 +37,6 @@ const Login = (props: LoginProps) => {
 
 export default Login;
 
-// style
-
 const LoginBlock = styled.div`
   width: 100%;
   height: 100vh;
