@@ -49,6 +49,7 @@ const Button = styled.button`
   height: 3rem;
   border-radius: 50%;
   border: 1px solid ${palette.grey[300]};
+
   span {
     display: none;
   }
