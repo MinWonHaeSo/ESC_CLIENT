@@ -8,6 +8,7 @@ import SocialLogin from './SocialLogin';
 interface LoginProps {}
 
 const Login = (props: LoginProps) => {
+  console.log('');
   return (
     <LoginBlock>
       <LoginHeader>
@@ -36,8 +37,6 @@ const Login = (props: LoginProps) => {
 };
 
 export default Login;
-
-// style
 
 const LoginBlock = styled.div`
   width: 100%;
