@@ -62,7 +62,7 @@ const NavbarMenu = styled.ul`
   }
 
   li:hover {
-    background-color: ${palette.pointColor['point']};
+    background-color: ${palette.primary['point']};
     color: #fff;
     transition: all 0.2s ease-in-out;
   }
