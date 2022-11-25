@@ -85,7 +85,7 @@ const Li = styled.li`
   height: 1rem;
   font-size: 15px;
   font-weight: 500;
-  color: ${palette.black[200]};
+  color: ${palette.black[100]};
 
   a {
     padding: 0.75rem 1rem;
