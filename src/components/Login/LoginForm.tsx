@@ -74,6 +74,6 @@ const FormButton = styled.button`
   }
 
   &:hover {
-    opacity: 0.75;
+    background-color: ${palette.primary.green};
   }
 `;
