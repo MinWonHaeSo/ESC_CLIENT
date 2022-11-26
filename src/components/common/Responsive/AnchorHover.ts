@@ -10,7 +10,7 @@ const AnchorHover = css`
   padding: 12px 12px;
 
   &:hover {
-    background-color: ${palette.pointColor['point']};
+    background-color: ${palette.primary['point']};
     color: #fff;
     transition: all 0.2s ease-in-out;
   }
