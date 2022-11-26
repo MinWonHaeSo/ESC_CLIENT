@@ -69,9 +69,12 @@ const LogoBlock = styled.div`
   transform: translate(-50%, -50%);
 `;
 
+
 const UserMenu = styled.div`
-  a {
-    ${Responsive.AnchorHover}
+  li:hover {
+    background-color: ${palette.primary['point']};
+    color: #fff;
+    transition: all 0.2s ease-in-out;
   }
 `;
 

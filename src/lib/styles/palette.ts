@@ -1,17 +1,20 @@
 export const black = {
-  '100': '#3f3f3f',
-  '200': '#020e18',
+  '100': '#000',
+  '200': '#191a20',
 };
 
 export const grey = {
-  '100': '#9aa9bb',
-  '200': '#2F3438',
-  '300': '#bdbdbd',
-  '400': '#abb7c4',
+  '100': '#f7f8fa',
+  '200': '#e0e2e7',
+  '300': '#b2b3b9',
+  '400': '#8c8d96',
+  '500': '#565B60',
 };
 
-export const pointColor = {
+export const primary = {
   point: '#ff8a8a',
+  orange: '#ffa000',
+  green: '#13bd7e',
 };
 
-export default { black, grey, pointColor };
+export default { black, grey, primary };
