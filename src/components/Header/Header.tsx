@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
-import palette from '@/lib/styles/palette';
-import media from '@/lib/styles/media';
 
 import { ReactComponent as NavbarLogo } from '@/assets/esc-logo.svg';
 import Responsive from '@/components/common/Responsive';
-import Navbar from '../Home/Navbar';
+import Navbar from './Navbar';
+import palette from '@/lib/styles/palette';
 
 interface HomeProps {}
 
@@ -68,7 +67,6 @@ const LogoBlock = styled.div`
   top: 55%;
   transform: translate(-50%, -50%);
 `;
-
 
 const UserMenu = styled.div`
   li:hover {
