@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
-import palette from '@/lib/styles/palette';
-import media from '@/lib/styles/media';
 
 import { ReactComponent as NavbarLogo } from '@/assets/esc-logo.svg';
 import Responsive from '@/components/common/Responsive';
-import Navbar from '../Home/Navbar';
+import Navbar from './Navbar';
 
 interface HomeProps {}
 
