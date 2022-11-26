@@ -1,43 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import palette from '@/lib/styles/palette';
 import media from '@/lib/styles/media';
 
 import { ReactComponent as NavbarLogo } from '@/assets/esc-logo.svg';
+import Responsive from '@/components/common/Responsive';
+import Navbar from '../Home/Navbar';
 
-interface Props {}
+interface HomeProps {}
 
-const Header = (props: Props) => {
+const Header = (props: HomeProps) => {
+  const [isActive, setIsActive] = useState(false);
+
+  const handleChangeIsActive = () => {
+    setIsActive(!isActive);
+  };
   return (
     <HeaderBlock>
-      {/* 토글 버튼을 구현해야 한다면 로고를 가운데로 밀고 왼쪽에다 배치 */}
-      <Link to="/">
-        <NavbarLogo width="50px" height="50px" />
-      </Link>
-      <NavbarMenu>
-        <li>
-          <Link to="/">상품</Link>
-        </li>
-        <li>
-          <Link to="/">체육관</Link>
-        </li>
-      </NavbarMenu>
-
-      {/* 내정보 fontAwesome 아이콘 아이템 드랍다운 작업 */}
-      <div>내정보</div>
+      <ToggleMenuBar onClick={handleChangeIsActive}>
+        <span className="bar"></span>
+        <span className="bar"></span>
+        <span className="bar"></span>
+      </ToggleMenuBar>
+      <LogoBlock>
+        <Link to="/" aria-label="Easy Sports Club 로고">
+          <NavbarLogo width="50px" height="50px" />
+        </Link>
+      </LogoBlock>
+      <Navbar isActive={isActive} onChangeIsActive={handleChangeIsActive} />
+      <UserMenu>
+        <Link to="loginPage">로그인</Link>
+      </UserMenu>
     </HeaderBlock>
   );
 };
 
 const HeaderBlock = styled.nav`
   display: flex;
-  max-width: 1280px;
+  height: 50px;
   background-color: #fff;
-  margin: 0 auto;
-  padding: 0.5rem 3rem;
   justify-content: space-between;
-  align-items: center;
   font-weight: 600;
 
   & > a {
@@ -45,26 +48,30 @@ const HeaderBlock = styled.nav`
     height: 50px;
   }
 
-  ${media.large} {
-    max-width: 765px;
+  ${Responsive.ResponsiveWrapper}
+`;
+
+const ToggleMenuBar = styled.div`
+  .bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    background-color: black;
+    transition: all 0.3s ease-in-out;
   }
 `;
 
-const NavbarMenu = styled.ul`
-  display: flex;
-  gap: 0.5rem;
-  margin-left: auto;
-  margin-right: 5rem;
+const LogoBlock = styled.div`
+  position: absolute;
+  left: 49%;
+  top: 55%;
+  transform: translate(-50%, -50%);
+`;
 
-  li {
-    border-radius: 10px;
-    padding: 12px 12px;
-  }
-
-  li:hover {
-    background-color: ${palette.pointColor['point']};
-    color: #fff;
-    transition: all 0.2s ease-in-out;
+const UserMenu = styled.div`
+  a {
+    ${Responsive.AnchorHover}
   }
 `;
 

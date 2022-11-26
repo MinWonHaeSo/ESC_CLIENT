@@ -5,7 +5,7 @@ export const black = {
 
 export const grey = {
   '100': '#9aa9bb',
-  '200': '#9dbfaf',
+  '200': '#2F3438',
   '300': '#bdbdbd',
   '400': '#abb7c4',
 };

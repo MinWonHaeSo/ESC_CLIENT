@@ -1,5 +1,4 @@
 import Header from '@/components/Header/Header';
-
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
 import React from 'react';
@@ -26,9 +25,6 @@ const HeaderWrapper = styled.header`
   background-color: #fff;
 
   z-index: 9999;
-  a {
-    display: black;
-  }
 `;
 
 const MainWrapper = styled.main`
