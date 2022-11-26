@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import palette from '@/lib/styles/palette';
 import LoginForm from './LoginForm';
 import SocialLogin from './SocialLogin';
+import { typo } from '@/lib/styles/typo';
 
 interface LoginProps {}
 
@@ -67,7 +68,7 @@ const Title = styled.h1`
   justify-content: center;
   align-items: center;
   margin-top: 1.75rem;
-  font-size: 1.6rem;
+  font-size: ${typo.xLarge};
   font-weight: 600;
 `;
 
@@ -91,11 +92,11 @@ const Li = styled.li`
   }
 
   a:hover {
-    color: ${palette.pointColor.point};
+    color: ${palette.primary.point};
   }
 
   a:active {
-    color: ${palette.pointColor.point};
+    color: ${palette.primary.point};
   }
 
   span {

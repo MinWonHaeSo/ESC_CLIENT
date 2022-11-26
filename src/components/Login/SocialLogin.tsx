@@ -34,7 +34,7 @@ const Block = styled.div`
 const Title = styled.h3`
   font-size: 0.875rem;
   font-weight: 500;
-  color: ${palette.grey[300]};
+  color: ${palette.grey[500]};
 `;
 
 const ButtonList = styled.div`
