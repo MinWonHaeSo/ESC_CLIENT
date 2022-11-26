@@ -24,9 +24,6 @@ const HeaderWrapper = styled.header`
   background-color: #fff;
 
   z-index: 9999;
-  a {
-    display: black;
-  }
 `;
 
 const MainWrapper = styled.main`
