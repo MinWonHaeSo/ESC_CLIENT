@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
 import { ReactComponent as NavbarLogo } from '@/assets/esc-logo.svg';
@@ -48,6 +48,7 @@ const Header = (props: HomeProps) => {
 };
 
 const HeaderBlock = styled.nav`
+  position: relative;
   display: flex;
   height: 80px;
   background-color: #fff;
@@ -82,17 +83,34 @@ const ToggleMenuBar = styled.div`
 `;
 
 const LogoBlock = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
-  left: 49%;
-  top: 55%;
-  transform: translate(-50%, -50%);
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+
+  a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const UserMenu = styled.div`
-  li:hover {
-    background-color: ${palette.primary['point']};
-    color: #fff;
-    transition: all 0.2s ease-in-out;
+  border: 1px solid ${palette.grey[300]};
+  border-radius: 10px;
+
+  &:hover {
+    background-color: ${palette.grey[100]};
+  }
+
+  a {
+    display: inline-block;
+    padding: 0.25rem 0.2rem;
   }
 `;
 
