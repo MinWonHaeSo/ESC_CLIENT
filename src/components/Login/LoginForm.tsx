@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
+import Button from '../common/atoms/Button';
 import Input from '../common/atoms/Input';
-import Button from '../common/atoms/WideButton';
 
 interface LoginFormProps {}
 
@@ -12,7 +12,9 @@ const LoginForm = (props: LoginFormProps) => {
     <Form onSubmit={handleSubmit}>
       <Input type={'text'} placeholder={'아이디(이메일)'} />
       <Input type={'password'} placeholder={'비밀번호'} />
-      <Button>로그인</Button>
+      <Button type={'submit'} size={'large'}>
+        로그인
+      </Button>
     </Form>
   );
 };
@@ -24,5 +26,6 @@ const Form = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 16px;
+  gap: 16px;
+  margin-top: 32px;
 `;
