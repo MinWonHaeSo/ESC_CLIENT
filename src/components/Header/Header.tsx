@@ -6,6 +6,7 @@ import { ReactComponent as NavbarLogo } from '@/assets/esc-logo.svg';
 import Responsive from '@/components/common/Responsive';
 import Navbar from './Navbar';
 import palette from '@/lib/styles/palette';
+import PATH from '@/constants/path';
 
 interface HomeProps {}
 
@@ -23,13 +24,13 @@ const Header = (props: HomeProps) => {
         <span className="bar"></span>
       </ToggleMenuBar>
       <LogoBlock>
-        <Link to="/" aria-label="Easy Sports Club 로고">
-          <NavbarLogo width="50px" height="50px" />
+        <Link to={PATH.ROOT} aria-label="Easy Sports Club 로고">
+          <NavbarLogo width="80px" height="80px" />
         </Link>
       </LogoBlock>
       <Navbar isActive={isActive} onChangeIsActive={handleChangeIsActive} />
       <UserMenu>
-        <Link to="login">로그인</Link>
+        <Link to={PATH.LOGIN}>로그인</Link>
       </UserMenu>
     </HeaderBlock>
   );
