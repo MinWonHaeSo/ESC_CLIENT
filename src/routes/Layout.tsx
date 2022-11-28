@@ -26,6 +26,8 @@ const HeaderWrapper = styled.header`
   z-index: 9999;
 `;
 
-const MainWrapper = styled.main``;
+const MainWrapper = styled.main`
+  padding-top: 4rem;
+`;
 
 export default Layout;

@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { ReactComponent as NavbarLogo } from '@/assets/esc-logo.svg';
 import { Link } from 'react-router-dom';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
@@ -7,18 +6,12 @@ import LoginForm from './LoginForm';
 import SocialLogin from './SocialLogin';
 import TabMenu from '../common/TabMenu';
 import Responsive from '../common/Responsive';
-import Title from '../common/atoms/Title';
 
 interface LoginProps {}
 
 const Login = (props: LoginProps) => {
   return (
     <LoginBlock>
-      <LoginHeader>
-        <Link to="/">
-          <NavbarLogo width="80px" height="80px" />
-        </Link>
-      </LoginHeader>
       <LoginSection>
         <TabMenu />
         <LoginForm />
@@ -41,21 +34,6 @@ export default Login;
 const LoginBlock = styled.div`
   width: 100%;
   height: 100vh;
-`;
-
-const LoginHeader = styled.header`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0.5rem 3rem;
-  border-bottom: 1px solid ${palette.grey[100]};
-  box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.125);
-  background-color: #fff;
-
-  a {
-    display: flex;
-    align-items: center;
-  }
 `;
 
 const LoginSection = styled.section`
