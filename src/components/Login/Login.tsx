@@ -1,6 +1,6 @@
 import { RootState } from '@/store/store';
-import { useSelector } from 'react-redux';
 import styled from '@emotion/styled';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
@@ -36,7 +36,6 @@ export default Login;
 const LoginBlock = styled.section`
   position: relative;
   width: 100%;
-  height: 100vh;
   ${Responsive.ResponsiveWrapper}
 `;
 
