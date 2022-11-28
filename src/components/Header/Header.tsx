@@ -29,7 +29,7 @@ const Header = (props: HomeProps) => {
       </LogoBlock>
       <Navbar isActive={isActive} onChangeIsActive={handleChangeIsActive} />
       <UserMenu>
-        <Link to="loginPage">로그인</Link>
+        <Link to="login">로그인</Link>
       </UserMenu>
     </HeaderBlock>
   );

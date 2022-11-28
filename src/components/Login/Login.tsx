@@ -2,9 +2,9 @@ import styled from '@emotion/styled';
 import { ReactComponent as NavbarLogo } from '@/assets/esc-logo.svg';
 import { Link } from 'react-router-dom';
 import palette from '@/lib/styles/palette';
+import { typo } from '@/lib/styles/typo';
 import LoginForm from './LoginForm';
 import SocialLogin from './SocialLogin';
-import { typo } from '@/lib/styles/typo';
 
 interface LoginProps {}
 

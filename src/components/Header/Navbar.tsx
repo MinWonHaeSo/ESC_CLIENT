@@ -56,7 +56,7 @@ const NavbarMenu = styled.ul<IsActiveProps>`
     transition: 0.1s;
     margin: 1rem 1rem;
     padding: 0.5rem 1rem;
-    color: ${palette.grey[200]};
+    color: ${palette.grey[400]};
     flex: 1 1 auto;
   }
   ${({ isActive }) =>
@@ -65,7 +65,6 @@ const NavbarMenu = styled.ul<IsActiveProps>`
     visibility: visible;
     left:0;
     box-shadow: 2px 0px 14px rgb(197 197 197);
-
     `}
 `;
 
@@ -84,7 +83,6 @@ const BackgroundLayout = styled.div<IsActiveProps>`
     right: 0;
     background-color: rgba(33, 38, 41);
     opacity: 0.5;
-
     `}
 `;
 
