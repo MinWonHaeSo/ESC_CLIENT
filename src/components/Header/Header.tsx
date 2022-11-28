@@ -37,7 +37,7 @@ const Header = (props: HomeProps) => {
 
 const HeaderBlock = styled.nav`
   display: flex;
-  height: 50px;
+  height: 80px;
   background-color: #fff;
   justify-content: space-between;
   font-weight: 600;
