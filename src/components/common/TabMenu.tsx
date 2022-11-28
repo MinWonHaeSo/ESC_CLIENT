@@ -1,16 +1,19 @@
-import { useState } from 'react';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
 import { tabMenus } from '@/constants/tabMenu';
+import { useSelector } from 'react-redux';
+import { RootState, useAppDispatch } from '@/store/store';
+import { changeUser } from '@/store/userSlice';
 
 interface TabMenuProps {}
 
 const TabMenu = (props: TabMenuProps) => {
-  const [tabId, setTabId] = useState<number>(0);
+  const userId = useSelector((state: RootState) => state.userslice.userId);
+  const dispatch = useAppDispatch();
   return (
     <TabMenuBlock>
       {tabMenus.map(tab => (
-        <Tab key={tab.title} name={tab.title} focus={tabId === tab.id} onClick={() => setTabId(tab.id)}>
+        <Tab key={tab.title} name={tab.title} focus={userId === tab.id} onClick={() => dispatch(changeUser(tab.id))}>
           {tab.name}
         </Tab>
       ))}
