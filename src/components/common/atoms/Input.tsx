@@ -15,7 +15,6 @@ export default Input;
 
 const SInput = styled.input`
   width: 280px;
-  margin-top: 16px;
   padding: 12px 16px;
   border: 1px solid ${palette.grey[300]};
   border-radius: 10px;
