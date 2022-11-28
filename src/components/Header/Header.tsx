@@ -8,6 +8,7 @@ import Navbar from './Navbar';
 import palette from '@/lib/styles/palette';
 import PATH from '@/constants/path';
 import usePathHeaderOnlyLogo from '@/hooks/usePathHeaderOnlyLogo';
+import { useGoBack } from '@/hooks/useGoBack';
 
 interface HomeProps {}
 
@@ -15,6 +16,7 @@ const Header = (props: HomeProps) => {
   const [isActive, setIsActive] = useState(false);
   const checkHeader = usePathHeaderOnlyLogo();
 
+  const goBack = useGoBack();
   const handleChangeIsActive = () => {
     setIsActive(!isActive);
   };
@@ -22,10 +24,12 @@ const Header = (props: HomeProps) => {
   return (
     <HeaderBlock>
       {checkHeader ? (
-        '<'
+        <GoBackIconBlock onClick={() => goBack()}>
+          <i className="fa-solid fa-arrow-left" />
+        </GoBackIconBlock>
       ) : (
         <ToggleMenuBar onClick={handleChangeIsActive}>
-          <i className="fa-solid fa-bars"></i>
+          <i className="fa-solid fa-bars" />
         </ToggleMenuBar>
       )}
       <LogoBlock>
@@ -56,6 +60,18 @@ const HeaderBlock = styled.nav`
   }
 
   ${Responsive.ResponsiveWrapper}
+`;
+
+const GoBackIconBlock = styled.span`
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 28px;
+  height: 28px;
+
+  i {
+    font-size: 20px;
+  }
 `;
 
 const ToggleMenuBar = styled.div`
