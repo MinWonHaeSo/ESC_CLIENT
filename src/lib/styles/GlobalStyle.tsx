@@ -9,9 +9,25 @@ const style = css`
     line-height: 1.5;
   }
 
-  html {
+  html,
+  body {
     width: 100%;
     height: 100%;
+    font-size: 16px;
+    scroll-behavior: smooth;
+  }
+
+  main,
+  section {
+    ::-webkit-scrollbar {
+      display: none;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: transparent;
+    }
+    ::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
   }
 
   h1 {
@@ -50,6 +66,9 @@ const style = css`
   li {
     list-style: none;
     padding-left: 0;
+  }
+  :root {
+    --vh: 100%;
   }
 `;
 
