@@ -1,30 +1,31 @@
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
+import { Link } from 'react-router-dom';
 
 interface SocialLoginProps {}
 
 const SocialLogin = (props: SocialLoginProps) => {
   return (
-    <Block>
-      <Title>SNS 계정으로 로그인하기</Title>
-      <ButtonList>
-        <Button type="button">
+    <SocialLoginBlock>
+      <Title>SNS 계정으로 간편 로그인</Title>
+      <SocialLink>
+        <SLink to="/">
           <span>네이버 로그인</span>
-        </Button>
-        <Button type="button">
+        </SLink>
+        <SLink to="/">
           <span>카카오 로그인</span>
-        </Button>
-        <Button type="button">
+        </SLink>
+        <SLink to="/">
           <span>구글 로그인</span>
-        </Button>
-      </ButtonList>
-    </Block>
+        </SLink>
+      </SocialLink>
+    </SocialLoginBlock>
   );
 };
 
 export default SocialLogin;
 
-const Block = styled.div`
+const SocialLoginBlock = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,16 +38,16 @@ const Title = styled.h3`
   color: ${palette.grey[500]};
 `;
 
-const ButtonList = styled.div`
+const SocialLink = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 1rem;
-  gap: 1rem;
+  margin-top: 16px;
 `;
 
-const Button = styled.button`
-  width: 3rem;
-  height: 3rem;
+const SLink = styled(Link)`
+  width: 3.2rem;
+  height: 3.2rem;
+  margin: 0 8px;
   border-radius: 50%;
   border: 1px solid ${palette.grey[300]};
 
