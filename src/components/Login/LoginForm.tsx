@@ -8,11 +8,13 @@ const LoginForm = (props: LoginFormProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
   };
+
+  const handleButtonClick = () => {};
   return (
     <Form onSubmit={handleSubmit}>
       <Input type={'text'} placeholder={'아이디(이메일)'} />
       <Input type={'password'} placeholder={'비밀번호'} />
-      <Button type={'submit'} size={'large'}>
+      <Button type={'submit'} size={'large'} onClick={handleButtonClick}>
         로그인
       </Button>
     </Form>

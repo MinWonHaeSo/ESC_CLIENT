@@ -9,6 +9,7 @@ interface ButtonProps {
   children: React.ReactNode;
   type: ButtonType;
   size: SizeList;
+  onClick: () => void;
 }
 
 type SizeList = 'large' | 'medium' | 'small';
@@ -31,9 +32,9 @@ const sizeStyle = {
   `,
 };
 
-const Button = ({ children, type, size }: ButtonProps) => {
+const Button = ({ children, type, size, onClick }: ButtonProps) => {
   return (
-    <SButton type={type} size={size}>
+    <SButton type={type} size={size} onClick={onClick}>
       {children}
     </SButton>
   );
