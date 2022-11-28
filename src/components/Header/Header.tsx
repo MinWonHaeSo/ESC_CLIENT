@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
 import { ReactComponent as NavbarLogo } from '@/assets/esc-logo.svg';
@@ -8,6 +8,7 @@ import Navbar from './Navbar';
 import palette from '@/lib/styles/palette';
 import PATH from '@/constants/path';
 import usePathHeaderOnlyLogo from '@/hooks/usePathHeaderOnlyLogo';
+import { useGoBack } from '@/hooks/useGoBack';
 
 interface HomeProps {}
 
@@ -15,6 +16,7 @@ const Header = (props: HomeProps) => {
   const [isActive, setIsActive] = useState(false);
   const checkHeader = usePathHeaderOnlyLogo();
 
+  const goBack = useGoBack();
   const handleChangeIsActive = () => {
     setIsActive(!isActive);
   };
@@ -22,10 +24,12 @@ const Header = (props: HomeProps) => {
   return (
     <HeaderBlock>
       {checkHeader ? (
-        '<'
+        <GoBackIconBlock onClick={goBack}>
+          <i className="fa-solid fa-arrow-left" />
+        </GoBackIconBlock>
       ) : (
         <ToggleMenuBar onClick={handleChangeIsActive}>
-          <i className="fa-solid fa-bars"></i>
+          <i className="fa-solid fa-bars" />
         </ToggleMenuBar>
       )}
       <LogoBlock>
@@ -44,6 +48,7 @@ const Header = (props: HomeProps) => {
 };
 
 const HeaderBlock = styled.nav`
+  position: relative;
   display: flex;
   height: 80px;
   background-color: #fff;
@@ -58,6 +63,18 @@ const HeaderBlock = styled.nav`
   ${Responsive.ResponsiveWrapper}
 `;
 
+const GoBackIconBlock = styled.span`
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 28px;
+  height: 28px;
+
+  i {
+    font-size: 20px;
+  }
+`;
+
 const ToggleMenuBar = styled.div`
   padding: 0.25rem;
   i {
@@ -66,17 +83,34 @@ const ToggleMenuBar = styled.div`
 `;
 
 const LogoBlock = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
-  left: 49%;
-  top: 55%;
-  transform: translate(-50%, -50%);
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+
+  a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const UserMenu = styled.div`
-  li:hover {
-    background-color: ${palette.primary['point']};
-    color: #fff;
-    transition: all 0.2s ease-in-out;
+  border: 1px solid ${palette.grey[300]};
+  border-radius: 10px;
+
+  &:hover {
+    background-color: ${palette.grey[100]};
+  }
+
+  a {
+    display: inline-block;
+    padding: 0.25rem 0.2rem;
   }
 `;
 

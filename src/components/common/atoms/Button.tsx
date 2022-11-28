@@ -9,7 +9,9 @@ interface ButtonProps {
   children: React.ReactNode;
   type: ButtonType;
   size: SizeList;
-  onClick: () => void;
+  color?: string;
+  backgroundColor: string;
+  onClick?: () => void;
 }
 
 type SizeList = 'large' | 'medium' | 'small';
@@ -32,9 +34,9 @@ const sizeStyle = {
   `,
 };
 
-const Button = ({ children, type, size, onClick }: ButtonProps) => {
+const Button = ({ children, type, size, color, backgroundColor, onClick }: ButtonProps) => {
   return (
-    <SButton type={type} size={size} onClick={onClick}>
+    <SButton type={type} size={size} color={color} backgroundColor={backgroundColor} onClick={onClick}>
       {children}
     </SButton>
   );
@@ -45,12 +47,11 @@ export default Button;
 const SButton = styled.button<CSSProperties & { size: SizeList }>`
   border-radius: 10px;
   font-weight: 500;
-  color: #fff;
-  background-color: ${palette.black[100]};
+  color: ${props => (props.color ? props.color : '#fff')};
+  background-color: ${props => props.backgroundColor};
   cursor: pointer;
 
   &:active {
-    color: #fff;
     background-color: ${palette.black[200]};
   }
 
