@@ -5,7 +5,7 @@ import { typo } from '@/lib/styles/typo';
 import { useNavigate } from 'react-router-dom';
 import PATH from '@/constants/path';
 
-type MarkerStadiumInfoProps = {};
+interface MarkerStadiumInfoProps {}
 
 const MarkerStadiumInfo = (props: MarkerStadiumInfoProps) => {
   const [stardiumLike, setStardiumLike] = useState(false);
@@ -18,7 +18,7 @@ const MarkerStadiumInfo = (props: MarkerStadiumInfoProps) => {
   };
 
   const toUploadNavigate = () => {
-    navigate(PATH.MANAGER_STARDIUM_UPLOAD);
+    navigate(`${PATH.STARDIUM_DETAIL}/1`);
   };
 
   return (

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import useKakaoMapScript from '@/hooks/useKakaoMapScript';
 import MarkerStadiumInfo from './MarkerStadiumInfo';
 
-type MapProps = {
+interface MapProps {
   markerData: any;
-};
+}
 
 const Map = ({ markerData }: MapProps) => {
   const kakaoMap = useKakaoMapScript(markerData);

@@ -1,6 +1,7 @@
+import HEADER_NAV from '@/constants/headerNav';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 interface NavbarProps {
@@ -9,6 +10,8 @@ interface NavbarProps {
 }
 
 const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
+  const [loginType, setLoginType] = useState('user'); // manager
+
   return (
     <div>
       <NavbarMenu isActive={isActive}>
@@ -18,18 +21,11 @@ const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
           </div>
           <span>닉네임</span>
         </UerProfile>
-        <li>
-          <Link to="/">마이페이지</Link>
-        </li>
-        <li>
-          <Link to="/">대여 내역</Link>
-        </li>
-        <li>
-          <Link to="/">최근 본 체육관</Link>
-        </li>
-        <li>
-          <Link to="/">찜한 체육관</Link>
-        </li>
+        {HEADER_NAV[loginType].map(nav => (
+          <li key={nav.id}>
+            <Link to={nav.to}>{nav.title}</Link>
+          </li>
+        ))}
       </NavbarMenu>
       <BackgroundLayout isActive={isActive} onClick={onChangeIsActive} />
     </div>
