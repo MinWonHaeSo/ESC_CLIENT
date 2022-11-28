@@ -5,11 +5,13 @@ import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import LoginForm from './LoginForm';
 import SocialLogin from './SocialLogin';
+import TabMenu from '../common/TabMenu';
+import Responsive from '../common/Responsive';
+import Title from '../common/atoms/Title';
 
 interface LoginProps {}
 
 const Login = (props: LoginProps) => {
-  console.log('');
   return (
     <LoginBlock>
       <LoginHeader>
@@ -18,20 +20,17 @@ const Login = (props: LoginProps) => {
         </Link>
       </LoginHeader>
       <LoginSection>
-        <Title>Login</Title>
+        <TabMenu />
         <LoginForm />
         <SocialLogin />
-        <RegisterWrapper>
+        <RegisterBlock>
           <Li>
             <Link to="/">회원가입</Link>
           </Li>
           <Li>
-            <span></span>
-          </Li>
-          <Li>
             <Link to="/">비밀번호 찾기</Link>
           </Li>
-        </RegisterWrapper>
+        </RegisterBlock>
       </LoginSection>
     </LoginBlock>
   );
@@ -60,19 +59,10 @@ const LoginHeader = styled.header`
 `;
 
 const LoginSection = styled.section`
-  padding: 0.5rem 3rem;
+  ${Responsive.ResponsiveWrapper}
 `;
 
-const Title = styled.h1`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 1.75rem;
-  font-size: ${typo.xLarge};
-  font-weight: 600;
-`;
-
-const RegisterWrapper = styled.div`
+const RegisterBlock = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -83,25 +73,29 @@ const Li = styled.li`
   display: flex;
   align-items: center;
   height: 1rem;
-  font-size: 15px;
+  font-size: ${typo.small};
   font-weight: 500;
   color: ${palette.black[100]};
 
   a {
-    padding: 0.75rem 1rem;
+    position: relative;
+    padding: 12px 16px;
   }
 
-  a:hover {
-    color: ${palette.primary.point};
+  &:hover {
+    text-decoration: underline;
   }
 
-  a:active {
-    color: ${palette.primary.point};
-  }
-
-  span {
-    width: 1px;
-    height: 100%;
-    background-color: ${palette.black[100]};
+  &:last-child {
+    a::before {
+      position: absolute;
+      content: '';
+      top: 50%;
+      left: 0;
+      width: 1px;
+      height: 14px;
+      transform: translateY(-45%);
+      background-color: ${palette.black[200]};
+    }
   }
 `;
