@@ -4,6 +4,7 @@ import Responsive from '../common/Responsive';
 import { typo } from '@/lib/styles/typo';
 import Title from '../common/atoms/Title';
 import TabMenu from '../common/TabMenu';
+import SignUpForm from './SignUpForm';
 
 const SignUp = () => {
   return (
@@ -11,8 +12,12 @@ const SignUp = () => {
       <Title fontSize={`${typo.large}`}>회원가입</Title>
       <TabMenu />
       <ImgBlock>
-        <Img src="" alt="프로필" />
+        <Img src="/" alt="프로필" />
+        <PlusButton>
+          <i className="fa-solid fa-plus"></i>
+        </PlusButton>
       </ImgBlock>
+      <SignUpForm />
     </SignUpBlock>
   );
 };
@@ -20,12 +25,13 @@ const SignUp = () => {
 export default SignUp;
 
 const SignUpBlock = styled.section`
+  overflow: scroll;
   ${Responsive.ResponsiveWrapper}
 `;
 
 const ImgBlock = styled.div`
   position: relative;
-  margin: 20px auto 0;
+  margin: 40px auto 0;
   width: 120px;
   height: 120px;
   background-color: ${palette.grey[200]};
@@ -33,8 +39,20 @@ const ImgBlock = styled.div`
 `;
 
 const Img = styled.img`
-  display: inline-block;
   width: 100%;
   height: 100%;
+  border-radius: 50%;
   object-fit: contain;
+`;
+
+const PlusButton = styled.button`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: transparent;
+
+  i {
+    font-size: 24px;
+  }
 `;
