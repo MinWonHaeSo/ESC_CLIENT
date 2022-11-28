@@ -25,7 +25,7 @@ const Login = (props: LoginProps) => {
         <SocialLogin />
         <RegisterBlock>
           <Li>
-            <Link to="/">회원가입</Link>
+            <Link to="/signup">회원가입</Link>
           </Li>
           <Li>
             <Link to="/">비밀번호 찾기</Link>
