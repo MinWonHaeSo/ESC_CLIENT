@@ -24,7 +24,7 @@ const Header = (props: HomeProps) => {
   return (
     <HeaderBlock>
       {checkHeader ? (
-        <GoBackIconBlock onClick={() => goBack()}>
+        <GoBackIconBlock onClick={goBack}>
           <i className="fa-solid fa-arrow-left" />
         </GoBackIconBlock>
       ) : (
