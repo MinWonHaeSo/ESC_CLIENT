@@ -12,7 +12,7 @@ import Responsive from '../common/Responsive';
 interface LoginProps {}
 
 const Login = (props: LoginProps) => {
-  const userId = useSelector((state: RootState) => state.userslice.userId);
+  const userId = useSelector((state: RootState) => state.user.userId);
 
   return (
     <LoginBlock>
