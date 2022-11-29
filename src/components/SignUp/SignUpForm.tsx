@@ -60,7 +60,7 @@ const SignUpForm = (props: SignUpFormProps) => {
         <Input type="password" id="passwordConfirm" placeholder="비밀번호 확인" />
       </SWrapper>
       <SWrapper>
-        <Label htmlFor={'nickname'}>이메일</Label>
+        <Label htmlFor={'nickname'}>닉네임</Label>
         <Desc>다른 유저와 겹치지 않도록 입력해주세요 (2 ~ 15자)</Desc>
         <Input type="text" id="nickname" placeholder="닉네임 입력" />
       </SWrapper>
