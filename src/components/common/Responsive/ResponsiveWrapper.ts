@@ -4,7 +4,8 @@ import { css } from '@emotion/react';
 const ResponsiveWrapper = css`
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding-right: 1rem;
+  padding-left: 1rem;
   align-items: center;
 
   ${media.large} {
