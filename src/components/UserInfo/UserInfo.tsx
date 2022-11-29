@@ -1,33 +1,63 @@
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
+import sw from '@/lib/utils/customSweetAlert';
 import styled from '@emotion/styled';
+import { useState, useRef } from 'react';
 import Button from '../common/atoms/Button';
 import Title from '../common/atoms/Title';
 import InsertImage from '../common/InsertImage';
 import Responsive from '../common/Responsive';
+import UserInfoDetail from './UserInfoDetail';
 
 interface UserInfoProps {}
 
 const UserInfo = (props: UserInfoProps) => {
+  const [inputDisabled, setInputDisabled] = useState<boolean>(true);
+  const [inputValue, setInputValue] = useState<string>('');
+  const [doubleCheck, setDoubleCheck] = useState<boolean>(false);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleEditClick = () => {
+    if (!inputRef.current) {
+      return;
+    }
+    inputRef.current.focus();
+    setInputDisabled(false);
+  };
+
+  const handleCorrectClick = () => {
+    if (!inputValue) {
+      return sw.toast.warn('닉네임을 입력하세요.');
+    }
+    sw.toast.success('수정이 완료되었습니다.');
+    setInputDisabled(true);
+    setDoubleCheck(false);
+  };
+
   return (
     <UserInfoBlock>
       <TitleWrapper>
         <Title fontSize={`${typo.xxLarge}`}>내 정보</Title>
-        <Button type="button" size={'medium'} backgroundColor={palette.primary['point']}>
+        <Button type="button" size={'medium'} backgroundColor={palette.primary['point']} onClick={handleEditClick}>
           프로필 편집
         </Button>
       </TitleWrapper>
-      <InsertImage />
-      <InfoDetailBlock>
-        <InfoDetail>
-          <InfoDetailTitle>아이디</InfoDetailTitle>
-          <p>example@email.com</p>
-        </InfoDetail>
-        <InfoDetail>
-          <InfoDetailTitle>닉네임</InfoDetailTitle>
-          <input type="text" placeholder="nickname" />
-        </InfoDetail>
-      </InfoDetailBlock>
+      <InsertImage inputDisabled={inputDisabled} />
+      <UserInfoDetail
+        inputDisabled={inputDisabled}
+        inputValue={inputValue}
+        setInputValue={setInputValue}
+        doubleCheck={doubleCheck}
+        setDoubleCheck={setDoubleCheck}
+        inputRef={inputRef}
+      />
+      <SWrapper>
+        {inputDisabled ? null : (
+          <Button type={'button'} size={'large'} backgroundColor={`${palette.black[100]}`} onClick={handleCorrectClick}>
+            수정완료
+          </Button>
+        )}
+      </SWrapper>
     </UserInfoBlock>
   );
 };
@@ -46,25 +76,10 @@ const TitleWrapper = styled.div`
   margin-top: 20px;
 `;
 
-const InfoDetailBlock = styled.div`
+const SWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-  margin-top: 3rem;
-  padding: 12px 16px;
-  background-color: ${palette.grey[100]};
-  border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-`;
-
-const InfoDetail = styled.div`
-  display: flex;
+  justify-content: center;
   align-items: center;
-`;
-
-const InfoDetailTitle = styled.div`
-  padding: 6px 12px;
-  font-size: ${typo.base};
-  border: 1px solid ${palette.grey[400]};
-  border-radius: 10px;
+  margin-top: 3rem;
+  width: 100%;
 `;
