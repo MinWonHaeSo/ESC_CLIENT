@@ -8,7 +8,7 @@ import { changeUser } from '@/store/userSlice';
 interface TabMenuProps {}
 
 const TabMenu = (props: TabMenuProps) => {
-  const userId = useSelector((state: RootState) => state.userslice.userId);
+  const userId = useSelector((state: RootState) => state.user.userId);
   const dispatch = useAppDispatch();
   return (
     <TabMenuBlock>
