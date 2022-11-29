@@ -15,6 +15,8 @@ export const primary = {
   point: '#ff8a8a',
   orange: '#ffa000',
   green: '#13bd7e',
+  blue: '#3182F6',
+  red: '#ff2c2c',
 };
 
 export default { black, grey, primary };
