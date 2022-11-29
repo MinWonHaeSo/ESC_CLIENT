@@ -1,4 +1,6 @@
+import { RootState } from '@/store/store';
 import styled from '@emotion/styled';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
@@ -10,33 +12,30 @@ import Responsive from '../common/Responsive';
 interface LoginProps {}
 
 const Login = (props: LoginProps) => {
+  const userId = useSelector((state: RootState) => state.userslice.userId);
+
   return (
     <LoginBlock>
-      <LoginSection>
-        <TabMenu />
-        <LoginForm />
-        <SocialLogin />
-        <RegisterBlock>
-          <Li>
-            <Link to="/signup">회원가입</Link>
-          </Li>
-          <Li>
-            <Link to="/">비밀번호 찾기</Link>
-          </Li>
-        </RegisterBlock>
-      </LoginSection>
+      <TabMenu />
+      <LoginForm />
+      {userId === 0 && <SocialLogin />}
+      <RegisterBlock>
+        <Li>
+          <Link to="/signup">회원가입</Link>
+        </Li>
+        <Li>
+          <Link to="/">비밀번호 찾기</Link>
+        </Li>
+      </RegisterBlock>
     </LoginBlock>
   );
 };
 
 export default Login;
 
-const LoginBlock = styled.div`
+const LoginBlock = styled.section`
+  position: relative;
   width: 100%;
-  height: 100vh;
-`;
-
-const LoginSection = styled.section`
   ${Responsive.ResponsiveWrapper}
 `;
 
@@ -45,6 +44,7 @@ const RegisterBlock = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 3rem;
+  width: 100%;
 `;
 
 const Li = styled.li`
@@ -54,16 +54,13 @@ const Li = styled.li`
   font-size: ${typo.small};
   font-weight: 500;
   color: ${palette.black[100]};
-
   a {
     position: relative;
     padding: 12px 16px;
   }
-
   &:hover {
     text-decoration: underline;
   }
-
   &:last-child {
     a::before {
       position: absolute;

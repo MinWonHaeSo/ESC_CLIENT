@@ -14,6 +14,6 @@ export default Title;
 
 const STitle = styled.h1<{ fontSize: string }>`
   margin-top: 20px;
-  margin-left: 16px;
+  margin-left: 20px;
   ${({ fontSize }) => fontSize && `font-size: ${fontSize}`}
 `;
