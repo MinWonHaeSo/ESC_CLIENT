@@ -6,8 +6,8 @@ import Layout from './routes/Layout';
 import LoginPage from './pages/LoginPage';
 import { store } from './store/store';
 import SignUpPage from './pages/SignUpPage';
-import PrivateRoutes from './routes/PrivateRoutes';
 import MyPage from './pages/MyPage';
+import PrivateRoute from './routes/PrivateRoutes';
 
 const App = () => {
   return (
@@ -19,9 +19,9 @@ const App = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignUpPage />} />
             <Route path="*" element={<NotFoundPage />} />
-          </Route>
-          <Route element={<PrivateRoutes />}>
-            <Route path="/mypage" element={<MyPage />} />
+            <Route element={<PrivateRoute />}>
+              <Route path="/mypage" element={<MyPage />} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>
