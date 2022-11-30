@@ -53,16 +53,13 @@ const Li = styled.li`
   font-size: ${typo.small};
   font-weight: 500;
   color: ${palette.black[100]};
-
   a {
     position: relative;
     padding: 12px 16px;
   }
-
   &:hover {
     text-decoration: underline;
   }
-
   &:last-child {
     a::before {
       position: absolute;

@@ -1,48 +1,39 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
+import styled from '@emotion/styled';
 import Map from '../KakaoMap/Map';
-import MarkerStadiumInfo from '../KakaoMap/MarkerStadiumInfo';
+import MarkerStadiumInfo from '../Stardium/MarkerStadiumInfo';
+import StardiumSearch from '../Stardium/StardiumSearch';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
+import { useDispatch } from 'react-redux';
+import { clearMarkerInfo, clickMarker } from '@/store/stardiumSlice';
 
-interface HomeProps {}
+const Home = () => {
+  const { searchResults, markerInfo } = useSelector((state: RootState) => state.staridum);
+  const dispatch = useDispatch();
 
-const markerData = [
-  {
-    title: '수원 경기장',
-    lat: 37.62197524055062,
-    lng: 127.16017523675508,
-    price: '10,000',
-    location: '경기도 성남시 분당구 OOO OOO',
-    revies: '4.5',
-  },
-  {
-    title: '월드컵 경기장',
-    lat: 37.620842424005616,
-    lng: 127.1583774403176,
-    location: '경기도 OOO OOO OOO OOO',
-    revies: '4.7',
-  },
-  {
-    title: '레포츠 공원',
-    lat: 37.624915253753194,
-    lng: 127.15122688059974,
-    location: '서울특별시 OOO OOO OOO OOO',
-    revies: '3.7',
-  },
-  {
-    title: '체육관',
-    lat: 37.62456273069659,
-    lng: 127.15211256646381,
-    location: '서울특별시 OOO OOO OOO OOO',
-    revies: '3.5',
-  },
-];
+  const handleClickMarker = useMemo(() => (el: any) => {
+      dispatch(clickMarker(el));
+    },[dispatch],
+  );
 
-const Home = (props: HomeProps) => {
+  useEffect(() => {
+    return () => {
+      dispatch(clearMarkerInfo());
+    };
+  }, []);
+
   return (
-    <div>
-      <Map markerData={markerData} />
-      <MarkerStadiumInfo />
-    </div>
+    <HomeWrapper>
+      <Map searchResults={searchResults} onClickMarker={handleClickMarker} />
+      <StardiumSearch />
+      <MarkerStadiumInfo markerInfo={markerInfo} />
+    </HomeWrapper>
   );
 };
+
+const HomeWrapper = styled.div`
+  position: absolute;
+`;
 
 export default Home;

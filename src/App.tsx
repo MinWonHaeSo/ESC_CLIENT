@@ -8,6 +8,8 @@ import { store } from './store/store';
 import SignUpPage from './pages/SignUpPage';
 import MyPage from './pages/MyPage';
 import PrivateRoute from './routes/PrivateRoutes';
+import StardiumUploadPage from './pages/StardiumUploadPage';
+
 
 const App = () => {
   return (
@@ -21,6 +23,7 @@ const App = () => {
             <Route path="*" element={<NotFoundPage />} />
             <Route element={<PrivateRoute />}>
               <Route path="/mypage" element={<MyPage />} />
+              <Route path="/manager/stardium/upload" element={<StardiumUploadPage />} />
             </Route>
           </Route>
         </Routes>
