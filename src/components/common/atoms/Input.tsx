@@ -1,4 +1,3 @@
-import { AllCheckedState } from '@/components/SignUp/SignUpForm';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
@@ -6,7 +5,7 @@ import React from 'react';
 
 interface InputProps {
   type: string;
-  value: string;
+  value?: string;
   id?: string;
   placeholder: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
