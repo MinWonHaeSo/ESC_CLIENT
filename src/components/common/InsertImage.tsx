@@ -3,7 +3,7 @@ import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
 
 interface InsertImageProps {
-  inputDisabled: boolean;
+  editDisabled: boolean;
 }
 
 interface UploadImage {
@@ -14,7 +14,7 @@ interface UploadImage {
   size: number;
 }
 
-const InsertImage = ({ inputDisabled }: InsertImageProps) => {
+const InsertImage = ({ editDisabled }: InsertImageProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [imageFile, setImageFile] = useState<UploadImage | null>(null);
 
@@ -22,12 +22,10 @@ const InsertImage = ({ inputDisabled }: InsertImageProps) => {
     if (!fileInputRef.current) {
       return;
     }
-    if (!inputDisabled) {
+    if (!editDisabled) {
       fileInputRef.current.click();
     }
   };
-
-  console.log(inputDisabled);
 
   const onUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
@@ -48,9 +46,9 @@ const InsertImage = ({ inputDisabled }: InsertImageProps) => {
 
   return (
     <ImgBlock>
-      <Img src={imageFile?.url ?? 'src/assets/defaultProfileImage.svg'} alt="프로필" disabled={inputDisabled} />
+      <Img src={imageFile?.url ?? 'src/assets/defaultProfileImage.svg'} alt="프로필" disabled={editDisabled} />
       <PlusButton onClick={handleClickFileButton}>
-        {inputDisabled ? null : <i className="fa-solid fa-plus" />}
+        {editDisabled ? null : <i className="fa-solid fa-plus" />}
       </PlusButton>
       <FileInput type="file" ref={fileInputRef} onChange={onUploadImage} accept="image/*" />
     </ImgBlock>
