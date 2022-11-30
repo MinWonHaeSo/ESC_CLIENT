@@ -54,12 +54,10 @@ const HeaderBlock = styled.nav`
   background-color: #fff;
   justify-content: space-between;
   font-weight: 600;
-
   & > a {
     width: 50px;
     height: 50px;
   }
-
   ${Responsive.ResponsiveWrapper}
 `;
 
@@ -69,7 +67,6 @@ const GoBackIconBlock = styled.span`
   align-items: center;
   width: 28px;
   height: 28px;
-
   i {
     font-size: 20px;
   }
@@ -90,7 +87,6 @@ const LogoBlock = styled.div`
   left: 50%;
   transform: translateX(-50%);
   cursor: pointer;
-
   a {
     display: inline-flex;
     justify-content: center;
@@ -103,11 +99,9 @@ const LogoBlock = styled.div`
 const UserMenu = styled.div`
   border: 1px solid ${palette.grey[300]};
   border-radius: 10px;
-
   &:hover {
     background-color: ${palette.grey[100]};
   }
-
   a {
     display: inline-block;
     padding: 0.25rem 0.2rem;
