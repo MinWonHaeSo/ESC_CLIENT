@@ -8,12 +8,18 @@ import { changeUser } from '@/store/userSlice';
 interface TabMenuProps {}
 
 const TabMenu = (props: TabMenuProps) => {
-  const userId = useSelector((state: RootState) => state.userslice.userId);
+  const userType = useSelector((state: RootState) => state.user.userType);
+  console.log(userType);
   const dispatch = useAppDispatch();
   return (
     <TabMenuBlock>
       {tabMenus.map(tab => (
-        <Tab key={tab.title} name={tab.title} focus={userId === tab.id} onClick={() => dispatch(changeUser(tab.id))}>
+        <Tab
+          key={tab.title}
+          name={tab.title}
+          focus={userType === tab.title}
+          onClick={() => dispatch(changeUser(tab.title))}
+        >
           {tab.name}
         </Tab>
       ))}

@@ -6,7 +6,10 @@ import Layout from './routes/Layout';
 import LoginPage from './pages/LoginPage';
 import { store } from './store/store';
 import SignUpPage from './pages/SignUpPage';
+import MyPage from './pages/MyPage';
+import PrivateRoute from './routes/PrivateRoutes';
 import StardiumUploadPage from './pages/StardiumUploadPage';
+
 
 const App = () => {
   return (
@@ -17,8 +20,11 @@ const App = () => {
             <Route path="/" element={<Homepage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignUpPage />} />
-            <Route path="/manager/stardium/upload" element={<StardiumUploadPage />} />
             <Route path="*" element={<NotFoundPage />} />
+            <Route element={<PrivateRoute />}>
+              <Route path="/mypage" element={<MyPage />} />
+              <Route path="/manager/stardium/upload" element={<StardiumUploadPage />} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>

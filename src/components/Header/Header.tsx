@@ -9,10 +9,13 @@ import palette from '@/lib/styles/palette';
 import PATH from '@/constants/path';
 import usePathHeaderOnlyLogo from '@/hooks/usePathHeaderOnlyLogo';
 import { useGoBack } from '@/hooks/useGoBack';
+import { useSelector } from 'react-redux';
+import { RootState, useAppDispatch } from '@/store/store';
 
 interface HomeProps {}
 
 const Header = (props: HomeProps) => {
+  const loggedIn = useSelector((state: RootState) => state.user.loggedIn);
   const [isActive, setIsActive] = useState(false);
   const checkHeader = usePathHeaderOnlyLogo();
 
@@ -38,7 +41,7 @@ const Header = (props: HomeProps) => {
         </Link>
       </LogoBlock>
       <Navbar isActive={isActive} onChangeIsActive={handleChangeIsActive} />
-      {checkHeader ? null : (
+      {loggedIn || checkHeader ? null : (
         <UserMenu>
           <Link to={PATH.LOGIN}>로그인</Link>
         </UserMenu>

@@ -49,6 +49,7 @@ const style = css`
   textarea {
     background-color: white;
     border: 0;
+    -webkit-tap-highlight-color: transparent;
 
     &:focus {
       outline: none;

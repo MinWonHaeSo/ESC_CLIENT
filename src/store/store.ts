@@ -5,7 +5,7 @@ import { userReducer } from './userSlice';
 
 export const store = configureStore({
   reducer: {
-    userslice: userReducer,
+    user: userReducer,
     staridum: stardiumReducer,
   },
 });
