@@ -1,8 +1,13 @@
 import HEADER_NAV from '@/constants/headerNav';
+import PATH from '@/constants/path';
 import palette from '@/lib/styles/palette';
+import { RootState, useAppDispatch } from '@/store/store';
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { changeUser, checkLoggedIn } from '@/store/userSlice';
+import sw from '@/lib/utils/customSweetAlert';
 
 interface NavbarProps {
   isActive: boolean;
@@ -10,10 +15,27 @@ interface NavbarProps {
 }
 
 const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
-  const [loginType, setLoginType] = useState('user'); // manager
+  const [loginType, setLoginType] = useState('user'); //user, manager, undefinedUser
+  const loggedIn = useSelector((state: RootState) => state.user.loggedIn);
+  const userType = useSelector((state: RootState) => state.user.userType);
+  const dispatch = useAppDispatch();
+  const handleLogOut = () => {
+    dispatch(checkLoggedIn(false));
+    dispatch(changeUser('user'));
+    onChangeIsActive();
+    sw.toast.success('로그아웃 되었습니다.');
+  };
+
+  const handleListClick = () => {
+    onChangeIsActive();
+  };
+
+  useEffect(() => {
+    setLoginType(userType);
+  }, [userType]);
 
   return (
-    <div>
+    <NavbarBlock>
       <NavbarMenu isActive={isActive}>
         <UerProfile>
           <div>
@@ -22,19 +44,26 @@ const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
           <span>닉네임</span>
         </UerProfile>
         {HEADER_NAV[loginType].map(nav => (
-          <li key={nav.id}>
+          <li key={nav.id} onClick={handleListClick}>
             <Link to={nav.to}>{nav.title}</Link>
           </li>
         ))}
+        {loggedIn && (
+          <LogOutButton to={PATH.ROOT} onClick={handleLogOut}>
+            로그아웃
+          </LogOutButton>
+        )}
       </NavbarMenu>
       <BackgroundLayout isActive={isActive} onClick={onChangeIsActive} />
-    </div>
+    </NavbarBlock>
   );
 };
 
 type IsActiveProps = {
   isActive: boolean;
 };
+
+const NavbarBlock = styled.div``;
 
 const NavbarMenu = styled.ul<IsActiveProps>`
   position: fixed;
@@ -49,12 +78,22 @@ const NavbarMenu = styled.ul<IsActiveProps>`
   transition: 0.2s ease-in;
 
   & > li {
-    transition: 0.1s;
-    margin: 1rem 1rem;
-    padding: 0.5rem 1rem;
-    color: ${palette.grey[400]};
     flex: 1 1 auto;
+    margin: 1rem 1rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid #fff;
+    border-radius: 10px;
+    color: ${palette.grey[400]};
+    transition: 0.1s;
   }
+
+  li:hover,
+  li:focus {
+    color: ${palette.black[200]};
+    background-color: ${palette.grey[100]};
+    border: 1px solid ${palette.grey[200]};
+  }
+
   ${({ isActive }) =>
     isActive &&
     `
@@ -62,6 +101,16 @@ const NavbarMenu = styled.ul<IsActiveProps>`
     left:0;
     box-shadow: 2px 0px 14px rgb(197 197 197);
     `}
+`;
+
+const LogOutButton = styled(Link)`
+  position: absolute;
+  bottom: 0;
+  padding: 0.75rem 1rem;
+  width: 100%;
+  border-radius: 10px 10px 0 0;
+  border: 1px solid ${palette.grey[200]};
+  background-color: ${palette.grey[100]};
 `;
 
 const BackgroundLayout = styled.div<IsActiveProps>`

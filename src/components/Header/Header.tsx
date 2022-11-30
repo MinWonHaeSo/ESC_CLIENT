@@ -11,22 +11,17 @@ import usePathHeaderOnlyLogo from '@/hooks/usePathHeaderOnlyLogo';
 import { useGoBack } from '@/hooks/useGoBack';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '@/store/store';
-import { checkLoggedIn } from '@/store/userSlice';
 
 interface HomeProps {}
 
 const Header = (props: HomeProps) => {
   const loggedIn = useSelector((state: RootState) => state.user.loggedIn);
-  const dispatch = useAppDispatch();
   const [isActive, setIsActive] = useState(false);
   const checkHeader = usePathHeaderOnlyLogo();
 
   const goBack = useGoBack();
   const handleChangeIsActive = () => {
     setIsActive(!isActive);
-  };
-  const handleLogOut = () => {
-    dispatch(checkLoggedIn(false));
   };
 
   return (
@@ -46,11 +41,7 @@ const Header = (props: HomeProps) => {
         </Link>
       </LogoBlock>
       <Navbar isActive={isActive} onChangeIsActive={handleChangeIsActive} />
-      {loggedIn ? (
-        <UserMenu onClick={handleLogOut}>
-          <Link to={PATH.ROOT}>로그아웃</Link>
-        </UserMenu>
-      ) : (
+      {loggedIn || checkHeader ? null : (
         <UserMenu>
           <Link to={PATH.LOGIN}>로그인</Link>
         </UserMenu>

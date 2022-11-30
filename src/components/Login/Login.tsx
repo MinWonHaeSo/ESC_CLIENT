@@ -12,13 +12,12 @@ import Responsive from '../common/Responsive';
 interface LoginProps {}
 
 const Login = (props: LoginProps) => {
-  const userId = useSelector((state: RootState) => state.user.userId);
-
+  const userType = useSelector((state: RootState) => state.user.userType);
   return (
     <LoginBlock>
       <TabMenu />
       <LoginForm />
-      {userId === 0 && <SocialLogin />}
+      {userType === 'user' && <SocialLogin />}
       <RegisterBlock>
         <Li>
           <Link to="/signup">회원가입</Link>

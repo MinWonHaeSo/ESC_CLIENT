@@ -2,12 +2,14 @@ import React, { useState, useCallback } from 'react';
 import formRegex from '@/constants/formRegex';
 import palette from '@/lib/styles/palette';
 import sw from '@/lib/utils/customSweetAlert';
-import { useAppDispatch } from '@/store/store';
-import { checkLoggedIn } from '@/store/userSlice';
+import { RootState, useAppDispatch } from '@/store/store';
+import { changeUser, checkLoggedIn } from '@/store/userSlice';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router';
 import Button from '../common/atoms/Button';
 import Input from '../common/atoms/Input';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 interface LoginFormProps {}
 
@@ -24,9 +26,12 @@ const LoginForm = (props: LoginFormProps) => {
   const [inputEmail, setInputEmail] = useState<string>('');
   const [inputPassWord, setInputPassWord] = useState<string>('');
   const [required, setRequired] = useState<InitialRequiredState>(initialRequiredState);
+  const [loaded, setLoaded] = useState<boolean>(false);
   const bothRequiredCheck = Object.values(required).filter(item => !item).length === 2;
 
   const dispatch = useAppDispatch();
+  const userType = useSelector((state: RootState) => state.user.userType);
+
   const navigate = useNavigate();
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,6 +49,7 @@ const LoginForm = (props: LoginFormProps) => {
   );
 
   console.log(required);
+
   const handleEmailChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const currentEmail = e.target.value;
     setInputEmail(currentEmail);
@@ -62,9 +68,10 @@ const LoginForm = (props: LoginFormProps) => {
       if (!passWordRegex.test(currentPassWord)) {
         return setRequired({ ...required, passWord: true });
       }
+      setLoaded(true);
       setRequired({ ...required, passWord: false });
     },
-    [required],
+    [required, loaded],
   );
 
   const handlePassWordChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,7 +87,11 @@ const LoginForm = (props: LoginFormProps) => {
   };
 
   const handleButtonClick = () => {
+    if (!bothRequiredCheck) {
+      return;
+    }
     dispatch(checkLoggedIn(true));
+    dispatch(changeUser(userType));
     sw.toast.success('로그인 되었습니다.');
     setTimeout(() => navigate('/'), 1200);
   };
@@ -108,7 +119,7 @@ const LoginForm = (props: LoginFormProps) => {
       <Button
         type={'submit'}
         size={'large'}
-        backgroundColor={bothRequiredCheck ? `${palette.black[100]}` : `${palette.grey[200]}`}
+        backgroundColor={bothRequiredCheck && loaded ? `${palette.black[100]}` : `${palette.grey[200]}`}
         onClick={handleButtonClick}
       >
         로그인
