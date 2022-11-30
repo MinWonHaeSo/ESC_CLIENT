@@ -1,21 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import useKakaoMapScript from '@/hooks/useKakaoMapScript';
-import MarkerStadiumInfo from './MarkerStadiumInfo';
+import React, { useEffect } from 'react';
+import useKakaoMapScript, { setMarker } from '@/hooks/useKakaoMapScript';
 
 interface MapProps {
-  markerData: any;
+  searchResults: any;
+  onClickMarker: (el: any) => void;
 }
 
-const Map = ({ markerData }: MapProps) => {
-  const kakaoMap = useKakaoMapScript(markerData);
+const Map = ({ searchResults, onClickMarker }: MapProps) => {
+  const kakaoMap = useKakaoMapScript();
+  setMarker({ map: kakaoMap, placeInfo: searchResults, clickHandle: onClickMarker });
 
+  console.log(1);
   return (
     <div>
       <div
         id="myMap"
         style={{
           width: '100vw',
-          height: '100vh',
+          height: 'calc(100vh - 5rem)',
         }}
       ></div>
     </div>
