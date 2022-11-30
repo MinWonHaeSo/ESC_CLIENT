@@ -12,7 +12,7 @@ import UserInfoDetail from './UserInfoDetail';
 interface UserInfoProps {}
 
 const UserInfo = (props: UserInfoProps) => {
-  const [inputDisabled, setInputDisabled] = useState<boolean>(true);
+  const [editDisabled, setEditDisabled] = useState<boolean>(true);
   const [inputValue, setInputValue] = useState<string>('');
   const [doubleCheck, setDoubleCheck] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -22,15 +22,18 @@ const UserInfo = (props: UserInfoProps) => {
       return;
     }
     inputRef.current.focus();
-    setInputDisabled(false);
+    setEditDisabled(false);
   };
 
-  const handleCorrectClick = () => {
+  const handleCompleteClick = () => {
     if (!inputValue) {
       return sw.toast.warn('닉네임을 입력하세요.');
     }
+    if (inputValue.length < 3) {
+      return sw.toast.warn('최소 3자 이상의 닉네임을 입력하세요.');
+    }
     sw.toast.success('수정이 완료되었습니다.');
-    setInputDisabled(true);
+    setEditDisabled(true);
     setDoubleCheck(false);
   };
 
@@ -42,9 +45,9 @@ const UserInfo = (props: UserInfoProps) => {
           프로필 편집
         </Button>
       </TitleWrapper>
-      <InsertImage inputDisabled={inputDisabled} />
+      <InsertImage editDisabled={editDisabled} />
       <UserInfoDetail
-        inputDisabled={inputDisabled}
+        editDisabled={editDisabled}
         inputValue={inputValue}
         setInputValue={setInputValue}
         doubleCheck={doubleCheck}
@@ -52,8 +55,13 @@ const UserInfo = (props: UserInfoProps) => {
         inputRef={inputRef}
       />
       <SWrapper>
-        {inputDisabled ? null : (
-          <Button type={'button'} size={'large'} backgroundColor={`${palette.black[100]}`} onClick={handleCorrectClick}>
+        {editDisabled ? null : (
+          <Button
+            type={'button'}
+            size={'large'}
+            backgroundColor={`${palette.black[100]}`}
+            onClick={handleCompleteClick}
+          >
             수정완료
           </Button>
         )}

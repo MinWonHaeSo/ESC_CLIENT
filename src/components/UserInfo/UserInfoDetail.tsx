@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { useEffect } from 'react';
 
 interface UserInfoDetailProps {
-  inputDisabled: boolean;
+  editDisabled: boolean;
   inputValue: string;
   setInputValue: React.Dispatch<React.SetStateAction<string>>;
   doubleCheck: boolean;
@@ -14,7 +14,7 @@ interface UserInfoDetailProps {
 }
 
 const UserInfoDetail = ({
-  inputDisabled,
+  editDisabled,
   inputValue,
   setInputValue,
   doubleCheck,
@@ -67,17 +67,17 @@ const UserInfoDetail = ({
           value={inputValue}
           ref={inputRef}
           type="text"
-          placeholder="nickname"
-          disabled={inputDisabled}
+          placeholder="닉네임을 입력하세요"
+          disabled={editDisabled}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
         />
-        {inputValue && !inputDisabled ? (
+        {inputValue && !editDisabled ? (
           <DeleteButton onClick={handleDeleteClick}>
             <i className="fa-solid fa-xmark" />
           </DeleteButton>
         ) : null}
-        <DoubleCheckButton onClick={handleDoubleCheckClick} disabled={inputDisabled}>
+        <DoubleCheckButton onClick={handleDoubleCheckClick} disabled={editDisabled}>
           {doubleCheck && inputValue ? (
             <i className="fa-solid fa-circle-check" />
           ) : (
