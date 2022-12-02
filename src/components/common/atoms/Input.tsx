@@ -25,7 +25,6 @@ const Input = ({ type, value, id, placeholder, minLength, onChange, onKeyDown, r
       onChange={onChange}
       onKeyDown={onKeyDown}
       autoCapitalize="false"
-      required={required}
     />
   );
 };
