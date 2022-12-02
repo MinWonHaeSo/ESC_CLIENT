@@ -6,8 +6,9 @@ import styled from '@emotion/styled';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { changeUser, checkLoggedIn } from '@/store/userSlice';
+import { checkLoggedIn } from '@/store/userSlice';
 import sw from '@/lib/utils/customSweetAlert';
+import { changeMemberType } from '@/store/memberCheckSlice';
 
 interface NavbarProps {
   isActive: boolean;
@@ -15,13 +16,13 @@ interface NavbarProps {
 }
 
 const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
-  const [loginType, setLoginType] = useState('user'); //user, manager, undefinedUser
+  const [loginType, setLoginType] = useState<'user' | 'manager'>('user'); //user, manager, undefinedUser
   const loggedIn = useSelector((state: RootState) => state.user.loggedIn);
-  const userType = useSelector((state: RootState) => state.user.userType);
+  const memberType = useSelector((state: RootState) => state.member.memberType);
   const dispatch = useAppDispatch();
   const handleLogOut = () => {
     dispatch(checkLoggedIn(false));
-    dispatch(changeUser('user'));
+    dispatch(changeMemberType('user'));
     onChangeIsActive();
     sw.toast.success('로그아웃 되었습니다.');
   };
@@ -31,8 +32,8 @@ const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
   };
 
   useEffect(() => {
-    setLoginType(userType);
-  }, [userType]);
+    setLoginType(memberType);
+  }, [memberType]);
 
   return (
     <NavbarBlock>
