@@ -22,10 +22,10 @@ const App = () => {
             <Route path="/signup" element={<SignUpPage />} />
             <Route path="/findpassword" element={<FindPassWordPage />} />
             <Route path="*" element={<NotFoundPage />} />
-            <Route element={<PrivateRoute />}>
-              <Route path="/mypage" element={<MyPage />} />
-              <Route path="/manager/stardium/upload" element={<StardiumUploadPage />} />
-            </Route>
+            {/* <Route element={<PrivateRoute />}> */}
+            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/manager/stardium/upload" element={<StardiumUploadPage />} />
+            {/* </Route> */}
           </Route>
         </Routes>
       </BrowserRouter>
