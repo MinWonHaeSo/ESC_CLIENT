@@ -63,20 +63,22 @@ const UserInfoDetail = ({
       </InfoDetail>
       <InfoDetail>
         <InfoDetailTitle>닉네임</InfoDetailTitle>
-        <InfoDetailInput
-          value={inputValue}
-          ref={inputRef}
-          type="text"
-          placeholder="닉네임을 입력하세요"
-          disabled={editDisabled}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
-        />
-        {inputValue && !editDisabled ? (
-          <DeleteButton onClick={handleDeleteClick}>
-            <i className="fa-solid fa-xmark" />
-          </DeleteButton>
-        ) : null}
+        <Swrapper>
+          <InfoDetailInput
+            value={inputValue}
+            ref={inputRef}
+            type="text"
+            placeholder="닉네임을 입력하세요"
+            disabled={editDisabled}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+          />
+          {inputValue && !editDisabled ? (
+            <DeleteButton onClick={handleDeleteClick}>
+              <i className="fa-solid fa-xmark" />
+            </DeleteButton>
+          ) : null}
+        </Swrapper>
         <DoubleCheckButton onClick={handleDoubleCheckClick} disabled={editDisabled}>
           {doubleCheck && inputValue ? (
             <i className="fa-solid fa-circle-check" />
@@ -119,6 +121,17 @@ const InfoDetailTitle = styled.div`
   border: 1px solid ${palette.grey[300]};
   border-radius: 10px;
   background-color: #fff;
+`;
+
+const Swrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  button {
+    position: absolute;
+    right: 20px;
+  }
 `;
 
 const InfoDetailInput = styled.input`
