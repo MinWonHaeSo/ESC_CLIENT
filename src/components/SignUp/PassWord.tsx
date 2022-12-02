@@ -3,10 +3,10 @@ import formRegex from '@/constants/formRegex';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
-import Input from '../common/atoms/Input';
 import Label from '../common/atoms/Label';
 import RequiredMessage from './RequiredMessage';
 import { AllCheckedState } from './SignUpForm';
+import RequiredInput from '../common/atoms/RequiredInput';
 
 interface PassWordProps {
   allChecked: AllCheckedState;
@@ -18,14 +18,15 @@ interface InitialRequiredState {
   passWordConfirm: boolean;
 }
 
+const initialRequiredState: InitialRequiredState = {
+  passWord: false,
+  passWordConfirm: false,
+};
+
 const PassWord = ({ allChecked, setAllChecked }: PassWordProps) => {
-  const InitialRequiredState: InitialRequiredState = {
-    passWord: false,
-    passWordConfirm: false,
-  };
   const [passWord, setPassWord] = useState<string>('');
   const [passWordConfirm, setPassWordConfirm] = useState<string>('');
-  const [required, setRequired] = useState<InitialRequiredState>(InitialRequiredState);
+  const [required, setRequired] = useState<InitialRequiredState>(initialRequiredState);
 
   const checkPassWordValidation = (currentPassWord: string) => {
     const { passWordRegex } = formRegex;
@@ -56,18 +57,6 @@ const PassWord = ({ allChecked, setAllChecked }: PassWordProps) => {
     checkPassWordConfirmValidation(currentPassWordConfirm);
   };
 
-  const handlePassWordKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Backspace') {
-      return setAllChecked({ ...allChecked, passWord: false });
-    }
-  };
-
-  const handleConfirmKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Backspace') {
-      return setAllChecked({ ...allChecked, passWordConfirm: false });
-    }
-  };
-
   return (
     <>
       <PassWordFormBlock>
@@ -75,13 +64,12 @@ const PassWord = ({ allChecked, setAllChecked }: PassWordProps) => {
           비밀번호
         </Label>
         <Desc>영문, 숫자, 특수기호를 포함한 8자 이상을 입력해주세요.</Desc>
-        <Input
+        <RequiredInput
           type="password"
           value={passWord}
           id="password"
           placeholder="비밀번호"
           onChange={handlePassWordChange}
-          onKeyDown={handlePassWordKeyDown}
           required={required.passWord}
         />
         <RequiredMessage required={required.passWord} />
@@ -90,13 +78,12 @@ const PassWord = ({ allChecked, setAllChecked }: PassWordProps) => {
         <Label htmlFor={'passwordConfirm'} required={required.passWordConfirm}>
           비밀번호 확인
         </Label>
-        <Input
+        <RequiredInput
           type="password"
           value={passWordConfirm}
           id="passwordConfirm"
           placeholder="비밀번호 확인"
           onChange={handlePassWordConfirmChange}
-          onKeyDown={handleConfirmKeyDown}
           required={required.passWordConfirm}
         />
         <RequiredMessage required={required.passWordConfirm} />

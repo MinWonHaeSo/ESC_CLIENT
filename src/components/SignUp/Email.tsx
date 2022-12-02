@@ -4,10 +4,10 @@ import palette from '@/lib/styles/palette';
 import sw from '@/lib/utils/customSweetAlert';
 import styled from '@emotion/styled';
 import Button from '../common/atoms/Button';
-import Input from '../common/atoms/Input';
 import Label from '../common/atoms/Label';
 import RequiredMessage from './RequiredMessage';
 import { AllCheckedState } from './SignUpForm';
+import RequiredInput from '../common/atoms/RequiredInput';
 
 interface EmailFormProps {
   allChecked: AllCheckedState;
@@ -32,6 +32,7 @@ const Email = ({ allChecked, setAllChecked }: EmailFormProps) => {
     const currentEmail = e.target.value;
     setInputEmail(currentEmail);
     checkEmailValidation(currentEmail);
+    setAllChecked({ ...allChecked, email: true });
   };
 
   const handleEmailDoubleCheck = () => {
@@ -39,7 +40,7 @@ const Email = ({ allChecked, setAllChecked }: EmailFormProps) => {
       return sw.toast.warn('이메일을 입력하세요.');
     }
     if (overlapEmail) {
-      return sw.toast.warn('중복된 이메일입니다. 다시 입력하세요.');
+      return sw.toast.warn('중복된 이메일입니다.<br>다시 입력하세요.');
     }
     sw.toast.success('사용 가능한 이메일입니다.');
     setTimeout(() => {
@@ -47,10 +48,9 @@ const Email = ({ allChecked, setAllChecked }: EmailFormProps) => {
     }, 1000);
   };
 
-  const handleEmailKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Backspace') {
-      return setAllChecked({ ...allChecked, email: false });
-    }
+  const handleEmailValidationButtonClick = () => {
+    // 이메일 인증코드 발송
+    sw.toast.success('인증코드가 발송되었습니다.<br>이메일을 확인하세요.');
   };
 
   return (
@@ -69,16 +69,25 @@ const Email = ({ allChecked, setAllChecked }: EmailFormProps) => {
           중복검사
         </DoubleCheckButton>
       </EmailCheck>
-      <Input
+      <RequiredInput
         value={inputEmail}
         type="email"
         id="email"
         placeholder="example@email.com"
         onChange={handleEmailChange}
-        onKeyDown={handleEmailKeyDown}
         required={required}
       />
       <RequiredMessage required={required} />
+      <SWrapper>
+        <Button
+          type={'button'}
+          size={'large'}
+          backgroundColor={`${palette.black[100]}`}
+          onClick={handleEmailValidationButtonClick}
+        >
+          인증하기
+        </Button>
+      </SWrapper>
     </EmailCheckFormBlock>
   );
 };
@@ -101,4 +110,8 @@ const EmailCheck = styled.div`
 
 const DoubleCheckButton = styled(Button)`
   border: 1px solid black;
+`;
+
+const SWrapper = styled.div`
+  margin-top: 8px;
 `;
