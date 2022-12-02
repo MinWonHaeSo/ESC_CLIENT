@@ -1,7 +1,6 @@
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
-import React from 'react';
 
 export interface InputProps {
   type: string;
@@ -12,9 +11,10 @@ export interface InputProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   onFocus?: () => void;
+  required?: boolean;
 }
 
-const Input = ({ type, value, id, placeholder, minLength, onChange, onKeyDown }: InputProps) => {
+const Input = ({ type, value, id, placeholder, minLength, onChange, onKeyDown, required }: InputProps) => {
   return (
     <SInput
       type={type}

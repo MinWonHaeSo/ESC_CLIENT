@@ -16,7 +16,6 @@ const Toast = Swal.mixin({
 const confirm = (callback: () => void) => {
   Swal.fire({
     html: `<i class="fa-regular fa-trash-can" style=" margin-right: 12px; font-size: 27px; color: red;"></i><strong>정말 삭제하시겠습니까?</strong>`,
-    // text: '정말 삭제하시겠습니까?',
     showCancelButton: true,
     confirmButtonColor: `${palette.primary.blue}`,
     cancelButtonColor: `${palette.primary.red}`,

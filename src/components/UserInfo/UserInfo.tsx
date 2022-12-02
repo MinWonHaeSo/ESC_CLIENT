@@ -15,7 +15,7 @@ const UserInfo = (props: UserInfoProps) => {
   const [editDisabled, setEditDisabled] = useState<boolean>(true);
   const [inputValue, setInputValue] = useState<string>('');
   const [doubleCheck, setDoubleCheck] = useState<boolean>(false);
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleEditClick = () => {
     if (!inputRef.current) {
