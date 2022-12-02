@@ -1,11 +1,13 @@
-import { RootState, useAppDispatch } from '@/store/store';
+import { RootState } from '@/store/store';
 import { useSelector } from 'react-redux';
 import EnterNewPassWord from './EnterNewPassWord';
 import EnterValidateCode from './EnterValidateCode';
 import FindPassWordProcess from './FindPassWordProcess';
 import ValidateEmail from './ValidateEmail';
 
-const FindPassWord = () => {
+interface FindPassWordProps {}
+
+const FindPassWord = (props: FindPassWordProps) => {
   const orderIndex = useSelector((state: RootState) => state.findPassWord.index);
   const orderList = [
     { index: 1, component: <ValidateEmail /> },
