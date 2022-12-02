@@ -8,6 +8,7 @@ import LoginForm from './LoginForm';
 import SocialLogin from './SocialLogin';
 import TabMenu from '../common/TabMenu';
 import Responsive from '../common/Responsive';
+import PATH from '@/constants/path';
 
 interface LoginProps {}
 
@@ -20,10 +21,10 @@ const Login = (props: LoginProps) => {
       {userType === 'user' && <SocialLogin />}
       <RegisterBlock>
         <Li>
-          <Link to="/signup">회원가입</Link>
+          <Link to={PATH.REGISTER}>회원가입</Link>
         </Li>
         <Li>
-          <Link to="/">비밀번호 찾기</Link>
+          <Link to={PATH.FIND_PASSWORD}>비밀번호 찾기</Link>
         </Li>
       </RegisterBlock>
     </LoginBlock>

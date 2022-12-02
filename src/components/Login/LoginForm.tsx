@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router';
 import Button from '../common/atoms/Button';
 import Input from '../common/atoms/Input';
 import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import RequiredInput from '../common/atoms/RequiredInput';
 
 interface LoginFormProps {}
 
@@ -93,12 +93,13 @@ const LoginForm = (props: LoginFormProps) => {
     dispatch(checkLoggedIn(true));
     dispatch(changeUser(userType));
     sw.toast.success('로그인 되었습니다.');
-    setTimeout(() => navigate('/'), 1200);
+    // setTimeout(() => navigate('/'), 1200);
+    navigate('/');
   };
 
   return (
     <FormBlock onSubmit={handleSubmit}>
-      <Input
+      <RequiredInput
         type={'text'}
         value={inputEmail}
         id={'email'}
@@ -107,7 +108,7 @@ const LoginForm = (props: LoginFormProps) => {
         onKeyDown={handleEmailKeyDown}
         required={required.email}
       />
-      <Input
+      <RequiredInput
         type={'password'}
         value={inputPassWord}
         id={'password'}

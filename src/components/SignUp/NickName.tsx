@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
-import Input from '../common/atoms/Input';
 import Label from '../common/atoms/Label';
 import RequiredMessage from './RequiredMessage';
 import { AllCheckedState } from './SignUpForm';
+import RequiredInput from '../common/atoms/RequiredInput';
 
 interface NickNameProps {
   allChecked: AllCheckedState;
@@ -29,13 +29,8 @@ const NickName = ({ allChecked, setAllChecked }: NickNameProps) => {
     const currentNickName = e.target.value;
     setNickName(currentNickName);
     checkNickNameValidation(currentNickName);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Backspace') {
-      if (nickName.length < 3) {
-        return setAllChecked({ ...allChecked, nickName: false });
-      }
+    if (nickName.length < 3) {
+      setAllChecked({ ...allChecked, nickName: false });
     }
   };
 
@@ -45,13 +40,12 @@ const NickName = ({ allChecked, setAllChecked }: NickNameProps) => {
         닉네임
       </Label>
       <Desc>다른 유저와 겹치지 않도록 입력해주세요 (2 ~ 15자)</Desc>
-      <Input
+      <RequiredInput
         type="text"
         value={nickName}
         id="nickname"
         placeholder="닉네임 입력(2~15자)"
         onChange={handleNickNameChange}
-        onKeyDown={handleKeyDown}
         required={required}
       />
       <RequiredMessage required={required} />

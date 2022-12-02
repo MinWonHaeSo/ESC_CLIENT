@@ -3,11 +3,12 @@ import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
 
 interface RequiredMessageProps {
+  children?: React.ReactNode;
   required: boolean;
 }
 
-const RequiredMessage = ({ required }: RequiredMessageProps) => {
-  return <Message required={required}> 필수 입력 항목입니다. </Message>;
+const RequiredMessage = ({ children = '필수 입력 항목입니다.', required }: RequiredMessageProps) => {
+  return <Message required={required}> {children} </Message>;
 };
 
 export default RequiredMessage;

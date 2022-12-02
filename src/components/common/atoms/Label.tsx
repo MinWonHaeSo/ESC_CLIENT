@@ -1,7 +1,6 @@
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
-import { Children } from 'react';
 
 interface LabelProps {
   children: React.ReactNode;
