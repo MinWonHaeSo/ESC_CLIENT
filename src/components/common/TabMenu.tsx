@@ -9,16 +9,18 @@ interface TabMenuProps {}
 
 const TabMenu = (props: TabMenuProps) => {
   const userType = useSelector((state: RootState) => state.user.userType);
-  console.log(userType);
   const dispatch = useAppDispatch();
+
   return (
     <TabMenuBlock>
       {tabMenus.map(tab => (
         <Tab
-          key={tab.title}
-          name={tab.title}
-          focus={userType === tab.title}
-          onClick={() => dispatch(changeUser(tab.title))}
+          key={tab.type}
+          type={tab.type}
+          focus={userType === tab.type}
+          onClick={() => {
+            dispatch(changeUser(tab.type));
+          }}
         >
           {tab.name}
         </Tab>
@@ -30,7 +32,7 @@ const TabMenu = (props: TabMenuProps) => {
 export default TabMenu;
 
 type tabStyleProps = {
-  name: string;
+  type: 'user' | 'manager';
   focus: boolean;
 };
 
@@ -50,7 +52,7 @@ const Tab = styled.li<tabStyleProps>`
   border-radius: 10px 0 0 10px;
   color: ${palette.black[100]};
 
-  ${({ name }) => name === 'manager' && `border-radius: 0 10px 10px 0;`};
+  ${({ type }) => type === 'manager' && `border-radius: 0 10px 10px 0;`};
 
   ${({ focus }) =>
     focus &&
