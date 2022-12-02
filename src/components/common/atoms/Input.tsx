@@ -3,27 +3,28 @@ import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
 import React from 'react';
 
-interface InputProps {
+export interface InputProps {
   type: string;
   value?: string;
   id?: string;
   placeholder: string;
+  minLength?: number;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-  required?: boolean;
+  onFocus?: () => void;
 }
 
-const Input = ({ type, placeholder, id, value, onChange, onKeyDown, required }: InputProps) => {
+const Input = ({ type, value, id, placeholder, minLength, onChange, onKeyDown }: InputProps) => {
   return (
     <SInput
       type={type}
       value={value}
       id={id}
       placeholder={placeholder}
+      minLength={minLength}
       onChange={onChange}
       onKeyDown={onKeyDown}
       autoCapitalize="false"
-      required={required}
     />
   );
 };
@@ -31,6 +32,7 @@ const Input = ({ type, placeholder, id, value, onChange, onKeyDown, required }: 
 export default Input;
 
 const SInput = styled.input`
+  display: block;
   width: 280px;
   padding: 12px 16px;
   border: ${({ required }) => (required ? `1px solid ${palette.primary.red}` : `1px solid ${palette.grey[300]}`)};
