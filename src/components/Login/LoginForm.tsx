@@ -80,7 +80,7 @@ const LoginForm = (props: LoginFormProps) => {
   };
 
   const handleButtonClick = () => {
-    if (!bothRequiredCheck) {
+    if (bothRequiredCheck) {
       return;
     }
     dispatch(checkLoggedIn(true));
