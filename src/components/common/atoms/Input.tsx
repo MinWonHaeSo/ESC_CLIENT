@@ -31,6 +31,7 @@ const Input = ({ type, placeholder, id, value, onChange, onKeyDown, required }: 
 export default Input;
 
 const SInput = styled.input`
+  display: block;
   width: 280px;
   padding: 12px 16px;
   border: ${({ required }) => (required ? `1px solid ${palette.primary.red}` : `1px solid ${palette.grey[300]}`)};
