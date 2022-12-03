@@ -2,11 +2,11 @@ import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
 
-export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
+type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
 const Input = ({ ...props }: InputProps) => {
   return <SInput {...props} />;
-};
+
 
 export default Input;
 
