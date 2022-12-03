@@ -47,7 +47,7 @@ const StardiumEditTag = (props: Props) => {
         // onChange={e => setTagText(e.target.value)}
         // onKeyUp={handleEnterTag}
       />
-      <button className="tag-add-btn" onClick={handleAddTags}>
+      <button type="button" className="tag-add-btn" onClick={handleAddTags}>
         태그 추가
       </button>
       <ul>
