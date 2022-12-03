@@ -76,7 +76,7 @@ const StardiumEidtImage = (props: StardiumEidtImageProps) => {
   return (
     <ImagesUploadContainer>
       <div>
-        <button className="input-file-btn" onClick={handleClickFileButton}>
+        <button type="button" className="input-file-btn" onClick={handleClickFileButton}>
           이미지는 최대 5장 업로드 가능합니다. <br />( + )
         </button>
         <input

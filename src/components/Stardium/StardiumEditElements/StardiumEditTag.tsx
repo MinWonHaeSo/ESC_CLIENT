@@ -27,6 +27,7 @@ const StardiumEditTag = (props: Props) => {
   const handleEnterTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleAddTags();
+      e.preventDefault();
     }
   };
 
@@ -37,15 +38,15 @@ const StardiumEditTag = (props: Props) => {
   };
   return (
     <StardiumEditTagContainer>
-      <span>최대 5개 등록 가능합니다.</span>
       <label htmlFor="stardiumTags">체육관 종목 태그</label>
+      <span>최대 5개 등록 가능합니다.</span>
       <Input
         type="text"
         id="stardiumTags"
         placeholder="체육관 종목 태그"
-        // value={tagText}
-        // onChange={e => setTagText(e.target.value)}
-        // onKeyUp={handleEnterTag}
+        value={tagText}
+        onChange={e => setTagText(e.target.value)}
+        onKeyDown={handleEnterTag}
       />
       <button type="button" className="tag-add-btn" onClick={handleAddTags}>
         태그 추가
@@ -67,6 +68,7 @@ const StardiumEditTagContainer = styled.div`
   & > ul {
     display: flex;
     gap: 0.2rem;
+    margin-top: 1rem;
 
     li {
       padding: 0.2rem 0.5rem;
