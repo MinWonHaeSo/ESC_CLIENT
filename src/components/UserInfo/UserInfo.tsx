@@ -19,6 +19,7 @@ const UserInfo = (props: UserInfoProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
+
   const handleEditClick = () => {
     if (!inputRef.current) {
       return;
