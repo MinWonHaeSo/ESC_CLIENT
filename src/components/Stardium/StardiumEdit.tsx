@@ -10,6 +10,7 @@ import StardiumEditAddress from './StardiumEditElements/StardiumEditAddress';
 import { typo } from '@/lib/styles/typo';
 import Label from '../common/atoms/Label';
 import StardiumTime from './StardiumEditElements/StardiumTime';
+import StardiumRentalItem from './StardiumEditElements/StardiumRentalItem';
 
 interface StardiumEditProps {}
 
@@ -28,6 +29,7 @@ const StardiumEdit = (props: StardiumEditProps) => {
         <StardiumEditInput type="text" id="stardiumPrice" title="체육관 가격" placeholder="체육관 가격" />
         <StardiumEditTag />
         <StardiumTime />
+        <StardiumRentalItem />
         <button type="submit">등록하기</button>
       </StardiumEditForm>
     </StardiumEditBlock>
