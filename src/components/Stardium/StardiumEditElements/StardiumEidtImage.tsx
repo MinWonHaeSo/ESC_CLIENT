@@ -1,6 +1,33 @@
 import React, { useRef, useState } from 'react';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
+import axios from 'axios';
+
+// const uploaders = files.map(file => {
+//   // Initial FormData
+//   const formData = new FormData();
+//   formData.append('file', file);
+//   formData.append('tags', `codeinfuse, medium, gist`);
+//   formData.append('upload_preset', 'pvhilzh7'); // Replace the preset name with your own
+//   formData.append('api_key', '1234567'); // Replace API key with your own Cloudinary key
+//   formData.append('timestamp', (Date.now() / 1000) | 0);
+
+//   // Make an AJAX upload request using Axios (replace Cloudinary URL below with your own)
+//   return axios
+//     .post('https://api.cloudinary.com/v1_1/codeinfuse/image/upload', formData, {
+//       headers: { 'X-Requested-With': 'XMLHttpRequest' },
+//     })
+//     .then(response => {
+//       const data = response.data;
+//       const fileURL = data.secure_url; // You should store this URL for future references in your app
+//       console.log(data);
+//     });
+// });
+
+// // Once all the files are uploaded
+// axios.all(uploaders).then(() => {
+//   // ... perform after upload is successful operation
+// });
 
 type StardiumEidtImageProps = {};
 
@@ -8,9 +35,29 @@ const StardiumEidtImage = (props: StardiumEidtImageProps) => {
   const [images, setImages] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
+  const fetchUploadImages = async (files: File[]) => {
+    let formData = new FormData();
+
+    formData.append('api_key', '711469973372778');
+    formData.append('upload_preset', 'aji4mz7p');
+    formData.append('timestamp', String((Date.now() / 1000) | 0));
+    formData.append('file', files[0]);
+
+    const config = {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    };
+
+    await axios.post('https://api.cloudinary.com/v1_1/dsbjcdw4r/image/upload', formData, config).then(res => {
+      console.log(res.data);
+      console.log(res.data.url);
+    });
+  };
+
   const handleChangeImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length) {
-      setImages(Array.from(e.target.files));
+      const files = Array.from(e.target.files);
+      setImages(files);
+      fetchUploadImages(files);
     }
 
     // Delete 후 file Value 변동 사항 없어 이전 등록한 사진 값과 동일한 사진 업로드 하면 onChange Event 발생 안됨.
