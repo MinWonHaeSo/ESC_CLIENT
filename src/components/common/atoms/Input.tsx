@@ -2,32 +2,22 @@ import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
 
-export interface InputProps {
-  type: string;
-  value?: string;
-  id?: string;
-  placeholder: string;
-  minLength?: number;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-  onFocus?: () => void;
-  required?: boolean;
-}
+// export interface InputProps {
+//   type: string;
+//   value?: string;
+//   id?: string;
+//   placeholder: string;
+//   minLength?: number;
+//   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+//   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+//   onFocus?: () => void;
+//   required?: boolean;
+// }
 
-const Input = ({ type, value, id, placeholder, minLength, onChange, onKeyDown, required }: InputProps) => {
-  return (
-    <SInput
-      type={type}
-      value={value}
-      id={id}
-      placeholder={placeholder}
-      minLength={minLength}
-      onChange={onChange}
-      onKeyDown={onKeyDown}
-      autoCapitalize="false"
-      required={required}
-    />
-  );
+export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
+
+const Input = ({ ...props }: InputProps) => {
+  return <SInput {...props} />;
 };
 
 export default Input;
