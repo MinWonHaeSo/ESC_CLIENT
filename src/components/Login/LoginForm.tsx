@@ -7,9 +7,9 @@ import { RootState, useAppDispatch } from '@/store/store';
 import { changeUser, checkLoggedIn } from '@/store/userSlice';
 import { changeMemberType } from '@/store/memberCheckSlice';
 import { useNavigate } from 'react-router';
+import Input from '../common/atoms/Input';
 import Button from '../common/atoms/Button';
 import { useSelector } from 'react-redux';
-import RequiredInput from '../common/atoms/RequiredInput';
 
 interface LoginFormProps {}
 
@@ -80,7 +80,7 @@ const LoginForm = (props: LoginFormProps) => {
   };
 
   const handleButtonClick = () => {
-    if (!bothRequiredCheck) {
+    if (bothRequiredCheck) {
       return;
     }
     dispatch(checkLoggedIn(true));
@@ -92,7 +92,7 @@ const LoginForm = (props: LoginFormProps) => {
 
   return (
     <FormBlock onSubmit={handleSubmit}>
-      <RequiredInput
+      <Input
         type={'text'}
         value={inputEmail}
         id={'email'}
@@ -101,7 +101,7 @@ const LoginForm = (props: LoginFormProps) => {
         onKeyDown={handleEmailKeyDown}
         required={required.email}
       />
-      <RequiredInput
+      <Input
         type={'password'}
         value={inputPassWord}
         id={'password'}

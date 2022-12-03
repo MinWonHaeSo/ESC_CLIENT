@@ -9,7 +9,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import Button from '../common/atoms/Button';
-import RequiredInput from '../common/atoms/RequiredInput';
+import Input from '../common/atoms/Input';
 import Title from '../common/atoms/Title';
 import Responsive from '../common/Responsive';
 import RequiredMessage from '../SignUp/RequiredMessage';
@@ -83,7 +83,7 @@ const EnterNewPassWord = (props: EnterNewPassWordProps) => {
       </TitleWrapper>
       <InputWrapper>
         <Label>새로운 비밀번호</Label>
-        <RequiredInput
+        <Input
           type={'password'}
           value={passWord}
           placeholder={'새로운 비밀번호를 입력하세요'}
@@ -95,7 +95,7 @@ const EnterNewPassWord = (props: EnterNewPassWordProps) => {
       </InputWrapper>
       <InputWrapper>
         <Label>새로운 비밀번호 확인</Label>
-        <RequiredInput
+        <Input
           type={'password'}
           value={passWordConfirm}
           placeholder={'새로운 비밀번호 확인'}
