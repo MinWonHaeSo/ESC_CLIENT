@@ -8,7 +8,7 @@ import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Button from '../common/atoms/Button';
-import Input from '../common/atoms/Input';
+import RequiredInput from '../common/atoms/RequiredInput';
 import Title from '../common/atoms/Title';
 import Responsive from '../common/Responsive';
 import RequiredMessage from '../SignUp/RequiredMessage';
@@ -69,7 +69,7 @@ const ValidateEmail = (props: ValidateEmailProps) => {
             확 인
           </Button>
         </LabelWrapper>
-        <Input
+        <RequiredInput
           type={'email'}
           id={'email'}
           value={inputEmail}

@@ -75,16 +75,17 @@ const NavbarMenu = styled.ul<IsActiveProps>`
   overflow-x: hidden;
   background-color: #fff;
   font-size: 15px;
-  z-index: 2;
-  transition: all 0.2s ease-in;
+  z-index: 3;
+  transition: 0.2s ease-in;
 
   & > li {
     flex: 1 1 auto;
     margin: 1rem 1rem;
+    padding: 0.75rem 1rem;
     border: 1px solid #fff;
     border-radius: 10px;
     color: ${palette.grey[400]};
-    transition: all 0.01s ease-out;
+    transition: 0.1s;
   }
 
   li:hover,
@@ -92,12 +93,6 @@ const NavbarMenu = styled.ul<IsActiveProps>`
     color: ${palette.black[200]};
     background-color: ${palette.grey[100]};
     border: 1px solid ${palette.grey[200]};
-  }
-
-  li > a {
-    display: block;
-    padding: 0.75rem 1rem;
-    width: 100%;
   }
 
   ${({ isActive }) =>

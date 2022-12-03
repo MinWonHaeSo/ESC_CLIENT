@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Button from '../common/atoms/Button';
-import Input from '../common/atoms/Input';
+import RequiredInput from '../common/atoms/RequiredInput';
 import Title from '../common/atoms/Title';
 import Responsive from '../common/Responsive';
 import RequiredMessage from '../SignUp/RequiredMessage';
@@ -63,7 +63,7 @@ const EnterValidateCode = (props: EnterValidateCodeProps) => {
       </TitleWrapper>
       <InputWrapper>
         <Label>인증코드</Label>
-        <Input
+        <RequiredInput
           type={'number'}
           value={inputValue}
           placeholder={'인증 코드를 입력하세요.'}
