@@ -32,8 +32,6 @@ const SignUpForm = (props: SignUpFormProps) => {
   const navigate = useNavigate();
   const totalAllChecked = Object.values(allChecked).filter(item => item === true).length;
 
-  console.log(allChecked);
-
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
   };
