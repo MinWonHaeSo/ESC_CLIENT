@@ -6,7 +6,7 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
 const Input = ({ ...props }: InputProps) => {
   return <SInput {...props} />;
-
+};
 
 export default Input;
 
