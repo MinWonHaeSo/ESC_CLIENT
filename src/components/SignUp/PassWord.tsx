@@ -3,10 +3,10 @@ import formRegex from '@/constants/formRegex';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
+import Input from '../common/atoms/Input';
 import Label from '../common/atoms/Label';
 import RequiredMessage from './RequiredMessage';
 import { AllCheckedState } from './SignUpForm';
-import RequiredInput from '../common/atoms/RequiredInput';
 
 interface PassWordProps {
   allChecked: AllCheckedState;
@@ -64,7 +64,7 @@ const PassWord = ({ allChecked, setAllChecked }: PassWordProps) => {
           비밀번호
         </Label>
         <Desc>영문, 숫자, 특수기호를 포함한 8자 이상을 입력해주세요.</Desc>
-        <RequiredInput
+        <Input
           type="password"
           value={passWord}
           id="password"
@@ -78,7 +78,7 @@ const PassWord = ({ allChecked, setAllChecked }: PassWordProps) => {
         <Label htmlFor={'passwordConfirm'} required={required.passWordConfirm}>
           비밀번호 확인
         </Label>
-        <RequiredInput
+        <Input
           type="password"
           value={passWordConfirm}
           id="passwordConfirm"

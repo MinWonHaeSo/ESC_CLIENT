@@ -3,11 +3,11 @@ import formRegex from '@/constants/formRegex';
 import palette from '@/lib/styles/palette';
 import sw from '@/lib/utils/customSweetAlert';
 import styled from '@emotion/styled';
+import Input from '../common/atoms/Input';
 import Button from '../common/atoms/Button';
 import Label from '../common/atoms/Label';
 import RequiredMessage from './RequiredMessage';
 import { AllCheckedState } from './SignUpForm';
-import RequiredInput from '../common/atoms/RequiredInput';
 
 interface EmailFormProps {
   allChecked: AllCheckedState;
@@ -69,7 +69,7 @@ const Email = ({ allChecked, setAllChecked }: EmailFormProps) => {
           중복검사
         </DoubleCheckButton>
       </EmailCheck>
-      <RequiredInput
+      <Input
         value={inputEmail}
         type="email"
         id="email"
