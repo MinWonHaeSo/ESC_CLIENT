@@ -3,7 +3,6 @@ import { typo } from '@/lib/styles/typo';
 import sw from '@/lib/utils/customSweetAlert';
 import styled from '@emotion/styled';
 import { useState, useRef } from 'react';
-import { useNavigate } from 'react-router';
 import Button from '../common/atoms/Button';
 import Title from '../common/atoms/Title';
 import InsertImage from '../common/InsertImage';
@@ -17,8 +16,6 @@ const UserInfo = (props: UserInfoProps) => {
   const [inputValue, setInputValue] = useState<string>('');
   const [doubleCheck, setDoubleCheck] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const navigate = useNavigate();
-
 
   const handleEditClick = () => {
     if (!inputRef.current) {
@@ -40,11 +37,6 @@ const UserInfo = (props: UserInfoProps) => {
     setDoubleCheck(false);
   };
 
-  const handleProfileDeleteClick = () => {
-    // [] 유저 데이터 서버에 Delete request 추가하기
-    setTimeout(() => navigate('/signout'), 500);
-  };
-
   return (
     <UserInfoBlock>
       <TitleWrapper>
@@ -62,8 +54,8 @@ const UserInfo = (props: UserInfoProps) => {
         setDoubleCheck={setDoubleCheck}
         inputRef={inputRef}
       />
-      {editDisabled ? null : (
-        <SWrapper>
+      <SWrapper>
+        {editDisabled ? null : (
           <Button
             type={'button'}
             size={'large'}
@@ -72,9 +64,8 @@ const UserInfo = (props: UserInfoProps) => {
           >
             수정완료
           </Button>
-          <DeleteProfile onClick={handleProfileDeleteClick}>회원탈퇴</DeleteProfile>
-        </SWrapper>
-      )}
+        )}
+      </SWrapper>
     </UserInfoBlock>
   );
 };
@@ -95,24 +86,8 @@ const TitleWrapper = styled.div`
 
 const SWrapper = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 3rem;
   width: 100%;
-`;
-
-const DeleteProfile = styled.div`
-  margin: 2rem 0;
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
-  width: 280px;
-  border-top: 1px solid ${palette.grey[200]};
-  border-bottom: 1px solid ${palette.grey[200]};
-  text-align: center;
-
-  &:hover {
-    font-weight: 600;
-    background-color: ${palette.grey[100]};
-  }
 `;
