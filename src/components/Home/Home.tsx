@@ -9,13 +9,12 @@ import { useDispatch } from 'react-redux';
 import { clearMarkerInfo, clickMarker } from '@/store/stardiumSlice';
 
 const Home = () => {
-  const { searchResults, markerInfo } = useSelector((state: RootState) => state.staridum);
+  const { searchResults, markerInfo } = useSelector((state: RootState) => state.stardium);
   const dispatch = useDispatch();
 
   const handleClickMarker = useMemo(() => (el: any) => {
-      dispatch(clickMarker(el));
-    },[dispatch],
-  );
+    dispatch(clickMarker(el));
+  }, [dispatch]);
 
   useEffect(() => {
     return () => {
