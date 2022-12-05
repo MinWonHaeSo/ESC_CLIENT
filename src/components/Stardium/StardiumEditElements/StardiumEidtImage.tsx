@@ -2,61 +2,33 @@ import React, { useRef, useState } from 'react';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
 import axios from 'axios';
+import { imagesType } from '@/store/stardiumWriteSlice';
+import { fileUpload } from '@/api/fileUpload';
 
-// const uploaders = files.map(file => {
-//   // Initial FormData
-//   const formData = new FormData();
-//   formData.append('file', file);
-//   formData.append('tags', `codeinfuse, medium, gist`);
-//   formData.append('upload_preset', 'pvhilzh7'); // Replace the preset name with your own
-//   formData.append('api_key', '1234567'); // Replace API key with your own Cloudinary key
-//   formData.append('timestamp', (Date.now() / 1000) | 0);
 
-//   // Make an AJAX upload request using Axios (replace Cloudinary URL below with your own)
-//   return axios
-//     .post('https://api.cloudinary.com/v1_1/codeinfuse/image/upload', formData, {
-//       headers: { 'X-Requested-With': 'XMLHttpRequest' },
-//     })
-//     .then(response => {
-//       const data = response.data;
-//       const fileURL = data.secure_url; // You should store this URL for future references in your app
-//       console.log(data);
-//     });
-// });
 
-// // Once all the files are uploaded
-// axios.all(uploaders).then(() => {
-//   // ... perform after upload is successful operation
-// });
+type StardiumEidtImageProps = {
+  images: imagesType[];
+};
 
-type StardiumEidtImageProps = {};
-
-const StardiumEidtImage = (props: StardiumEidtImageProps) => {
-  const [images, setImages] = useState<File[]>([]);
+const StardiumEidtImage = ({ images }: StardiumEidtImageProps) => {
+  const [previews, setPreviews] = useState<imagesType[]>(images);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const fetchUploadImages = async (files: File[]) => {
-    let formData = new FormData();
-
-    formData.append('api_key', '711469973372778');
-    formData.append('upload_preset', 'aji4mz7p');
-    formData.append('timestamp', String((Date.now() / 1000) | 0));
-    formData.append('file', files[0]);
-
-    const config = {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    };
-
-    await axios.post('https://api.cloudinary.com/v1_1/dsbjcdw4r/image/upload', formData, config).then(res => {
-      console.log(res.data);
-      console.log(res.data.url);
-    });
+    // fileUpload(files);
   };
 
   const handleChangeImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length) {
       const files = Array.from(e.target.files);
-      setImages(files);
+      const filesPath = files.map(file => URL.createObjectURL(file));
+
+      const fileReducer = filesPath.reduce((obj, cur, idx) => {
+        return [...obj, ...[{ id: idx, url: cur }]];
+      }, [] as imagesType[]);
+
+      setPreviews(fileReducer);
       fetchUploadImages(files);
     }
 
@@ -67,7 +39,8 @@ const StardiumEidtImage = (props: StardiumEidtImageProps) => {
   };
 
   const handleDeleteImages = (index: number) => {
-    setImages([...images.slice(0, index), ...images.slice(index + 1)]);
+    const filterArray = previews.filter((preview, idx) => preview.id !== index);
+    setPreviews(prev => filterArray);
   };
 
   const handleClickFileButton = () => {
@@ -91,10 +64,10 @@ const StardiumEidtImage = (props: StardiumEidtImageProps) => {
       <ImagesPreviewContainer>
         <span className="preview-count">{images.length} / 5</span>
         <ul>
-          {images.map((image, idx) => (
-            <li key={`${image.name}_${idx}`}>
-              <img src={URL.createObjectURL(image)} width="200px" height="100px" alt="미리보기" />
-              <button className="delete-preview-btn" onClick={() => handleDeleteImages(idx)}>
+          {previews.map(preview => (
+            <li key={`${preview.id}`}>
+              <img src={preview.url} width="200px" height="100px" alt="미리보기" />
+              <button className="delete-preview-btn" onClick={() => handleDeleteImages(preview.id)}>
                 삭제
               </button>
             </li>
