@@ -29,13 +29,8 @@ const NickName = ({ allChecked, setAllChecked }: NickNameProps) => {
     const currentNickName = e.target.value;
     setNickName(currentNickName);
     checkNickNameValidation(currentNickName);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Backspace') {
-      if (nickName.length < 3) {
-        return setAllChecked({ ...allChecked, nickName: false });
-      }
+    if (nickName.length < 3) {
+      setAllChecked({ ...allChecked, nickName: false });
     }
   };
 
@@ -51,7 +46,6 @@ const NickName = ({ allChecked, setAllChecked }: NickNameProps) => {
         id="nickname"
         placeholder="닉네임 입력(2~15자)"
         onChange={handleNickNameChange}
-        onKeyDown={handleKeyDown}
         required={required}
       />
       <RequiredMessage required={required} />

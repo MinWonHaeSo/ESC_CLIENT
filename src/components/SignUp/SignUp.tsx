@@ -11,7 +11,7 @@ interface SignUpProps {}
 const SignUp = (props: SignUpProps) => {
   return (
     <SignUpBlock>
-      <Title fontSize={`${typo.large}`} marginLeft={'20px'} marginTop={'20px'}>
+      <Title fontSize={`${typo.large}`} marginLeft={'32px'} marginTop={'20px'}>
         회원가입
       </Title>
       <TabMenu />

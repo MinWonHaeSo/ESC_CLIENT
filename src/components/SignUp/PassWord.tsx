@@ -18,14 +18,15 @@ interface InitialRequiredState {
   passWordConfirm: boolean;
 }
 
+const initialRequiredState: InitialRequiredState = {
+  passWord: false,
+  passWordConfirm: false,
+};
+
 const PassWord = ({ allChecked, setAllChecked }: PassWordProps) => {
-  const InitialRequiredState: InitialRequiredState = {
-    passWord: false,
-    passWordConfirm: false,
-  };
   const [passWord, setPassWord] = useState<string>('');
   const [passWordConfirm, setPassWordConfirm] = useState<string>('');
-  const [required, setRequired] = useState<InitialRequiredState>(InitialRequiredState);
+  const [required, setRequired] = useState<InitialRequiredState>(initialRequiredState);
 
   const checkPassWordValidation = (currentPassWord: string) => {
     const { passWordRegex } = formRegex;
@@ -56,18 +57,6 @@ const PassWord = ({ allChecked, setAllChecked }: PassWordProps) => {
     checkPassWordConfirmValidation(currentPassWordConfirm);
   };
 
-  const handlePassWordKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Backspace') {
-      return setAllChecked({ ...allChecked, passWord: false });
-    }
-  };
-
-  const handleConfirmKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Backspace') {
-      return setAllChecked({ ...allChecked, passWordConfirm: false });
-    }
-  };
-
   return (
     <>
       <PassWordFormBlock>
@@ -81,7 +70,6 @@ const PassWord = ({ allChecked, setAllChecked }: PassWordProps) => {
           id="password"
           placeholder="비밀번호"
           onChange={handlePassWordChange}
-          onKeyDown={handlePassWordKeyDown}
           required={required.passWord}
         />
         <RequiredMessage required={required.passWord} />
@@ -96,7 +84,6 @@ const PassWord = ({ allChecked, setAllChecked }: PassWordProps) => {
           id="passwordConfirm"
           placeholder="비밀번호 확인"
           onChange={handlePassWordConfirmChange}
-          onKeyDown={handleConfirmKeyDown}
           required={required.passWordConfirm}
         />
         <RequiredMessage required={required.passWordConfirm} />

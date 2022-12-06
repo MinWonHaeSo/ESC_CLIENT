@@ -9,7 +9,8 @@ import SignUpPage from './pages/SignUpPage';
 import MyPage from './pages/MyPage';
 import PrivateRoute from './routes/PrivateRoutes';
 import StardiumUploadPage from './pages/StardiumUploadPage';
-
+import FindPassWordPage from './pages/FindPassWordPage';
+import SignOutPage from './pages/SignOutPage';
 
 const App = () => {
   return (
@@ -20,11 +21,13 @@ const App = () => {
             <Route path="/" element={<Homepage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/findpassword" element={<FindPassWordPage />} />
             <Route path="*" element={<NotFoundPage />} />
-            <Route element={<PrivateRoute />}>
-              <Route path="/mypage" element={<MyPage />} />
-              <Route path="/manager/stardium/upload" element={<StardiumUploadPage />} />
-            </Route>
+            {/* <Route element={<PrivateRoute />}> */}
+            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/signout" element={<SignOutPage />} />
+            <Route path="/manager/stardium/upload" element={<StardiumUploadPage />} />
+            {/* </Route> */}
           </Route>
         </Routes>
       </BrowserRouter>

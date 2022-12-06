@@ -31,12 +31,11 @@ const SignUpForm = (props: SignUpFormProps) => {
   const goBack = useGoBack();
   const navigate = useNavigate();
   const totalAllChecked = Object.values(allChecked).filter(item => item === true).length;
-  console.log(totalAllChecked);
-  console.log(allChecked);
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
   };
+
   const handleFormButtonClick = () => {
     if (totalAllChecked !== 4) {
       return;

@@ -1,5 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
+import { findPassWordReducer } from './findPassWordSlice';
+import { memberTypeReducer } from './memberCheckSlice';
 import { stardiumReducer } from './stardiumSlice';
 import { stardiumWriteReducer } from './stardiumWriteSlice';
 import { userReducer } from './userSlice';
@@ -9,6 +11,9 @@ export const store = configureStore({
     user: userReducer,
     stardium: stardiumReducer,
     stardiumWrite: stardiumWriteReducer,
+    member: memberTypeReducer,
+    staridum: stardiumReducer,
+    findPassWord: findPassWordReducer,
   },
 });
 
