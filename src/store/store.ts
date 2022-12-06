@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { stardiumReducer } from './stardiumSlice';
+import { stardiumWriteReducer } from './stardiumWriteSlice';
 import { userReducer } from './userSlice';
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
-    staridum: stardiumReducer,
+    stardium: stardiumReducer,
+    stardiumWrite: stardiumWriteReducer,
   },
 });
 
