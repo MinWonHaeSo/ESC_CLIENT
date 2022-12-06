@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-type UserType = 'user' | 'manager';
+export type UserType = 'user' | 'manager';
 
 interface UserState {
   userId: number;
