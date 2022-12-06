@@ -5,7 +5,7 @@ const CLOUDINARY_PRESET = import.meta.env.VITE_CLOUDINARY_PRESET;
 const CLOUDINARY_NAME = import.meta.env.VITE_CLOUDINARY_NAME;
 
 
-export const fileUpload = async (files: File[]) => {
+export const fileUpload = (files: File[]) => {
   const uploaders = files.map(file => {
     // Initial FormData
     const formData = new FormData();
@@ -20,20 +20,11 @@ export const fileUpload = async (files: File[]) => {
     };
 
     // Make an AJAX upload request using Axios (replace Cloudinary URL below with your own)
-    return axios
-      .post(`https://api.cloudinary.com/v1_1/${CLOUDINARY_NAME}/image/upload`, formData, config)
-      .then(response => {
-        const data = response.data;
-        const fileURL = data.secure_url; // You should store this URL for future references in your app
-        console.log(data);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    // return axios.post(`https://api.cloudinary.com/v1_1/${CLOUDINARY_NAME}/image/upload`, formData, config)
   });
 
-  axios.all(uploaders).then(res => {
-    // ... perform after upload is successful operation
-    console.log(res);
-  });
+  // axios.all(uploaders)
+  //   .then(axios.spread((...rest) => {
+  //     console.log(rest);
+  //   }));
 }
