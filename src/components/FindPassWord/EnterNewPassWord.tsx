@@ -43,6 +43,8 @@ const EnterNewPassWord = (props: EnterNewPassWordProps) => {
     setRequired({ ...required, passWord: false });
   };
 
+  console.log(1);
+
   const handleNewPassWordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentPassWord = e.target.value;
     setPassWord(currentPassWord);
