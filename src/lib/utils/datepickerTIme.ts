@@ -8,7 +8,7 @@ const datepickerTime = (startDate: number, endDate = 24) => {
   useEffect(() => {
     let times = [];
 
-    for (let i = startDate; i < endDate; i++) {
+    for (let i = startDate + 1; i < endDate; i++) {
       times.push(setHours(setMinutes(new Date(), 0), i));
       times.push(setHours(setMinutes(new Date(), 30), i));
     }

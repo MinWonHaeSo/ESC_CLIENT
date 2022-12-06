@@ -1,7 +1,5 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
-import setHours from 'date-fns/setHours';
-import setMinutes from 'date-fns/setMinutes';
 
 import 'react-datepicker/dist/react-datepicker.css';
 interface CustomDatePickerProps {
@@ -15,7 +13,7 @@ const CustomDatePicker = ({ value, onChange, includeTimes, excludeTimes }: Custo
   return (
     <DatePicker
       selected={value}
-      onChange={date => onChange(date!)}
+      onChange={(date) => onChange(date!)}
       showTimeSelect
       showTimeSelectOnly
       excludeTimes={excludeTimes} // Other User 선택한 시간

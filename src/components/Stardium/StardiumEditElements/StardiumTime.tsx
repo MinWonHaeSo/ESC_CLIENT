@@ -8,13 +8,32 @@ import setMinutes from 'date-fns/setMinutes';
 import Label from '@/components/common/atoms/Label';
 import CustomDatePicker from '@/components/common/CustomDatePicker';
 import datepickerTime from '@/lib/utils/datepickerTIme';
+import useDefaultTime from '@/hooks/useDefaultTime';
+import { changeTimes, timeType } from '@/store/stardiumWriteSlice';
+import { useDispatch } from 'react-redux';
 
-type Props = {};
+interface StardiumTimeProps {
+  startTime: timeType;
+  endTime: timeType;
+};
 
-const StardiumTime = (props: Props) => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+const StardiumTime = ({ startTime, endTime }: StardiumTimeProps) => {
+  const startDate = useDefaultTime(startTime.hh, startTime.mm)
+  const endDate = useDefaultTime(endTime.hh, endTime.mm)
   const includeTime = datepickerTime(startDate.getHours());
+  const dispatch = useDispatch();
+
+  const handleChangeStartTime = (date: Date) => {
+    const hh = date.getHours();
+    const mm = date.getMinutes();
+    dispatch(changeTimes({ name: 'startTime', hh, mm }));
+  }
+
+  const handleChangeEndTime = (date: Date) => {
+    const hh = date.getHours();
+    const mm = date.getMinutes();
+    dispatch(changeTimes({ name: 'endTime', hh, mm }));
+  }
 
   return (
     <StardiumTimeContainer>
@@ -26,11 +45,11 @@ const StardiumTime = (props: Props) => {
           <div>
             <span>시작시간</span>
           </div>
-          <CustomDatePicker value={startDate} onChange={setStartDate} />
+          <CustomDatePicker value={startDate} onChange={handleChangeStartTime} />
         </div>
         <div>
           <span>종료시간</span>
-          <CustomDatePicker value={endDate} onChange={setEndDate} includeTimes={includeTime} />
+          <CustomDatePicker value={endDate} onChange={handleChangeEndTime} includeTimes={includeTime} />
         </div>
       </div>
     </StardiumTimeContainer>
@@ -61,4 +80,5 @@ const StardiumTimeContainer = styled.div`
     }
   }
 `;
-export default StardiumTime;
+
+export default React.memo(StardiumTime);
