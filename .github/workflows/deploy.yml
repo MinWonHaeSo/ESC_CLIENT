@@ -3,10 +3,9 @@ name: FE React Deploy
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
+  # pull_request:
+  #   branches: [main]
 
-# https://github.blog/changelog/2021-04-20-github-actions-control-permissions-for-github_token/
 permissions:
   contents: read
 
@@ -21,7 +20,25 @@ jobs:
         with:
           node-version: 16
 
-      # npm 패키지 설치
+      # Github Repository Secrets를 통해 환경 변수 파일을 생성합니다.
+      - name: Generate Environment Variables File
+        run: |
+          echo "VITE_API_SERVER=$VITE_API_SERVER" >> .env
+          echo "VITE_KAKAO_KEY=$VITE_KAKAO_KEY" >> .env
+          echo "VITE_FONTAWESOM_KEY=$VITE_FONTAWESOM_KEY" >> .env
+          echo "VITE_CLOUDINARY_KEY=$VITE_CLOUDINARY_KEY" >> .env
+          echo "VITE_CLOUDINARY_PRESET=$VITE_CLOUDINARY_PRESET" >> .env
+          echo "VITE_CLOUDINARY_NAME=$VITE_CLOUDINARY_NAME" >> .env
+
+        env:
+          VITE_API_SERVER: ${{ secrets.VITE_API_SERVER }}
+          VITE_KAKAO_KEY: ${{ secrets.VITE_KAKAO_KEY }}
+          VITE_FONTAWESOM_KEY: ${{ secrets.VITE_FONTAWESOM_KEY }}
+          VITE_CLOUDINARY_KEY: ${{ secrets.VITE_CLOUDINARY_KEY }}
+          VITE_CLOUDINARY_PRESET: ${{ secrets.VITE_CLOUDINARY_PRESET }}
+          VITE_CLOUDINARY_NAME: ${{ secrets.VITE_CLOUDINARY_NAME }}
+
+      # yarn 패키지 설치
       - name: Install Dependencies
         run: yarn install
 
