@@ -29,8 +29,8 @@ const StardiumRentalItem = (props: StardiumRentalItemProps) => {
       <RentalItemContent>
         {Array.from({ length: contentLength })
           .fill(0)
-          .map(item => (
-            <RentalItemList />
+          .map((item, idx) => (
+            <RentalItemList key={idx} />
           ))}
       </RentalItemContent>
     </StardiumRentalItemContainer>

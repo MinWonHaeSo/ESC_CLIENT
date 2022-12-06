@@ -2,40 +2,43 @@ import Input from '@/components/common/atoms/Input';
 import Tag from '@/components/common/Tag';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
+import { addTags, removeTags } from '@/store/stardiumWriteSlice';
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-type Props = {};
+type Props = {
+  tags: string[];
+};
 
-const StardiumEditTag = (props: Props) => {
+const StardiumEditTag = ({ tags }: Props) => {
   const [tagText, setTagText] = useState('');
-  const [tagList, setTagList] = useState<string[]>([]);
+  const dispatch = useDispatch();
 
   const handleAddTags = () => {
     if (tagText === '') return;
 
-    if (tagList.length === 5) {
-      alert('최대 5개 가능.');
+    if (tags.length === 5) {
+      alert('최대 5개 가능 합니다.');
       setTagText('');
       return;
     }
 
-    setTagList([...tagList, tagText]);
+    dispatch(addTags(tagText));
     setTagText('');
-  };
+  }
 
   const handleEnterTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      handleAddTags();
       e.preventDefault();
+      handleAddTags();
     }
   };
 
-  const handleRemoveTag = (id: number) => {
-    const filterTagList = tagList.filter((tag, idx) => id !== idx);
-
-    setTagList(filterTagList);
-  };
+  const handleRemoveTag = useCallback((id: number) => {
+    dispatch(removeTags(id))
+  }, [dispatch]);
+  
   return (
     <StardiumEditTagContainer>
       <label htmlFor="stardiumTags">체육관 종목 태그</label>
@@ -52,8 +55,7 @@ const StardiumEditTag = (props: Props) => {
         태그 추가
       </button>
       <ul>
-        {tagList.length !== 0 &&
-          tagList.map((tag, idx) => <Tag key={idx} id={idx} title={tag} onClick={handleRemoveTag} />)}
+        {tags.length !== 0 && tags.map((tag, idx) => <Tag key={idx} id={idx} title={tag} onClick={handleRemoveTag} />)}
       </ul>
     </StardiumEditTagContainer>
   );
@@ -92,4 +94,4 @@ const StardiumEditTagContainer = styled.div`
   }
 `;
 
-export default StardiumEditTag;
+export default React.memo(StardiumEditTag);
