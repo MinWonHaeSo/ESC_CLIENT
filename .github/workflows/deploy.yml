@@ -25,7 +25,7 @@ jobs:
         run: |
           echo "VITE_API_SERVER=$VITE_API_SERVER" >> .env
           echo "VITE_KAKAO_KEY=$VITE_KAKAO_KEY" >> .env
-          echo "VITE_FONTAWESOM_KEY=$VITE_FONTAWESOM_KEY" >> .env
+          echo "VITE_FONTAWESOME_KEY=$VITE_FONTAWESOME_KEY" >> .env
           echo "VITE_CLOUDINARY_KEY=$VITE_CLOUDINARY_KEY" >> .env
           echo "VITE_CLOUDINARY_PRESET=$VITE_CLOUDINARY_PRESET" >> .env
           echo "VITE_CLOUDINARY_NAME=$VITE_CLOUDINARY_NAME" >> .env
@@ -33,7 +33,7 @@ jobs:
         env:
           VITE_API_SERVER: ${{ secrets.VITE_API_SERVER }}
           VITE_KAKAO_KEY: ${{ secrets.VITE_KAKAO_KEY }}
-          VITE_FONTAWESOM_KEY: ${{ secrets.VITE_FONTAWESOM_KEY }}
+          VITE_FONTAWESOM_KEY: ${{ secrets.VITE_FONTAWESOME_KEY }}
           VITE_CLOUDINARY_KEY: ${{ secrets.VITE_CLOUDINARY_KEY }}
           VITE_CLOUDINARY_PRESET: ${{ secrets.VITE_CLOUDINARY_PRESET }}
           VITE_CLOUDINARY_NAME: ${{ secrets.VITE_CLOUDINARY_NAME }}
