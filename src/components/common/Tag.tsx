@@ -9,7 +9,7 @@ type TagProps = {
 const Tag = ({ id, title, onClick = () => {} }: TagProps) => {
   return (
     <li onClick={() => onClick(id)}>
-      <span>#{title}</span>
+      <span># {title}</span>
     </li>
   );
 };

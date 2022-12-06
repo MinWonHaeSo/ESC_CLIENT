@@ -1,16 +1,30 @@
 import React, { useRef, useState } from 'react';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
+import axios from 'axios';
+import { addImages, imagesType } from '@/store/stardiumWriteSlice';
+import { fileUpload } from '@/api/fileUpload';
+import { useDispatch } from 'react-redux';
 
-type StardiumEidtImageProps = {};
+type StardiumEidtImageProps = {
+  images: imagesType[];
+};
 
-const StardiumEidtImage = (props: StardiumEidtImageProps) => {
-  const [images, setImages] = useState<File[]>([]);
+const StardiumEidtImage = ({ images }: StardiumEidtImageProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const dispatch = useDispatch();
 
   const handleChangeImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length) {
-      setImages(Array.from(e.target.files));
+      const files = Array.from(e.target.files);
+      const filesPath = files.map(file => URL.createObjectURL(file));
+
+      const fileReducer = filesPath.reduce((obj, cur, idx) => {
+        return [...obj, ...[{ id: idx, url: cur }]];
+      }, [] as imagesType[]);
+
+      dispatch(addImages(fileReducer));
+      // fileUpload(files);
     }
 
     // Delete 후 file Value 변동 사항 없어 이전 등록한 사진 값과 동일한 사진 업로드 하면 onChange Event 발생 안됨.
@@ -20,7 +34,8 @@ const StardiumEidtImage = (props: StardiumEidtImageProps) => {
   };
 
   const handleDeleteImages = (index: number) => {
-    setImages([...images.slice(0, index), ...images.slice(index + 1)]);
+    const filterArray = images.filter((preview, idx) => preview.id !== index);
+    // setPreviews(prev => filterArray);
   };
 
   const handleClickFileButton = () => {
@@ -29,7 +44,7 @@ const StardiumEidtImage = (props: StardiumEidtImageProps) => {
   return (
     <ImagesUploadContainer>
       <div>
-        <button className="input-file-btn" onClick={handleClickFileButton}>
+        <button type="button" className="input-file-btn" onClick={handleClickFileButton}>
           이미지는 최대 5장 업로드 가능합니다. <br />( + )
         </button>
         <input
@@ -44,10 +59,10 @@ const StardiumEidtImage = (props: StardiumEidtImageProps) => {
       <ImagesPreviewContainer>
         <span className="preview-count">{images.length} / 5</span>
         <ul>
-          {images.map((image, idx) => (
-            <li key={`${image.name}_${idx}`}>
-              <img src={URL.createObjectURL(image)} width="200px" height="100px" alt="미리보기" />
-              <button className="delete-preview-btn" onClick={() => handleDeleteImages(idx)}>
+          {images.map(image => (
+            <li key={`${image.id}`}>
+              <img src={image.url} width="200px" height="100px" alt="미리보기" />
+              <button type='button' className="delete-preview-btn" onClick={() => handleDeleteImages(image.id)}>
                 삭제
               </button>
             </li>
@@ -59,6 +74,8 @@ const StardiumEidtImage = (props: StardiumEidtImageProps) => {
 };
 
 const ImagesUploadContainer = styled.div`
+  width: 100%;
+
   .input-file-btn {
     width: 100%;
     height: 150px;
@@ -85,6 +102,10 @@ const ImagesPreviewContainer = styled.div`
     overflow: auto;
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
+
+    img {
+      object-fit: contain;
+    }
   }
   ul::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
@@ -119,4 +140,4 @@ const ImagesPreviewContainer = styled.div`
   }
 `;
 
-export default StardiumEidtImage;
+export default React.memo(StardiumEidtImage);

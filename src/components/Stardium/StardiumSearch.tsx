@@ -22,7 +22,7 @@ const StardiumSearch = (props: StardiumSearchProps) => {
 
   return (
     <StardiumSearchConatiner>
-      <input
+      <Input
         id="stardiumSearch"
         type="text"
         placeholder="체육관을 검색해 주세요"
@@ -37,10 +37,8 @@ const StardiumSearch = (props: StardiumSearchProps) => {
 const StardiumSearchConatiner = styled.div`
   position: absolute;
   top: 10px;
-  left: 0;
-
-  transform: translate(16%, 0);
-
+  left: 50%;
+  transform: translate(-50%, 0);
   z-index: 1;
 `;
 
