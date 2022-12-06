@@ -1,6 +1,6 @@
 ---
-name: Bug report
-about: Create a report to help us improve
+name: "\U0001F41E BUG"
+about: BUG 발생 시 작성해주세요.
 title: ''
 labels: ''
 assignees: ''
