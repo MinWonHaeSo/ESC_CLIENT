@@ -5,25 +5,29 @@ import React from 'react';
 
 interface InputProps {
   type: string;
-  value?: string;
+  value?: string | number;
+  name?: string;
   id?: string;
   placeholder: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   required?: boolean;
+  readOnly?: boolean;
 }
 
-const Input = ({ type, placeholder, id, value, onChange, onKeyDown, required }: InputProps) => {
+const Input = ({ type, placeholder, id, name, value, onChange, onKeyDown, required, readOnly }: InputProps) => {
   return (
     <SInput
       type={type}
       value={value}
       id={id}
+      name={name}
       placeholder={placeholder}
       onChange={onChange}
       onKeyDown={onKeyDown}
       autoCapitalize="false"
       required={required}
+      readOnly={readOnly}
     />
   );
 };
