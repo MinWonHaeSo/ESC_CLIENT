@@ -14,7 +14,6 @@ dist-ssr
 
 # dotenv environment variable files
 .env
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
