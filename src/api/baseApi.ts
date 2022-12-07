@@ -1,4 +1,3 @@
-import Header from '@/components/Header/Header';
 import { RootState } from '@/store/store';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
