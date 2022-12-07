@@ -7,19 +7,26 @@ import FormInputDivisionBlock from '@/components/common/Responsive/FormInputDivi
 import Label from '@/components/common/atoms/Label';
 import { useDispatch } from 'react-redux';
 import { changeAddress, changeFiled } from '@/store/stardiumWriteSlice';
+import { geoCode } from '@/hooks/useKakaoMapScript';
 
 interface StardiumEditAddressProps  {
   address: string;
   detailAddress: string;
 };
 
+type GeoLocationType = {
+  lat: string;
+  lng: string;
+}
+
 const StardiumEditAddress = ({ address, detailAddress }: StardiumEditAddressProps) => {
   const [openPostcode, setOpenPostcode] = useState(false);
   const dispatch = useDispatch();
 
-  const handleSelectAdress = (data: any) => {
-    console.log(`주소: ${data.address}, 우편번호: ${data.zonecode}`);
-    dispatch(changeAddress(data.address));
+  const handleSelectAdress = async (data: any) => {
+    // 주소 string -> 위도 경도 변환
+    const geoLocation = await geoCode(data.address) as GeoLocationType;
+    dispatch(changeAddress({address: data.address, lat:geoLocation.lat, lng: geoLocation.lng}));
     setOpenPostcode(false);
   };
 
