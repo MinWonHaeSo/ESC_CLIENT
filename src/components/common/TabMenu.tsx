@@ -17,9 +17,9 @@ const TabMenu = (props: TabMenuProps) => {
         <Tab
           key={tab.type}
           type={tab.type}
-          focus={userType === tab.type}
+          focus={userType === tab.type.toLocaleUpperCase()}
           onClick={() => {
-            dispatch(changeUser(tab.type));
+            dispatch(changeUser(tab.type.toLocaleUpperCase()));
           }}
         >
           {tab.name}

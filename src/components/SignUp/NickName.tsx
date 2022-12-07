@@ -29,7 +29,7 @@ const NickName = ({ allChecked, setAllChecked }: NickNameProps) => {
     const currentNickName = e.target.value;
     setNickName(currentNickName);
     checkNickNameValidation(currentNickName);
-    if (nickName.length < 3) {
+    if (currentNickName.length < 2) {
       setAllChecked({ ...allChecked, nickName: false });
     }
   };
