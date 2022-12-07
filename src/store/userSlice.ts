@@ -6,24 +6,24 @@ interface ImageType {
 }
 
 interface UserState {
-  userId: number;
+  key: string;
   userType: UserType;
-  email?: string;
-  name?: string;
-  password?: string;
-  nickname?: string;
-  image?: ImageType[];
-  loggedIn: boolean;
+  email: string;
+  name: string;
+  password: string;
+  nickname: string;
+  images: ImageType[];
+  loggedIn?: boolean;
 }
 
 const initialState: UserState = {
-  userId: 0,
+  key: '',
   userType: 'USER',
   email: '',
   name: '',
   password: '',
   nickname: '',
-  image: [],
+  images: [{ imageUrl: '' }],
   loggedIn: false,
 };
 
@@ -31,7 +31,10 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    changeUser: (state, action: PayloadAction<UserType>) => {
+    setKey: (state, action: PayloadAction<string>) => {
+      state.key = action.payload;
+    },
+    changeUserType: (state, action: PayloadAction<UserType>) => {
       state.userType = action.payload;
     },
     setEmail: (state, action: PayloadAction<string>) => {
@@ -46,8 +49,9 @@ export const userSlice = createSlice({
     setNickname: (state, action: PayloadAction<string>) => {
       state.nickname = action.payload;
     },
-    setImage: (state, action: PayloadAction<ImageType[]>) => {
-      state.image = action.payload;
+    setImages: (state, action: PayloadAction<ImageType[]>) => {
+      // state.images = action.payload;
+      return { ...state, images: action.payload };
     },
     checkLoggedIn: (state, action: PayloadAction<boolean>) => {
       state.loggedIn = action.payload;
@@ -55,6 +59,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const { changeUser, checkLoggedIn } = userSlice.actions;
+export const { setKey, changeUserType, setEmail, setName, setPassword, setNickname, setImages, checkLoggedIn } =
+  userSlice.actions;
 
 export const userReducer = userSlice.reducer;
