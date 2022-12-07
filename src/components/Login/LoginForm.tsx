@@ -4,7 +4,7 @@ import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
 import sw from '@/lib/utils/customSweetAlert';
 import { RootState, useAppDispatch } from '@/store/store';
-import { changeUser, checkLoggedIn } from '@/store/userSlice';
+import { changeUserType, checkLoggedIn } from '@/store/userSlice';
 import { changeMemberType } from '@/store/memberCheckSlice';
 import { useNavigate } from 'react-router';
 import Input from '../common/atoms/Input';
@@ -91,7 +91,7 @@ const LoginForm = (props: LoginFormProps) => {
     }
     dispatch(checkLoggedIn(true));
     dispatch(changeMemberType(userType));
-    dispatch(changeUser(userType));
+    dispatch(changeUserType(userType));
     sw.toast.success('로그인 되었습니다.');
     navigate('/');
   };
