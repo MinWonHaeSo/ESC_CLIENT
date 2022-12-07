@@ -6,6 +6,9 @@ import Input from '../common/atoms/Input';
 import Label from '../common/atoms/Label';
 import RequiredMessage from './RequiredMessage';
 import { AllCheckedState } from './SignUpForm';
+import { useAppDispatch } from '@/store/store';
+import { setNickname } from '@/store/userSlice';
+import { useEffect } from 'react';
 
 interface NickNameProps {
   allChecked: AllCheckedState;
@@ -15,6 +18,14 @@ interface NickNameProps {
 const NickName = ({ allChecked, setAllChecked }: NickNameProps) => {
   const [nickName, setNickName] = useState<string>('');
   const [required, setRequired] = useState<boolean>(false);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (allChecked.nickName) {
+      dispatch(setNickname(nickName));
+    }
+  }, [allChecked]);
 
   const checkNickNameValidation = (currentNickName: string) => {
     const nickNameLengthCheck = currentNickName.length < 2 || currentNickName.length > 15;
@@ -29,9 +40,9 @@ const NickName = ({ allChecked, setAllChecked }: NickNameProps) => {
     const currentNickName = e.target.value;
     setNickName(currentNickName);
     checkNickNameValidation(currentNickName);
-    if (currentNickName.length < 2) {
-      setAllChecked({ ...allChecked, nickName: false });
-    }
+    // if (currentNickName.length < 2) {
+    //   setAllChecked({ ...allChecked, nickName: false });
+    // }
   };
 
   return (
