@@ -33,6 +33,7 @@ interface LoginResponse {
 
 type LoginRequest = Pick<User, 'email' | 'password'>;
 
+
 type Email = Pick<User, 'email'>;
 
 const userApi = baseApi.injectEndpoints({
