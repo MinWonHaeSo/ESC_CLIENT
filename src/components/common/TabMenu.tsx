@@ -3,7 +3,8 @@ import styled from '@emotion/styled';
 import { tabMenus } from '@/constants/tabMenu';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '@/store/store';
-import { changeUser } from '@/store/userSlice';
+import { changeUserType } from '@/store/userSlice';
+import { UserType } from '@/types/userType';
 
 interface TabMenuProps {}
 
@@ -19,7 +20,7 @@ const TabMenu = (props: TabMenuProps) => {
           type={tab.type}
           focus={userType === tab.type.toLocaleUpperCase()}
           onClick={() => {
-            dispatch(changeUser(tab.type.toLocaleUpperCase()));
+            dispatch(changeUserType(tab.type));
           }}
         >
           {tab.name}
@@ -32,7 +33,7 @@ const TabMenu = (props: TabMenuProps) => {
 export default TabMenu;
 
 type tabStyleProps = {
-  type: 'user' | 'manager';
+  type: UserType;
   focus: boolean;
 };
 
@@ -52,7 +53,7 @@ const Tab = styled.li<tabStyleProps>`
   border-radius: 10px 0 0 10px;
   color: ${palette.black[100]};
 
-  ${({ type }) => type === 'manager' && `border-radius: 0 10px 10px 0;`};
+  ${({ type }) => type === 'MANAGER' && `border-radius: 0 10px 10px 0;`};
 
   ${({ focus }) =>
     focus &&

@@ -7,6 +7,11 @@ import Input from '../common/atoms/Input';
 import Label from '../common/atoms/Label';
 import RequiredMessage from './RequiredMessage';
 import { AllCheckedState } from './SignUpForm';
+import formStateCheck from '@/lib/utils/formStateCheck';
+import { RootState, useAppDispatch } from '@/store/store';
+import { useSelector } from 'react-redux';
+import { setPassword } from '@/store/userSlice';
+import { useEffect } from 'react';
 
 interface PassWordProps {
   allChecked: AllCheckedState;
@@ -36,6 +41,14 @@ const initialRequiredState: InitialRequiredState = {
 const PassWord = ({ allChecked, setAllChecked }: PassWordProps) => {
   const [formState, setFormState] = useState<InitialFormState>(initialFormState);
   const [required, setRequired] = useState<InitialRequiredState>(initialRequiredState);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (allChecked.password && allChecked.passwordConfirm) {
+      dispatch(setPassword(formState.password));
+    }
+  }, [allChecked.password, allChecked.passwordConfirm]);
 
   const checkPassWordValidation = (currentPassWord: string) => {
     const { passwordRegex } = formRegex;

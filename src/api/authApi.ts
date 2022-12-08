@@ -18,4 +18,4 @@ const authApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetTokenQuery } = authApi;
+export const { useGetTokenQuery, useGetSocialLoginQuery } = authApi;

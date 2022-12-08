@@ -1,4 +1,4 @@
-import { UserType } from '@/store/userSlice';
+import { UserType } from '@/types/userType';
 import { baseApi } from './baseApi';
 
 interface Image {
@@ -6,12 +6,12 @@ interface Image {
 }
 
 export interface User {
-  type: UserType;
+  key: string;
+  userType: UserType;
   email: string;
   name: string;
   password: string;
   nickname: string;
-  key: string;
   images: Image[];
 }
 
@@ -32,7 +32,6 @@ interface LoginResponse {
 }
 
 type LoginRequest = Pick<User, 'email' | 'password'>;
-
 
 type Email = Pick<User, 'email'>;
 
@@ -55,7 +54,7 @@ const userApi = baseApi.injectEndpoints({
     }),
     signUp: builder.mutation<SignUpResponse, SignUpRequest>({
       query: (userData: User) => ({
-        url: `/members/signUp`,
+        url: `/members/signup`,
         method: 'POST',
         body: userData,
       }),
@@ -64,6 +63,23 @@ const userApi = baseApi.injectEndpoints({
     emailDoubleCheck: builder.mutation<{ statusCode: number; message: string }, Email>({
       query: (email: Email) => ({
         url: '/members/email-dup',
+        method: 'POST',
+        body: email,
+      }),
+      transformResponse: (response: { data: { statusCode: number; message: string } }) => response.data,
+      invalidatesTags: [{ type: 'User', id: 'LIST' }],
+    }),
+    sendEmailValidateCode: builder.mutation<{ statusCode: number; message: string }, Email>({
+      query: (email: Email) => ({
+        url: `/members/email-auth`,
+        method: 'POST',
+        body: email,
+      }),
+      invalidatesTags: ['User'],
+    }),
+    checkEmailValidate: builder.mutation<{ statusCode: number; error: string; message: string }, string>({
+      query: key => ({
+        url: `/members/email-auth?key=${key}`,
         method: 'POST',
         body: email,
       }),
@@ -77,11 +93,12 @@ const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['User'],
     }),
-    checkEmailValidate: builder.query<{ statusCode: number; error: string; message: string }, Email>({
-      query: () => ({
-        url: `/members/email-auth?key={email auth key}`,
-        method: 'GET',
+    checkEmailValidate: builder.mutation<{ statusCode: number; error: string; message: string }, Email>({
+      query: key => ({
+        url: `/members/email-auth?key={key}`,
+        method: 'POST',
       }),
+      invalidatesTags: ['User'],
     }),
   }),
 });
@@ -92,5 +109,5 @@ export const {
   useSignUpMutation,
   useEmailDoubleCheckMutation,
   useSendEmailValidateCodeMutation,
-  useCheckEmailValidateQuery,
+  useCheckEmailValidateMutation,
 } = userApi;

@@ -1,22 +1,23 @@
 import { useRef, useState } from 'react';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
+import { useSelector } from 'react-redux';
+import { RootState, useAppDispatch } from '@/store/store';
+import { setImages } from '@/store/userSlice';
 
 interface InsertImageProps {
   editDisabled: boolean;
 }
 
-interface UploadImage {
-  file: File;
-  url: string;
-  name: string;
-  type: string;
-  size: number;
+interface ImageFile {
+  imageUrl: string;
 }
 
 const InsertImage = ({ editDisabled }: InsertImageProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [imageFile, setImageFile] = useState<UploadImage | null>(null);
+  const [imageFile, setImageFile] = useState<ImageFile | null>(null);
+
+  const dispatch = useAppDispatch();
 
   const handleClickFileButton = () => {
     if (!fileInputRef.current) {
@@ -27,30 +28,24 @@ const InsertImage = ({ editDisabled }: InsertImageProps) => {
     }
   };
 
-  const onUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
       return;
     }
     const selectedImg = e.target.files[0];
     const imageURL = URL.createObjectURL(selectedImg);
-    setImageFile({
-      file: selectedImg,
-      url: imageURL,
-      name: selectedImg.name,
-      type: selectedImg.type,
-      size: selectedImg.size,
-    });
-    const formData = new FormData();
-    formData.append('image', selectedImg);
+    setImageFile({ ...imageFile, imageUrl: imageURL });
+
+    dispatch(setImages([{ imageUrl: imageURL }]));
   };
 
   return (
     <ImgBlock>
-      <Img src={imageFile?.url ?? 'src/assets/defaultProfileImage.svg'} alt="프로필" disabled={editDisabled} />
+      <Img src={imageFile?.imageUrl ?? 'src/assets/defaultProfileImage.svg'} alt="프로필" disabled={editDisabled} />
       <PlusButton onClick={handleClickFileButton}>
         {editDisabled ? null : <i className="fa-solid fa-plus" />}
       </PlusButton>
-      <FileInput type="file" ref={fileInputRef} onChange={onUploadImage} accept="image/*" />
+      <FileInput type="file" ref={fileInputRef} onChange={handleUploadImage} accept="image/*" />
     </ImgBlock>
   );
 };
