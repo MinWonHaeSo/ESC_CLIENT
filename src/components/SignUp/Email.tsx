@@ -66,7 +66,7 @@ const Email = ({ allChecked, setAllChecked }: EmailFormProps) => {
       const response = await emailDoubleCheck({ email: inputEmail });
       console.log(response);
       if (response) {
-        sw.toast.success(`${response.message}`);
+        sw.toast.success(`중복검사가 완료되었습니다.`);
         setTimeout(() => {
           setValidateProcess({ ...validateProcess, emailOverlapCheck: true });
         }, 1000);
