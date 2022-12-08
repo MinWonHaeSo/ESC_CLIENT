@@ -20,7 +20,7 @@ export default ({ mode }) => {
         inject: {
           data: {
             kakaoMapKey: env.VITE_KAKAO_KEY,
-            fontaesomeKey: env.VITE_FONTAWESOME_KEY,
+            fontAwesomeKey: env.VITE_FONTAWESOME_KEY,
           },
         },
       }),

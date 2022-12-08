@@ -14,7 +14,6 @@ export const store = configureStore({
     stardium: stardiumReducer,
     stardiumWrite: stardiumWriteReducer,
     member: memberTypeReducer,
-    staridum: stardiumReducer,
     findPassWord: findPassWordReducer,
     auth: authReducer,
     [baseApi.reducerPath]: baseApi.reducer,
