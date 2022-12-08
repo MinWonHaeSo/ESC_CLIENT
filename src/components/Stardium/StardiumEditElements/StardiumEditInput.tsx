@@ -18,14 +18,11 @@ interface StardiumEditInputProps {
 const StardiumEditInput = ({ value, name, title, id, type, placeholder }: StardiumEditInputProps) => {
   const dispatch = useDispatch();
 
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = e.target;
-      dispatch(changeFiled({ name, value }));
-    },
-    [dispatch],
-  );
-
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    dispatch(changeFiled({ name, value }));
+  }
+  
   return (
     <EditInputWrapper>
       <Label htmlFor={id} required={false}>

@@ -56,6 +56,7 @@ const SignUpForm = (props: SignUpFormProps) => {
     }
   };
 
+
   const handleFormButtonClick = () => {
     if (!formStateCheck(allChecked)) {
       return sw.toast.warn('회원가입 폼을 모두 채워주세요.');

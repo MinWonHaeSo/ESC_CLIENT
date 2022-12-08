@@ -25,6 +25,20 @@ const useKakaoMapScript = () => {
   return kakaoMap;
 };
 
+export const geoCode = async (address: string) => {
+  const geocoder = new kakao.maps.services.Geocoder();
+
+  return new Promise((resolve, reject) => {
+    geocoder.addressSearch(address, function (result:any, status:any) {
+      if (status === kakao.maps.services.Status.OK) {
+        resolve({ lat: result[0].y, lng: result[0].x });
+      } else {
+        reject(status);
+      }
+    });
+  });
+}
+
 export const mapPanTo = (map: any, location: any) => {
   const moveLatLon = new kakao.maps.LatLng(33.45058, 126.574942);
 
