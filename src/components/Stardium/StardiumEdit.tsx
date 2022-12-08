@@ -1,6 +1,5 @@
-import palette from '@/lib/styles/palette';
+import React from 'react';
 import styled from '@emotion/styled';
-import React, { useCallback, useRef, useState } from 'react';
 import { typo } from '@/lib/styles/typo';
 import { stardiumWriteState } from '@/store/stardiumWriteSlice';
 import Responsive from '../common/Responsive';
@@ -20,6 +19,7 @@ const StardiumEdit = ({ write }: StardiumEditProps) => {
 
   const handleSumbitStardium = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log('submit');
   };
 
   return (

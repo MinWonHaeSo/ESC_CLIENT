@@ -1,10 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
-import setHours from 'date-fns/setHours';
-import setMinutes from 'date-fns/setMinutes';
-
 import Label from '@/components/common/atoms/Label';
 import CustomDatePicker from '@/components/common/CustomDatePicker';
 import datepickerTime from '@/lib/utils/datepickerTIme';

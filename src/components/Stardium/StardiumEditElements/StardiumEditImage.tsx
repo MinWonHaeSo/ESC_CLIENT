@@ -1,13 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
-import axios from 'axios';
 import { addImages, imagesType, removeImage } from '@/store/stardiumWriteSlice';
-import { fileUpload } from '@/api/fileUpload';
 import { useDispatch } from 'react-redux';
 import StardiumEditImageList from './StardiumEditImageList';
 
-type StardiumEditImageProps = {
+interface StardiumEditImageProps {
   images: imagesType[];
 };
 

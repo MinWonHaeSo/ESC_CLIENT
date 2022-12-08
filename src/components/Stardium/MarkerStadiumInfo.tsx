@@ -4,8 +4,6 @@ import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import { useNavigate } from 'react-router-dom';
 import PATH from '@/constants/path';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store/store';
 
 interface MarkerStadiumInfoProps {
   markerInfo: any;
