@@ -13,80 +13,88 @@ interface PassWordProps {
   setAllChecked: React.Dispatch<React.SetStateAction<AllCheckedState>>;
 }
 
-interface InitialRequiredState {
-  passWord: boolean;
-  passWordConfirm: boolean;
+interface InitialFormState {
+  password: string;
+  passwordConfirm: string;
 }
 
+interface InitialRequiredState {
+  password: boolean;
+  passwordConfirm: boolean;
+}
+
+const initialFormState: InitialFormState = {
+  password: '',
+  passwordConfirm: '',
+};
+
 const initialRequiredState: InitialRequiredState = {
-  passWord: false,
-  passWordConfirm: false,
+  password: false,
+  passwordConfirm: false,
 };
 
 const PassWord = ({ allChecked, setAllChecked }: PassWordProps) => {
-  const [passWord, setPassWord] = useState<string>('');
-  const [passWordConfirm, setPassWordConfirm] = useState<string>('');
+  const [formState, setFormState] = useState<InitialFormState>(initialFormState);
   const [required, setRequired] = useState<InitialRequiredState>(initialRequiredState);
 
   const checkPassWordValidation = (currentPassWord: string) => {
-    const { passWordRegex } = formRegex;
-    if (!passWordRegex.test(currentPassWord)) {
-      return setRequired({ ...required, passWord: true });
+    const { passwordRegex } = formRegex;
+    if (!passwordRegex.test(currentPassWord)) {
+      return setRequired({ ...required, password: true });
     }
-    setRequired({ ...required, passWord: false });
-    setAllChecked({ ...allChecked, passWord: true });
-  };
-
-  const handlePassWordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const currentPassWord = e.target.value;
-    setPassWord(currentPassWord);
-    checkPassWordValidation(currentPassWord);
+    setRequired({ ...required, password: false });
+    setAllChecked({ ...allChecked, password: true });
   };
 
   const checkPassWordConfirmValidation = (currentPassWordConfirm: string) => {
-    if (passWord !== currentPassWordConfirm) {
-      return setRequired({ ...required, passWordConfirm: true });
+    const { password } = formState;
+    if (password !== currentPassWordConfirm) {
+      return setRequired({ ...required, passwordConfirm: true });
     }
-    setRequired({ ...required, passWordConfirm: false });
-    setAllChecked({ ...allChecked, passWordConfirm: true });
+    setRequired({ ...required, passwordConfirm: false });
+    setAllChecked({ ...allChecked, passwordConfirm: true });
   };
 
-  const handlePassWordConfirmChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const currentPassWordConfirm = e.target.value;
-    setPassWordConfirm(currentPassWordConfirm);
-    checkPassWordConfirmValidation(currentPassWordConfirm);
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, id } = e.target;
+    setFormState({ ...formState, [id]: value });
+    if (id === 'password') {
+      checkPassWordValidation(value);
+    } else if (id === 'passwordConfirm') {
+      checkPassWordConfirmValidation(value);
+    }
   };
 
   return (
     <>
       <PassWordFormBlock>
-        <Label htmlFor={'password'} required={required.passWord}>
+        <Label htmlFor={'password'} required={required.password}>
           비밀번호
         </Label>
         <Desc>영문, 숫자, 특수기호를 포함한 8자 이상을 입력해주세요.</Desc>
         <Input
           type="password"
-          value={passWord}
+          value={formState.password}
           id="password"
           placeholder="비밀번호"
-          onChange={handlePassWordChange}
-          required={required.passWord}
+          onChange={handleFormChange}
+          required={required.password}
         />
-        <RequiredMessage required={required.passWord} />
+        <RequiredMessage required={required.password} />
       </PassWordFormBlock>
       <PassWordConfirmBlock>
-        <Label htmlFor={'passwordConfirm'} required={required.passWordConfirm}>
+        <Label htmlFor={'passwordConfirm'} required={required.passwordConfirm}>
           비밀번호 확인
         </Label>
         <Input
           type="password"
-          value={passWordConfirm}
+          value={formState.passwordConfirm}
           id="passwordConfirm"
           placeholder="비밀번호 확인"
-          onChange={handlePassWordConfirmChange}
-          required={required.passWordConfirm}
+          onChange={handleFormChange}
+          required={required.passwordConfirm}
         />
-        <RequiredMessage required={required.passWordConfirm} />
+        <RequiredMessage required={required.passwordConfirm} />
       </PassWordConfirmBlock>
     </>
   );

@@ -9,20 +9,22 @@ import PassWord from './PassWord';
 import NickName from './NickName';
 import { useState } from 'react';
 import sw from '@/lib/utils/customSweetAlert';
+import { useSignUpMutation } from '@/api/userApi';
+import formStateCheck from '@/lib/utils/formStateCheck';
 
 interface SignUpFormProps {}
 
 export interface AllCheckedState {
   email: boolean;
-  passWord: boolean;
-  passWordConfirm?: boolean;
+  password: boolean;
+  passwordConfirm?: boolean;
   nickName?: boolean;
 }
 
 const initialState: AllCheckedState = {
   email: false,
-  passWord: false,
-  passWordConfirm: false,
+  password: false,
+  passwordConfirm: false,
   nickName: false,
 };
 
@@ -30,20 +32,34 @@ const SignUpForm = (props: SignUpFormProps) => {
   const [allChecked, setAllChecked] = useState<AllCheckedState>(initialState);
   const goBack = useGoBack();
   const navigate = useNavigate();
-  const totalAllChecked = Object.values(allChecked).filter(item => item === true).length;
+  const [signUp] = useSignUpMutation();
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
   };
 
-  const handleFormButtonClick = () => {
-    if (totalAllChecked !== 4) {
-      return;
+  const handleFormButtonClick = async () => {
+    if (!formStateCheck(allChecked)) {
+      return sw.toast.warn('회원가입 폼을 모두 채워주세요.');
     }
-    sw.toast.success('성공적으로 가입되었습니다.');
-    setTimeout(() => {
-      navigate('/login');
-    }, 1500);
+    try {
+      const response = await signUp({
+        email: 'kylekwon96@gmail.com',
+        type: 'USER',
+        name: 'kylekwon96@gmail.com',
+        password: 'k@12341234',
+        nickname: 'kyle',
+        key: '123',
+        images: [{ imageUrl: '' }],
+      });
+      // console.log(response.data);
+      sw.toast.success('성공적으로 가입되었습니다.');
+      setTimeout(() => {
+        navigate('/login');
+      }, 1500);
+    } catch {
+      throw new Error('error');
+    }
   };
 
   return (

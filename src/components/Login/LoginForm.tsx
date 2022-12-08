@@ -10,30 +10,41 @@ import { useNavigate } from 'react-router';
 import Input from '../common/atoms/Input';
 import Button from '../common/atoms/Button';
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import formStateCheck from '@/lib/utils/formStateCheck';
 
 interface LoginFormProps {}
 
-interface InitialRequiredState {
-  email: boolean;
-  passWord: boolean;
+interface InitialFormState {
+  email: string;
+  password: string;
 }
+
+export interface InitialRequiredState {
+  email: boolean;
+  password: boolean;
+}
+
+const initialFormState: InitialFormState = {
+  email: '',
+  password: '',
+};
 
 const initialRequiredState: InitialRequiredState = {
   email: false,
-  passWord: false,
+  password: false,
 };
 
 const LoginForm = (props: LoginFormProps) => {
-  const [inputEmail, setInputEmail] = useState<string>('');
-  const [inputPassWord, setInputPassWord] = useState<string>('');
+  const [formState, setFormState] = useState<InitialFormState>(initialFormState);
   const [required, setRequired] = useState<InitialRequiredState>(initialRequiredState);
-  const bothRequiredCheck = Object.values(required).filter(item => !item).length === 2;
   const [loaded, setLoaded] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
   const userType = useSelector((state: RootState) => state.user.userType);
 
-  const navigate = useNavigate();
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
   };
@@ -46,41 +57,36 @@ const LoginForm = (props: LoginFormProps) => {
     setRequired({ ...required, email: false });
   };
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const currentEmail = e.target.value;
-    setInputEmail(currentEmail);
-    checkEmailValidation(currentEmail);
-  };
-
-  const handleEmailKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Backspace') {
-      return setRequired({ ...required, email: true });
-    }
-  };
-
   const checkPassWordValidation = (currentPassWord: string) => {
-    const { passWordRegex } = formRegex;
-    if (!passWordRegex.test(currentPassWord)) {
-      return setRequired({ ...required, passWord: true });
+    const { passwordRegex } = formRegex;
+    if (!passwordRegex.test(currentPassWord)) {
+      return setRequired({ ...required, password: true });
     }
     setLoaded(true);
-    setRequired({ ...required, passWord: false });
+    setRequired({ ...required, password: false });
   };
 
-  const handlePassWordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const currentPassWord = e.target.value;
-    setInputPassWord(currentPassWord);
-    checkPassWordValidation(currentPassWord);
-  };
-
-  const handlePassWordKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Backspace') {
-      return setRequired({ ...required, passWord: true });
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormState({ ...formState, [id]: value });
+    if (id === 'email') {
+      checkEmailValidation(value);
+    } else if (id === 'password') {
+      checkPassWordValidation(value);
     }
   };
 
   const handleButtonClick = () => {
-    if (!bothRequiredCheck) {
+    if (formState.email.length === 0) {
+      return sw.toast.warn('이메일을 입력해주세요');
+    }
+    if (required.email) {
+      return sw.toast.warn('이메일을 올바르게 입력해주세요.');
+    }
+    if (required.password) {
+      return sw.toast.warn('비밀번호를 바르게 입력해주세요.');
+    }
+    if (!loaded) {
       return;
     }
     dispatch(checkLoggedIn(true));
@@ -94,26 +100,24 @@ const LoginForm = (props: LoginFormProps) => {
     <FormBlock onSubmit={handleSubmit}>
       <Input
         type={'text'}
-        value={inputEmail}
+        value={formState.email}
         id={'email'}
         placeholder={'아이디(이메일)'}
-        onChange={handleEmailChange}
-        onKeyDown={handleEmailKeyDown}
+        onChange={handleFormChange}
         required={required.email}
       />
       <Input
         type={'password'}
-        value={inputPassWord}
+        value={formState.password}
         id={'password'}
         placeholder={'비밀번호'}
-        onChange={handlePassWordChange}
-        onKeyDown={handlePassWordKeyDown}
-        required={required.passWord}
+        onChange={handleFormChange}
+        required={required.password}
       />
       <Button
         type={'submit'}
         size={'large'}
-        backgroundColor={bothRequiredCheck && loaded ? `${palette.black[100]}` : `${palette.grey[200]}`}
+        backgroundColor={formStateCheck(required) && loaded ? `${palette.black[100]}` : `${palette.grey[200]}`}
         onClick={handleButtonClick}
       >
         로그인

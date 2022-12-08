@@ -1,12 +1,13 @@
+import { UserType } from '@/types/userType';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-type MemberType = 'user' | 'manager';
+type MemberType = UserType;
 interface MemberTypeState {
   memberType: MemberType;
 }
 
 const initialState: MemberTypeState = {
-  memberType: 'user',
+  memberType: 'USER',
 };
 
 const memberCheckSlice = createSlice({

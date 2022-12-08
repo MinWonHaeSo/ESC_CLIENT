@@ -18,7 +18,7 @@ const Login = (props: LoginProps) => {
     <LoginBlock>
       <TabMenu />
       <LoginForm />
-      {userType === 'user' && <SocialLogin />}
+      {userType === 'USER' && <SocialLogin />}
       <RegisterBlock>
         <Li>
           <Link to={PATH.REGISTER}>회원가입</Link>
