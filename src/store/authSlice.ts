@@ -4,11 +4,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 interface AuthState {
   user: Partial<User> | null;
   token: string | null;
+  loggedIn: boolean;
 }
 
 const initialState: AuthState = {
   user: null,
   token: null,
+  loggedIn: false,
 };
 
 const authSlice = createSlice({
@@ -21,6 +23,9 @@ const authSlice = createSlice({
       state.token = token;
     },
     // tokenReceived: (state, action: PayloadAction<null>) => {},
+    checkLoggedIn: (state, action: PayloadAction<boolean>) => {
+      state.loggedIn = action.payload;
+    },
     loggedOut: state => {
       state.user = null;
       state.token = null;
@@ -28,6 +33,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { setCredentials, loggedOut } = authSlice.actions;
+export const { setCredentials, checkLoggedIn, loggedOut } = authSlice.actions;
 
 export const authReducer = authSlice.reducer;
