@@ -9,7 +9,7 @@ import SignUpPage from './pages/SignUpPage';
 import MyPage from './pages/MyPage';
 import PrivateRoute from './routes/PrivateRoutes';
 import StardiumUploadPage from './pages/StardiumUploadPage';
-import FindPasswordPage from './pages/FindPasswordPage';
+import SearchPasswordPage from './pages/SearchPasswordPage';
 import SignOutPage from './pages/SignOutPage';
 import OAuthRedirectPage from './pages/OAuthRedirectPage';
 
@@ -23,7 +23,7 @@ const App = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/oauth2/:social" element={<OAuthRedirectPage />} />
             <Route path="/signup" element={<SignUpPage />} />
-            <Route path="/findpassword" element={<FindPasswordPage />} />
+            <Route path="/searchpassword" element={<SearchPasswordPage />} />
             <Route path="*" element={<NotFoundPage />} />
             {/* <Route element={<PrivateRoute />}> */}
             <Route path="/mypage" element={<MyPage />} />
