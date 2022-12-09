@@ -13,7 +13,6 @@ interface UserState {
   password: string;
   nickname: string;
   images: ImageType[];
-  loggedIn?: boolean;
 }
 
 const initialState: UserState = {
