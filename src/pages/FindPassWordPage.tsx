@@ -1,7 +1,5 @@
-import FindPassWord from '@/components/FindPassWord/FindPassWord';
-
 const FindPassWordPage = () => {
-  return <FindPassWord />;
+  return <></>;
 };
 
 export default FindPassWordPage;
