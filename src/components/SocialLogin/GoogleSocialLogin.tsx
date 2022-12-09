@@ -1,41 +1,41 @@
-import { useCallback } from 'react';
-import { useState } from 'react';
-import GoogleLogin from 'react-google-login';
+import styled from '@emotion/styled';
+import GoogleLogo from '@/assets/GoogleLogo';
 
-interface UserData {
-  email: string;
-  name: string;
-  profileImage: string;
-}
+// const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_SOCIAL_LOGIN_KEY;
 
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_SOCIAL_LOGIN_KEY;
+const GOOGLE_CLIENT_ID = `${
+  import.meta.env.VITE_BASE_URL
+}/oauth2/authorization/google?redirect_uri=http://localhost:5173/oauth/redirect`;
 
-const initialUserData: UserData = {
-  email: '',
-  name: '',
-  profileImage: '',
-};
+// const initialUserData: UserData = {
+//   email: '',
+//   name: '',
+//   profileImage: '',
+// };
 
 const GoogleSocialLogin = () => {
-  const [userData, setUserData] = useState<UserData>(initialUserData);
-
-  const handleLoginSuccess = useCallback((res: any) => {
-    setUserData({
-      ...userData,
-      email: res.profileObj.email,
-      name: res.profileObj.name,
-      profileImage: res.profileObj.imageUrl,
-    });
-  }, []);
+  const getAuthToken = () => {
+    window.location.href = GOOGLE_CLIENT_ID;
+  };
 
   return (
-    <GoogleLogin
-      clientId={GOOGLE_CLIENT_ID}
-      buttonText=""
-      onSuccess={res => handleLoginSuccess(res)}
-      onFailure={res => console.error(res)}
-    />
+    <GoogleLoginButton onClick={getAuthToken}>
+      <GoogleLogo />
+    </GoogleLoginButton>
   );
 };
 
 export default GoogleSocialLogin;
+
+const GoogleLoginButton = styled.button`
+  padding-top: 5px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+`;
+
+const NaverLogo = styled.img`
+  display: inline-block;
+  width: 100%;
+`;
