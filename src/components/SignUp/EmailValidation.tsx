@@ -1,4 +1,4 @@
-import { useCheckEmailValidateMutation } from '@/api/userApi';
+import { useCheckEmailValidateQuery } from '@/api/userApi';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import sw from '@/lib/utils/customSweetAlert';
@@ -18,7 +18,6 @@ interface EmailValidationProps {
 
 const EmailValidation = ({ required, validateProcess, setValidateProcess }: EmailValidationProps) => {
   const [inputValidateCode, setInputValidateCode] = useState<string>('');
-  const [checkEmailValidate] = useCheckEmailValidateMutation();
 
   const dispatch = useAppDispatch();
 
@@ -39,8 +38,8 @@ const EmailValidation = ({ required, validateProcess, setValidateProcess }: Emai
       return sw.toast.warn('인증코드 6자리를 입력해주세요.');
     }
     try {
-      const response = await checkEmailValidate(key);
-      if (response) {
+      const { data } = useCheckEmailValidateQuery(key);
+      if (data) {
         sw.toast.success('정상 인증 되었습니다.');
         setTimeout(() => {
           setValidateProcess({
