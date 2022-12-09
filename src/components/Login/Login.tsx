@@ -24,7 +24,7 @@ const Login = (props: LoginProps) => {
           <Link to={PATH.REGISTER}>회원가입</Link>
         </Li>
         <Li>
-          <Link to={PATH.FIND_PASSWORD}>비밀번호 찾기</Link>
+          <Link to={PATH.SEARCH_PASSWORD}>비밀번호 찾기</Link>
         </Li>
       </RegisterBlock>
     </LoginBlock>
