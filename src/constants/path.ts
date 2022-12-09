@@ -2,7 +2,7 @@ const PATH = {
   ROOT: '/',
   LOGIN: '/login',
   REGISTER: '/signup',
-  FIND_PASSWORD: '/findpassword',
+  SEARCH_PASSWORD: '/searchpassword',
   ME: '/mypage',
   ME_RENTAL_LIST: '',
   ME_RECENT_SEARCH_LIST: '',

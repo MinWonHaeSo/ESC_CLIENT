@@ -19,7 +19,7 @@ const ValidateEmail = (props: ValidateEmailProps) => {
   const [inputEmail, setInputEmail] = useState<string>('');
   const [required, setRequired] = useState<boolean>(false);
   const [registeredCheck, setRegisteredCheck] = useState<boolean>(false);
-  const orderIndex = useSelector((state: RootState) => state.findPassWord.index);
+  const orderIndex = useSelector((state: RootState) => state.searchPassWord.index);
   const dispatch = useAppDispatch();
 
   const checkEmailValidation = (currentEmail: string) => {
