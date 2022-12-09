@@ -77,12 +77,12 @@ const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['User'],
     }),
-    checkEmailValidate: builder.mutation<{ statusCode: number; error: string; message: string }, string>({
+    checkEmailValidate: builder.query<{ statusCode: number; error: string; message: string }, string>({
       query: key => ({
-        url: `/members/email-auth?key=${key}`,
-        method: 'POST',
+        url: `/members/email-authentication/?key=${key}`,
+        method: 'GET',
       }),
-      invalidatesTags: ['User'],
+      providesTags: ['User'],
     }),
   }),
 });
@@ -93,5 +93,5 @@ export const {
   useSignUpMutation,
   useEmailDoubleCheckMutation,
   useSendEmailValidateCodeMutation,
-  useCheckEmailValidateMutation,
+  useCheckEmailValidateQuery,
 } = userApi;
