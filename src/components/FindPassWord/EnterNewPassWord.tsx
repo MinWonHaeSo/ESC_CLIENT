@@ -36,8 +36,8 @@ const EnterNewPassWord = (props: EnterNewPassWordProps) => {
 
   // [] 서버에 저장된 비밀번호와 같은 지 비교하는 조건 확인 (이전단계에서 입력한 이메일로 비교)
   const checkPassWordValidation = (currentPassWord: string) => {
-    const { passWordRegex } = formRegex;
-    if (!passWordRegex.test(currentPassWord)) {
+    const { passwordRegex } = formRegex;
+    if (!passwordRegex.test(currentPassWord)) {
       return setRequired({ ...required, passWord: true });
     }
     setRequired({ ...required, passWord: false });
