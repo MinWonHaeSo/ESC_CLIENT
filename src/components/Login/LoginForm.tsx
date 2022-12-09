@@ -4,13 +4,14 @@ import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
 import sw from '@/lib/utils/customSweetAlert';
 import { RootState, useAppDispatch } from '@/store/store';
-import { changeUserType } from '@/store/userSlice';
-import { checkLoggedIn } from '@/store/authSlice';
+import { changeUserType, setEmail, setNickname } from '@/store/userSlice';
+import { checkLoggedIn, setCredentials } from '@/store/authSlice';
 import { changeMemberType } from '@/store/memberCheckSlice';
 import { useNavigate } from 'react-router';
 import Input from '../common/atoms/Input';
 import Button from '../common/atoms/Button';
 import { useSelector } from 'react-redux';
+import { useLoginMutation } from '@/api/userApi';
 
 interface LoginFormProps {}
 
@@ -38,14 +39,32 @@ const LoginForm = (props: LoginFormProps) => {
   const [formState, setFormState] = useState<InitialFormState>(initialFormState);
   const [required, setRequired] = useState<InitialRequiredState>(initialRequiredState);
   const [loaded, setLoaded] = useState<boolean>(false);
+  const { email, password } = formState;
 
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
   const userType = useSelector((state: RootState) => state.user.userType);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [login] = useLoginMutation();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    try {
+      const userData = await login({ email, password }).unwrap();
+      console.log(userData);
+      dispatch(setCredentials({ user: userData.name, token: userData.accessToken }));
+      dispatch(checkLoggedIn(true));
+      dispatch(setEmail(email));
+      dispatch(setNickname(userData.nickname));
+      dispatch(changeUserType(userType));
+      dispatch(changeMemberType(userType));
+      sw.toast.success('로그인 되었습니다.');
+    } catch {
+      console.error('잘못된 접근입니다.');
+      return navigate('/login');
+    }
+    navigate('/');
   };
 
   const checkEmailValidation = (currentEmail: string) => {
@@ -90,11 +109,6 @@ const LoginForm = (props: LoginFormProps) => {
     if (!loaded) {
       return;
     }
-    dispatch(checkLoggedIn(true));
-    dispatch(changeMemberType(userType));
-    dispatch(changeUserType(userType));
-    sw.toast.success('로그인 되었습니다.');
-    navigate('/');
   };
 
   return (

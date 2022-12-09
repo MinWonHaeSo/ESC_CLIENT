@@ -28,6 +28,7 @@ interface LoginResponse {
   accessToken: string;
   refreshToken: string;
   name: string;
+  nickname: string;
   images: Image[];
 }
 
@@ -48,7 +49,7 @@ const userApi = baseApi.injectEndpoints({
       query: credentials => ({
         url: '/members/auth/login',
         method: 'POST',
-        body: credentials,
+        body: { ...credentials },
       }),
       invalidatesTags: ['User'],
     }),
