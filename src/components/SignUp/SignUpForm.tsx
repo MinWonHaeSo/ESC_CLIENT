@@ -4,8 +4,9 @@ import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
 import Button from '../common/atoms/Button';
+import UserName from './UserName';
 import Email from './Email';
-import PassWord from './PassWord';
+import Password from './PassWord';
 import NickName from './NickName';
 import { useState } from 'react';
 import sw from '@/lib/utils/customSweetAlert';
@@ -18,6 +19,7 @@ import { useSelector } from 'react-redux';
 interface SignUpFormProps {}
 
 export interface AllCheckedState {
+  userName: boolean;
   email: boolean;
   password: boolean;
   passwordConfirm: boolean;
@@ -25,6 +27,7 @@ export interface AllCheckedState {
 }
 
 const initialState: AllCheckedState = {
+  userName: false,
   email: false,
   password: false,
   passwordConfirm: false,
@@ -56,7 +59,6 @@ const SignUpForm = (props: SignUpFormProps) => {
     }
   };
 
-
   const handleFormButtonClick = () => {
     if (!formStateCheck(allChecked)) {
       return sw.toast.warn('회원가입 폼을 모두 채워주세요.');
@@ -66,8 +68,9 @@ const SignUpForm = (props: SignUpFormProps) => {
   return (
     <FormBlock onSubmit={handleFormSubmit}>
       <InsertImage editDisabled={false} />
+      <UserName allChecked={allChecked} setAllChecked={setAllChecked} />
       <Email allChecked={allChecked} setAllChecked={setAllChecked} />
-      <PassWord allChecked={allChecked} setAllChecked={setAllChecked} />
+      <Password allChecked={allChecked} setAllChecked={setAllChecked} />
       <NickName allChecked={allChecked} setAllChecked={setAllChecked} />
       <StyleWrapper>
         <Button type="submit" size={'large'} backgroundColor={`${palette.black[100]}`} onClick={handleFormButtonClick}>

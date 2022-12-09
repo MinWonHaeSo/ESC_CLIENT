@@ -13,7 +13,6 @@ import { useAppDispatch } from '@/store/store';
 import EmailValidation from './EmailValidation';
 import { setEmail } from '@/store/userSlice';
 
-
 interface EmailFormProps {
   allChecked: AllCheckedState;
   setAllChecked: React.Dispatch<React.SetStateAction<AllCheckedState>>;
@@ -62,7 +61,6 @@ const Email = ({ allChecked, setAllChecked }: EmailFormProps) => {
     if (inputEmail.length === 0) {
       return sw.toast.warn('이메일을 입력하세요.');
     }
-
     try {
       const response = await emailDoubleCheck({ email: inputEmail });
       console.log(response);
@@ -76,6 +74,7 @@ const Email = ({ allChecked, setAllChecked }: EmailFormProps) => {
       sw.toast.error('중복된 이메일 입니다.');
       throw new Error('중복된 이메일 입니다.');
     }
+  };
 
   const handleEmailValidationButtonClick = async () => {
     // 이메일 인증코드 발송
@@ -100,10 +99,6 @@ const Email = ({ allChecked, setAllChecked }: EmailFormProps) => {
       dispatch(setEmail(inputEmail));
     }
   }, [validationComplete]);
-
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
 
   return (
     <>

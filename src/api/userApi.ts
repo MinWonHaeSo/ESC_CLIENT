@@ -79,9 +79,10 @@ const userApi = baseApi.injectEndpoints({
     }),
     checkEmailValidate: builder.query<{ statusCode: number; error: string; message: string }, string>({
       query: key => ({
-        url: `/members/email-auth?key=${key}`,
+        url: `/members/email-authentication/?key=${key}`,
         method: 'GET',
       }),
+      providesTags: ['User'],
     }),
   }),
 });

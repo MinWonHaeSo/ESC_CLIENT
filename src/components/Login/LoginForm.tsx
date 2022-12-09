@@ -4,14 +4,13 @@ import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
 import sw from '@/lib/utils/customSweetAlert';
 import { RootState, useAppDispatch } from '@/store/store';
-import { changeUserType, checkLoggedIn } from '@/store/userSlice';
+import { changeUserType } from '@/store/userSlice';
+import { checkLoggedIn } from '@/store/authSlice';
 import { changeMemberType } from '@/store/memberCheckSlice';
 import { useNavigate } from 'react-router';
 import Input from '../common/atoms/Input';
 import Button from '../common/atoms/Button';
 import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import formStateCheck from '@/lib/utils/formStateCheck';
 
 interface LoginFormProps {}
 
@@ -52,6 +51,7 @@ const LoginForm = (props: LoginFormProps) => {
   const checkEmailValidation = (currentEmail: string) => {
     const { emailRegex } = formRegex;
     if (!emailRegex.test(currentEmail)) {
+      setLoaded(false);
       return setRequired({ ...required, email: true });
     }
     setRequired({ ...required, email: false });
@@ -60,6 +60,7 @@ const LoginForm = (props: LoginFormProps) => {
   const checkPassWordValidation = (currentPassWord: string) => {
     const { passwordRegex } = formRegex;
     if (!passwordRegex.test(currentPassWord)) {
+      setLoaded(false);
       return setRequired({ ...required, password: true });
     }
     setLoaded(true);
@@ -117,7 +118,7 @@ const LoginForm = (props: LoginFormProps) => {
       <Button
         type={'submit'}
         size={'large'}
-        backgroundColor={formStateCheck(required) && loaded ? `${palette.black[100]}` : `${palette.grey[200]}`}
+        backgroundColor={loaded ? `${palette.black[100]}` : `${palette.grey[200]}`}
         onClick={handleButtonClick}
       >
         로그인

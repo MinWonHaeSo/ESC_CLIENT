@@ -6,11 +6,10 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${BASE_URL}`,
-  credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as RootState).auth.token;
-    if (token) {
-      headers.set('authorization', `Bearer ${token}`);
+    const accessToken = (getState() as RootState).auth.token;
+    if (accessToken) {
+      headers.set('authorization', `Bearer ${accessToken}`);
     }
     return headers;
   },
@@ -27,8 +26,7 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
     console.log('sending refresh token');
 
     // send refresh token to get new access token
-    const refreshResult = await baseQuery({ url: 'auth/refresh-token/', method: 'POST' }, api, extraOptions);
-
+    const refreshResult = await baseQuery({ url: '/members/auth/refresh-token/', method: 'POST' }, api, extraOptions);
     if (refreshResult?.data) {
       api.dispatch(setCredentials({ token: refreshResult.data }));
 
