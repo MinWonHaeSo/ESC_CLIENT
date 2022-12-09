@@ -4,12 +4,12 @@ import React, { useCallback, useRef, useState } from 'react';
 import { typo } from '@/lib/styles/typo';
 import { stardiumWriteState } from '@/store/stardiumWriteSlice';
 import Responsive from '../common/Responsive';
-import StardiumEidtImage from './StardiumEditElements/StardiumEidtImage';
+import StardiumEditImage from './StardiumEditElements/StardiumEditImage';
 import StardiumEditInput from './StardiumEditElements/StardiumEditInput';
 import StardiumEditTag from './StardiumEditElements/StardiumEditTag';
 import StardiumEditAddress from './StardiumEditElements/StardiumEditAddress';
 import StardiumTime from './StardiumEditElements/StardiumTime';
-import StardiumRentalItem from './StardiumEditElements/StardiumRentalItem';
+import StardiumEditRentalItem from './StardiumEditElements/StardiumEditRentalItem';
 import Dividers from '../common/Dividers';
 
 interface StardiumEditProps {
@@ -25,7 +25,7 @@ const StardiumEdit = ({ write }: StardiumEditProps) => {
   return (
     <StardiumEditBlock>
       <StardiumEditForm onSubmit={handleSumbitStardium}>
-        <StardiumEidtImage images={write.images} />
+        <StardiumEditImage images={write.images} />
         <Dividers />
         <StardiumEditInput
           type="text"
@@ -46,7 +46,7 @@ const StardiumEdit = ({ write }: StardiumEditProps) => {
         />
         <StardiumEditTag tags={write.tags} />
         <StardiumTime startTime={write.startTime} endTime={write.endTime} />
-        <StardiumRentalItem />
+        <StardiumEditRentalItem rentalItems={write.rentalItems} />
         <button type="submit">등록하기</button>
       </StardiumEditForm>
     </StardiumEditBlock>

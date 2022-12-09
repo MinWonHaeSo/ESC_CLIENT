@@ -2,31 +2,32 @@ import React, { useRef, useState } from 'react';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
 import axios from 'axios';
-import { addImages, imagesType } from '@/store/stardiumWriteSlice';
+import { addImages, imagesType, removeImage } from '@/store/stardiumWriteSlice';
 import { fileUpload } from '@/api/fileUpload';
 import { useDispatch } from 'react-redux';
+import StardiumEditImageList from './StardiumEditImageList';
 
-type StardiumEidtImageProps = {
+type StardiumEditImageProps = {
   images: imagesType[];
 };
 
-const StardiumEidtImage = ({ images }: StardiumEidtImageProps) => {
+const StardiumEditImage = ({ images }: StardiumEditImageProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useDispatch();
 
   const handleChangeImages = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.length) {
-      const files = Array.from(e.target.files);
-      const filesPath = files.map(file => URL.createObjectURL(file));
+    if (!e.target.files?.length) return
+    
+    const files = Array.from(e.target.files);
+    const filesPath = files.map(file => URL.createObjectURL(file));
 
-      const fileReducer = filesPath.reduce((obj, cur, idx) => {
-        return [...obj, ...[{ id: idx, url: cur }]];
-      }, [] as imagesType[]);
+    const fileReducer = filesPath.reduce((obj, cur, idx) => {
+      return [...obj, ...[{ id: idx, url: cur }]];
+    }, [] as imagesType[]);
 
-      dispatch(addImages(fileReducer));
-      // fileUpload(files);
-    }
-
+    dispatch(addImages(fileReducer));
+    // fileUpload(files);
+    
     // Delete 후 file Value 변동 사항 없어 이전 등록한 사진 값과 동일한 사진 업로드 하면 onChange Event 발생 안됨.
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
@@ -34,13 +35,13 @@ const StardiumEidtImage = ({ images }: StardiumEidtImageProps) => {
   };
 
   const handleDeleteImages = (index: number) => {
-    const filterArray = images.filter((preview, idx) => preview.id !== index);
-    // setPreviews(prev => filterArray);
+    dispatch(removeImage(index));
   };
 
   const handleClickFileButton = () => {
     fileInputRef.current?.click();
   };
+
   return (
     <ImagesUploadContainer>
       <div>
@@ -60,12 +61,7 @@ const StardiumEidtImage = ({ images }: StardiumEidtImageProps) => {
         <span className="preview-count">{images.length} / 5</span>
         <ul>
           {images.map(image => (
-            <li key={`${image.id}`}>
-              <img src={image.url} width="200px" height="100px" alt="미리보기" />
-              <button type='button' className="delete-preview-btn" onClick={() => handleDeleteImages(image.id)}>
-                삭제
-              </button>
-            </li>
+            <StardiumEditImageList key={image.id} id={image.id} url={image.url} onDeleteImage={handleDeleteImages} />
           ))}
         </ul>
       </ImagesPreviewContainer>
@@ -140,4 +136,4 @@ const ImagesPreviewContainer = styled.div`
   }
 `;
 
-export default React.memo(StardiumEidtImage);
+export default React.memo(StardiumEditImage);

@@ -34,8 +34,3 @@ const GoogleLoginButton = styled.button`
   border-radius: 50%;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 `;
-
-const NaverLogo = styled.img`
-  display: inline-block;
-  width: 100%;
-`;

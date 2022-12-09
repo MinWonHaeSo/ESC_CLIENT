@@ -1,4 +1,5 @@
 import { useGetSocialLoginQuery } from '@/api/authApi';
+
 import { setCookie } from '@/lib/utils/manageCookies';
 import { setCredentials } from '@/store/authSlice';
 import { useAppDispatch } from '@/store/store';
@@ -10,6 +11,7 @@ import jwt_decode from 'jwt-decode';
 const OAuthRedirect = () => {
   const navigate = useNavigate();
   const { social } = useParams<{ social: string }>();
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {

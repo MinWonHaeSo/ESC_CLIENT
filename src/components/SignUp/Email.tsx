@@ -61,7 +61,6 @@ const Email = ({ allChecked, setAllChecked }: EmailFormProps) => {
     if (inputEmail.length === 0) {
       return sw.toast.warn('이메일을 입력하세요.');
     }
-
     try {
       const response = await emailDoubleCheck({ email: inputEmail });
       console.log(response);

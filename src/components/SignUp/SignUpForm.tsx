@@ -4,6 +4,7 @@ import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
 import Button from '../common/atoms/Button';
+import UserName from './UserName';
 import Email from './Email';
 import Password from './PassWord';
 import NickName from './NickName';
@@ -14,7 +15,6 @@ import formStateCheck from '@/lib/utils/formStateCheck';
 import InsertImage from '../common/InsertImage';
 import { RootState } from '@/store/store';
 import { useSelector } from 'react-redux';
-import UserName from './UserName';
 
 interface SignUpFormProps {}
 

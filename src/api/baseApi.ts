@@ -27,7 +27,6 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 
     // send refresh token to get new access token
     const refreshResult = await baseQuery({ url: '/members/auth/refresh-token/', method: 'POST' }, api, extraOptions);
-
     if (refreshResult?.data) {
       api.dispatch(setCredentials({ token: refreshResult.data }));
 
