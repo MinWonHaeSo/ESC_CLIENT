@@ -31,7 +31,7 @@ const EnterNewPassWord = (props: EnterNewPassWordProps) => {
   const [passWordConfirm, setPassWordConfirm] = useState<string>('');
   const [required, setRequired] = useState<InitialRequiredState>(initialRequiredState);
   const navigate = useNavigate();
-  const orderIndex = useSelector((state: RootState) => state.findPassWord.index);
+  const orderIndex = useSelector((state: RootState) => state.searchPassWord.index);
   const dispatch = useAppDispatch();
 
   // [] 서버에 저장된 비밀번호와 같은 지 비교하는 조건 확인 (이전단계에서 입력한 이메일로 비교)

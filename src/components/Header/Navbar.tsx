@@ -18,7 +18,7 @@ interface NavbarProps {
 
 const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
   const [loginType, setLoginType] = useState<UserType>('USER'); //user, manager, undefinedUser
-  const loggedIn = useSelector((state: RootState) => state.user.loggedIn);
+  const loggedIn = useSelector((state: RootState) => state.auth.loggedIn);
   const memberType = useSelector((state: RootState) => state.member.memberType);
 
   const dispatch = useAppDispatch();

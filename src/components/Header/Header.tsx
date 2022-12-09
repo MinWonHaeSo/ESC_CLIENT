@@ -15,7 +15,7 @@ import { RootState, useAppDispatch } from '@/store/store';
 interface HomeProps {}
 
 const Header = (props: HomeProps) => {
-  const loggedIn = useSelector((state: RootState) => state.user.loggedIn);
+  const loggedIn = useSelector((state: RootState) => state.auth.loggedIn);
   const [isActive, setIsActive] = useState(false);
   const checkHeader = usePathHeaderOnlyLogo();
 
