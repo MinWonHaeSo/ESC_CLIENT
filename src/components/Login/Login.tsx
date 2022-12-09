@@ -56,7 +56,7 @@ const Li = styled.li`
   color: ${palette.black[100]};
   a {
     position: relative;
-    padding: 12px 16px;
+    padding: 8px 16px;
   }
   &:hover {
     text-decoration: underline;

@@ -13,7 +13,6 @@ interface UserState {
   password: string;
   nickname: string;
   images: ImageType[];
-  loggedIn?: boolean;
 }
 
 const initialState: UserState = {
@@ -24,7 +23,6 @@ const initialState: UserState = {
   password: '',
   nickname: '',
   images: [{ imageUrl: '' }],
-  loggedIn: false,
 };
 
 export const userSlice = createSlice({
@@ -53,13 +51,9 @@ export const userSlice = createSlice({
       // state.images = action.payload;
       return { ...state, images: action.payload };
     },
-    checkLoggedIn: (state, action: PayloadAction<boolean>) => {
-      state.loggedIn = action.payload;
-    },
   },
 });
 
-export const { setKey, changeUserType, setEmail, setName, setPassword, setNickname, setImages, checkLoggedIn } =
-  userSlice.actions;
+export const { setKey, changeUserType, setEmail, setName, setPassword, setNickname, setImages } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;

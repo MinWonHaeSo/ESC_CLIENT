@@ -18,6 +18,7 @@ interface EmailValidationProps {
 
 const EmailValidation = ({ required, validateProcess, setValidateProcess }: EmailValidationProps) => {
   const [inputValidateCode, setInputValidateCode] = useState<string>('');
+  const { data } = useCheckEmailValidateQuery(inputValidateCode);
 
   const dispatch = useAppDispatch();
 
@@ -32,13 +33,12 @@ const EmailValidation = ({ required, validateProcess, setValidateProcess }: Emai
     setInputValidateCode(currentNumber);
   };
 
-  const handleValidateCodeCheck = async () => {
+  const handleValidateCodeCheck = () => {
     const key = inputValidateCode;
-    if (inputValidateCode.length !== 6) {
+    if (key.length !== 6) {
       return sw.toast.warn('인증코드 6자리를 입력해주세요.');
     }
     try {
-      const { data } = useCheckEmailValidateQuery(key);
       if (data) {
         sw.toast.success('정상 인증 되었습니다.');
         setTimeout(() => {

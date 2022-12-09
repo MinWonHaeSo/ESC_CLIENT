@@ -1,6 +1,5 @@
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
-import { Link } from 'react-router-dom';
 import GoogleSocialLogin from '../SocialLogin/GoogleSocialLogin';
 import KakaoSocialLogin from '../SocialLogin/KakaoSocialLogin';
 import NaverSocialLogin from '../SocialLogin/NaverSocialLogin';
@@ -12,10 +11,9 @@ const SocialLogin = (props: SocialLoginProps) => {
     <SocialLoginBlock>
       <Title>SNS 계정으로 간편 로그인</Title>
       <SocialLink>
-        <KakaoSocialLogin />
-
         <NaverSocialLogin />
-        {/* <GoogleSocialLogin /> */}
+        <KakaoSocialLogin />
+        <GoogleSocialLogin />
       </SocialLink>
     </SocialLoginBlock>
   );
@@ -39,17 +37,6 @@ const Title = styled.h3`
 const SocialLink = styled.div`
   display: flex;
   align-items: center;
+  gap: 12px;
   margin-top: 16px;
-`;
-
-const SLink = styled(Link)`
-  width: 3.2rem;
-  height: 3.2rem;
-  margin: 0 8px;
-  border-radius: 50%;
-  border: 1px solid ${palette.grey[300]};
-
-  span {
-    display: none;
-  }
 `;

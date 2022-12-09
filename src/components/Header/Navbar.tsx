@@ -6,7 +6,7 @@ import styled from '@emotion/styled';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { checkLoggedIn } from '@/store/userSlice';
+import { checkLoggedIn } from '@/store/authSlice';
 import sw from '@/lib/utils/customSweetAlert';
 import { changeMemberType } from '@/store/memberCheckSlice';
 import { UserType } from '@/types/userType';
@@ -40,12 +40,12 @@ const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
   return (
     <NavbarBlock>
       <NavbarMenu isActive={isActive}>
-        <UerProfile>
+        <UserProfile>
           <div>
             <img src="src/assets/defaultUserImage.png" alt="프로필" width="70px" height="70px" />
           </div>
           <span>닉네임</span>
-        </UerProfile>
+        </UserProfile>
         {HEADER_NAV[loginType].map(nav => (
           <li key={nav.id} onClick={handleListClick}>
             <Link to={nav.to}>{nav.title}</Link>
@@ -139,7 +139,7 @@ const BackgroundLayout = styled.div<IsActiveProps>`
     `}
 `;
 
-const UerProfile = styled.div`
+const UserProfile = styled.div`
   display: flex;
   align-items: center;
   gap: 3rem;
