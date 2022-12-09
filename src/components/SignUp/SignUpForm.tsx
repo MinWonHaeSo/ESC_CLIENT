@@ -5,7 +5,7 @@ import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
 import Button from '../common/atoms/Button';
 import Email from './Email';
-import PassWord from './PassWord';
+import Password from './PassWord';
 import NickName from './NickName';
 import { useState } from 'react';
 import sw from '@/lib/utils/customSweetAlert';
@@ -14,10 +14,12 @@ import formStateCheck from '@/lib/utils/formStateCheck';
 import InsertImage from '../common/InsertImage';
 import { RootState } from '@/store/store';
 import { useSelector } from 'react-redux';
+import UserName from './UserName';
 
 interface SignUpFormProps {}
 
 export interface AllCheckedState {
+  userName: boolean;
   email: boolean;
   password: boolean;
   passwordConfirm: boolean;
@@ -25,6 +27,7 @@ export interface AllCheckedState {
 }
 
 const initialState: AllCheckedState = {
+  userName: false,
   email: false,
   password: false,
   passwordConfirm: false,
@@ -65,8 +68,9 @@ const SignUpForm = (props: SignUpFormProps) => {
   return (
     <FormBlock onSubmit={handleFormSubmit}>
       <InsertImage editDisabled={false} />
+      <UserName allChecked={allChecked} setAllChecked={setAllChecked} />
       <Email allChecked={allChecked} setAllChecked={setAllChecked} />
-      <PassWord allChecked={allChecked} setAllChecked={setAllChecked} />
+      <Password allChecked={allChecked} setAllChecked={setAllChecked} />
       <NickName allChecked={allChecked} setAllChecked={setAllChecked} />
       <StyleWrapper>
         <Button type="submit" size={'large'} backgroundColor={`${palette.black[100]}`} onClick={handleFormButtonClick}>
