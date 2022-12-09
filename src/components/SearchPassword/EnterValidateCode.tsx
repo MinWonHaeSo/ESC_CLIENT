@@ -1,7 +1,7 @@
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import sw from '@/lib/utils/customSweetAlert';
-import { changeIndex } from '@/store/findPassWordSlice';
+import { changeIndex } from '@/store/searchPassWordSlice';
 import { RootState, useAppDispatch } from '@/store/store';
 import styled from '@emotion/styled';
 import React, { useState } from 'react';

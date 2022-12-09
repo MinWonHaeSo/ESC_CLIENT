@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 
-interface FindPassWordProcessProps {
+interface SearchPasswordProcessProps {
   index: number;
   component: JSX.Element;
 }
 
-const FindPassWordProcess = ({ index, component }: FindPassWordProcessProps) => {
+const SearchPasswordProcess = ({ index, component }: SearchPasswordProcessProps) => {
   return (
     <>
       <Index>{index}</Index>
@@ -14,7 +14,7 @@ const FindPassWordProcess = ({ index, component }: FindPassWordProcessProps) => 
   );
 };
 
-export default FindPassWordProcess;
+export default SearchPasswordProcess;
 
 const Index = styled.span`
   display: none;

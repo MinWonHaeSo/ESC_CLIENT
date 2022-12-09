@@ -2,20 +2,20 @@ import { RootState } from '@/store/store';
 import { useSelector } from 'react-redux';
 import EnterNewPassWord from './EnterNewPassWord';
 import EnterValidateCode from './EnterValidateCode';
-import FindPassWordProcess from './FindPassWordProcess';
+import SearchPasswordProcess from './SearchPassWordProcess';
 import ValidateEmail from './ValidateEmail';
 
 interface FindPassWordProps {}
 
-const FindPassWord = (props: FindPassWordProps) => {
-  const orderIndex = useSelector((state: RootState) => state.findPassWord.index);
+const SearchPassWord = (props: FindPassWordProps) => {
+  const orderIndex = useSelector((state: RootState) => state.searchPassWord.index);
   const orderList = [
     { index: 1, component: <ValidateEmail /> },
     { index: 2, component: <EnterValidateCode /> },
     { index: 3, component: <EnterNewPassWord /> },
   ];
 
-  return <FindPassWordProcess {...orderList[orderIndex]} />;
+  return <SearchPasswordProcess {...orderList[orderIndex]} />;
 };
 
-export default FindPassWord;
+export default SearchPassWord;
