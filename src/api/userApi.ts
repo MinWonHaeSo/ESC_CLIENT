@@ -81,24 +81,8 @@ const userApi = baseApi.injectEndpoints({
       query: key => ({
         url: `/members/email-auth?key=${key}`,
         method: 'POST',
-        body: email,
       }),
       invalidatesTags: [{ type: 'User', id: 'LIST' }],
-    }),
-    sendEmailValidateCode: builder.mutation<{ statusCode: number; message: string }, Email>({
-      query: (email: Email) => ({
-        url: `/members/email-auth`,
-        method: 'POST',
-        body: email,
-      }),
-      invalidatesTags: ['User'],
-    }),
-    checkEmailValidate: builder.mutation<{ statusCode: number; error: string; message: string }, Email>({
-      query: key => ({
-        url: `/members/email-auth?key={key}`,
-        method: 'POST',
-      }),
-      invalidatesTags: ['User'],
     }),
   }),
 });
