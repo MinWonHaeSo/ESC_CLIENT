@@ -20,7 +20,7 @@ const EnterValidateCode = (props: EnterValidateCodeProps) => {
   const [newCode, setNewCode] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
-  const orderIndex = useSelector((state: RootState) => state.findPassWord.index);
+  const orderIndex = useSelector((state: RootState) => state.searchPassWord.index);
 
   const checkValidationCode = (currentNumber: string) => {
     if (currentNumber.length !== 4) {
