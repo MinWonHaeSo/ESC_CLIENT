@@ -5,7 +5,7 @@ import sw from '@/lib/utils/customSweetAlert';
 import { useAppDispatch } from '@/store/store';
 import { setKey } from '@/store/userSlice';
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useEffect } from 'react';
 import Button from '../common/atoms/Button';
 import { ValidateState } from './Email';
@@ -18,7 +18,15 @@ interface EmailValidationProps {
 
 const EmailValidation = ({ required, validateProcess, setValidateProcess }: EmailValidationProps) => {
   const [inputValidateCode, setInputValidateCode] = useState<string>('');
-  const { data } = useCheckEmailValidateQuery(inputValidateCode);
+
+  const sendCorrectInputValue = useCallback(() => {
+    if (inputValidateCode.length < 6) {
+      return '';
+    }
+    return inputValidateCode;
+  }, [inputValidateCode]);
+
+  const { data } = useCheckEmailValidateQuery(sendCorrectInputValue());
 
   const dispatch = useAppDispatch();
 
@@ -26,7 +34,7 @@ const EmailValidation = ({ required, validateProcess, setValidateProcess }: Emai
     if (inputValidateCode.length === 6) {
       dispatch(setKey(inputValidateCode));
     }
-  }, [inputValidateCode]);
+  }, []);
 
   const handleValidateCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentNumber = e.target.value.slice(0, 6);
@@ -63,7 +71,7 @@ const EmailValidation = ({ required, validateProcess, setValidateProcess }: Emai
           type={'number'}
           value={inputValidateCode}
           placeholder={'인증 코드 6자리 입력'}
-          minLength={4}
+          minLength={6}
           onChange={handleValidateCodeChange}
           required={required}
         />
