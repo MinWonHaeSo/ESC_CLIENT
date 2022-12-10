@@ -2,27 +2,26 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type tagType = { id: number; name: string };
 
-export type rentalItemType = { id: string; img: string; name: string; price: number; };
+export type rentalItemType = { id: string; img: string; name: string; price: string; [key: string] : string; };
 
 export type imagesType = { id: number; url: string };
 
-export type timeType = { hh: number, mm: number };
 
 export interface stardiumWriteState {
   id: number;
   name: string;
   address: string;
   detailAddress: string;
-  price: number;
+  weekdayPricePerHalfHour: number;
   images: imagesType[];
   tags: string[];
-  startTime: timeType;
-  endTime: timeType;
-  rentalItems:  rentalItemType[];
+  openTime: string;
+  closeTime: string;
+  rentalItems: rentalItemType[];
   lat: string;
-  lng: string;
+  lnt: string;
 
-  [key: string]: string | string[] | timeType | number | imagesType[] | tagType[] | rentalItemType[];
+  [key: string]: string | string[] | number | imagesType[] | tagType[] | rentalItemType[];
 }
 
 const initialState: stardiumWriteState = {
@@ -30,21 +29,21 @@ const initialState: stardiumWriteState = {
   name: '',
   address: '',
   detailAddress: '',
-  price: 0,
+  weekdayPricePerHalfHour: 0,
   images: [],
   tags: [],
-  startTime: { hh: 9, mm: 0 },
-  endTime: { hh: 22, mm: 0 },
+  openTime: '09:00:00',
+  closeTime: '22:00:00',
   rentalItems: [
     {
       id: '',
       img: '',
       name: '',
-      price: 0
+      price: '',
     },
   ],
   lat: '',
-  lng:''
+  lnt: '',
 };
 
 export const staridumWriteSlice = createSlice({
@@ -61,10 +60,10 @@ export const staridumWriteSlice = createSlice({
       const filterImages = state.images.filter(image => image.id !== action.payload);
       state.images = filterImages;
     },
-    changeAddress: (state, action: PayloadAction<{address: string, lat:string, lng: string}>) => {
+    changeAddress: (state, action: PayloadAction<{address: string, lat:string, lnt: string}>) => {
       state.address = action.payload.address;
       state.lat = action.payload.lat;
-      state.lng = action.payload.lng;
+      state.lnt = action.payload.lnt;
     },
     addTags: (state, action: PayloadAction<string>) => {
       state.tags.push(action.payload);
@@ -72,9 +71,8 @@ export const staridumWriteSlice = createSlice({
     removeTags: (state, action: PayloadAction<number>) => {
       state.tags.splice(action.payload, 1);
     },
-    changeTimes: (state, action: PayloadAction<{ name: 'startTime' | 'endTime' } & timeType>) => {
-      state[action.payload.name].hh = action.payload.hh;
-      state[action.payload.name].mm = action.payload.mm;
+    changeTimes: (state, action: PayloadAction<{ name: 'openTime' | 'closeTime' , time : string}>) => {
+      state[action.payload.name] = action.payload.time;
     },
     addRentalItem: (state, action: PayloadAction<rentalItemType>) => {
       state.rentalItems.push(action.payload);
@@ -83,13 +81,9 @@ export const staridumWriteSlice = createSlice({
       const filterRentalItems = state.rentalItems.filter(item => item.id !== action.payload);
       state.rentalItems = filterRentalItems;
     },
-    changeRentalItemName: (state, action: PayloadAction<{ id: string, value: string }>) => {
+    changeRentalItemInput: (state, action: PayloadAction<{ id: string, name: 'name' | 'price', value: string }>) => {
       const idx = state.rentalItems.findIndex(item => item.id === action.payload.id);
-      state.rentalItems[idx].name = action.payload.value;
-    },
-    changeRentalItemPrice: (state, action: PayloadAction<{ id: string, value: number }>) => {
-      const idx = state.rentalItems.findIndex(item => item.id === action.payload.id);
-      state.rentalItems[idx].price = action.payload.value;
+      state.rentalItems[idx][action.payload.name] = action.payload.value;
     },
     changeRentalItemImage: (state, action: PayloadAction<{ id: string, url: string }>) => {
       const idx = state.rentalItems.findIndex(item => item.id === action.payload.id);
@@ -110,8 +104,7 @@ export const {
   changeTimes,
   addRentalItem,
   removeRentalItem,
-  changeRentalItemName,
-  changeRentalItemPrice,
+  changeRentalItemInput,
   changeRentalItemImage,
 } = staridumWriteSlice.actions;
 

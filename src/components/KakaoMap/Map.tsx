@@ -10,7 +10,6 @@ const Map = ({ searchResults, onClickMarker }: MapProps) => {
   const kakaoMap = useKakaoMapScript();
   setMarker({ map: kakaoMap, placeInfo: searchResults, clickHandle: onClickMarker });
 
-  console.log(1);
   return (
     <div>
       <div

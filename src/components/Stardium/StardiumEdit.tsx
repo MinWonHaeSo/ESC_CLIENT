@@ -10,16 +10,20 @@ import StardiumEditAddress from './StardiumEditElements/StardiumEditAddress';
 import StardiumTime from './StardiumEditElements/StardiumTime';
 import StardiumEditRentalItem from './StardiumEditElements/StardiumEditRentalItem';
 import Dividers from '../common/Dividers';
+import { useAddStardiumMutation } from '@/api/stardiumApi';
 
 interface StardiumEditProps {
   write: stardiumWriteState;
 }
 
 const StardiumEdit = ({ write }: StardiumEditProps) => {
+  const [stardiumAdd, result] = useAddStardiumMutation();
 
   const handleSumbitStardium = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('submit');
+
+    stardiumAdd(write);
   };
 
   return (
@@ -38,14 +42,14 @@ const StardiumEdit = ({ write }: StardiumEditProps) => {
         <StardiumEditAddress address={write.address} detailAddress={write.detailAddress} />
         <StardiumEditInput
           type="text"
-          name="price"
+          name="weekdayPricePerHalfHour"
           id="stardiumPrice"
           title="체육관 가격"
           placeholder="체육관 가격"
-          value={write.price}
+          value={write.weekdayPricePerHalfHour}
         />
         <StardiumEditTag tags={write.tags} />
-        <StardiumTime startTime={write.startTime} endTime={write.endTime} />
+        <StardiumTime startTime={write.openTime} endTime={write.closeTime} />
         <StardiumEditRentalItem rentalItems={write.rentalItems} />
         <button type="submit">등록하기</button>
       </StardiumEditForm>

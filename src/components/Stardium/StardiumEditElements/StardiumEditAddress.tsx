@@ -26,7 +26,7 @@ const StardiumEditAddress = ({ address, detailAddress }: StardiumEditAddressProp
   const handleSelectAdress = async (data: any) => {
     // 주소 string -> 위도 경도 변환
     const geoLocation = await geoCode(data.address) as GeoLocationType;
-    dispatch(changeAddress({address: data.address, lat:geoLocation.lat, lng: geoLocation.lng}));
+    dispatch(changeAddress({address: data.address, lat:geoLocation.lat, lnt: geoLocation.lng}));
     setOpenPostcode(false);
   };
 

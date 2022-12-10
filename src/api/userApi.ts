@@ -1,4 +1,4 @@
-import { UserType } from '@/store/userSlice';
+import { UserType } from '@/types/userType';
 import { baseApi } from './baseApi';
 
 interface Image {
@@ -32,7 +32,6 @@ interface LoginResponse {
 }
 
 type LoginRequest = Pick<User, 'email' | 'password'>;
-
 
 type Email = Pick<User, 'email'>;
 

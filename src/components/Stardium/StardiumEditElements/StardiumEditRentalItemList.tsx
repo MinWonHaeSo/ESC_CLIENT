@@ -1,7 +1,11 @@
 import React, { useRef } from 'react';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
-import { changeRentalItemImage, changeRentalItemName, rentalItemType } from '@/store/stardiumWriteSlice';
+import {
+  changeRentalItemImage,
+  changeRentalItemInput,
+  rentalItemType,
+} from '@/store/stardiumWriteSlice';
 import { useDispatch } from 'react-redux';
 
 interface RentalItemLisProps {
@@ -26,17 +30,13 @@ const RentalItemList = ({ rentalItem, onRemoveRental }: RentalItemLisProps) => {
     dispatch(changeRentalItemImage({ id, url: filesPath }));
   };
 
-  const handleChangeRentalNameInput = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
-    const { value } = e.target;
+  const handleChangeRentalInputFiled = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
+    const value = e.target.value as string;
+    const name = e.target.name as 'name' | 'price';
 
-    dispatch(changeRentalItemName({ value, id }));
+    dispatch(changeRentalItemInput({ name, value, id }));
   }
 
-  const handleChangeRentalPriceInput = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
-    const { value } = e.target;
-
-    dispatch(changeRentalItemName({ value, id }));
-  }
 
   return (
     <RentalItemListContainer>
@@ -61,14 +61,14 @@ const RentalItemList = ({ rentalItem, onRemoveRental }: RentalItemLisProps) => {
           <input
             type="text"
             value={rentalItem.name}
-            onChange={e => handleChangeRentalNameInput(e, rentalItem.id)}
+            onChange={e => handleChangeRentalInputFiled(e, rentalItem.id)}
             name="name"
             placeholder="대여 용품 이름"
           />
           <input
             type="text"
             value={rentalItem.price}
-            onChange={e => handleChangeRentalPriceInput(e, rentalItem.id)}
+            onChange={e => handleChangeRentalInputFiled(e, rentalItem.id)}
             name="price"
             placeholder="대여 용품 가격"
           />

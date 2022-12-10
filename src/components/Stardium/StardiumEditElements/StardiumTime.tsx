@@ -6,30 +6,26 @@ import Label from '@/components/common/atoms/Label';
 import CustomDatePicker from '@/components/common/CustomDatePicker';
 import datepickerTime from '@/lib/utils/datepickerTIme';
 import useDefaultTime from '@/hooks/useDefaultTime';
-import { changeTimes, timeType } from '@/store/stardiumWriteSlice';
+import { changeTimes } from '@/store/stardiumWriteSlice';
 import { useDispatch } from 'react-redux';
 
 interface StardiumTimeProps {
-  startTime: timeType;
-  endTime: timeType;
+  startTime: string;
+  endTime: string;
 };
 
 const StardiumTime = ({ startTime, endTime }: StardiumTimeProps) => {
-  const startDate = useDefaultTime(startTime.hh, startTime.mm)
-  const endDate = useDefaultTime(endTime.hh, endTime.mm)
+  const startDate = useDefaultTime(startTime)
+  const endDate = useDefaultTime(endTime)
   const includeTime = datepickerTime(startDate.getHours());
   const dispatch = useDispatch();
 
   const handleChangeStartTime = (date: Date) => {
-    const hh = date.getHours();
-    const mm = date.getMinutes();
-    dispatch(changeTimes({ name: 'startTime', hh, mm }));
+    dispatch(changeTimes({ name: 'openTime', time: '12:00:00' }));
   }
 
   const handleChangeEndTime = (date: Date) => {
-    const hh = date.getHours();
-    const mm = date.getMinutes();
-    dispatch(changeTimes({ name: 'endTime', hh, mm }));
+    dispatch(changeTimes({ name: 'closeTime', time: '22:00:00' }));
   }
 
   return (
