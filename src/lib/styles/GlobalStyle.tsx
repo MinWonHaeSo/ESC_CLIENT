@@ -15,6 +15,7 @@ const style = css`
     height: 100%;
     font-size: 16px;
     scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
   }
 
   main,
@@ -49,7 +50,6 @@ const style = css`
   textarea {
     background-color: white;
     border: 0;
-    -webkit-tap-highlight-color: transparent;
 
     &:focus {
       outline: none;
