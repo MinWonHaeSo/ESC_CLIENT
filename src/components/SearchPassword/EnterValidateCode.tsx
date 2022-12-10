@@ -21,6 +21,7 @@ const EnterValidateCode = (props: EnterValidateCodeProps) => {
   const [newCode, setNewCode] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
+
   const orderIndex = useSelector((state: RootState) => state.searchPassword.index);
   const email = useSelector((state: RootState) => state.searchPassword.email);
 
