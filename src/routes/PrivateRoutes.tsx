@@ -8,7 +8,7 @@ interface PrivateRouteProps {
 }
 
 const PrivateRoute = ({}: PrivateRouteProps) => {
-  const loggedIn = useSelector((state: RootState) => state.user.loggedIn);
+  const loggedIn = useSelector((state: RootState) => state.auth.loggedIn);
   if (!loggedIn) {
     sw.toast.error('올바른 접근이 아닙니다.');
   }
