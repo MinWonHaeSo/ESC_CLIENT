@@ -7,8 +7,8 @@ import ValidateEmail from './ValidateEmail';
 
 interface FindPassWordProps {}
 
-const SearchPassWord = (props: FindPassWordProps) => {
-  const orderIndex = useSelector((state: RootState) => state.searchPassWord.index);
+const SearchPassword = (props: FindPassWordProps) => {
+  const orderIndex = useSelector((state: RootState) => state.searchPassword.index);
   const orderList = [
     { index: 1, component: <ValidateEmail /> },
     { index: 2, component: <EnterValidateCode /> },
@@ -18,4 +18,4 @@ const SearchPassWord = (props: FindPassWordProps) => {
   return <SearchPasswordProcess {...orderList[orderIndex]} />;
 };
 
-export default SearchPassWord;
+export default SearchPassword;
