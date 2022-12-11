@@ -7,12 +7,6 @@ const GOOGLE_CLIENT_ID = `${
   import.meta.env.VITE_BASE_URL
 }/oauth2/authorization/google?redirect_uri=http://localhost:5173/oauth/redirect`;
 
-// const initialUserData: UserData = {
-//   email: '',
-//   name: '',
-//   profileImage: '',
-// };
-
 const GoogleSocialLogin = () => {
   const getAuthToken = () => {
     window.location.href = GOOGLE_CLIENT_ID;
