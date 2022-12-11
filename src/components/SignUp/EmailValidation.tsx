@@ -34,7 +34,7 @@ const EmailValidation = ({ required, validateProcess, setValidateProcess }: Emai
     if (inputValidateCode.length === 6) {
       dispatch(setKey(inputValidateCode));
     }
-  }, []);
+  }, [inputValidateCode]);
 
   const handleValidateCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentNumber = e.target.value.slice(0, 6);

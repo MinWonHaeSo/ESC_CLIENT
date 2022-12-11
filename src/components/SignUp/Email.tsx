@@ -81,7 +81,6 @@ const Email = ({ allChecked, setAllChecked }: EmailFormProps) => {
         }, 1000);
       }
     } catch {
-      // setValidateProcess({...validateProcess, validationActive: true});
       throw new Error('이메일 발송 오류가 발생했습니다.');
     }
   };

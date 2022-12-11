@@ -15,6 +15,7 @@ import formStateCheck from '@/lib/utils/formStateCheck';
 import InsertImage from '../common/InsertImage';
 import { RootState } from '@/store/store';
 import { useSelector } from 'react-redux';
+import PATH from '@/constants/path';
 
 interface SignUpFormProps {}
 
@@ -51,7 +52,7 @@ const SignUpForm = (props: SignUpFormProps) => {
         console.log(response);
         sw.toast.success('성공적으로 가입되었습니다. 로그인 해주세요.');
         setTimeout(() => {
-          navigate('/login');
+          navigate(PATH.LOGIN);
         }, 1500);
       }
     } catch {
