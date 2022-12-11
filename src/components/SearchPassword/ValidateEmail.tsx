@@ -23,8 +23,6 @@ const ValidateEmail = (props: ValidateEmailProps) => {
 
   const orderIndex = useSelector((state: RootState) => state.searchPassword.index);
   const dispatch = useAppDispatch();
-  const find = useSelector((state: RootState) => state.searchPassword);
-  console.log(find);
 
   const [findPasswordSendEmail] = useFindPasswordSendEmailMutation();
 
@@ -39,8 +37,8 @@ const ValidateEmail = (props: ValidateEmailProps) => {
       return sw.toast.warn('올바른 형식으로 이메일을 입력해주세요.');
     }
     try {
-      const response = await findPasswordSendEmail({ email: inputEmail });
-      if (response) {
+      const response = await findPasswordSendEmail({ email: inputEmail }).unwrap();
+      if (response.statusCode === 200) {
         sw.toast.success('이메일로 인증 코드가 발송되었습니다.');
         dispatch(saveEmailTemporary(inputEmail));
         setTimeout(() => {

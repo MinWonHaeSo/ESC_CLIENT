@@ -1,9 +1,8 @@
 import { useChangePasswordRequestMutation } from '@/api/authApi';
-import formRegex from '@/constants/formRegex';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import sw from '@/lib/utils/customSweetAlert';
-import { changeIndex, changeNewPassword } from '@/store/searchPassWordSlice';
+import { changeNewPassword } from '@/store/searchPassWordSlice';
 import { RootState, useAppDispatch } from '@/store/store';
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
@@ -46,6 +45,7 @@ const EnterNewPassWord = (props: EnterNewPasswordProps) => {
 
   const orderIndex = useSelector((state: RootState) => state.searchPassword.index);
   const savedInfo = useSelector((state: RootState) => state.searchPassword);
+
   const dispatch = useAppDispatch();
 
   const [changePasswordRequest] = useChangePasswordRequestMutation();
@@ -60,29 +60,35 @@ const EnterNewPassWord = (props: EnterNewPasswordProps) => {
     }
   };
 
+  console.log(password, passwordConfirm);
+
   // [] 서버에 저장된 비밀번호와 같은 지 비교하는 조건 확인 (이전단계에서 입력한 이메일로 비교)
   // [] 서버에 저장된 이전 사용자 비밀번호와 비교하여 같으면, 같다고 경고 알림 메세지 띄우지
   const handleChangePasswordClick = async () => {
-    if (password === 'zero@1234') {
-      return sw.toast.error('이전에 사용하던 비밀번호와 같습니다.');
-    }
-    dispatch(changeNewPassword({ prePassword: '', password: password, confirmPassword: passwordConfirm }));
     const requestInfo = {
       email: savedInfo.email,
-      prePassword: savedInfo.prePassword,
-      password: savedInfo.password,
-      confirmPassword: savedInfo.confirmPassword,
+      prePassword: null,
+      newPassword: password,
+      confirmPassword: passwordConfirm,
+      hasToken: false,
     };
+
     try {
       const response = await changePasswordRequest(requestInfo);
       if (response) {
-        sw.toast.success('성공적으로 변경되었습니다.');
+        sw.toast.success(`성공적으로 변경되었습니다.`);
+        dispatch(
+          changeNewPassword({
+            index: orderIndex - 2,
+            prePassword: null,
+            newPassword: password,
+            confirmPassword: passwordConfirm,
+            hasToken: false,
+          }),
+        );
         setTimeout(() => {
           navigate('/login');
         }, 1000);
-        setTimeout(() => {
-          dispatch(changeIndex(orderIndex - 2));
-        }, 1500);
       }
     } catch {
       console.error('이전 비밀번호와 같을 수 있습니다.');

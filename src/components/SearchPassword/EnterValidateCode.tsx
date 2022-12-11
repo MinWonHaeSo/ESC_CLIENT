@@ -68,7 +68,7 @@ const EnterValidateCode = (props: EnterValidateCodeProps) => {
 
   const handleSendNewCodeButtonClick = async () => {
     try {
-      const response = await findPasswordSendEmail(email);
+      const response = await findPasswordSendEmail({ email: email });
       if (response) {
         sw.toast.success('인증코드를 새롭게 발송하였습니다.');
         setTimeout(() => {
