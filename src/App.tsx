@@ -12,28 +12,31 @@ import StardiumUploadPage from './pages/StardiumUploadPage';
 import SearchPasswordPage from './pages/SearchPasswordPage';
 import SignOutPage from './pages/SignOutPage';
 import OAuthRedirectPage from './pages/OAuthRedirectPage';
+import { CookiesProvider } from 'react-cookie';
 
 const App = () => {
   return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<Homepage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/oauth2/:social" element={<OAuthRedirectPage />} />
-            <Route path="/signup" element={<SignUpPage />} />
-            <Route path="/searchpassword" element={<SearchPasswordPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-            {/* <Route element={<PrivateRoute />}> */}
-            <Route path="/mypage" element={<MyPage />} />
-            <Route path="/signout" element={<SignOutPage />} />
-            <Route path="/manager/stardium/upload" element={<StardiumUploadPage />} />
-            {/* </Route> */}
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </Provider>
+    <CookiesProvider>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route path="/" element={<Homepage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/oauth2/:social" element={<OAuthRedirectPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
+              <Route path="/searchpassword" element={<SearchPasswordPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+              {/* <Route element={<PrivateRoute />}> */}
+              <Route path="/mypage" element={<MyPage />} />
+              <Route path="/signout" element={<SignOutPage />} />
+              <Route path="/manager/stardium/upload" element={<StardiumUploadPage />} />
+              {/* </Route> */}
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </Provider>
+    </CookiesProvider>
   );
 };
 
