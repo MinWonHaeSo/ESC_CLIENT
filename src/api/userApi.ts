@@ -7,52 +7,33 @@ interface Image {
 
 export interface User {
   key: string;
-  userType: UserType;
+  type: UserType;
   email: string;
   name: string;
   password: string;
   nickname: string;
-  images: Image[];
+  image: Image[];
+}
+
+interface Response {
+  message: string;
+  statusCode: string;
+  error?: string;
 }
 
 export interface SignUpResponse {
   statusCode: number;
   name: string;
-  images: Image[];
+  nickname: string;
+  image: Image[];
 }
 
 type SignUpRequest = User;
-
-interface LoginResponse {
-  statusCode: number;
-  accessToken: string;
-  refreshToken: string;
-  name: string;
-  nickname: string;
-  images: Image[];
-}
-
-type LoginRequest = Pick<User, 'email' | 'password'>;
 
 type Email = Pick<User, 'email'>;
 
 const userApi = baseApi.injectEndpoints({
   endpoints: builder => ({
-    getUserList: builder.query({
-      query: () => ({
-        url: '/posts',
-        method: 'GET',
-      }),
-      providesTags: ['User'],
-    }),
-    login: builder.mutation<LoginResponse, LoginRequest>({
-      query: credentials => ({
-        url: '/members/auth/login',
-        method: 'POST',
-        body: { ...credentials },
-      }),
-      invalidatesTags: ['User'],
-    }),
     signUp: builder.mutation<SignUpResponse, SignUpRequest>({
       query: (userData: User) => ({
         url: `/members/signup`,
@@ -61,16 +42,16 @@ const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['User'],
     }),
-    emailDoubleCheck: builder.mutation<{ statusCode: number; message: string }, Email>({
+    emailDoubleCheck: builder.mutation<Response, Email>({
       query: (email: Email) => ({
         url: '/members/email-dup',
         method: 'POST',
         body: email,
       }),
-      transformResponse: (response: { data: { statusCode: number; message: string } }) => response.data,
+      transformResponse: (response: { data: Response }) => response.data,
       invalidatesTags: [{ type: 'User', id: 'LIST' }],
     }),
-    sendEmailValidateCode: builder.mutation<{ statusCode: number; message: string }, Email>({
+    sendEmailValidateCode: builder.mutation<Response, Email>({
       query: (email: Email) => ({
         url: `/members/email-auth`,
         method: 'POST',
@@ -79,20 +60,25 @@ const userApi = baseApi.injectEndpoints({
       invalidatesTags: ['User'],
     }),
     checkEmailValidate: builder.query<{ statusCode: number; error: string; message: string }, string>({
-      query: key => ({
+      query: (key: string) => ({
         url: `/members/email-authentication/?key=${key}`,
         method: 'GET',
       }),
       providesTags: ['User'],
     }),
+    signOut: builder.mutation({
+      query: () => ({
+        url: `/members/profiles/info`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
 export const {
-  useGetUserListQuery,
-  useLoginMutation,
   useSignUpMutation,
   useEmailDoubleCheckMutation,
   useSendEmailValidateCodeMutation,
   useCheckEmailValidateQuery,
+  useSignOutMutation,
 } = userApi;

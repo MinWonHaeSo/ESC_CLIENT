@@ -3,24 +3,24 @@ import styled from '@emotion/styled';
 import { tabMenus } from '@/constants/tabMenu';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '@/store/store';
-import { changeUserType } from '@/store/userSlice';
+import { setUserType } from '@/store/userSlice';
 import { UserType } from '@/types/userType';
 
 interface TabMenuProps {}
 
 const TabMenu = (props: TabMenuProps) => {
-  const userType = useSelector((state: RootState) => state.user.userType);
+  const userType = useSelector((state: RootState) => state.user.type);
   const dispatch = useAppDispatch();
-
+  console.log(userType);
   return (
     <TabMenuBlock>
       {tabMenus.map(tab => (
         <Tab
           key={tab.type}
           type={tab.type}
-          focus={userType === tab.type.toLocaleUpperCase()}
+          focus={userType === tab.type}
           onClick={() => {
-            dispatch(changeUserType(tab.type));
+            dispatch(setUserType(tab.type));
           }}
         >
           {tab.name}
@@ -52,6 +52,7 @@ const Tab = styled.li<tabStyleProps>`
   border: 1px solid ${palette.black[100]};
   border-radius: 10px 0 0 10px;
   color: ${palette.black[100]};
+  cursor: pointer;
 
   ${({ type }) => type === 'MANAGER' && `border-radius: 0 10px 10px 0;`};
 

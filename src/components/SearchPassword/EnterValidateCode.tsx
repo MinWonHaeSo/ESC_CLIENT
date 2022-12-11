@@ -1,10 +1,11 @@
+import { useFindPasswordSendEmailMutation, useFindPasswordValidateEmailQuery } from '@/api/authApi';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import sw from '@/lib/utils/customSweetAlert';
 import { changeIndex } from '@/store/searchPassWordSlice';
 import { RootState, useAppDispatch } from '@/store/store';
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Button from '../common/atoms/Button';
 import Input from '../common/atoms/Input';
@@ -20,40 +21,64 @@ const EnterValidateCode = (props: EnterValidateCodeProps) => {
   const [newCode, setNewCode] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
-  const orderIndex = useSelector((state: RootState) => state.searchPassWord.index);
+
+  const orderIndex = useSelector((state: RootState) => state.searchPassword.index);
+  const email = useSelector((state: RootState) => state.searchPassword.email);
+
+  const sendCorrectInputValue = useCallback(() => {
+    if (inputValue.length < 6) {
+      return '';
+    }
+    return inputValue;
+  }, [inputValue]);
+
+  const { data, error } = useFindPasswordValidateEmailQuery(sendCorrectInputValue());
+  const [findPasswordSendEmail] = useFindPasswordSendEmailMutation();
 
   const checkValidationCode = (currentNumber: string) => {
-    if (currentNumber.length !== 4) {
+    if (currentNumber.length !== 6) {
       return setRequired(true);
     }
     setRequired(false);
   };
 
   const handleInputNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const currentNumber = e.target.value.slice(0, 4);
+    const currentNumber = e.target.value.slice(0, 6);
     setInputValue(currentNumber);
     setRequired(true);
     checkValidationCode(currentNumber);
   };
 
-  // [] 이메일로 발송된 인증코드와 입력한 인증코드가 같지 않은 경우,
-  // 1. 인증코드 다시 입력 알림 띄우기
-  // 2. 인증코드 다시 보내기 버튼 생성
-
   const handleConfirmButtonClick = () => {
-    if (inputValue.length !== 4) {
+    // [] 이메일로 발송된 인증코드와 입력한 인증코드가 같지 않은 경우,
+    // 1. 인증코드 다시 입력 알림 띄우기
+    // 2. 인증코드 다시 보내기 버튼 생성
+    if (inputValue.length !== 6) {
       return;
     }
-    if (inputValue === '1234') {
+    if (error) {
       setNewCode(true);
       return sw.toast.error('인증코드가 정확하지 않습니다.');
     }
-    dispatch(changeIndex(orderIndex + 1));
+    if (data) {
+      sw.toast.success('인증코드가 일치합니다.');
+      dispatch(changeIndex(orderIndex + 1));
+    }
   };
 
-  const handleSendNewCodeButtonClick = () => {
-    setInputValue('');
-    setNewCode(false);
+  const handleSendNewCodeButtonClick = async () => {
+    try {
+      const response = await findPasswordSendEmail(email);
+      if (response) {
+        sw.toast.success('인증코드를 새롭게 발송하였습니다.');
+        setTimeout(() => {
+          setInputValue('');
+          setNewCode(false);
+        }, 500);
+      }
+    } catch {
+      console.error('이메일을 다시 발송하는데 문제가 발생하였습니다.');
+    }
   };
 
   return (
@@ -67,13 +92,13 @@ const EnterValidateCode = (props: EnterValidateCodeProps) => {
           type={'number'}
           value={inputValue}
           placeholder={'인증 코드를 입력하세요.'}
-          minLength={4}
+          minLength={6}
           onChange={handleInputNumberChange}
           required={required}
         />
-        <RequiredMessage required={required}>숫자 4자리를 입력해 주세요.</RequiredMessage>
+        <RequiredMessage required={required}>숫자 6자리를 입력해 주세요.</RequiredMessage>
       </InputWrapper>
-      {newCode && (
+      {newCode ? (
         <SWrapper>
           <Button
             type={'button'}
@@ -84,7 +109,7 @@ const EnterValidateCode = (props: EnterValidateCodeProps) => {
             인증 코드 다시 보내기
           </Button>
         </SWrapper>
-      )}
+      ) : null}
       <SWrapper>
         <Button
           type={'button'}

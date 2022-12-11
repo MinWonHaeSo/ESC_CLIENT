@@ -1,8 +1,9 @@
+import { useChangePasswordRequestMutation } from '@/api/authApi';
 import formRegex from '@/constants/formRegex';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import sw from '@/lib/utils/customSweetAlert';
-import { changeIndex } from '@/store/searchPassWordSlice';
+import { changeIndex, changeNewPassword } from '@/store/searchPassWordSlice';
 import { RootState, useAppDispatch } from '@/store/store';
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
@@ -13,67 +14,79 @@ import Input from '../common/atoms/Input';
 import Title from '../common/atoms/Title';
 import Responsive from '../common/Responsive';
 import RequiredMessage from '../SignUp/RequiredMessage';
+import { checkPasswordConfirmValidation, checkPasswordValidation } from './formValidation';
 
-interface EnterNewPassWordProps {}
+interface EnterNewPasswordProps {}
 
 interface InitialRequiredState {
-  passWord: boolean;
-  passWordConfirm: boolean;
+  password: boolean;
+  passwordConfirm: boolean;
 }
 
-const initialRequiredState: InitialRequiredState = {
-  passWord: false,
-  passWordConfirm: false,
+interface InitialFormState {
+  password: string;
+  passwordConfirm: string;
+}
+
+const initialFormState: InitialFormState = {
+  password: '',
+  passwordConfirm: '',
 };
 
-const EnterNewPassWord = (props: EnterNewPassWordProps) => {
-  const [passWord, setPassWord] = useState<string>('');
-  const [passWordConfirm, setPassWordConfirm] = useState<string>('');
+const initialRequiredState: InitialRequiredState = {
+  password: false,
+  passwordConfirm: false,
+};
+
+const EnterNewPassWord = (props: EnterNewPasswordProps) => {
+  const [formState, setFormState] = useState<InitialFormState>(initialFormState);
   const [required, setRequired] = useState<InitialRequiredState>(initialRequiredState);
+  const { password, passwordConfirm } = formState;
   const navigate = useNavigate();
-  const orderIndex = useSelector((state: RootState) => state.searchPassWord.index);
+
+  const orderIndex = useSelector((state: RootState) => state.searchPassword.index);
+  const savedInfo = useSelector((state: RootState) => state.searchPassword);
   const dispatch = useAppDispatch();
 
+  const [changePasswordRequest] = useChangePasswordRequestMutation();
+
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, id } = e.target;
+    setFormState({ ...formState, [id]: value });
+    if (id === 'password') {
+      checkPasswordValidation(value, setRequired, required);
+    } else if (id === 'passwordConfirm') {
+      checkPasswordConfirmValidation(password, value, setRequired, required);
+    }
+  };
+
   // [] 서버에 저장된 비밀번호와 같은 지 비교하는 조건 확인 (이전단계에서 입력한 이메일로 비교)
-  const checkPassWordValidation = (currentPassWord: string) => {
-    const { passwordRegex } = formRegex;
-    if (!passwordRegex.test(currentPassWord)) {
-      return setRequired({ ...required, passWord: true });
-    }
-    setRequired({ ...required, passWord: false });
-  };
-
-  const handleNewPassWordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const currentPassWord = e.target.value;
-    setPassWord(currentPassWord);
-    checkPassWordValidation(currentPassWord);
-  };
-
-  const checkPassWordConfirmValidation = (currentPassWordConfirm: string) => {
-    if (passWord !== currentPassWordConfirm) {
-      return setRequired({ ...required, passWordConfirm: true });
-    }
-    setRequired({ ...required, passWordConfirm: false });
-  };
-
-  const handleNewPassWordConfirmChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const currentPassWordConfirm = e.target.value;
-    setPassWordConfirm(currentPassWordConfirm);
-    checkPassWordConfirmValidation(currentPassWordConfirm);
-  };
-
   // [] 서버에 저장된 이전 사용자 비밀번호와 비교하여 같으면, 같다고 경고 알림 메세지 띄우지
-  const handleChangePassWordClick = () => {
-    if (passWord === 'zero@1234') {
+  const handleChangePasswordClick = async () => {
+    if (password === 'zero@1234') {
       return sw.toast.error('이전에 사용하던 비밀번호와 같습니다.');
     }
-    sw.toast.success('성공적으로 변경되었습니다.');
-    setTimeout(() => {
-      navigate('/login');
-    }, 1000);
-    setTimeout(() => {
-      dispatch(changeIndex(orderIndex - 2));
-    }, 1500);
+    dispatch(changeNewPassword({ prePassword: '', password: password, confirmPassword: passwordConfirm }));
+    const requestInfo = {
+      email: savedInfo.email,
+      prePassword: savedInfo.prePassword,
+      password: savedInfo.password,
+      confirmPassword: savedInfo.confirmPassword,
+    };
+    try {
+      const response = await changePasswordRequest(requestInfo);
+      if (response) {
+        sw.toast.success('성공적으로 변경되었습니다.');
+        setTimeout(() => {
+          navigate('/login');
+        }, 1000);
+        setTimeout(() => {
+          dispatch(changeIndex(orderIndex - 2));
+        }, 1500);
+      }
+    } catch {
+      console.error('이전 비밀번호와 같을 수 있습니다.');
+    }
   };
 
   return (
@@ -85,32 +98,34 @@ const EnterNewPassWord = (props: EnterNewPassWordProps) => {
         <Label>새로운 비밀번호</Label>
         <Input
           type={'password'}
-          value={passWord}
+          value={password}
+          id={'password'}
           placeholder={'새로운 비밀번호를 입력하세요'}
           minLength={8}
-          onChange={handleNewPassWordChange}
-          required={required.passWord}
+          onChange={handleFormChange}
+          required={required.password}
         />
-        <RequiredMessage required={required.passWord} />
+        <RequiredMessage required={required.password} />
       </InputWrapper>
       <InputWrapper>
         <Label>새로운 비밀번호 확인</Label>
         <Input
           type={'password'}
-          value={passWordConfirm}
+          value={passwordConfirm}
+          id={'passwordConfirm'}
           placeholder={'새로운 비밀번호 확인'}
           minLength={8}
-          onChange={handleNewPassWordConfirmChange}
-          required={required.passWordConfirm}
+          onChange={handleFormChange}
+          required={required.passwordConfirm}
         />
-        <RequiredMessage required={required.passWordConfirm} />
+        <RequiredMessage required={required.passwordConfirm} />
       </InputWrapper>
       <SWrapper>
         <Button
           type={'button'}
           size={'large'}
-          backgroundColor={!passWordConfirm.length ? `${palette.grey[200]}` : `${palette.black[100]}`}
-          onClick={handleChangePassWordClick}
+          backgroundColor={!passwordConfirm.length ? `${palette.grey[200]}` : `${palette.black[100]}`}
+          onClick={handleChangePasswordClick}
         >
           변 경
         </Button>

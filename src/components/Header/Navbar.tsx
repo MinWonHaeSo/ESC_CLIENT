@@ -6,10 +6,10 @@ import styled from '@emotion/styled';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { checkLoggedIn } from '@/store/authSlice';
+import { changeUserType, checkLoggedIn, loggedOut } from '@/store/authSlice';
 import sw from '@/lib/utils/customSweetAlert';
-import { changeMemberType } from '@/store/memberCheckSlice';
 import { UserType } from '@/types/userType';
+import { useLogoutMutation } from '@/api/authApi';
 
 interface NavbarProps {
   isActive: boolean;
@@ -17,16 +17,26 @@ interface NavbarProps {
 }
 
 const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
-  const [loginType, setLoginType] = useState<UserType>('USER'); //user, manager, undefinedUser
-  const loggedIn = useSelector((state: RootState) => state.auth.loggedIn);
-  const memberType = useSelector((state: RootState) => state.member.memberType);
-
+  const [loginType, setLoginType] = useState<UserType>('USER'); //user, manager
   const dispatch = useAppDispatch();
-  const handleLogOut = () => {
-    dispatch(checkLoggedIn(false));
-    dispatch(changeMemberType('USER'));
-    onChangeIsActive();
-    sw.toast.success('로그아웃 되었습니다.');
+
+  const loggedIn = useSelector((state: RootState) => state.auth.loggedIn);
+  const userType = useSelector((state: RootState) => state.auth.type);
+  const [logout] = useLogoutMutation();
+
+  const handleLogOut = async () => {
+    try {
+      const response = await logout('');
+      if (response) {
+        dispatch(loggedOut());
+        dispatch(checkLoggedIn(false));
+        dispatch(changeUserType('USER'));
+        onChangeIsActive();
+        sw.toast.success('로그아웃 되었습니다.');
+      }
+    } catch {
+      console.error('로그아웃 하는데 문제가 생겼습니다.');
+    }
   };
 
   const handleListClick = () => {
@@ -34,8 +44,8 @@ const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
   };
 
   useEffect(() => {
-    setLoginType(memberType);
-  }, [memberType]);
+    setLoginType(userType);
+  }, [userType]);
 
   return (
     <NavbarBlock>

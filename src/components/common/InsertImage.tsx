@@ -1,9 +1,9 @@
 import { useRef, useState } from 'react';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
-import { useSelector } from 'react-redux';
-import { RootState, useAppDispatch } from '@/store/store';
-import { setImages } from '@/store/userSlice';
+import { useAppDispatch } from '@/store/store';
+import { uploadImage } from '@/store/authSlice';
+import { setImage } from '@/store/userSlice';
 
 interface InsertImageProps {
   editDisabled: boolean;
@@ -34,9 +34,11 @@ const InsertImage = ({ editDisabled }: InsertImageProps) => {
     }
     const selectedImg = e.target.files[0];
     const imageURL = URL.createObjectURL(selectedImg);
+    console.log(imageURL);
     setImageFile({ ...imageFile, imageUrl: imageURL });
+    // dispatch(uploadImage([{ imageUrl: imageURL }]));
 
-    dispatch(setImages([{ imageUrl: imageURL }]));
+    dispatch(setImage([{ imageUrl: imageURL }]));
   };
 
   return (

@@ -1,17 +1,17 @@
 import React, { useState, useCallback } from 'react';
-import formRegex from '@/constants/formRegex';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
 import sw from '@/lib/utils/customSweetAlert';
 import { RootState, useAppDispatch } from '@/store/store';
-import { changeUserType, setEmail, setNickname } from '@/store/userSlice';
-import { checkLoggedIn, setCredentials } from '@/store/authSlice';
-import { changeMemberType } from '@/store/memberCheckSlice';
+import { setLogin } from '@/store/authSlice';
+import { setCredentials } from '@/store/authSlice';
 import { useNavigate } from 'react-router';
 import Input from '../common/atoms/Input';
 import Button from '../common/atoms/Button';
 import { useSelector } from 'react-redux';
-import { useLoginMutation } from '@/api/userApi';
+import { useLoginMutation } from '@/api/authApi';
+import { checkEmailValidation, checkPassWordValidation } from './formValidation';
+import { getCookie, setCookie } from '@/lib/utils/cookies';
 
 interface LoginFormProps {}
 
@@ -44,7 +44,7 @@ const LoginForm = (props: LoginFormProps) => {
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
-  const userType = useSelector((state: RootState) => state.user.userType);
+  const userType = useSelector((state: RootState) => state.user.type);
 
   const [login] = useLoginMutation();
 
@@ -52,14 +52,31 @@ const LoginForm = (props: LoginFormProps) => {
     e.preventDefault();
     try {
       const userData = await login({ email, password }).unwrap();
+      const { name, nickname, images, accessToken, refreshToken } = userData;
       console.log(userData);
-      dispatch(setCredentials({ user: userData.name, token: userData.accessToken }));
-      dispatch(checkLoggedIn(true));
-      dispatch(setEmail(email));
-      dispatch(setNickname(userData.nickname));
-      dispatch(changeUserType(userType));
-      dispatch(changeMemberType(userType));
-      sw.toast.success('로그인 되었습니다.');
+
+      if (userData) {
+        setCookie('refreshToken', refreshToken, {
+          path: '/',
+          secure: true,
+          httpOnly: true,
+        });
+        console.log(getCookie('refreshToken'));
+        dispatch(setCredentials({ token: userData.accessToken }));
+        dispatch(
+          setLogin({
+            type: userType,
+            email: email,
+            name: name,
+            nickname: nickname,
+            image: images,
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+            loggedIn: true,
+          }),
+        );
+        sw.toast.success('로그인 되었습니다.');
+      }
     } catch {
       console.error('잘못된 접근입니다.');
       return navigate('/login');
@@ -67,32 +84,13 @@ const LoginForm = (props: LoginFormProps) => {
     navigate('/');
   };
 
-  const checkEmailValidation = (currentEmail: string) => {
-    const { emailRegex } = formRegex;
-    if (!emailRegex.test(currentEmail)) {
-      setLoaded(false);
-      return setRequired({ ...required, email: true });
-    }
-    setRequired({ ...required, email: false });
-  };
-
-  const checkPassWordValidation = (currentPassWord: string) => {
-    const { passwordRegex } = formRegex;
-    if (!passwordRegex.test(currentPassWord)) {
-      setLoaded(false);
-      return setRequired({ ...required, password: true });
-    }
-    setLoaded(true);
-    setRequired({ ...required, password: false });
-  };
-
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setFormState({ ...formState, [id]: value });
     if (id === 'email') {
-      checkEmailValidation(value);
+      checkEmailValidation(value, setLoaded, setRequired, required);
     } else if (id === 'password') {
-      checkPassWordValidation(value);
+      checkPassWordValidation(value, setLoaded, setRequired, required);
     }
   };
 

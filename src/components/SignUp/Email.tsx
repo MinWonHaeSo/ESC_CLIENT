@@ -12,6 +12,7 @@ import { useEmailDoubleCheckMutation, useSendEmailValidateCodeMutation } from '@
 import { useAppDispatch } from '@/store/store';
 import EmailValidation from './EmailValidation';
 import { setEmail } from '@/store/userSlice';
+import { checkEmailValidation } from './formValidation';
 
 interface EmailFormProps {
   allChecked: AllCheckedState;
@@ -41,19 +42,10 @@ const Email = ({ allChecked, setAllChecked }: EmailFormProps) => {
   const [emailDoubleCheck] = useEmailDoubleCheckMutation();
   const [sendEmailValidateCode] = useSendEmailValidateCodeMutation();
 
-  const checkEmailValidation = (currentEmail: string) => {
-    const { emailRegex } = formRegex;
-    if (!emailRegex.test(currentEmail)) {
-      return setRequired(true);
-    }
-    setRequired(false);
-    setAllChecked({ ...allChecked, email: true });
-  };
-
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentEmail = e.target.value;
     setInputEmail(currentEmail);
-    checkEmailValidation(currentEmail);
+    checkEmailValidation(currentEmail, setRequired, setAllChecked, allChecked);
     setAllChecked({ ...allChecked, email: true });
   };
 
@@ -63,7 +55,6 @@ const Email = ({ allChecked, setAllChecked }: EmailFormProps) => {
     }
     try {
       const response = await emailDoubleCheck({ email: inputEmail });
-      console.log(response);
       if (response) {
         sw.toast.success(`중복검사가 완료되었습니다.`);
         setTimeout(() => {

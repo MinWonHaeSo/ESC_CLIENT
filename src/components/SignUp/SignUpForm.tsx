@@ -106,5 +106,6 @@ const QuestionDesc = styled.p`
     font-weight: 600;
     text-decoration: underline;
     color: ${palette.black[200]};
+    cursor: pointer;
   }
 `;

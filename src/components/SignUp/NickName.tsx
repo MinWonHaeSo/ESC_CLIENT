@@ -9,6 +9,7 @@ import { AllCheckedState } from './SignUpForm';
 import { useAppDispatch } from '@/store/store';
 import { setNickname } from '@/store/userSlice';
 import { useEffect } from 'react';
+import { checkNickNameValidation } from './formValidation';
 
 interface NickNameProps {
   allChecked: AllCheckedState;
@@ -27,19 +28,10 @@ const NickName = ({ allChecked, setAllChecked }: NickNameProps) => {
     }
   }, [allChecked]);
 
-  const checkNickNameValidation = (currentNickName: string) => {
-    const nickNameLengthCheck = currentNickName.length < 2 || currentNickName.length > 15;
-    if (nickNameLengthCheck) {
-      return setRequired(true);
-    }
-    setRequired(false);
-    setAllChecked({ ...allChecked, nickName: true });
-  };
-
   const handleNickNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentNickName = e.target.value;
     setNickName(currentNickName);
-    checkNickNameValidation(currentNickName);
+    checkNickNameValidation(currentNickName, setRequired, setAllChecked, allChecked);
     // if (currentNickName.length < 2) {
     //   setAllChecked({ ...allChecked, nickName: false });
     // }
