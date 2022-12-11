@@ -14,10 +14,13 @@ const useKakaoMapScript = () => {
   useEffect(() => {
     const container = document.getElementById('myMap');
     const options = {
-      center: new kakao.maps.LatLng(37.62197524055062, 127.1583774403176),
-      level: 5,
+      center: new kakao.maps.LatLng(37.5030426, 127.041588),
+      level: 10,
     };
     const map = new kakao.maps.Map(container, options);
+    
+    const zoomControl = new kakao.maps.ZoomControl();
+    map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
     setKakaoMap(map);
   }, []);
@@ -39,8 +42,14 @@ export const geoCode = async (address: string) => {
   });
 }
 
-export const mapPanTo = (map: any, location: any) => {
-  const moveLatLon = new kakao.maps.LatLng(33.45058, 126.574942);
+interface manPanToParam {
+  map: any;
+  location: { lat: string, lnt: string }
+}
+
+export const mapPanTo = ({ map, location }: manPanToParam) => {
+  if(!map) return
+  const moveLatLon = new kakao.maps.LatLng(location.lat, location.lnt);
 
   map.panTo(moveLatLon);
 };
@@ -52,21 +61,27 @@ interface setMarkerParam {
 }
 
 export const setMarker = ({ map, placeInfo, clickHandle }: setMarkerParam) => {
-  placeInfo.forEach((el: any) => {
-    // 마커를 생성합니다
-    const markers = new kakao.maps.Marker({
-      //마커가 표시 될 지도
-      map: map,
-      //마커가 표시 될 위치
-      position: new kakao.maps.LatLng(el.lat, el.lng),
-      //마커에 hover시 나타날 title
-      title: el.title,
+  useEffect(() => {
+  if (!placeInfo) return;
+
+    placeInfo.forEach((el: any) => {
+      // 마커를 생성합니다
+      const markers = new kakao.maps.Marker({
+        //마커가 표시 될 지도
+        map: map,
+        //마커가 표시 될 위치
+        position: new kakao.maps.LatLng(el.lat, el.lnt),
+        //마커에 hover시 나타날 title
+        title: el.title,
+      });
+
+      kakao.maps.event.addListener(markers, 'click', function () {
+        clickHandle(el);
+      });
     });
 
-    kakao.maps.event.addListener(markers, 'click', function () {
-      clickHandle(el);
-    });
-  });
+    mapPanTo({ map, location: {lat: placeInfo[0].lat, lnt: placeInfo[0].lnt} });
+  },[placeInfo] )
 };
 
 export default useKakaoMapScript;
