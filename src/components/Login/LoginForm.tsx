@@ -51,25 +51,23 @@ const LoginForm = (props: LoginFormProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const userData = await login({ email, password }).unwrap();
-      const { name, nickname, images, accessToken, refreshToken } = userData;
-      console.log(userData);
-
+      const userData = await login({ email: email, password: password }).unwrap();
       if (userData) {
+        const { name, nickname, image, accessToken, refreshToken } = userData;
         setCookie('refreshToken', refreshToken, {
           path: '/',
           secure: true,
-          httpOnly: true,
+          // httpOnly: true,
         });
         console.log(getCookie('refreshToken'));
-        dispatch(setCredentials({ token: userData.accessToken }));
+        dispatch(setCredentials({ token: accessToken }));
         dispatch(
           setLogin({
             type: userType,
             email: email,
             name: name,
             nickname: nickname,
-            image: images,
+            image: image,
             accessToken: accessToken,
             refreshToken: refreshToken,
             loggedIn: true,
