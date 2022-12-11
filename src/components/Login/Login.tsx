@@ -14,8 +14,7 @@ interface LoginProps {}
 
 const Login = (props: LoginProps) => {
   const userType = useSelector((state: RootState) => state.user.type);
-  const savedInfo = useSelector((state: RootState) => state.searchPassword);
-  console.log(savedInfo);
+
   return (
     <LoginBlock>
       <TabMenu />

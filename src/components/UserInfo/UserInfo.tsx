@@ -45,7 +45,6 @@ const UserInfo = (props: UserInfoProps) => {
     // [] 유저 데이터 서버에 Delete request 추가하기
     setTimeout(() => navigate('/signout'), 500);
   };
-  console.log(inputRef);
 
   return (
     <UserInfoBlock>
