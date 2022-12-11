@@ -38,7 +38,7 @@ const InsertImage = ({ editDisabled }: InsertImageProps) => {
     setImageFile({ ...imageFile, imageUrl: imageURL });
     // dispatch(uploadImage([{ imageUrl: imageURL }]));
 
-    dispatch(setImage([{ imageUrl: imageURL }]));
+    dispatch(setImage(imageURL));
   };
 
   return (

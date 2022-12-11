@@ -1,10 +1,6 @@
 import { UserType } from '@/types/userType';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface ImageType {
-  imageUrl: string;
-}
-
 interface UserState {
   key: string;
   type: UserType;
@@ -12,7 +8,7 @@ interface UserState {
   name: string;
   password: string;
   nickname: string;
-  image: ImageType[];
+  image: string;
 }
 
 const initialState: UserState = {
@@ -22,7 +18,7 @@ const initialState: UserState = {
   name: '',
   password: '',
   nickname: '',
-  image: [{ imageUrl: '' }],
+  image: '',
 };
 
 // signUp(회원가입) , mypage (마이페이지) -> 회원가입 시 관리되는 각 폼 요소가 개별로 존재하기 때문에,
@@ -49,22 +45,12 @@ const userSlice = createSlice({
     setNickname: (state, action: PayloadAction<string>) => {
       state.nickname = action.payload;
     },
-    setImage: (state, action: PayloadAction<ImageType[]>) => {
-      state.image = action.payload;
-    },
-    setRegister: (state, action) => {
-      state.key = action.payload;
-      state.type = action.payload;
-      state.email = action.payload;
-      state.name = action.payload;
-      state.password = action.payload;
-      state.nickname = action.payload;
+    setImage: (state, action: PayloadAction<string>) => {
       state.image = action.payload;
     },
   },
 });
 
-export const { setKey, setUserType, setEmail, setName, setPassword, setNickname, setImage, setRegister } =
-  userSlice.actions;
+export const { setKey, setUserType, setEmail, setName, setPassword, setNickname, setImage } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;

@@ -12,7 +12,7 @@ interface UserState {
   name: string;
   password: string;
   nickname: string;
-  image: ImageType[];
+  image: string;
   accessToken: string | null;
   refreshToken: string | null;
   loggedIn: boolean;
@@ -27,7 +27,7 @@ const initialState: UserState = {
   name: '',
   password: '',
   nickname: '',
-  image: [{ imageUrl: '' }],
+  image: '',
   accessToken: null,
   refreshToken: null,
   loggedIn: false,
@@ -65,14 +65,21 @@ const authSlice = createSlice({
     changeUserType: (state, action: PayloadAction<UserType>) => {
       state.type = action.payload;
     },
-    uploadImage: (state, action: PayloadAction<ImageType[]>) => {
+    uploadImage: (state, action: PayloadAction<string>) => {
       state.image = action.payload;
     },
     checkLoggedIn: (state, action: PayloadAction<boolean>) => {
       state.loggedIn = action.payload;
     },
-    loggedOut: state => {
-      state.accessToken = null;
+    loggedOut: (state, action) => {
+      state.type = action.payload.type;
+      state.email = action.payload.email;
+      state.name = action.payload.name;
+      state.nickname = action.payload.nickname;
+      state.image = action.payload.image;
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
+      state.loggedIn = action.payload.loggedIn;
     },
   },
 });

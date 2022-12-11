@@ -1,10 +1,6 @@
 import { UserType } from '@/types/userType';
 import { baseApi } from './baseApi';
 
-interface Image {
-  imageUrl: string;
-}
-
 export interface User {
   key: string;
   type: UserType;
@@ -12,12 +8,12 @@ export interface User {
   name: string;
   password: string;
   nickname: string;
-  images: Image[];
+  image: string;
 }
 
 interface ApiResponse {
   message: string;
-  statusCode: string;
+  statusCode: number;
 }
 
 interface LoginResponse {
@@ -26,16 +22,17 @@ interface LoginResponse {
   refreshToken: string;
   name: string;
   nickname: string;
-  images: Image[];
+  image: string;
 }
 
 type LoginRequest = Pick<User, 'email' | 'password'>;
 
 type PasswordChangeRequest = {
   email: string;
-  prePassword: string;
-  password: string;
+  prePassword: string | null;
+  newPassword: string;
   confirmPassword: string;
+  hasToken: boolean;
 };
 
 type Email = Pick<User, 'email'>;
@@ -43,7 +40,7 @@ type Email = Pick<User, 'email'>;
 const authApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     socialLogin: builder.mutation({
-      query: (email: string) => ({
+      query: (email: Email) => ({
         url: '/members/oauth2/info',
         method: 'POST',
         body: email,
@@ -52,16 +49,19 @@ const authApi = baseApi.injectEndpoints({
     }),
     login: builder.mutation<LoginResponse, LoginRequest>({
       query: credentials => ({
-        url: '/members/auth/logout',
+        url: '/members/auth/login',
         method: 'POST',
         body: { ...credentials },
       }),
       invalidatesTags: ['User'],
     }),
     logout: builder.mutation<LoginResponse, string>({
-      query: () => ({
-        url: '/members/auth/login',
+      query: (refreshToken: string) => ({
+        url: '/members/auth/logout',
         method: 'POST',
+        headers: {
+          RefreshToken: `Bearer ${refreshToken}`,
+        },
       }),
     }),
     findPasswordSendEmail: builder.mutation<ApiResponse, Email>({
@@ -80,10 +80,10 @@ const authApi = baseApi.injectEndpoints({
       providesTags: ['User'],
     }),
     changePasswordRequest: builder.mutation<ApiResponse, PasswordChangeRequest>({
-      query: ({ email, prePassword, password, confirmPassword }) => ({
+      query: ({ email, prePassword, newPassword, confirmPassword, hasToken }) => ({
         url: `/members/profiles/password`,
         method: 'POST',
-        body: { email, prePassword, password, confirmPassword },
+        body: { email, prePassword, newPassword, confirmPassword, hasToken },
       }),
       invalidatesTags: ['User'],
     }),

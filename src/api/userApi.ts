@@ -1,10 +1,6 @@
 import { UserType } from '@/types/userType';
 import { baseApi } from './baseApi';
 
-interface Image {
-  imageUrl: string;
-}
-
 export interface User {
   key: string;
   type: UserType;
@@ -12,12 +8,12 @@ export interface User {
   name: string;
   password: string;
   nickname: string;
-  image: Image[];
+  image: string;
 }
 
 interface Response {
   message: string;
-  statusCode: string;
+  statusCode: number;
   error?: string;
 }
 
@@ -25,7 +21,7 @@ export interface SignUpResponse {
   statusCode: number;
   name: string;
   nickname: string;
-  image: Image[];
+  image: string;
 }
 
 type SignUpRequest = User;
