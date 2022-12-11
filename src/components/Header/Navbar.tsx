@@ -10,6 +10,7 @@ import { changeUserType, checkLoggedIn, loggedOut } from '@/store/authSlice';
 import sw from '@/lib/utils/customSweetAlert';
 import { UserType } from '@/types/userType';
 import { useLogoutMutation } from '@/api/authApi';
+import { deleteCookie, getCookie } from '@/lib/utils/cookies';
 
 interface NavbarProps {
   isActive: boolean;
@@ -26,12 +27,24 @@ const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
 
   const handleLogOut = async () => {
     try {
-      const response = await logout('');
-      if (response) {
-        dispatch(loggedOut());
-        dispatch(checkLoggedIn(false));
-        dispatch(changeUserType('USER'));
+      const refreshToken = getCookie('refreshToken');
+      const response = await logout(refreshToken).unwrap();
+      if (response.statusCode === 200) {
+        dispatch(
+          loggedOut({
+            type: 'USER',
+            email: '',
+            name: '',
+            nickname: '',
+            image: '',
+            accessToken: '',
+            refreshToken: '',
+            loggedIn: false,
+          }),
+        );
         onChangeIsActive();
+        deleteCookie('refreshToken', { path: '/' });
+        console.log(getCookie('refreshToken'));
         sw.toast.success('로그아웃 되었습니다.');
       }
     } catch {
