@@ -35,7 +35,7 @@ const SignOut = () => {
   const handleSignOutClick = async () => {
     try {
       const response = await signOut('').unwrap();
-      if (response.statusCode === '200') {
+      if (response) {
         sw.confirm(() => {
           sw.toast.success('성공적으로 탈퇴 되었습니다.');
           setTimeout(() => {
