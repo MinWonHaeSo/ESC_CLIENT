@@ -1,4 +1,5 @@
 import { getCookie } from '@/lib/utils/cookies';
+import sw from '@/lib/utils/customSweetAlert';
 import { loggedOut, setCredentials } from '@/store/authSlice';
 import { RootState } from '@/store/store';
 import { BaseQueryFn, createApi, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
@@ -10,8 +11,9 @@ const baseQuery = fetchBaseQuery({
   prepareHeaders: (headers, { getState }) => {
     const accessToken = (getState() as RootState).auth.accessToken;
     if (accessToken) {
-      headers.set('authorization', `Bearer ${accessToken}`);
+      headers.set('Authorization', `Bearer ${accessToken}`);
     }
+    headers.set('ngrok-skip-browser-warning', 'true');
     return headers;
   },
 });
@@ -24,19 +26,45 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
   let result = await baseQuery(args, api, extraOptions);
 
   // [] Todo : 에러 핸들링 안됨 -> refresh token 관리 필요
-  if (result.error) {
+  if (result.error && result.error.status === 400) {
     console.log('sending refresh token');
 
     // send refresh token to get new access token
-    const refreshResult = await baseQuery({ url: '/members/auth/refresh-token', method: 'POST' }, api, extraOptions);
-    if (refreshResult?.data) {
+    const refreshToken = getCookie('refreshToken');
+    const refreshResult = await baseQuery(
+      {
+        url: '/members/auth/refresh-token',
+        method: 'POST',
+        headers: {
+          RefreshToken: `Bearer ${refreshToken}`,
+        },
+      },
+      api,
+      extraOptions,
+    );
+    console.log('refreshTokenResult', refreshResult);
+
+    if (refreshResult.data) {
       api.dispatch(setCredentials({ token: refreshResult.data }));
+      console.log(refreshResult.data);
       console.log('accessToken refetch');
 
       // retry the initial query
       result = await baseQuery(args, api, extraOptions);
     } else {
-      api.dispatch(loggedOut());
+      api.dispatch(
+        loggedOut({
+          type: 'USER',
+          email: '',
+          name: '',
+          nickname: '',
+          image: '',
+          accessToken: '',
+          refreshToken: '',
+          loggedIn: false,
+        }),
+      );
+      sw.toast.warn('자동 로그인 기간이 만료되어 다시 로그인이 필요합니다');
     }
   }
   return result;
