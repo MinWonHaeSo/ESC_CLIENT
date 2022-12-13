@@ -1,8 +1,8 @@
-import formRegex from '@/constants/formRegex';
+import { useFindPasswordSendEmailMutation } from '@/api/authApi';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import sw from '@/lib/utils/customSweetAlert';
-import { changeIndex } from '@/store/findPassWordSlice';
+import { changeIndex, saveEmailTemporary } from '@/store/searchPassWordSlice';
 import { RootState, useAppDispatch } from '@/store/store';
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
@@ -12,6 +12,7 @@ import Input from '../common/atoms/Input';
 import Title from '../common/atoms/Title';
 import Responsive from '../common/Responsive';
 import RequiredMessage from '../SignUp/RequiredMessage';
+import { checkEmailValidation } from './formValidation';
 
 interface ValidateEmailProps {}
 
@@ -19,56 +20,43 @@ const ValidateEmail = (props: ValidateEmailProps) => {
   const [inputEmail, setInputEmail] = useState<string>('');
   const [required, setRequired] = useState<boolean>(false);
   const [registeredCheck, setRegisteredCheck] = useState<boolean>(false);
-  const orderIndex = useSelector((state: RootState) => state.findPassWord.index);
+
+  const orderIndex = useSelector((state: RootState) => state.searchPassword.index);
   const dispatch = useAppDispatch();
 
-  const checkEmailValidation = (currentEmail: string) => {
-    const { emailRegex } = formRegex;
-    if (!emailRegex.test(currentEmail) && !registeredCheck) {
-      return setRequired(true);
-    }
-    setRequired(false);
-  };
+  const [findPasswordSendEmail] = useFindPasswordSendEmailMutation();
 
   const handleInputEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentEmail = e.target.value;
     setInputEmail(currentEmail);
-    checkEmailValidation(currentEmail);
+    checkEmailValidation(currentEmail, setRequired, setRegisteredCheck);
   };
 
-  const handleEmailCheckButtonClick = () => {
-    if (!inputEmail.length) {
-      return setRequired(true);
-    }
-    setRegisteredCheck(true);
-    sw.toast.success('가입된 이메일 입니다.');
-  };
-
-  const handleValidationCodeButtonClick = () => {
+  const handleValidationCodeButtonClick = async () => {
     if (!registeredCheck || required) {
-      return sw.toast.warn('가입된 이메일인지 확인해 주세요.');
+      return sw.toast.warn('올바른 형식으로 이메일을 입력해주세요.');
     }
-    sw.toast.success('인증코드가 발송되었습니다.');
-    dispatch(changeIndex(orderIndex + 1));
+    try {
+      const response = await findPasswordSendEmail({ email: inputEmail }).unwrap();
+      if (response.statusCode === 200) {
+        sw.toast.success('이메일로 인증 코드가 발송되었습니다.');
+        dispatch(saveEmailTemporary(inputEmail));
+        setTimeout(() => {
+          dispatch(changeIndex(orderIndex + 1));
+        }, 1200);
+      }
+    } catch {
+      console.error(`이메일이 잘못되었습니다.`);
+    }
   };
 
   return (
-    <FindPassWordBlock>
+    <FindPasswordBlock>
       <TitleWrapper>
         <Title fontSize={`${typo.xxLarge}`}>비밀번호 찾기</Title>
       </TitleWrapper>
       <InputWrapper>
-        <LabelWrapper>
-          <Label>가입한 이메일 주소를 입력해 주세요.</Label>
-          <Button
-            type={'button'}
-            size={'small'}
-            backgroundColor={`${palette.primary['point']}`}
-            onClick={handleEmailCheckButtonClick}
-          >
-            확 인
-          </Button>
-        </LabelWrapper>
+        <Label>가입한 이메일 주소를 입력해 주세요.</Label>
         <Input
           type={'email'}
           id={'email'}
@@ -89,13 +77,13 @@ const ValidateEmail = (props: ValidateEmailProps) => {
           인증 코드 보내기
         </Button>
       </SWrapper>
-    </FindPassWordBlock>
+    </FindPasswordBlock>
   );
 };
 
 export default ValidateEmail;
 
-const FindPassWordBlock = styled.section`
+const FindPasswordBlock = styled.section`
   ${Responsive.ResponsiveWrapper}
 `;
 
@@ -110,13 +98,6 @@ const InputWrapper = styled.div`
   margin-left: 31.5px;
   gap: 8px;
   width: 280px;
-`;
-
-const LabelWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
 `;
 
 const Label = styled.span`

@@ -1,3 +1,4 @@
+import usePrevious from '@/hooks/usePrevious';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import sw from '@/lib/utils/customSweetAlert';
@@ -34,6 +35,7 @@ const UserInfo = (props: UserInfoProps) => {
     if (inputValue.length < 3) {
       return sw.toast.warn('최소 3자 이상의 닉네임을 입력하세요.');
     }
+
     sw.toast.success('수정이 완료되었습니다.');
     setEditDisabled(true);
     setDoubleCheck(false);
@@ -43,7 +45,6 @@ const UserInfo = (props: UserInfoProps) => {
     // [] 유저 데이터 서버에 Delete request 추가하기
     setTimeout(() => navigate('/signout'), 500);
   };
-  console.log(inputRef);
 
   return (
     <UserInfoBlock>
@@ -109,10 +110,12 @@ const DeleteProfile = styled.div`
   width: 280px;
   border-top: 1px solid ${palette.grey[200]};
   border-bottom: 1px solid ${palette.grey[200]};
+  font-weight: 500;
   text-align: center;
 
   &:hover {
     font-weight: 600;
     background-color: ${palette.grey[100]};
+    color: ${palette.primary['red']};
   }
 `;

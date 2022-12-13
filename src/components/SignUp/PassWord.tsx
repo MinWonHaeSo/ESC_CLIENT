@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import formRegex from '@/constants/formRegex';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
@@ -7,8 +6,12 @@ import Input from '../common/atoms/Input';
 import Label from '../common/atoms/Label';
 import RequiredMessage from './RequiredMessage';
 import { AllCheckedState } from './SignUpForm';
+import { useAppDispatch } from '@/store/store';
+import { setPassword } from '@/store/userSlice';
+import { useEffect } from 'react';
+import { checkPasswordConfirmValidation, checkPasswordValidation } from './formValidation';
 
-interface PassWordProps {
+interface PasswordProps {
   allChecked: AllCheckedState;
   setAllChecked: React.Dispatch<React.SetStateAction<AllCheckedState>>;
 }
@@ -33,41 +36,31 @@ const initialRequiredState: InitialRequiredState = {
   passwordConfirm: false,
 };
 
-const PassWord = ({ allChecked, setAllChecked }: PassWordProps) => {
+const Password = ({ allChecked, setAllChecked }: PasswordProps) => {
   const [formState, setFormState] = useState<InitialFormState>(initialFormState);
   const [required, setRequired] = useState<InitialRequiredState>(initialRequiredState);
 
-  const checkPassWordValidation = (currentPassWord: string) => {
-    const { passwordRegex } = formRegex;
-    if (!passwordRegex.test(currentPassWord)) {
-      return setRequired({ ...required, password: true });
-    }
-    setRequired({ ...required, password: false });
-    setAllChecked({ ...allChecked, password: true });
-  };
+  const dispatch = useAppDispatch();
 
-  const checkPassWordConfirmValidation = (currentPassWordConfirm: string) => {
-    const { password } = formState;
-    if (password !== currentPassWordConfirm) {
-      return setRequired({ ...required, passwordConfirm: true });
+  useEffect(() => {
+    if (allChecked.password && allChecked.passwordConfirm) {
+      dispatch(setPassword(formState.password));
     }
-    setRequired({ ...required, passwordConfirm: false });
-    setAllChecked({ ...allChecked, passwordConfirm: true });
-  };
+  }, [allChecked]);
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, id } = e.target;
     setFormState({ ...formState, [id]: value });
     if (id === 'password') {
-      checkPassWordValidation(value);
+      checkPasswordValidation(value, setRequired, required, setAllChecked, allChecked);
     } else if (id === 'passwordConfirm') {
-      checkPassWordConfirmValidation(value);
+      checkPasswordConfirmValidation(formState, value, setRequired, required, setAllChecked, allChecked);
     }
   };
 
   return (
     <>
-      <PassWordFormBlock>
+      <PasswordFormBlock>
         <Label htmlFor={'password'} required={required.password}>
           비밀번호
         </Label>
@@ -81,8 +74,8 @@ const PassWord = ({ allChecked, setAllChecked }: PassWordProps) => {
           required={required.password}
         />
         <RequiredMessage required={required.password} />
-      </PassWordFormBlock>
-      <PassWordConfirmBlock>
+      </PasswordFormBlock>
+      <PasswordConfirmBlock>
         <Label htmlFor={'passwordConfirm'} required={required.passwordConfirm}>
           비밀번호 확인
         </Label>
@@ -95,14 +88,14 @@ const PassWord = ({ allChecked, setAllChecked }: PassWordProps) => {
           required={required.passwordConfirm}
         />
         <RequiredMessage required={required.passwordConfirm} />
-      </PassWordConfirmBlock>
+      </PasswordConfirmBlock>
     </>
   );
 };
 
-export default PassWord;
+export default Password;
 
-const PassWordFormBlock = styled.div`
+const PasswordFormBlock = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -110,7 +103,7 @@ const PassWordFormBlock = styled.div`
   gap: 8px;
 `;
 
-const PassWordConfirmBlock = styled.div`
+const PasswordConfirmBlock = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -119,6 +112,7 @@ const PassWordConfirmBlock = styled.div`
 `;
 
 const Desc = styled.p`
+  letter-spacing: -0.01rem;
   font-size: ${typo.micro};
   color: ${palette.black[200]};
 `;

@@ -1,17 +1,17 @@
 import React, { useState, useCallback } from 'react';
-import formRegex from '@/constants/formRegex';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
 import sw from '@/lib/utils/customSweetAlert';
 import { RootState, useAppDispatch } from '@/store/store';
-import { changeUser, checkLoggedIn } from '@/store/userSlice';
-import { changeMemberType } from '@/store/memberCheckSlice';
+import { setLogin } from '@/store/authSlice';
+import { setCredentials } from '@/store/authSlice';
 import { useNavigate } from 'react-router';
 import Input from '../common/atoms/Input';
 import Button from '../common/atoms/Button';
 import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import formStateCheck from '@/lib/utils/formStateCheck';
+import { useLoginMutation } from '@/api/authApi';
+import { checkEmailValidation, checkPassWordValidation } from './formValidation';
+import { getCookie, setCookie } from '@/lib/utils/cookies';
 
 interface LoginFormProps {}
 
@@ -39,40 +39,56 @@ const LoginForm = (props: LoginFormProps) => {
   const [formState, setFormState] = useState<InitialFormState>(initialFormState);
   const [required, setRequired] = useState<InitialRequiredState>(initialRequiredState);
   const [loaded, setLoaded] = useState<boolean>(false);
+  const { email, password } = formState;
 
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
-  const userType = useSelector((state: RootState) => state.user.userType);
+  const userType = useSelector((state: RootState) => state.user.type);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [login] = useLoginMutation();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  };
-
-  const checkEmailValidation = (currentEmail: string) => {
-    const { emailRegex } = formRegex;
-    if (!emailRegex.test(currentEmail)) {
-      return setRequired({ ...required, email: true });
+    try {
+      const userData = await login({ email: email, password: password }).unwrap();
+      if (userData) {
+        const { name, nickname, image, accessToken, refreshToken } = userData;
+        setCookie('refreshToken', refreshToken, {
+          path: '/',
+          secure: true,
+          // httpOnly: true,
+        });
+        console.log(getCookie('refreshToken'));
+        dispatch(setCredentials({ token: accessToken }));
+        dispatch(
+          setLogin({
+            type: userType,
+            email: email,
+            name: name,
+            nickname: nickname,
+            image: image,
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+            loggedIn: true,
+          }),
+        );
+        sw.toast.success('로그인 되었습니다.');
+      }
+    } catch {
+      console.error('잘못된 접근입니다.');
+      return navigate('/login');
     }
-    setRequired({ ...required, email: false });
-  };
-
-  const checkPassWordValidation = (currentPassWord: string) => {
-    const { passwordRegex } = formRegex;
-    if (!passwordRegex.test(currentPassWord)) {
-      return setRequired({ ...required, password: true });
-    }
-    setLoaded(true);
-    setRequired({ ...required, password: false });
+    navigate('/');
   };
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setFormState({ ...formState, [id]: value });
     if (id === 'email') {
-      checkEmailValidation(value);
+      checkEmailValidation(value, setLoaded, setRequired, required);
     } else if (id === 'password') {
-      checkPassWordValidation(value);
+      checkPassWordValidation(value, setLoaded, setRequired, required);
     }
   };
 
@@ -89,11 +105,6 @@ const LoginForm = (props: LoginFormProps) => {
     if (!loaded) {
       return;
     }
-    dispatch(checkLoggedIn(true));
-    dispatch(changeMemberType(userType));
-    dispatch(changeUser(userType));
-    sw.toast.success('로그인 되었습니다.');
-    navigate('/');
   };
 
   return (
@@ -117,7 +128,7 @@ const LoginForm = (props: LoginFormProps) => {
       <Button
         type={'submit'}
         size={'large'}
-        backgroundColor={formStateCheck(required) && loaded ? `${palette.black[100]}` : `${palette.grey[200]}`}
+        backgroundColor={loaded ? `${palette.black[100]}` : `${palette.grey[200]}`}
         onClick={handleButtonClick}
       >
         로그인
