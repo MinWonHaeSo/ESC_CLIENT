@@ -6,10 +6,10 @@ import palette from '@/lib/styles/palette';
 import FormInputDivisionBlock from '@/components/common/Responsive/FormInputDivisionBlock';
 import Label from '@/components/common/atoms/Label';
 import { useDispatch } from 'react-redux';
-import { changeAddress, changeFiled } from '@/store/stardiumWriteSlice';
+import { changeAddress, changeFiled } from '@/store/stadiumWriteSlice';
 import kakaoService from '@/service/kakaoMapService';
 
-interface StardiumEditAddressProps {
+interface EditAddressProps {
   address: string;
   detailAddress: string;
 }
@@ -19,7 +19,7 @@ type GeoLocationType = {
   lnt: string;
 };
 
-const StardiumEditAddress = ({ address, detailAddress }: StardiumEditAddressProps) => {
+const EditAddress = ({ address, detailAddress }: EditAddressProps) => {
   const [openPostcode, setOpenPostcode] = useState(false);
   const dispatch = useDispatch();
 
@@ -43,8 +43,8 @@ const StardiumEditAddress = ({ address, detailAddress }: StardiumEditAddressProp
 
   return (
     <>
-      <StardiumEditAddressContainer>
-        <Label htmlFor="stardiumAddress" required={false}>
+      <EditAddressContainer>
+        <Label htmlFor="stadiumDetailAddress" required={false}>
           * 체육관 주소
         </Label>
         <AddressContainer>
@@ -58,14 +58,14 @@ const StardiumEditAddress = ({ address, detailAddress }: StardiumEditAddressProp
           type="text"
           value={detailAddress}
           name="detailAddress"
-          id="stardiumDetailAddress"
+          id="stadiumDetailAddress"
           placeholder="체육관 상세 주소"
           onChange={handleChangeDetailAddress}
         />
         <button type="button" className="address-search-btn" onClick={handleClickPopupToggle}>
           주소 검색
         </button>
-      </StardiumEditAddressContainer>
+      </EditAddressContainer>
       <PopupAddressBlock>
         {openPostcode && (
           <div className="postmodal">
@@ -83,7 +83,7 @@ const StardiumEditAddress = ({ address, detailAddress }: StardiumEditAddressProp
   );
 };
 
-const StardiumEditAddressContainer = styled.div`
+const EditAddressContainer = styled.div`
   ${FormInputDivisionBlock};
 
   .address-search-btn {
@@ -125,4 +125,4 @@ const PopupAddressBlock = styled.div`
   }
 `;
 
-export default React.memo(StardiumEditAddress);
+export default React.memo(EditAddress);

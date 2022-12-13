@@ -1,18 +1,18 @@
-import { SearchStadiumContent, stardiumApi } from './../api/stardiumApi';
+import { SearchStadiumContent, stadiumApi } from '../api/stadiumApi';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface stardiumState {
+interface stadiumState {
   searchResults: SearchStadiumContent[];
   markerInfo: SearchStadiumContent;
 }
 
-const initialState: stardiumState = {
+const initialState: stadiumState = {
   searchResults: [],
   markerInfo: {} as SearchStadiumContent,
 };
 
-export const staridumSlice = createSlice({
-  name: 'stardium',
+export const stadiumSlice = createSlice({
+  name: 'stadium',
   initialState,
   reducers: {
     clickMarker: (state, action: PayloadAction<any>) => {
@@ -23,13 +23,12 @@ export const staridumSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addMatcher(
-      stardiumApi.endpoints.searchStadium.matchFulfilled, (state, { payload }) => {
-        state.searchResults = payload.content
-    })
+    builder.addMatcher(stadiumApi.endpoints.searchStadium.matchFulfilled, (state, { payload }) => {
+      state.searchResults = payload.content;
+    });
   },
 });
 
-export const { clickMarker, clearMarkerInfo } = staridumSlice.actions;
+export const { clickMarker, clearMarkerInfo } = stadiumSlice.actions;
 
-export const stardiumReducer = staridumSlice.reducer;
+export const stadiumReducer = stadiumSlice.reducer;

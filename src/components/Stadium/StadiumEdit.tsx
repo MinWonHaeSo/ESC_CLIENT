@@ -1,25 +1,25 @@
 import React, { useContext } from 'react';
 import styled from '@emotion/styled';
-import { stardiumWriteState } from '@/store/stardiumWriteSlice';
+import { stadiumWriteState } from '@/store/stadiumWriteSlice';
 import Responsive from '../common/Responsive';
-import StardiumEditImage from './StardiumEditElements/StardiumEditImage';
-import StardiumEditInput from './StardiumEditElements/StardiumEditInput';
-import StardiumEditTag from './StardiumEditElements/StardiumEditTag';
-import StardiumEditAddress from './StardiumEditElements/StardiumEditAddress';
-import StardiumTime from './StardiumEditElements/StardiumTime';
-import StardiumEditRentalItem from './StardiumEditElements/StardiumEditRentalItem';
+import EditImage from './EditElements/EditImage';
+import EditInput from './EditElements/EditInput';
+import EditTag from './EditElements/EditTag';
+import Address from './EditElements/EditAddress';
+import EditTime from './EditElements/EditTime';
+import EditRentalItem from './EditElements/EditRentalItem';
 import Dividers from '../common/Dividers';
-import { useAddStadiumMutation } from '@/api/stardiumApi';
+import { useAddStadiumMutation } from '@/api/stadiumApi';
 import OriginFilesContext, { contextFileType } from '@/context/OriginFilesContext';
 import Button from '../common/atoms/Button';
 import palette from '@/lib/styles/palette';
 import { fileUpload } from '@/api/fileUpload';
 
-interface StardiumEditProps {
-  write: stardiumWriteState;
+interface StadiumEditProps {
+  write: stadiumWriteState;
 }
 
-const StardiumEdit = ({ write }: StardiumEditProps) => {
+const StadiumEdit = ({ write }: StadiumEditProps) => {
   const [addStadiumAPI] = useAddStadiumMutation();
   const value = useContext(OriginFilesContext);
 
@@ -39,7 +39,7 @@ const StardiumEdit = ({ write }: StardiumEditProps) => {
     value?.actions.removeRentalImages(id);
   };
 
-  const handleSumbitStardium = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSumbitStadium = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const form = { ...write };
@@ -71,24 +71,24 @@ const StardiumEdit = ({ write }: StardiumEditProps) => {
   };
 
   return (
-    <StardiumEditBlock>
-      <StardiumEditForm onSubmit={handleSumbitStardium}>
-        <StardiumEditImage
+    <StadiumEditBlock>
+      <StadiumEditForm onSubmit={handleSumbitStadium}>
+        <EditImage
           images={write.images}
           onAddImages={handleAddStadiumImages}
           onRemoveImages={hanldeRemoveStadiumImages}
         />
         <Dividers />
-        <StardiumEditInput
+        <EditInput
           type="text"
           name="name"
-          id="stardiumName"
+          id="stadiumName"
           title="체육관 이름"
           placeholder="체육관 이름"
           value={write.name}
         />
-        <StardiumEditAddress address={write.address} detailAddress={write.detailAddress} />
-        <StardiumEditInput
+        <Address address={write.address} detailAddress={write.detailAddress} />
+        <EditInput
           type="number"
           name="holidayPricePerHalfHour"
           id="holidayPricePerHalfHour"
@@ -96,7 +96,7 @@ const StardiumEdit = ({ write }: StardiumEditProps) => {
           placeholder="금액을 입력해 주세요."
           value={write.holidayPricePerHalfHour}
         />
-        <StardiumEditInput
+        <EditInput
           type="number"
           name="weekdayPricePerHalfHour"
           id="weekdayPricePerHalfHour"
@@ -104,9 +104,9 @@ const StardiumEdit = ({ write }: StardiumEditProps) => {
           placeholder="금액을 입력해 주세요."
           value={write.weekdayPricePerHalfHour}
         />
-        <StardiumEditTag tags={write.tags} />
-        <StardiumTime startTime={write.openTime} endTime={write.closeTime} />
-        <StardiumEditRentalItem
+        <EditTag tags={write.tags} />
+        <EditTime startTime={write.openTime} endTime={write.closeTime} />
+        <EditRentalItem
           rentalItems={write.rentalItems}
           onAddImages={handleAddRentalImages}
           onRemoveImages={handleRemoveRentalImages}
@@ -114,12 +114,12 @@ const StardiumEdit = ({ write }: StardiumEditProps) => {
         <Button size="large" backgroundColor={palette.black[100]} type="submit">
           등록하기
         </Button>
-      </StardiumEditForm>
-    </StardiumEditBlock>
+      </StadiumEditForm>
+    </StadiumEditBlock>
   );
 };
 
-const StardiumEditBlock = styled.div`
+const StadiumEditBlock = styled.div`
   padding: 2rem 0;
 
   hr {
@@ -130,7 +130,7 @@ const StardiumEditBlock = styled.div`
   ${Responsive.ResponsiveWrapper}
 `;
 
-const StardiumEditForm = styled.form`
+const StadiumEditForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -142,4 +142,4 @@ const StardiumEditForm = styled.form`
   }
 `;
 
-export default StardiumEdit;
+export default StadiumEdit;

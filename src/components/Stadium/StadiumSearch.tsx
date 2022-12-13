@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import Input from '@/components/common/atoms/Input';
-import { useDispatch } from 'react-redux';
 import kakaoService from '@/service/kakaoMapService';
-import { useSearchStadiumMutation } from '@/api/stardiumApi';
+import { useSearchStadiumMutation } from '@/api/stadiumApi';
 
-interface StardiumSearchProps {}
+interface StadiumSearchProps {}
 
-const StardiumSearch = (props: StardiumSearchProps) => {
+const StadiumSearch = (props: StadiumSearchProps) => {
   const [search, setSearch] = useState('');
   const [searchStadium] = useSearchStadiumMutation();
 
@@ -23,20 +22,20 @@ const StardiumSearch = (props: StardiumSearchProps) => {
   };
 
   return (
-    <StardiumSearchConatiner>
+    <StadiumSearchConatiner>
       <Input
-        id="stardiumSearch"
+        id="stadiumSearch"
         type="text"
         placeholder="체육관을 검색해 주세요"
         value={search}
         onChange={handleChangeSearch}
         onKeyDown={handleEnterFetch}
       />
-    </StardiumSearchConatiner>
+    </StadiumSearchConatiner>
   );
 };
 
-const StardiumSearchConatiner = styled.div`
+const StadiumSearchConatiner = styled.div`
   position: absolute;
   top: 10px;
   left: 50%;
@@ -44,4 +43,4 @@ const StardiumSearchConatiner = styled.div`
   z-index: 1;
 `;
 
-export default StardiumSearch;
+export default StadiumSearch;

@@ -1,12 +1,12 @@
 import React from 'react';
 
-interface StardiumEditImageListProps {
+interface EditImageListProps {
   id: string;
   url: string;
   onDeleteImage: (id: string) => void;
 }
 
-const StardiumEditImageList = ({ id, url, onDeleteImage }: StardiumEditImageListProps) => {
+const EditImageList = ({ id, url, onDeleteImage }: EditImageListProps) => {
   return (
     <li key={`${id}`}>
       <img src={url} width="200px" height="100px" style={{ objectFit: 'cover' }} alt="미리보기" />
@@ -17,4 +17,4 @@ const StardiumEditImageList = ({ id, url, onDeleteImage }: StardiumEditImageList
   );
 };
 
-export default StardiumEditImageList;
+export default EditImageList;

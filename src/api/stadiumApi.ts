@@ -1,5 +1,5 @@
 import { geoLocationType } from '@/hooks/useCurrentLocation';
-import { stardiumWriteState } from '@/store/stardiumWriteSlice';
+import { stadiumWriteState } from '@/store/stadiumWriteSlice';
 import { baseApi } from './baseApi';
 
 export interface SearchStadiumContent {
@@ -23,7 +23,7 @@ export interface SearchStadiumResponse {
   totalPages: number;
 }
 
-export const stardiumApi = baseApi.injectEndpoints({
+export const stadiumApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     getStadiumList: builder.query({
       query: (location: geoLocationType) => ({
@@ -36,14 +36,14 @@ export const stardiumApi = baseApi.injectEndpoints({
       }),
     }),
     addStadium: builder.mutation({
-      query: (stardium: stardiumWriteState) => ({
+      query: (stadium: stadiumWriteState) => ({
         url: '/stadiums/register',
         method: 'POST',
         headers: {
           Authorization:
             'Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Inkya2RqOTcyM0BuYXZlci5jb20iLCJpYXQiOjE2NzA5MzAxNDcsImV4cCI6MTY3MTUzNDk0N30.BpnzuVog-enOtsxkibExTYJfIGV_so4qaU20qAQow5w',
         },
-        body: stardium,
+        body: stadium,
       }),
     }),
     searchStadium: builder.mutation<SearchStadiumResponse, string>({
@@ -56,4 +56,4 @@ export const stardiumApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetStadiumListQuery, useAddStadiumMutation, useSearchStadiumMutation } = stardiumApi;
+export const { useGetStadiumListQuery, useAddStadiumMutation, useSearchStadiumMutation } = stadiumApi;

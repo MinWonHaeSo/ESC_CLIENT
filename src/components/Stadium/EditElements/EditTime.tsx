@@ -6,15 +6,15 @@ import Label from '@/components/common/atoms/Label';
 import CustomDatePicker from '@/components/common/CustomDatePicker';
 import datepickerTime from '@/lib/utils/datepickerTIme';
 import useDefaultTime from '@/hooks/useDefaultTime';
-import { changeTimes } from '@/store/stardiumWriteSlice';
+import { changeTimes } from '@/store/stadiumWriteSlice';
 import { useDispatch } from 'react-redux';
 
-interface StardiumTimeProps {
+interface EditStadiumTimeProps {
   startTime: string;
   endTime: string;
 }
 
-const StardiumTime = ({ startTime, endTime }: StardiumTimeProps) => {
+const EditStadiumTime = ({ startTime, endTime }: EditStadiumTimeProps) => {
   const startDate = useDefaultTime(startTime);
   const endDate = useDefaultTime(endTime);
   const includeTime = datepickerTime(startDate.getHours());
@@ -29,11 +29,11 @@ const StardiumTime = ({ startTime, endTime }: StardiumTimeProps) => {
   };
 
   return (
-    <StardiumTimeContainer>
+    <StadiumTimeContainer>
       <Label htmlFor="" required={true}>
         * 운영시간
       </Label>
-      <div className="stardium-wrapper">
+      <div className="stadium-wrapper">
         <div>
           <div>
             <span>시작시간</span>
@@ -45,15 +45,15 @@ const StardiumTime = ({ startTime, endTime }: StardiumTimeProps) => {
           <CustomDatePicker value={endDate} onChange={handleChangeEndTime} includeTimes={includeTime} />
         </div>
       </div>
-    </StardiumTimeContainer>
+    </StadiumTimeContainer>
   );
 };
 
-const StardiumTimeContainer = styled.div`
+const StadiumTimeContainer = styled.div`
   display: flex;
   flex-direction: column;
 
-  .stardium-wrapper {
+  .stadium-wrapper {
     display: flex;
     gap: 1rem;
     width: 280px;
@@ -74,4 +74,4 @@ const StardiumTimeContainer = styled.div`
   }
 `;
 
-export default React.memo(StardiumTime);
+export default React.memo(EditStadiumTime);

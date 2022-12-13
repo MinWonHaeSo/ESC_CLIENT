@@ -6,7 +6,7 @@ export type rentalItemType = { id: string; img: string; name: string; price: str
 
 export type imagesType = { public_id: string; id: string; url: string };
 
-export interface stardiumWriteState {
+export interface stadiumWriteState {
   id: number;
   name: string;
   address: string;
@@ -24,7 +24,7 @@ export interface stardiumWriteState {
   [key: string]: string | string[] | number | imagesType[] | tagType[] | rentalItemType[];
 }
 
-const initialState: stardiumWriteState = {
+const initialState: stadiumWriteState = {
   id: 0,
   name: '',
   address: '',
@@ -40,8 +40,8 @@ const initialState: stardiumWriteState = {
   lnt: '',
 };
 
-export const staridumWriteSlice = createSlice({
-  name: 'stardium',
+export const staidumWriteSlice = createSlice({
+  name: 'stadium',
   initialState,
   reducers: {
     changeFiled: (state, action: PayloadAction<{ name: string; value: string }>) => {
@@ -83,12 +83,12 @@ export const staridumWriteSlice = createSlice({
       const idx = state.rentalItems.findIndex(item => item.id === action.payload.id);
       state.rentalItems[idx].img = action.payload.url;
     },
-    clearStardiumWrite: () => initialState,
+    clearStadiumWrite: () => initialState,
   },
 });
 
 export const {
-  clearStardiumWrite,
+  clearStadiumWrite,
   changeFiled,
   addImages,
   removeImage,
@@ -100,6 +100,6 @@ export const {
   removeRentalItem,
   changeRentalItemInput,
   changeRentalItemImage,
-} = staridumWriteSlice.actions;
+} = staidumWriteSlice.actions;
 
-export const stardiumWriteReducer = staridumWriteSlice.reducer;
+export const stadiumWriteReducer = staidumWriteSlice.reducer;

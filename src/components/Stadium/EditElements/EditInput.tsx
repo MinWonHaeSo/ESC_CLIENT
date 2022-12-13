@@ -1,28 +1,28 @@
+import React from 'react';
+import styled from '@emotion/styled';
+import { useDispatch } from 'react-redux';
+import { changeFiled } from '@/store/stadiumWriteSlice';
 import Input from '@/components/common/atoms/Input';
 import Label from '@/components/common/atoms/Label';
 import FormInputDivisionBlock from '@/components/common/Responsive/FormInputDivisionBlock';
-import { changeFiled } from '@/store/stardiumWriteSlice';
-import styled from '@emotion/styled';
-import React, { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
 
-interface StardiumEditInputProps {
+interface EditInputProps {
   value: string | number;
-  name: string
+  name: string;
   title: string;
   id: string;
   type: string;
   placeholder: string;
-};
+}
 
-const StardiumEditInput = ({ value, name, title, id, type, placeholder }: StardiumEditInputProps) => {
+const EditInput = ({ value, name, title, id, type, placeholder }: EditInputProps) => {
   const dispatch = useDispatch();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     dispatch(changeFiled({ name, value }));
-  }
-  
+  };
+
   return (
     <EditInputWrapper>
       <Label htmlFor={id} required={false}>
@@ -45,4 +45,4 @@ const EditInputWrapper = styled.div`
   ${FormInputDivisionBlock};
 `;
 
-export default React.memo(StardiumEditInput);
+export default React.memo(EditInput);

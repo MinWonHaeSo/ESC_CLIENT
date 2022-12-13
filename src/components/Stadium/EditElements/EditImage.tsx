@@ -1,19 +1,19 @@
 import React, { useRef } from 'react';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
-import { addImages, imagesType, removeImage } from '@/store/stardiumWriteSlice';
+import { addImages, imagesType, removeImage } from '@/store/stadiumWriteSlice';
 import { useDispatch } from 'react-redux';
-import StardiumEditImageList from './StardiumEditImageList';
+import EditImageList from './EditImageList';
 import { contextFileType } from '@/context/OriginFilesContext';
 import fileObjectToIdUrlFile from '@/lib/utils/fileObjectToIdUrlFile';
 
-interface StardiumEditImageProps {
+interface EditImageProps {
   images: imagesType[];
   onAddImages: (files: contextFileType[]) => void;
   onRemoveImages: (id: string) => void;
 }
 
-const StardiumEditImage = ({ images, onAddImages, onRemoveImages }: StardiumEditImageProps) => {
+const EditImage = ({ images, onAddImages, onRemoveImages }: EditImageProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useDispatch();
 
@@ -59,7 +59,7 @@ const StardiumEditImage = ({ images, onAddImages, onRemoveImages }: StardiumEdit
         <span className="preview-count">{images.length} / 5</span>
         <ul>
           {images.map(image => (
-            <StardiumEditImageList key={image.id} id={image.id} url={image.url} onDeleteImage={handleDeleteImages} />
+            <EditImageList key={image.id} id={image.id} url={image.url} onDeleteImage={handleDeleteImages} />
           ))}
         </ul>
       </ImagesPreviewContainer>
@@ -134,4 +134,4 @@ const ImagesPreviewContainer = styled.div`
   }
 `;
 
-export default React.memo(StardiumEditImage);
+export default React.memo(EditImage);

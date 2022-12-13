@@ -4,24 +4,24 @@ import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import { useNavigate } from 'react-router-dom';
 import PATH from '@/constants/path';
-import { SearchStadiumContent } from '@/api/stardiumApi';
+import { SearchStadiumContent } from '@/api/stadiumApi';
 
 interface MarkerStadiumInfoProps {
   markerInfo: SearchStadiumContent;
 }
 
 const MarkerStadiumInfo = ({ markerInfo }: MarkerStadiumInfoProps) => {
-  const [stardiumLike, setStardiumLike] = useState(false);
+  const [stadiumLike, setStadiumLike] = useState(false);
   const navigate = useNavigate();
 
-  const handleChangeStardiumLike = () => {
+  const handleChangeStadiumLike = () => {
     // 찜하기 logic 작성
 
-    setStardiumLike(!stardiumLike);
+    setStadiumLike(!stadiumLike);
   };
 
   const toUploadNavigate = () => {
-    navigate(`${PATH.STARDIUM_DETAIL}/1`);
+    navigate(`${PATH.STADIUM_DETAIL}/1`);
   };
 
   if (!Object.keys(markerInfo).length) {
@@ -29,10 +29,10 @@ const MarkerStadiumInfo = ({ markerInfo }: MarkerStadiumInfoProps) => {
   }
   return (
     <MarkerInfoContainer>
-      <div className="book-mark" onClick={handleChangeStardiumLike}>
-        <i className={stardiumLike ? 'fa-solid fa-bookmark' : 'fa-regular fa-bookmark'}></i>
+      <div className="book-mark" onClick={handleChangeStadiumLike}>
+        <i className={stadiumLike ? 'fa-solid fa-bookmark' : 'fa-regular fa-bookmark'}></i>
       </div>
-      <StardiumInfoContainer onClick={toUploadNavigate}>
+      <StadiumInfoContainer onClick={toUploadNavigate}>
         <div className="image-container">
           <img
             src={markerInfo.img ? markerInfo.img : 'https://via.placeholder.com/100x110'}
@@ -41,7 +41,7 @@ const MarkerStadiumInfo = ({ markerInfo }: MarkerStadiumInfoProps) => {
             height="110px"
           />
         </div>
-        <div className="stardium-info">
+        <div className="stadium-info">
           <h4 className="title">{markerInfo.name}</h4>
           <p className="adress">{markerInfo.address}</p>
           <div className="price-review-wrapper">
@@ -53,7 +53,7 @@ const MarkerStadiumInfo = ({ markerInfo }: MarkerStadiumInfoProps) => {
             </p>
           </div>
         </div>
-      </StardiumInfoContainer>
+      </StadiumInfoContainer>
     </MarkerInfoContainer>
   );
 };
@@ -84,11 +84,11 @@ const MarkerInfoContainer = styled.div`
   }
 `;
 
-const StardiumInfoContainer = styled.div`
+const StadiumInfoContainer = styled.div`
   display: flex;
   gap: 1rem;
 
-  .stardium-info {
+  .stadium-info {
     height: 110px;
     p {
       margin-top: 0.7rem;

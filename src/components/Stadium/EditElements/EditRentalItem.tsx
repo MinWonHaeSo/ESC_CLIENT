@@ -1,21 +1,21 @@
 import React, { useCallback } from 'react';
 import Label from '@/components/common/atoms/Label';
-import RentalItemList from '@/components/Stardium/StardiumEditElements/StardiumEditRentalItemList';
+import RentalItemList from '@/components/Stadium/EditElements/EditRentalItemList';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
-import { addRentalItem, removeRentalItem, rentalItemType } from '@/store/stardiumWriteSlice';
+import { addRentalItem, removeRentalItem, rentalItemType } from '@/store/stadiumWriteSlice';
 import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { contextFileType } from '@/context/OriginFilesContext';
 
-interface StardiumEditRentalItemProps {
+interface EditRentalItemProps {
   rentalItems: rentalItemType[];
   onAddImages: (files: contextFileType, id: string) => void;
   onRemoveImages: (id: string) => void;
 }
 
-const StardiumEditRentalItem = ({ rentalItems, onAddImages, onRemoveImages }: StardiumEditRentalItemProps) => {
+const EditRentalItem = ({ rentalItems, onAddImages, onRemoveImages }: EditRentalItemProps) => {
   const dispatch = useDispatch();
 
   const handleAddkRentalContentLength = useCallback(() => {
@@ -38,7 +38,7 @@ const StardiumEditRentalItem = ({ rentalItems, onAddImages, onRemoveImages }: St
   );
 
   return (
-    <StardiumRentalItemContainer>
+    <RentalItemContainer>
       <Label htmlFor="" required={false}>
         대여 용품
       </Label>
@@ -56,11 +56,11 @@ const StardiumEditRentalItem = ({ rentalItems, onAddImages, onRemoveImages }: St
           />
         ))}
       </RentalItemContent>
-    </StardiumRentalItemContainer>
+    </RentalItemContainer>
   );
 };
 
-const StardiumRentalItemContainer = styled.div`
+const RentalItemContainer = styled.div`
   display: flex;
   width: 280px;
   flex-direction: column;
@@ -87,4 +87,4 @@ const RentalItemContent = styled.div`
   margin-top: 1rem;
 `;
 
-export default React.memo(StardiumEditRentalItem);
+export default React.memo(EditRentalItem);

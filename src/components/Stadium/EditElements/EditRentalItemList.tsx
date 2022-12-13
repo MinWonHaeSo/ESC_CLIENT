@@ -1,18 +1,18 @@
 import React, { useRef } from 'react';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
-import { changeRentalItemImage, changeRentalItemInput, rentalItemType } from '@/store/stardiumWriteSlice';
+import { changeRentalItemImage, changeRentalItemInput, rentalItemType } from '@/store/stadiumWriteSlice';
 import { useDispatch } from 'react-redux';
 import { contextFileType } from '@/context/OriginFilesContext';
 import fileObjectToIdUrlFile from '@/lib/utils/fileObjectToIdUrlFile';
 
-interface RentalItemLisProps {
+interface EditRentalItemLisProps {
   rentalItem: rentalItemType;
   onRemoveRental: (id: string) => void;
   onAddImages: (files: contextFileType, id: string) => void;
 }
 
-const RentalItemList = ({ rentalItem, onRemoveRental, onAddImages }: RentalItemLisProps) => {
+const EditRentalItemList = ({ rentalItem, onRemoveRental, onAddImages }: EditRentalItemLisProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useDispatch();
 
@@ -119,4 +119,4 @@ const RentalItemListContainer = styled.div`
     }
   }
 `;
-export default React.memo(RentalItemList);
+export default React.memo(EditRentalItemList);

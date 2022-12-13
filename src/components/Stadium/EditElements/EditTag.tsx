@@ -2,16 +2,16 @@ import Input from '@/components/common/atoms/Input';
 import Tag from '@/components/common/Tag';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
-import { addTags, removeTags } from '@/store/stardiumWriteSlice';
+import { addTags, removeTags } from '@/store/stadiumWriteSlice';
 import styled from '@emotion/styled';
 import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-interface StardiumEditTagProps {
+interface EditTagProps {
   tags: string[];
-};
+}
 
-const StardiumEditTag = ({ tags }: StardiumEditTagProps) => {
+const EditTag = ({ tags }: EditTagProps) => {
   const [tagText, setTagText] = useState('');
   const dispatch = useDispatch();
 
@@ -35,17 +35,20 @@ const StardiumEditTag = ({ tags }: StardiumEditTagProps) => {
     }
   };
 
-  const handleRemoveTag = useCallback((id: number) => {
+  const handleRemoveTag = useCallback(
+    (id: number) => {
       dispatch(removeTags(id));
-  }, [dispatch]);
+    },
+    [dispatch],
+  );
 
   return (
-    <StardiumEditTagContainer>
-      <label htmlFor="stardiumTags">체육관 종목 태그</label>
+    <EditTagContainer>
+      <label htmlFor="stadiumTags">체육관 종목 태그</label>
       <span>최대 5개 등록 가능합니다.</span>
       <Input
         type="text"
-        id="stardiumTags"
+        id="stadiumTags"
         placeholder="체육관 종목 태그"
         value={tagText}
         onChange={e => setTagText(e.target.value)}
@@ -57,11 +60,11 @@ const StardiumEditTag = ({ tags }: StardiumEditTagProps) => {
       <ul>
         {tags.length !== 0 && tags.map((tag, idx) => <Tag key={idx} id={idx} title={tag} onClick={handleRemoveTag} />)}
       </ul>
-    </StardiumEditTagContainer>
+    </EditTagContainer>
   );
 };
 
-const StardiumEditTagContainer = styled.div`
+const EditTagContainer = styled.div`
   & > span {
     font-size: ${typo.micro};
     color: ${palette.grey[400]};
@@ -94,4 +97,4 @@ const StardiumEditTagContainer = styled.div`
   }
 `;
 
-export default React.memo(StardiumEditTag);
+export default React.memo(EditTag);
