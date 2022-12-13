@@ -1,19 +1,19 @@
 import React, { useEffect, useMemo } from 'react';
 import styled from '@emotion/styled';
-import Map from '../KakaoMap/Map';
-import MarkerStadiumInfo from '../Stadium/MarkerStadiumInfo';
-import StadiumSearch from '../Stadium/StadiumSearch';
+import Map from './Map';
+import MarkerStadiumInfo from './MarkerStadiumInfo';
+import StadiumSearch from './StadiumSearch';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import { useDispatch } from 'react-redux';
 import { clearMarkerInfo, clickMarker } from '@/store/stadiumSlice';
 import { useGetStadiumListQuery } from '@/api/stadiumApi';
 
-interface BasicUserHomeProps {
+interface MainBasicUserProps {
   currentLocation: { lat: string; lnt: string };
 }
 
-const BasicUserHome = ({ currentLocation }: BasicUserHomeProps) => {
+const MainBasicUser = ({ currentLocation }: MainBasicUserProps) => {
   const { data } = useGetStadiumListQuery(currentLocation);
   const { searchResults, markerInfo } = useSelector((state: RootState) => state.stadium);
   const dispatch = useDispatch();
@@ -44,4 +44,4 @@ const HomeWrapper = styled.div`
   position: absolute;
 `;
 
-export default BasicUserHome;
+export default MainBasicUser;

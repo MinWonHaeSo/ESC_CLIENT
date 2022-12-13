@@ -1,10 +1,10 @@
-import BasicUserHome from '@/components/Main/BasicUserHome';
+import MainBasicUser from '@/components/MainBasicUser/MainBasicUser';
 import useCurrentLocation from '@/hooks/useCurrentLocation';
 
 const MainPage = () => {
   const currentLocation = useCurrentLocation();
 
-  return <BasicUserHome currentLocation={currentLocation} />;
+  return <MainBasicUser currentLocation={currentLocation} />;
 };
 
 export default MainPage;

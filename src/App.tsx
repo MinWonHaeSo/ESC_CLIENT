@@ -15,6 +15,8 @@ import OAuthRedirectPage from './pages/OAuthRedirectPage';
 import { CookiesProvider } from 'react-cookie';
 import { OriginFilesProvider } from './context/OriginFilesContext';
 import PATH from './constants/path';
+import StadiumDetailPage from './pages/StadiumDetailPage';
+import StadiumListPage from './pages/StadiumListPage';
 
 const App = () => {
   return (
@@ -29,6 +31,8 @@ const App = () => {
                 <Route path="/oauth2/:social" element={<OAuthRedirectPage />} />
                 <Route path={PATH.SEARCH_PASSWORD} element={<SearchPasswordPage />} />
                 <Route path={PATH.SIGN_UP} element={<SignUpPage />} />
+                <Route path={PATH.STADIUM_DETAIL} element={<StadiumListPage />} />
+                <Route path={`${PATH.STADIUM_DETAIL}/:id`} element={<StadiumDetailPage />} />
                 <Route path="*" element={<NotFoundPage />} />
                 {/* <Route element={<PrivateRoute />}> */}
                 <Route path={PATH.ME} element={<MyPage />} />
