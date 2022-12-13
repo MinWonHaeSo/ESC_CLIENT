@@ -7,17 +7,17 @@ import FormInputDivisionBlock from '@/components/common/Responsive/FormInputDivi
 import Label from '@/components/common/atoms/Label';
 import { useDispatch } from 'react-redux';
 import { changeAddress, changeFiled } from '@/store/stardiumWriteSlice';
-import { geoCode } from '@/hooks/useKakaoMapScript';
+import kakaoService from '@/service/kakaoMapService';
 
-interface StardiumEditAddressProps  {
+interface StardiumEditAddressProps {
   address: string;
   detailAddress: string;
-};
+}
 
 type GeoLocationType = {
   lat: string;
-  lng: string;
-}
+  lnt: string;
+};
 
 const StardiumEditAddress = ({ address, detailAddress }: StardiumEditAddressProps) => {
   const [openPostcode, setOpenPostcode] = useState(false);
@@ -25,8 +25,10 @@ const StardiumEditAddress = ({ address, detailAddress }: StardiumEditAddressProp
 
   const handleSelectAdress = async (data: any) => {
     // 주소 string -> 위도 경도 변환
-    const geoLocation = await geoCode(data.address) as GeoLocationType;
-    dispatch(changeAddress({address: data.address, lat:geoLocation.lat, lnt: geoLocation.lng}));
+    const geoLocation = (await kakaoService.getGeoCode(data.address)) as GeoLocationType;
+
+    console.log(geoLocation);
+    dispatch(changeAddress({ address: data.address, lat: geoLocation.lat, lnt: geoLocation.lnt }));
     setOpenPostcode(false);
   };
 
@@ -100,7 +102,7 @@ const AddressContainer = styled.div`
 
   border-radius: 10px;
   border: 1px solid ${palette.grey[300]};
-`
+`;
 
 const PopupAddressBlock = styled.div`
   .postmodal {

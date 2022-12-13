@@ -35,12 +35,9 @@ const StardiumEditTag = ({ tags }: StardiumEditTagProps) => {
     }
   };
 
-  const handleRemoveTag = useCallback(
-    (id: number) => {
+  const handleRemoveTag = useCallback((id: number) => {
       dispatch(removeTags(id));
-    },
-    [dispatch],
-  );
+  }, [dispatch]);
 
   return (
     <StardiumEditTagContainer>

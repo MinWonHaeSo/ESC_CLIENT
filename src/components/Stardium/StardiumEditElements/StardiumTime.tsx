@@ -12,21 +12,21 @@ import { useDispatch } from 'react-redux';
 interface StardiumTimeProps {
   startTime: string;
   endTime: string;
-};
+}
 
 const StardiumTime = ({ startTime, endTime }: StardiumTimeProps) => {
-  const startDate = useDefaultTime(startTime)
-  const endDate = useDefaultTime(endTime)
+  const startDate = useDefaultTime(startTime);
+  const endDate = useDefaultTime(endTime);
   const includeTime = datepickerTime(startDate.getHours());
   const dispatch = useDispatch();
 
   const handleChangeStartTime = (date: Date) => {
-    dispatch(changeTimes({ name: 'openTime', time: '12:00:00' }));
-  }
+    dispatch(changeTimes({ name: 'openTime', time: `${date.getHours()}:${date.getMinutes()}:00` }));
+  };
 
   const handleChangeEndTime = (date: Date) => {
-    dispatch(changeTimes({ name: 'closeTime', time: '22:00:00' }));
-  }
+    dispatch(changeTimes({ name: 'closeTime', time: `${date.getHours()}:${date.getMinutes()}:00` }));
+  };
 
   return (
     <StardiumTimeContainer>
