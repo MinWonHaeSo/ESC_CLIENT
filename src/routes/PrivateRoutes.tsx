@@ -9,10 +9,11 @@ interface PrivateRouteProps {
 
 const PrivateRoute = ({}: PrivateRouteProps) => {
   const loggedIn = useSelector((state: RootState) => state.auth.loggedIn);
+  const accessToken = useSelector((state: RootState) => state.auth.accessToken);
   if (!loggedIn) {
     sw.toast.error('올바른 접근이 아닙니다.');
   }
-  return loggedIn ? <Outlet /> : <Navigate to="/login" />;
+  return accessToken && loggedIn ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export default PrivateRoute;
