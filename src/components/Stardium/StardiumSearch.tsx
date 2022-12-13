@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import Input from '@/components/common/atoms/Input';
 import { useDispatch } from 'react-redux';
-import { searchResultsStardium } from '@/store/stardiumSlice';
+import kakaoService from '@/service/kakaoMapService';
+import { useSearchStadiumMutation } from '@/api/stardiumApi';
 
 interface StardiumSearchProps {}
 
 const StardiumSearch = (props: StardiumSearchProps) => {
   const [search, setSearch] = useState('');
-  const dispatch = useDispatch();
+  const [searchStadium] = useSearchStadiumMutation();
 
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -16,7 +17,8 @@ const StardiumSearch = (props: StardiumSearchProps) => {
 
   const handleEnterFetch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      dispatch(searchResultsStardium());
+      searchStadium(search);
+      kakaoService.setClearMarker();
     }
   };
 

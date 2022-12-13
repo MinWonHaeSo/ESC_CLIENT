@@ -4,7 +4,8 @@ export type geoLocationType = {
 };
 
 const currentGeoLocation = () => {
-  let lat : string, lnt : string ;
+  let lat: string
+  let lnt: string
 
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition((position) => {
