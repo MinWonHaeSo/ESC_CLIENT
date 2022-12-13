@@ -13,8 +13,8 @@ interface UserState {
   password: string;
   nickname: string;
   image: string;
-  accessToken: string | null;
-  refreshToken: string | null;
+  accessToken: string;
+  refreshToken: string;
   loggedIn: boolean;
 }
 
@@ -28,8 +28,8 @@ const initialState: UserState = {
   password: '',
   nickname: '',
   image: '',
-  accessToken: null,
-  refreshToken: null,
+  accessToken: '',
+  refreshToken: '',
   loggedIn: false,
 };
 
