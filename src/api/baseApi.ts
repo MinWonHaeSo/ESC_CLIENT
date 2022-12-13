@@ -1,10 +1,11 @@
-import { getCookie } from '@/lib/utils/cookies';
+import { getCookie, setCookie } from '@/lib/utils/cookies';
 import sw from '@/lib/utils/customSweetAlert';
 import { loggedOut, setCredentials } from '@/store/authSlice';
 import { RootState } from '@/store/store';
 import { BaseQueryFn, createApi, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
+import { useSelector } from 'react-redux';
 
-const BASE_URL = import.meta.env.VITE_API_SERVER;
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${BASE_URL}`,
@@ -13,7 +14,6 @@ const baseQuery = fetchBaseQuery({
     if (accessToken) {
       headers.set('Authorization', `Bearer ${accessToken}`);
     }
-    headers.set('ngrok-skip-browser-warning', 'true');
     return headers;
   },
 });
@@ -31,6 +31,7 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 
     // send refresh token to get new access token
     const refreshToken = getCookie('refreshToken');
+    console.log(refreshToken);
     const refreshResult = await baseQuery(
       {
         url: '/members/auth/refresh-token',
@@ -45,9 +46,20 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
     console.log('refreshTokenResult', refreshResult);
 
     if (refreshResult.data) {
-      api.dispatch(setCredentials({ token: refreshResult.data }));
       console.log(refreshResult.data);
-      console.log('accessToken refetch');
+      // const accessToken = (api.getState() as RootState).auth.accessToken;
+      api.dispatch(setCredentials({ ...refreshResult.data }));
+
+      // 1. 다시 받아온 refreshToken, accessToken을 전역 상태에 저장한다.
+      // 2. cookie에 refreshToken, localStorage에 accessToken을 저장한다.
+      const authUser = useSelector((state: RootState) => state.auth);
+      localStorage.setItem('accessToken', authUser.accessToken);
+      setCookie('refreshToken', authUser.refreshToken);
+
+      console.log(`accessToken: ${authUser.accessToken}`);
+      console.log(`refreshToekn: ${authUser.refreshToken}`);
+
+      console.log('accessToken is refetched');
 
       // retry the initial query
       result = await baseQuery(args, api, extraOptions);
@@ -72,26 +84,7 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 
 export const baseApi = createApi({
   reducerPath: 'baseApi',
-<<<<<<< HEAD
-  baseQuery: fetchBaseQuery({
-    baseUrl: `${BASE_URL}`,
-    headers: {
-      "Content-type": "application/json"
-    },
-    prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).auth.token;
-      if (token) {
-        headers.set('authorization', `Bearer ${token}`);
-      }
-      headers.set('ngrok-skip-browser-warning', 'true');
-      return headers;
-    },
-  }),
-  tagTypes: ['User','Stardium'],
-  endpoints: () => ({}),
-=======
   baseQuery: baseQueryWithReauth,
   tagTypes: ['User'],
   endpoints: builder => ({}),
->>>>>>> 530a4920889104786fe84c9c6cb9f565b1eb6162
 });

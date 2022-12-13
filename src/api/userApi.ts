@@ -24,11 +24,7 @@ export interface SignUpResponse {
   image: string;
 }
 
-<<<<<<< HEAD
-type LoginRequest = Pick<User, 'email' | 'password'>;
-=======
 type SignUpRequest = User;
->>>>>>> 530a4920889104786fe84c9c6cb9f565b1eb6162
 
 type Email = Pick<User, 'email'>;
 

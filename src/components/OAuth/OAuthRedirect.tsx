@@ -57,9 +57,8 @@ const OAuthRedirect = () => {
 
       navigate('/');
     }
-
-    return <Loading />;
   };
+  return <Loading />;
 };
 
 export default OAuthRedirect;
