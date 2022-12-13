@@ -22,10 +22,18 @@ interface LoginResponse {
   refreshToken: string;
   name: string;
   nickname: string;
-  image: string;
+  imgUrl: string;
+}
+
+interface RefreshResponse {
+  email: string;
+  nickname: string;
+  imgUrl: string;
+  statusCode: number;
 }
 
 type LoginRequest = Pick<User, 'email' | 'password'>;
+type SocialLoginRequest = Pick<User, 'email'>;
 
 type PasswordChangeRequest = {
   email: string;
@@ -64,6 +72,19 @@ const authApi = baseApi.injectEndpoints({
         },
       }),
     }),
+    requestUserInfo: builder.mutation<RefreshResponse, string>({
+      query: () => ({
+        url: 'members/profiles/info',
+        method: 'POST',
+      }),
+    }),
+    changeUserInfo: builder.mutation<ApiResponse, { nickname: string; imgUrl: string }>({
+      query: userInfo => ({
+        url: 'members/profiles/info',
+        method: 'PATCH',
+        body: { ...userInfo },
+      }),
+    }),
     findPasswordSendEmail: builder.mutation<ApiResponse, Email>({
       query: (email: Email) => ({
         url: '/members/profiles/password/send-email',
@@ -94,6 +115,8 @@ export const {
   useSocialLoginMutation,
   useLoginMutation,
   useLogoutMutation,
+  useRequestUserInfoMutation,
+  useChangeUserInfoMutation,
   useFindPasswordSendEmailMutation,
   useFindPasswordValidateEmailQuery,
   useChangePasswordRequestMutation,
