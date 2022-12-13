@@ -1,22 +1,28 @@
 import { useRef, useState } from 'react';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
-import { useAppDispatch } from '@/store/store';
+import { RootState, useAppDispatch } from '@/store/store';
 import { uploadImage } from '@/store/authSlice';
 import { setImage } from '@/store/userSlice';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 interface InsertImageProps {
   editDisabled: boolean;
+  currentImage: string;
+  currentLocation: string;
 }
 
 interface ImageFile {
-  imageUrl: string;
+  imageURL: string;
 }
 
-const InsertImage = ({ editDisabled }: InsertImageProps) => {
+const InsertImage = ({ editDisabled, currentImage, currentLocation }: InsertImageProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [imageFile, setImageFile] = useState<ImageFile | null>(null);
+  const [imageFile, setImageFile] = useState<ImageFile | null>({ imageURL: '' });
 
+  const authUser = useSelector((state: RootState) => state.auth);
+  // const { image } = authUser;
   const dispatch = useAppDispatch();
 
   const handleClickFileButton = () => {
@@ -34,16 +40,26 @@ const InsertImage = ({ editDisabled }: InsertImageProps) => {
     }
     const selectedImg = e.target.files[0];
     const imageURL = URL.createObjectURL(selectedImg);
-    console.log(imageURL);
-    setImageFile({ ...imageFile, imageUrl: imageURL });
-    // dispatch(uploadImage([{ imageUrl: imageURL }]));
+    setImageFile({ ...imageFile, imageURL: imageURL });
 
-    dispatch(setImage(imageURL));
+    if (currentLocation === '/mypage') {
+      dispatch(uploadImage(imageURL));
+    } else if (currentLocation === '/signup') {
+      dispatch(setImage(imageURL));
+    }
   };
+
+  useEffect(() => {
+    setImageFile({ ...imageFile, imageURL: currentImage });
+  }, [currentImage]);
 
   return (
     <ImgBlock>
-      <Img src={imageFile?.imageUrl ?? 'src/assets/defaultProfileImage.svg'} alt="프로필" disabled={editDisabled} />
+      <Img
+        src={imageFile?.imageURL.length === 0 ? 'src/assets/defaultProfileImage.svg' : imageFile?.imageURL}
+        alt="프로필"
+        disabled={editDisabled}
+      />
       <PlusButton onClick={handleClickFileButton}>
         {editDisabled ? null : <i className="fa-solid fa-plus" />}
       </PlusButton>
