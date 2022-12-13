@@ -69,7 +69,7 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
           type: 'USER',
           email: '',
           name: '',
-          nickname: '',
+          nickName: '',
           image: '',
           accessToken: '',
           refreshToken: '',

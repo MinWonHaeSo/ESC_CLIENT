@@ -7,7 +7,7 @@ export interface User {
   email: string;
   name: string;
   password: string;
-  nickname: string;
+  nickName: string;
   image: string;
 }
 
@@ -21,13 +21,13 @@ interface LoginResponse {
   accessToken: string;
   refreshToken: string;
   name: string;
-  nickname: string;
+  nickName: string;
   imgUrl: string;
 }
 
 interface RefreshResponse {
   email: string;
-  nickname: string;
+  nickName: string;
   imgUrl: string;
   statusCode: number;
 }
@@ -78,7 +78,7 @@ const authApi = baseApi.injectEndpoints({
         method: 'POST',
       }),
     }),
-    changeUserInfo: builder.mutation<ApiResponse, { nickname: string; imgUrl: string }>({
+    changeUserInfo: builder.mutation<ApiResponse, { nickName: string; imgUrl: string }>({
       query: userInfo => ({
         url: 'members/profiles/info',
         method: 'PATCH',

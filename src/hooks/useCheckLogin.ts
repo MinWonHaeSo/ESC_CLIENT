@@ -1,6 +1,7 @@
 import { useRequestUserInfoMutation } from '@/api/authApi';
 import { sustainLogin } from '@/store/authSlice';
 import { useAppDispatch } from '@/store/store';
+import { useEffect } from 'react';
 
 export const useCheckLogin = async () => {
   const [requestUserInfoAPI] = useRequestUserInfoMutation();
@@ -15,11 +16,11 @@ export const useCheckLogin = async () => {
     const userData = await requestUserInfoAPI('').unwrap();
     console.log(userData);
     if (userData) {
-      const { email, nickname, imgUrl } = userData;
+      const { email, nickName, imgUrl } = userData;
       dispatch(
         sustainLogin({
           email: email,
-          nickname: nickname,
+          nickName: nickName,
           image: imgUrl,
           userType: userType,
           accessToken: accessToken,

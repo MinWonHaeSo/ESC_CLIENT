@@ -7,7 +7,7 @@ export interface User {
   email: string;
   name: string;
   password: string;
-  nickname: string;
+  nickName: string;
   image: string;
 }
 
@@ -20,7 +20,7 @@ interface Response {
 export interface SignUpResponse {
   statusCode: number;
   name: string;
-  nickname: string;
+  nickName: string;
   image: string;
 }
 

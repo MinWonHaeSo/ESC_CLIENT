@@ -24,7 +24,7 @@ const UserInfo = (props: UserInfoProps) => {
   const navigate = useNavigate();
 
   const authUser = useSelector((state: RootState) => state.auth);
-  const { nickname, image } = authUser;
+  const { nickName, image } = authUser;
   const [changeUserInfoAPI] = useChangeUserInfoMutation();
 
   const handleEditClick = () => {
@@ -42,12 +42,12 @@ const UserInfo = (props: UserInfoProps) => {
     if (inputValue.length < 2) {
       return sw.toast.warn('최소 2자 이상의 닉네임을 입력하세요.');
     }
-    if (inputValue === nickname) {
+    if (inputValue === nickName) {
       return sw.toast.warn('이전 닉네임과 같습니다.');
     }
 
     try {
-      const response = await changeUserInfoAPI({ nickname: nickname, imgUrl: image });
+      const response = await changeUserInfoAPI({ nickName: nickName, imgUrl: image });
       if (response) {
         sw.toast.success('수정이 완료되었습니다.');
         setEditDisabled(true);

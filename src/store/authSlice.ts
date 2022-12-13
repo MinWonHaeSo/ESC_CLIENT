@@ -7,7 +7,7 @@ interface UserState {
   email: string;
   name: string;
   password: string;
-  nickname: string;
+  nickName: string;
   image: string;
   accessToken: string;
   refreshToken: string;
@@ -23,7 +23,7 @@ const initialState: UserState = {
   email: '',
   name: '',
   password: '',
-  nickname: '',
+  nickName: '',
   image: '',
   accessToken: '',
   refreshToken: '',
@@ -45,7 +45,7 @@ const authSlice = createSlice({
       state.email = action.payload.email;
       state.name = action.payload.name;
       state.password = action.payload.password;
-      state.nickname = action.payload.nickname;
+      state.nickName = action.payload.nickName;
       state.image = action.payload.image;
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
@@ -55,17 +55,17 @@ const authSlice = createSlice({
       state.type = action.payload.type;
       state.email = action.payload.email;
       state.name = action.payload.name;
-      state.nickname = action.payload.nickname;
+      state.nickName = action.payload.nickName;
       state.image = action.payload.image;
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
       state.loggedIn = action.payload.loggedIn;
     },
     sustainLogin: (state, action) => {
-      const { type, email, nickname, imgUrl, accessToken, loggedIn } = action.payload;
+      const { type, email, nickName, imgUrl, accessToken, loggedIn } = action.payload;
       state.type = type;
       state.email = email;
-      state.nickname = nickname;
+      state.nickName = nickName;
       state.image = imgUrl;
       state.accessToken = accessToken;
       state.loggedIn = loggedIn;
@@ -77,7 +77,7 @@ const authSlice = createSlice({
       state.image = action.payload;
     },
     changeNickname: (state, action: PayloadAction<string>) => {
-      state.nickname = action.payload;
+      state.nickName = action.payload;
     },
     changePassword: (state, action: PayloadAction<string>) => {
       state.password = action.payload;
@@ -89,7 +89,7 @@ const authSlice = createSlice({
       state.type = action.payload.type;
       state.email = action.payload.email;
       state.name = action.payload.name;
-      state.nickname = action.payload.nickname;
+      state.nickName = action.payload.nickName;
       state.image = action.payload.image;
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;

@@ -7,7 +7,7 @@ interface UserState {
   email: string;
   name: string;
   password: string;
-  nickname: string;
+  nickName: string;
   image: string;
 }
 
@@ -17,7 +17,7 @@ const initialState: UserState = {
   email: '',
   name: '',
   password: '',
-  nickname: '',
+  nickName: '',
   image: '',
 };
 
@@ -43,7 +43,7 @@ const userSlice = createSlice({
       state.password = action.payload;
     },
     setNickname: (state, action: PayloadAction<string>) => {
-      state.nickname = action.payload;
+      state.nickName = action.payload;
     },
     setImage: (state, action: PayloadAction<string>) => {
       state.image = action.payload;
