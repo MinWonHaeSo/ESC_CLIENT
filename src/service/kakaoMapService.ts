@@ -1,3 +1,5 @@
+import ZERO_LOCATION from '@/constants/defaultLocation';
+
 declare global {
   interface Window {
     kakao: any;
@@ -16,14 +18,14 @@ type setMarkerParam = {
 
 const { kakao } = window;
 
-class KaKaoMapClass {
+class KaKaoMap {
   map: any = null;
   markers: any[] = [];
 
   initScript() {
     const container = document.getElementById('myMap');
     const options = {
-      center: new kakao.maps.LatLng(37.5030426, 127.041588),
+      center: new kakao.maps.LatLng(ZERO_LOCATION.lat, ZERO_LOCATION.lnt),
       level: 10,
     };
     const map = new kakao.maps.Map(container, options);
@@ -40,7 +42,7 @@ class KaKaoMapClass {
     return new Promise((resolve, reject) => {
       geocoder.addressSearch(address, function (result: any, status: any) {
         if (status === kakao.maps.services.Status.OK) {
-          resolve({ lat: result[0].y, lng: result[0].x });
+          resolve({ lat: result[0].y, lnt: result[0].x });
         } else {
           reject(status);
         }
@@ -60,7 +62,7 @@ class KaKaoMapClass {
 
     place.forEach((el: any) => {
       // 마커를 생성합니다
-      const markers = new kakao.maps.Marker({
+      const marker = new kakao.maps.Marker({
         //마커가 표시 될 지도
         map: this.map,
         //마커가 표시 될 위치
@@ -69,23 +71,40 @@ class KaKaoMapClass {
         title: el.title,
       });
 
-      this.markers.push(markers);
-
-      kakao.maps.event.addListener(markers, 'click', function () {
+      kakao.maps.event.addListener(marker, 'click', () => {
         handleClick(el);
+        this.map.setLevel(8);
+        this.goToLocation({ lat: el.lat, lnt: el.lnt });
       });
+
+      this.markers.push(marker);
     });
 
     this.goToLocation({ lat: place[0].lat, lnt: place[0].lnt });
   }
 
   setClearMarker() {
-    this.markers.forEach((marker) => {
+    this.markers.forEach(marker => {
       marker.setMap(null);
     });
   }
+
+  zoomIn() {
+    // 현재 지도의 레벨을 얻어옵니다
+    const level = this.map.getLevel();
+
+    // 지도를 1레벨 내립니다 (지도가 확대됩니다)
+    this.map.setLevel(level - 1);
+  }
+
+  zoomOut() {
+    const level = this.map.getLevel();
+
+    // 지도를 1레벨 올립니다 (지도가 축소됩니다)
+    this.map.setLevel(level + 1);
+  }
 }
 
-const kakaoClass = new KaKaoMapClass();
+const kakaoService = new KaKaoMap();
 
-export default kakaoClass;
+export default kakaoService;
