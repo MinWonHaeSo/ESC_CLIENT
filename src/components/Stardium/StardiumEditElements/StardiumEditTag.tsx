@@ -7,11 +7,11 @@ import styled from '@emotion/styled';
 import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-type Props = {
+interface StardiumEditTagProps {
   tags: string[];
 };
 
-const StardiumEditTag = ({ tags }: Props) => {
+const StardiumEditTag = ({ tags }: StardiumEditTagProps) => {
   const [tagText, setTagText] = useState('');
   const dispatch = useDispatch();
 
@@ -26,7 +26,7 @@ const StardiumEditTag = ({ tags }: Props) => {
 
     dispatch(addTags(tagText));
     setTagText('');
-  }
+  };
 
   const handleEnterTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -36,9 +36,9 @@ const StardiumEditTag = ({ tags }: Props) => {
   };
 
   const handleRemoveTag = useCallback((id: number) => {
-    dispatch(removeTags(id))
+      dispatch(removeTags(id));
   }, [dispatch]);
-  
+
   return (
     <StardiumEditTagContainer>
       <label htmlFor="stardiumTags">체육관 종목 태그</label>

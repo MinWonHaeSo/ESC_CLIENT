@@ -4,7 +4,7 @@ import { loggedOut, setCredentials } from '@/store/authSlice';
 import { RootState } from '@/store/store';
 import { BaseQueryFn, createApi, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+const BASE_URL = import.meta.env.VITE_API_SERVER;
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${BASE_URL}`,
@@ -72,7 +72,26 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 
 export const baseApi = createApi({
   reducerPath: 'baseApi',
+<<<<<<< HEAD
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${BASE_URL}`,
+    headers: {
+      "Content-type": "application/json"
+    },
+    prepareHeaders: (headers, { getState }) => {
+      const token = (getState() as RootState).auth.token;
+      if (token) {
+        headers.set('authorization', `Bearer ${token}`);
+      }
+      headers.set('ngrok-skip-browser-warning', 'true');
+      return headers;
+    },
+  }),
+  tagTypes: ['User','Stardium'],
+  endpoints: () => ({}),
+=======
   baseQuery: baseQueryWithReauth,
   tagTypes: ['User'],
   endpoints: builder => ({}),
+>>>>>>> 530a4920889104786fe84c9c6cb9f565b1eb6162
 });

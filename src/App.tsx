@@ -11,6 +11,27 @@ import PrivateRoute from './routes/PrivateRoutes';
 import StardiumUploadPage from './pages/StardiumUploadPage';
 import SearchPasswordPage from './pages/SearchPasswordPage';
 import SignOutPage from './pages/SignOutPage';
+<<<<<<< HEAD
+import { OriginFilesProvider } from './context/OriginFilesContext';
+import PATH from './constants/path';
+
+const App = () => {
+  return (
+    <Provider store={store}>
+      <OriginFilesProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route path={PATH.ROOT} element={<Homepage />} />
+              <Route path={PATH.LOGIN} element={<LoginPage />} />
+              <Route path={PATH.SIGN_UP} element={<SignUpPage />} />
+              <Route path={PATH.FIND_PASSWORD} element={<FindPassWordPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+              {/* <Route element={<PrivateRoute />}> */}
+              <Route path={PATH.ME} element={<MyPage />} />
+              <Route path={PATH.SIGN_OUT} element={<SignOutPage />} />
+              <Route path={PATH.MANAGER_STARDIUM_UPLOAD} element={<StardiumUploadPage />} />
+=======
 import OAuthRedirectPage from './pages/OAuthRedirectPage';
 import { CookiesProvider } from 'react-cookie';
 
@@ -31,12 +52,18 @@ const App = () => {
               <Route path="/mypage" element={<MyPage />} />
               <Route path="/signout" element={<SignOutPage />} />
               <Route path="/manager/stardium/upload" element={<StardiumUploadPage />} />
+>>>>>>> 530a4920889104786fe84c9c6cb9f565b1eb6162
               {/* </Route> */}
             </Route>
           </Routes>
         </BrowserRouter>
+<<<<<<< HEAD
+      </OriginFilesProvider>
+    </Provider>
+=======
       </Provider>
     </CookiesProvider>
+>>>>>>> 530a4920889104786fe84c9c6cb9f565b1eb6162
   );
 };
 

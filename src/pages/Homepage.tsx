@@ -1,7 +1,10 @@
-import Home from '@/components/Home/Home';
+import BasicUserHome from '@/components/Home/BasicUserHome';
+import useCurrentLocation from '@/hooks/useCurrentLocation';
 
 const HomePage = () => {
-  return <Home />;
+  const currentLocation = useCurrentLocation();
+
+  return <BasicUserHome currentLocation={currentLocation} />;
 };
 
 export default HomePage;

@@ -1,41 +1,39 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
-import axios from 'axios';
 import { addImages, imagesType, removeImage } from '@/store/stardiumWriteSlice';
-import { fileUpload } from '@/api/fileUpload';
 import { useDispatch } from 'react-redux';
 import StardiumEditImageList from './StardiumEditImageList';
+import { contextFileType } from '@/context/OriginFilesContext';
+import fileObjectToIdUrlFile from '@/lib/utils/fileObjectToIdUrlFile';
 
-type StardiumEditImageProps = {
+interface StardiumEditImageProps {
   images: imagesType[];
-};
+  onAddImages: (files: contextFileType[]) => void;
+  onRemoveImages: (id: string) => void;
+}
 
-const StardiumEditImage = ({ images }: StardiumEditImageProps) => {
+const StardiumEditImage = ({ images, onAddImages, onRemoveImages }: StardiumEditImageProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useDispatch();
 
   const handleChangeImages = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files?.length) return
-    
-    const files = Array.from(e.target.files);
-    const filesPath = files.map(file => URL.createObjectURL(file));
+    if (!e.target.files?.length) return;
 
-    const fileReducer = filesPath.reduce((obj, cur, idx) => {
-      return [...obj, ...[{ id: idx, url: cur }]];
-    }, [] as imagesType[]);
+    const { fileInfoArray, fileInfoExcludeFile } = fileObjectToIdUrlFile(e.target.files);
 
-    dispatch(addImages(fileReducer));
-    // fileUpload(files);
-    
+    onAddImages(fileInfoArray);
+    dispatch(addImages(fileInfoExcludeFile));
+
     // Delete 후 file Value 변동 사항 없어 이전 등록한 사진 값과 동일한 사진 업로드 하면 onChange Event 발생 안됨.
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
   };
 
-  const handleDeleteImages = (index: number) => {
+  const handleDeleteImages = (index: string) => {
     dispatch(removeImage(index));
+    onRemoveImages(String(index));
   };
 
   const handleClickFileButton = () => {
@@ -52,7 +50,7 @@ const StardiumEditImage = ({ images }: StardiumEditImageProps) => {
           type="file"
           onChange={handleChangeImages}
           multiple
-          accept="application/pdf, image/png"
+          accept=".gif, .jpg, .png"
           style={{ display: 'none' }}
           ref={fileInputRef}
         />

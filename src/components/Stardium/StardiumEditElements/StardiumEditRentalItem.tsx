@@ -7,26 +7,35 @@ import { addRentalItem, removeRentalItem, rentalItemType } from '@/store/stardiu
 import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
+import { contextFileType } from '@/context/OriginFilesContext';
 
 interface StardiumEditRentalItemProps {
-  rentalItems : rentalItemType[]
+  rentalItems: rentalItemType[];
+  onAddImages: (files: contextFileType, id: string) => void;
+  onRemoveImages: (id: string) => void;
 }
 
-const StardiumEditRentalItem = ({ rentalItems }: StardiumEditRentalItemProps) => {
+const StardiumEditRentalItem = ({ rentalItems, onAddImages, onRemoveImages }: StardiumEditRentalItemProps) => {
   const dispatch = useDispatch();
 
   const handleAddkRentalContentLength = useCallback(() => {
-    dispatch(addRentalItem({
-      id: uuidv4(),
-      img: '',
-      name: '',
-      price: 0
-    }));
-  },[dispatch]);
-
-  const handleRemoveRental = useCallback((id: string) => {
-    dispatch(removeRentalItem(id));
+    dispatch(
+      addRentalItem({
+        id: uuidv4(),
+        img: '',
+        name: '',
+        price: '',
+      }),
+    );
   }, [dispatch]);
+
+  const handleRemoveRental = useCallback(
+    (id: string) => {
+      onRemoveImages(id);
+      dispatch(removeRentalItem(id));
+    },
+    [dispatch, onRemoveImages],
+  );
 
   return (
     <StardiumRentalItemContainer>
@@ -38,11 +47,12 @@ const StardiumEditRentalItem = ({ rentalItems }: StardiumEditRentalItemProps) =>
         대여 용품 추가
       </button>
       <RentalItemContent>
-        {rentalItems.map((item, idx) => (
+        {rentalItems.map(item => (
           <RentalItemList
-            key={idx}
+            key={item.id}
             rentalItem={item}
             onRemoveRental={handleRemoveRental}
+            onAddImages={onAddImages}
           />
         ))}
       </RentalItemContent>
