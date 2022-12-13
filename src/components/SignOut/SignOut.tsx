@@ -16,7 +16,7 @@ const SignOut = () => {
   const [required, setRequired] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const [signOut] = useSignOutMutation();
+  const [signOutAPI] = useSignOutMutation();
 
   const checkEmailValidation = (currentEmail: string) => {
     const { emailRegex } = formRegex;
@@ -34,7 +34,7 @@ const SignOut = () => {
 
   const handleSignOutClick = async () => {
     try {
-      const response = await signOut('').unwrap();
+      const response = await signOutAPI('').unwrap();
       if (response) {
         sw.confirm(() => {
           sw.toast.success('성공적으로 탈퇴 되었습니다.');

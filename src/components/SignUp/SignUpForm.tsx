@@ -1,5 +1,5 @@
 import { useGoBack } from '@/hooks/useGoBack';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
@@ -39,16 +39,20 @@ const SignUpForm = (props: SignUpFormProps) => {
   const [allChecked, setAllChecked] = useState<AllCheckedState>(initialState);
   const goBack = useGoBack();
   const navigate = useNavigate();
+  const location = useLocation();
+  const currentLocation = location.pathname;
 
-  const user = useSelector((state: RootState) => state.user);
-  console.log(user);
-  const [signUp] = useSignUpMutation();
+  const registerUser = useSelector((state: RootState) => state.user);
+  const authUserImage = useSelector((state: RootState) => state.auth.image);
+  console.log(registerUser);
+  console.log(authUserImage);
+  const [signUpAPI] = useSignUpMutation();
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       if (formStateCheck(allChecked)) {
-        const response = await signUp(user);
+        const response = await signUpAPI(registerUser);
         console.log(response);
         sw.toast.success('성공적으로 가입되었습니다. 로그인 해주세요.');
         setTimeout(() => {
@@ -68,7 +72,7 @@ const SignUpForm = (props: SignUpFormProps) => {
 
   return (
     <FormBlock onSubmit={handleFormSubmit}>
-      <InsertImage editDisabled={false} />
+      <InsertImage editDisabled={false} currentImage={authUserImage} currentLocation={currentLocation} />
       <UserName allChecked={allChecked} setAllChecked={setAllChecked} />
       <Email allChecked={allChecked} setAllChecked={setAllChecked} />
       <Password allChecked={allChecked} setAllChecked={setAllChecked} />
