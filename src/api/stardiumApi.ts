@@ -2,28 +2,58 @@ import { geoLocationType } from '@/hooks/useCurrentLocation';
 import { stardiumWriteState } from '@/store/stardiumWriteSlice';
 import { baseApi } from './baseApi';
 
-const accessToken =
-  'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Inkya2RqOTcyM0BuYXZlci5jb20iLCJpYXQiOjE2NzA2MDYwODgsImV4cCI6MTY3MTIxMDg4OH0.340Mtq4hLEL73wgrByLODF7sMnFh8uNLkIPLn4CeGQU';
+export interface SearchStadiumContent {
+  id: number;
+  name: string;
+  address: string;
+  img: string;
+  likes: number;
+  tags: string[];
+  star_avg: number;
+  holidayPricePerHalfHour: number;
+  weekdayPricePerHalfHour: number;
+  lat: string;
+  lnt: string;
+}
 
-const stardiumApi = baseApi.injectEndpoints({
+export interface SearchStadiumResponse {
+  content: SearchStadiumContent[];
+  number: number;
+  totalElements: number;
+  totalPages: number;
+}
+
+export const stardiumApi = baseApi.injectEndpoints({
   endpoints: builder => ({
-    getStardiumList: builder.query({
+    getStadiumList: builder.query({
       query: (location: geoLocationType) => ({
-        url: `/stadium/near-loc?lat=${32}&lnt=${127}`,
+        url: `/stadiums/near-loc?lat=${location.lat}&lnt=${location.lnt}`,
+        headers: {
+          Authorization:
+            'Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Inkya2RqOTcyM0BuYXZlci5jb20iLCJpYXQiOjE2NzA5MzAxNDcsImV4cCI6MTY3MTUzNDk0N30.BpnzuVog-enOtsxkibExTYJfIGV_so4qaU20qAQow5w',
+        },
         method: 'GET',
       }),
     }),
-    addStardium: builder.mutation({
+    addStadium: builder.mutation({
       query: (stardium: stardiumWriteState) => ({
         url: '/stadiums/register',
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization:
+            'Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Inkya2RqOTcyM0BuYXZlci5jb20iLCJpYXQiOjE2NzA5MzAxNDcsImV4cCI6MTY3MTUzNDk0N30.BpnzuVog-enOtsxkibExTYJfIGV_so4qaU20qAQow5w',
         },
         body: stardium,
+      }),
+    }),
+    searchStadium: builder.mutation<SearchStadiumResponse, string>({
+      query: search => ({
+        url: `/stadiums/search?searchValue=${search}`,
+        transformResponse: (response: { data: SearchStadiumResponse }) => response.data,
+        method: 'GET',
       }),
     }),
   }),
 });
 
-export const { useGetStardiumListQuery, useAddStardiumMutation } = stardiumApi;
+export const { useGetStadiumListQuery, useAddStadiumMutation, useSearchStadiumMutation } = stardiumApi;

@@ -2,17 +2,17 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type tagType = { id: number; name: string };
 
-export type rentalItemType = { id: string; img: string; name: string; price: string; [key: string] : string; };
+export type rentalItemType = { id: string; img: string; name: string; price: string };
 
-export type imagesType = { id: number; url: string };
-
+export type imagesType = { public_id: string; id: string; url: string };
 
 export interface stardiumWriteState {
   id: number;
   name: string;
   address: string;
   detailAddress: string;
-  weekdayPricePerHalfHour: number;
+  weekdayPricePerHalfHour: string;
+  holidayPricePerHalfHour: string;
   images: imagesType[];
   tags: string[];
   openTime: string;
@@ -29,19 +29,13 @@ const initialState: stardiumWriteState = {
   name: '',
   address: '',
   detailAddress: '',
-  weekdayPricePerHalfHour: 0,
+  weekdayPricePerHalfHour: '',
+  holidayPricePerHalfHour: '',
   images: [],
   tags: [],
   openTime: '09:00:00',
   closeTime: '22:00:00',
-  rentalItems: [
-    {
-      id: '',
-      img: '',
-      name: '',
-      price: '',
-    },
-  ],
+  rentalItems: [],
   lat: '',
   lnt: '',
 };
@@ -56,11 +50,11 @@ export const staridumWriteSlice = createSlice({
     addImages: (state, action: PayloadAction<imagesType[]>) => {
       state.images = action.payload;
     },
-    removeImage: (state, action: PayloadAction<number>) => {
+    removeImage: (state, action: PayloadAction<string>) => {
       const filterImages = state.images.filter(image => image.id !== action.payload);
       state.images = filterImages;
     },
-    changeAddress: (state, action: PayloadAction<{address: string, lat:string, lnt: string}>) => {
+    changeAddress: (state, action: PayloadAction<{ address: string; lat: string; lnt: string }>) => {
       state.address = action.payload.address;
       state.lat = action.payload.lat;
       state.lnt = action.payload.lnt;
@@ -71,7 +65,7 @@ export const staridumWriteSlice = createSlice({
     removeTags: (state, action: PayloadAction<number>) => {
       state.tags.splice(action.payload, 1);
     },
-    changeTimes: (state, action: PayloadAction<{ name: 'openTime' | 'closeTime' , time : string}>) => {
+    changeTimes: (state, action: PayloadAction<{ name: 'openTime' | 'closeTime'; time: string }>) => {
       state[action.payload.name] = action.payload.time;
     },
     addRentalItem: (state, action: PayloadAction<rentalItemType>) => {
@@ -81,11 +75,11 @@ export const staridumWriteSlice = createSlice({
       const filterRentalItems = state.rentalItems.filter(item => item.id !== action.payload);
       state.rentalItems = filterRentalItems;
     },
-    changeRentalItemInput: (state, action: PayloadAction<{ id: string, name: 'name' | 'price', value: string }>) => {
+    changeRentalItemInput: (state, action: PayloadAction<{ id: string; name: 'name' | 'price'; value: string }>) => {
       const idx = state.rentalItems.findIndex(item => item.id === action.payload.id);
       state.rentalItems[idx][action.payload.name] = action.payload.value;
     },
-    changeRentalItemImage: (state, action: PayloadAction<{ id: string, url: string }>) => {
+    changeRentalItemImage: (state, action: PayloadAction<{ id: string; url: string }>) => {
       const idx = state.rentalItems.findIndex(item => item.id === action.payload.id);
       state.rentalItems[idx].img = action.payload.url;
     },
