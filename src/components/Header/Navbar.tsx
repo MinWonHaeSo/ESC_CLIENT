@@ -6,7 +6,7 @@ import styled from '@emotion/styled';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { changeUserType, checkLoggedIn, loggedOut } from '@/store/authSlice';
+import { loggedOut } from '@/store/authSlice';
 import sw from '@/lib/utils/customSweetAlert';
 import { UserType } from '@/types/userType';
 import { useLogoutMutation } from '@/api/authApi';
@@ -22,14 +22,14 @@ const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
   const dispatch = useAppDispatch();
 
   const loggedIn = useSelector((state: RootState) => state.auth.loggedIn);
-  const userType = useSelector((state: RootState) => state.auth.type);
-  const [logout] = useLogoutMutation();
+  const authUserType = useSelector((state: RootState) => state.auth.type);
+  const [logoutAPI] = useLogoutMutation();
 
   const handleLogOut = async () => {
     try {
       const refreshToken = getCookie('refreshToken');
-      const response = await logout(refreshToken).unwrap();
-      if (response.statusCode === 200) {
+      const response = await logoutAPI(refreshToken).unwrap();
+      if (response) {
         dispatch(
           loggedOut({
             type: 'USER',
@@ -43,8 +43,13 @@ const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
           }),
         );
         onChangeIsActive();
+
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('userType');
+
         deleteCookie('refreshToken', { path: '/' });
         console.log(getCookie('refreshToken'));
+
         sw.toast.success('로그아웃 되었습니다.');
       }
     } catch {
@@ -57,8 +62,8 @@ const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
   };
 
   useEffect(() => {
-    setLoginType(userType);
-  }, [userType]);
+    setLoginType(authUserType);
+  }, [authUserType]);
 
   return (
     <NavbarBlock>

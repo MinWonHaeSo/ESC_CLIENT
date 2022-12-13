@@ -46,40 +46,65 @@ const LoginForm = (props: LoginFormProps) => {
   const dispatch = useAppDispatch();
   const userType = useSelector((state: RootState) => state.user.type);
 
-  const [login] = useLoginMutation();
+  const [loginAPI] = useLoginMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const userData = await login({ email: email, password: password }).unwrap();
+      const userData = await loginAPI({ email: email, password: password }).unwrap();
       if (userData) {
-        const { name, nickname, image, accessToken, refreshToken } = userData;
+        const { name, nickname, imgUrl, accessToken, refreshToken } = userData;
+
+        // cookie에 refreshToken 저장
         setCookie('refreshToken', refreshToken, {
           path: '/',
           secure: true,
           // httpOnly: true,
         });
         console.log(getCookie('refreshToken'));
-        dispatch(setCredentials({ token: accessToken }));
-        dispatch(
-          setLogin({
-            type: userType,
-            email: email,
-            name: name,
-            nickname: nickname,
-            image: image,
-            accessToken: accessToken,
-            refreshToken: refreshToken,
-            loggedIn: true,
-          }),
-        );
-        sw.toast.success('로그인 되었습니다.');
+
+        // localStorage에 refreshToken 저장
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('userType', userType);
+
+        // dispatch(setCredentials({ token: accessToken }));
+        if (accessToken) {
+          dispatch(
+            setLogin({
+              type: userType,
+              email: email,
+              name: name,
+              password: password,
+              nickname: nickname,
+              image: imgUrl,
+              accessToken: accessToken,
+              refreshToken: refreshToken,
+              loggedIn: true,
+            }),
+          );
+          sw.toast.success('로그인 되었습니다.');
+        }
       }
     } catch {
       console.error('잘못된 접근입니다.');
       return navigate('/login');
     }
-    navigate('/');
+    // dispatch(setCredentials({ token: '1234' }));
+    // dispatch(
+    //   setLogin({
+    //     type: userType,
+    //     email: email,
+    //     name: 'kyle',
+    //     password: password,
+    //     nickname: 'kyle',
+    //     image: `src/assets/react.svg`,
+    //     accessToken: '1234',
+    //     refreshToken: '1234',
+    //     loggedIn: true,
+    //   }),
+    // );
+    // sw.toast.success('로그인 되었습니다.');
+    // navigate('/');
   };
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -124,6 +149,7 @@ const LoginForm = (props: LoginFormProps) => {
         placeholder={'비밀번호'}
         onChange={handleFormChange}
         required={required.password}
+        autoComplete="off"
       />
       <Button
         type={'submit'}
