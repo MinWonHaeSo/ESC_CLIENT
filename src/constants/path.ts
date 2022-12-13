@@ -3,6 +3,8 @@ const PATH = {
   LOGIN: '/login',
   REGISTER: '/signup',
   FIND_PASSWORD: '/findpassword',
+  SIGN_UP: '/signup',
+  SIGN_OUT: '/signout',
   ME: '/mypage',
   ME_RENTAL_LIST: '',
   ME_RECENT_SEARCH_LIST: '',
