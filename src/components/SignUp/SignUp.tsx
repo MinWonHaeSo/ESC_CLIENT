@@ -4,7 +4,6 @@ import { typo } from '@/lib/styles/typo';
 import Title from '../common/atoms/Title';
 import TabMenu from '../common/TabMenu';
 import SignUpForm from './SignUpForm';
-import InsertImage from '../common/InsertImage';
 
 interface SignUpProps {}
 
@@ -15,7 +14,6 @@ const SignUp = (props: SignUpProps) => {
         회원가입
       </Title>
       <TabMenu />
-      <InsertImage editDisabled={false} />
       <SignUpForm />
     </SignUpBlock>
   );

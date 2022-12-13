@@ -1,15 +1,15 @@
-import React from 'react'
+import React from 'react';
 
 interface StardiumEditImageListProps {
-  id: number;
+  id: string;
   url: string;
-  onDeleteImage : (id:number) => void
+  onDeleteImage: (id: string) => void;
 }
 
-const StardiumEditImageList = ({id,url,onDeleteImage}: StardiumEditImageListProps) => {
+const StardiumEditImageList = ({ id, url, onDeleteImage }: StardiumEditImageListProps) => {
   return (
     <li key={`${id}`}>
-      <img src={url} width="200px" height="100px" alt="미리보기" />
+      <img src={url} width="200px" height="100px" style={{ objectFit: 'cover' }} alt="미리보기" />
       <button type="button" className="delete-preview-btn" onClick={() => onDeleteImage(id)}>
         삭제
       </button>
@@ -17,4 +17,4 @@ const StardiumEditImageList = ({id,url,onDeleteImage}: StardiumEditImageListProp
   );
 };
 
-export default StardiumEditImageList
+export default StardiumEditImageList;

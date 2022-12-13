@@ -2,8 +2,7 @@ import { baseApi } from '@/api/baseApi';
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { authReducer } from './authSlice';
-import { findPassWordReducer } from './findPassWordSlice';
-import { memberTypeReducer } from './memberCheckSlice';
+import { searchPasswordReducer } from './searchPassWordSlice';
 import { stardiumReducer } from './stardiumSlice';
 import { stardiumWriteReducer } from './stardiumWriteSlice';
 import { userReducer } from './userSlice';
@@ -13,8 +12,7 @@ export const store = configureStore({
     user: userReducer,
     stardium: stardiumReducer,
     stardiumWrite: stardiumWriteReducer,
-    member: memberTypeReducer,
-    findPassWord: findPassWordReducer,
+    searchPassword: searchPasswordReducer,
     auth: authReducer,
     [baseApi.reducerPath]: baseApi.reducer,
   },

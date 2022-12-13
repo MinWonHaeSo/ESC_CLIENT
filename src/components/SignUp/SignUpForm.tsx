@@ -4,24 +4,31 @@ import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
 import Button from '../common/atoms/Button';
+import UserName from './UserName';
 import Email from './Email';
-import PassWord from './PassWord';
+import Password from './PassWord';
 import NickName from './NickName';
 import { useState } from 'react';
 import sw from '@/lib/utils/customSweetAlert';
 import { useSignUpMutation } from '@/api/userApi';
 import formStateCheck from '@/lib/utils/formStateCheck';
+import InsertImage from '../common/InsertImage';
+import { RootState } from '@/store/store';
+import { useSelector } from 'react-redux';
+import PATH from '@/constants/path';
 
 interface SignUpFormProps {}
 
 export interface AllCheckedState {
+  userName: boolean;
   email: boolean;
   password: boolean;
-  passwordConfirm?: boolean;
-  nickName?: boolean;
+  passwordConfirm: boolean;
+  nickName: boolean;
 }
 
 const initialState: AllCheckedState = {
+  userName: false,
   email: false,
   password: false,
   passwordConfirm: false,
@@ -32,40 +39,39 @@ const SignUpForm = (props: SignUpFormProps) => {
   const [allChecked, setAllChecked] = useState<AllCheckedState>(initialState);
   const goBack = useGoBack();
   const navigate = useNavigate();
+
+  const user = useSelector((state: RootState) => state.user);
+  console.log(user);
   const [signUp] = useSignUpMutation();
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  };
-
-  const handleFormButtonClick = async () => {
-    if (!formStateCheck(allChecked)) {
-      return sw.toast.warn('회원가입 폼을 모두 채워주세요.');
-    }
     try {
-      const response = await signUp({
-        email: 'kylekwon96@gmail.com',
-        type: 'USER',
-        name: 'kylekwon96@gmail.com',
-        password: 'k@12341234',
-        nickname: 'kyle',
-        key: '123',
-        images: [{ imageUrl: '' }],
-      });
-      // console.log(response.data);
-      sw.toast.success('성공적으로 가입되었습니다.');
-      setTimeout(() => {
-        navigate('/login');
-      }, 1500);
+      if (formStateCheck(allChecked)) {
+        const response = await signUp(user);
+        console.log(response);
+        sw.toast.success('성공적으로 가입되었습니다. 로그인 해주세요.');
+        setTimeout(() => {
+          navigate(PATH.LOGIN);
+        }, 1500);
+      }
     } catch {
       throw new Error('error');
     }
   };
 
+  const handleFormButtonClick = () => {
+    if (!formStateCheck(allChecked)) {
+      return sw.toast.warn('회원가입 폼을 모두 채워주세요.');
+    }
+  };
+
   return (
     <FormBlock onSubmit={handleFormSubmit}>
+      <InsertImage editDisabled={false} />
+      <UserName allChecked={allChecked} setAllChecked={setAllChecked} />
       <Email allChecked={allChecked} setAllChecked={setAllChecked} />
-      <PassWord allChecked={allChecked} setAllChecked={setAllChecked} />
+      <Password allChecked={allChecked} setAllChecked={setAllChecked} />
       <NickName allChecked={allChecked} setAllChecked={setAllChecked} />
       <StyleWrapper>
         <Button type="submit" size={'large'} backgroundColor={`${palette.black[100]}`} onClick={handleFormButtonClick}>
@@ -101,5 +107,6 @@ const QuestionDesc = styled.p`
     font-weight: 600;
     text-decoration: underline;
     color: ${palette.black[200]};
+    cursor: pointer;
   }
 `;

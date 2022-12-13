@@ -1,3 +1,4 @@
+import { useSignOutMutation } from '@/api/userApi';
 import formRegex from '@/constants/formRegex';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
@@ -15,6 +16,8 @@ const SignOut = () => {
   const [required, setRequired] = useState<boolean>(false);
   const navigate = useNavigate();
 
+  const [signOut] = useSignOutMutation();
+
   const checkEmailValidation = (currentEmail: string) => {
     const { emailRegex } = formRegex;
     if (!emailRegex.test(currentEmail)) {
@@ -29,13 +32,20 @@ const SignOut = () => {
     checkEmailValidation(currentEmail);
   };
 
-  const handleSignOutClick = () => {
-    sw.confirm(() => {
-      sw.toast.success('성공적으로 탈퇴 되었습니다.');
-      setTimeout(() => {
-        navigate('/');
-      }, 1000);
-    });
+  const handleSignOutClick = async () => {
+    try {
+      const response = await signOut('').unwrap();
+      if (response) {
+        sw.confirm(() => {
+          sw.toast.success('성공적으로 탈퇴 되었습니다.');
+          setTimeout(() => {
+            navigate('/');
+          }, 1000);
+        });
+      }
+    } catch {
+      console.error('탈퇴하는데 문제가 발생하였습니다.');
+    }
   };
 
   return (
@@ -71,5 +81,8 @@ const RequestMessage = styled.p`
 const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  margin-left: 31.5px;
   gap: 8px;
+  width: 280px;
 `;

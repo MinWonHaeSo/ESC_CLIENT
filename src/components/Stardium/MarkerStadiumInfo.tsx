@@ -4,11 +4,10 @@ import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import { useNavigate } from 'react-router-dom';
 import PATH from '@/constants/path';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store/store';
+import { SearchStadiumContent } from '@/api/stardiumApi';
 
 interface MarkerStadiumInfoProps {
-  markerInfo: any;
+  markerInfo: SearchStadiumContent;
 }
 
 const MarkerStadiumInfo = ({ markerInfo }: MarkerStadiumInfoProps) => {
@@ -26,9 +25,8 @@ const MarkerStadiumInfo = ({ markerInfo }: MarkerStadiumInfoProps) => {
   };
 
   if (!Object.keys(markerInfo).length) {
-    return null
+    return null;
   }
-
   return (
     <MarkerInfoContainer>
       <div className="book-mark" onClick={handleChangeStardiumLike}>
@@ -36,17 +34,22 @@ const MarkerStadiumInfo = ({ markerInfo }: MarkerStadiumInfoProps) => {
       </div>
       <StardiumInfoContainer onClick={toUploadNavigate}>
         <div className="image-container">
-          <img src="https://via.placeholder.com/100x110" alt="체육관 이미지" width="100px" height="110px" />
+          <img
+            src={markerInfo.img ? markerInfo.img : 'https://via.placeholder.com/100x110'}
+            alt="체육관 이미지"
+            width="100px"
+            height="110px"
+          />
         </div>
         <div className="stardium-info">
-          <h3 className="title">{markerInfo.title}</h3>
-          <p className="adress">{markerInfo.location}</p>
+          <h4 className="title">{markerInfo.name}</h4>
+          <p className="adress">{markerInfo.address}</p>
           <div className="price-review-wrapper">
             <p>
-              가격 : <span className="price">100,000 원</span>
+              가격 : <span className="price">{markerInfo.weekdayPricePerHalfHour} 원</span>
             </p>
             <p>
-              <i className="fa-solid fa-heart"></i> <span>{markerInfo.reviews}</span>
+              <i className="fa-solid fa-heart"></i> <span>{markerInfo.star_avg}</span>
             </p>
           </div>
         </div>
@@ -73,7 +76,7 @@ const MarkerInfoContainer = styled.div`
     position: absolute;
     top: 0;
     right: 0.4rem;
-    font-size: ${typo.large};
+    font-size: ${typo.medium};
   }
 
   i {
@@ -91,6 +94,12 @@ const StardiumInfoContainer = styled.div`
       margin-top: 0.7rem;
       font-size: ${typo.micro};
       color: ${palette.grey[400]};
+    }
+    .title {
+      width: 190px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 

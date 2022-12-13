@@ -1,38 +1,37 @@
 import { UserType } from '@/types/userType';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface ImageType {
-  imageUrl: string;
-}
-
 interface UserState {
-  userId: number;
-  userType: UserType;
-  email?: string;
-  name?: string;
-  password?: string;
-  nickname?: string;
-  image?: ImageType[];
-  loggedIn: boolean;
+  key: string;
+  type: UserType;
+  email: string;
+  name: string;
+  password: string;
+  nickname: string;
+  image: string;
 }
 
 const initialState: UserState = {
-  userId: 0,
-  userType: 'USER',
+  key: '',
+  type: 'USER',
   email: '',
   name: '',
   password: '',
   nickname: '',
-  image: [],
-  loggedIn: false,
+  image: '',
 };
 
-export const userSlice = createSlice({
+// signUp(회원가입) , mypage (마이페이지) -> 회원가입 시 관리되는 각 폼 요소가 개별로 존재하기 때문에,
+// 각 요소마다 입력이 완료되었을 때 해당 상태가 저장되도록 reducer들을 분리할 수 밖에 없음
+const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    changeUser: (state, action: PayloadAction<UserType>) => {
-      state.userType = action.payload;
+    setKey: (state, action: PayloadAction<string>) => {
+      state.key = action.payload;
+    },
+    setUserType: (state, action: PayloadAction<UserType>) => {
+      state.type = action.payload;
     },
     setEmail: (state, action: PayloadAction<string>) => {
       state.email = action.payload;
@@ -46,15 +45,12 @@ export const userSlice = createSlice({
     setNickname: (state, action: PayloadAction<string>) => {
       state.nickname = action.payload;
     },
-    setImage: (state, action: PayloadAction<ImageType[]>) => {
+    setImage: (state, action: PayloadAction<string>) => {
       state.image = action.payload;
-    },
-    checkLoggedIn: (state, action: PayloadAction<boolean>) => {
-      state.loggedIn = action.payload;
     },
   },
 });
 
-export const { changeUser, checkLoggedIn } = userSlice.actions;
+export const { setKey, setUserType, setEmail, setName, setPassword, setNickname, setImage } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;

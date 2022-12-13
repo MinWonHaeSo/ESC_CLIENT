@@ -13,7 +13,8 @@ import PATH from '@/constants/path';
 interface LoginProps {}
 
 const Login = (props: LoginProps) => {
-  const userType = useSelector((state: RootState) => state.user.userType);
+  const userType = useSelector((state: RootState) => state.user.type);
+
   return (
     <LoginBlock>
       <TabMenu />
@@ -24,7 +25,7 @@ const Login = (props: LoginProps) => {
           <Link to={PATH.REGISTER}>회원가입</Link>
         </Li>
         <Li>
-          <Link to={PATH.FIND_PASSWORD}>비밀번호 찾기</Link>
+          <Link to={PATH.SEARCH_PASSWORD}>비밀번호 찾기</Link>
         </Li>
       </RegisterBlock>
     </LoginBlock>
@@ -56,7 +57,7 @@ const Li = styled.li`
   color: ${palette.black[100]};
   a {
     position: relative;
-    padding: 12px 16px;
+    padding: 8px 16px;
   }
   &:hover {
     text-decoration: underline;

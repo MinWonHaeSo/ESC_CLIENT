@@ -1,21 +1,100 @@
+import { UserType } from '@/types/userType';
 import { baseApi } from './baseApi';
+
+export interface User {
+  key: string;
+  type: UserType;
+  email: string;
+  name: string;
+  password: string;
+  nickname: string;
+  image: string;
+}
+
+interface ApiResponse {
+  message: string;
+  statusCode: number;
+}
+
+interface LoginResponse {
+  statusCode: number;
+  accessToken: string;
+  refreshToken: string;
+  name: string;
+  nickname: string;
+  image: string;
+}
+
+type LoginRequest = Pick<User, 'email' | 'password'>;
+
+type PasswordChangeRequest = {
+  email: string;
+  prePassword: string | null;
+  newPassword: string;
+  confirmPassword: string;
+  hasToken: boolean;
+};
+
+type Email = Pick<User, 'email'>;
 
 const authApi = baseApi.injectEndpoints({
   endpoints: builder => ({
-    getToken: builder.query({
-      query: () => ({
-        url: '/posts',
+    socialLogin: builder.mutation({
+      query: (email: Email) => ({
+        url: '/members/oauth2/info',
+        method: 'POST',
+        body: email,
+      }),
+      invalidatesTags: ['User'],
+    }),
+    login: builder.mutation<LoginResponse, LoginRequest>({
+      query: credentials => ({
+        url: '/members/auth/login',
+        method: 'POST',
+        body: { ...credentials },
+      }),
+      invalidatesTags: ['User'],
+    }),
+    logout: builder.mutation<LoginResponse, string>({
+      query: (refreshToken: string) => ({
+        url: '/members/auth/logout',
+        method: 'POST',
+        headers: {
+          RefreshToken: `Bearer ${refreshToken}`,
+        },
+      }),
+    }),
+    findPasswordSendEmail: builder.mutation<ApiResponse, Email>({
+      query: (email: Email) => ({
+        url: '/members/profiles/password/send-email',
+        method: 'POST',
+        body: email,
+      }),
+      invalidatesTags: ['User'],
+    }),
+    findPasswordValidateEmail: builder.query<ApiResponse, string>({
+      query: key => ({
+        url: `/members/profiles/password?key=${key}`,
         method: 'GET',
       }),
       providesTags: ['User'],
     }),
-    getSocialLogin: builder.query({
-      query: ({ social, token }: { social: string; token: string }) => ({
-        url: `/oauth2/authorization/${social}?code=${token}`,
-        method: 'GET',
+    changePasswordRequest: builder.mutation<ApiResponse, PasswordChangeRequest>({
+      query: ({ email, prePassword, newPassword, confirmPassword, hasToken }) => ({
+        url: `/members/profiles/password`,
+        method: 'POST',
+        body: { email, prePassword, newPassword, confirmPassword, hasToken },
       }),
+      invalidatesTags: ['User'],
     }),
   }),
 });
 
-export const { useGetTokenQuery } = authApi;
+export const {
+  useSocialLoginMutation,
+  useLoginMutation,
+  useLogoutMutation,
+  useFindPasswordSendEmailMutation,
+  useFindPasswordValidateEmailQuery,
+  useChangePasswordRequestMutation,
+} = authApi;
