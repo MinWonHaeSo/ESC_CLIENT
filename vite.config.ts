@@ -26,17 +26,6 @@ export default ({ mode }) => {
       }),
       svgr(),
     ],
-    server: {
-      proxy: {
-        '/stadiums': {
-          target: 'https://5c0c-125-130-84-139.jp.ngrok.io',
-          changeOrigin: true,
-          rewrite: path => path.replace(/^\/api/, ''),
-          secure: false,
-          ws: true,
-        },
-      },
-    },
     resolve: {
       alias: [{ find: '@', replacement: path.resolve('src') }],
     },
