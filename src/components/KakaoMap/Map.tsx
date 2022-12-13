@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect } from 'react';
-import useKakaoMapScript, { mapPanTo, setMarker } from '@/hooks/useKakaoMapScript';
-import kakaoClass from '@/lib/utils/kakaoMapClass';
+import React, { useEffect } from 'react';
+import kakaoService from '@/service/kakaoMapService';
 
 interface MapProps {
   searchResults: any;
@@ -8,14 +7,13 @@ interface MapProps {
 }
 
 const Map = ({ searchResults, onClickMarker }: MapProps) => {
+  useEffect(() => {
+    kakaoService.initScript();
+  }, []);
 
   useEffect(() => {
-    kakaoClass.initScript();
-  }, [])
-  
-  useEffect(() => {
-    kakaoClass.setMarker({place: searchResults, handleClick: onClickMarker});
-  },[searchResults])
+    kakaoService.setMarker({ place: searchResults, handleClick: onClickMarker });
+  }, [searchResults]);
 
   return (
     <div>
