@@ -38,7 +38,7 @@ const ValidateEmail = (props: ValidateEmailProps) => {
     }
     try {
       const response = await findPasswordSendEmailAPI({ email: inputEmail }).unwrap();
-      if (response.statusCode === 200) {
+      if (response) {
         sw.toast.success('이메일로 인증 코드가 발송되었습니다.');
         dispatch(saveEmailTemporary(inputEmail));
         setTimeout(() => {

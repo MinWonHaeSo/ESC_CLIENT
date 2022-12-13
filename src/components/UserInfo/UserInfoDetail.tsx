@@ -28,7 +28,7 @@ const UserInfoDetail = ({
 }: UserInfoDetailProps) => {
   const authUser = useSelector((state: RootState) => state.auth);
   console.log(authUser);
-  const { email, nickName, image } = authUser;
+  const { email, nickname, image } = authUser;
   const location = useLocation();
   const currentLocation = location.pathname;
 
@@ -63,7 +63,7 @@ const UserInfoDetail = ({
   };
 
   useEffect(() => {
-    setInputValue(nickName);
+    setInputValue(nickname);
   }, []);
 
   return (

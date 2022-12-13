@@ -53,7 +53,7 @@ const LoginForm = (props: LoginFormProps) => {
     try {
       const userData = await loginAPI({ email: email, password: password }).unwrap();
       if (userData) {
-        const { name, nickName, imgUrl, accessToken, refreshToken } = userData;
+        const { name, nickname, imgUrl, accessToken, refreshToken } = userData;
 
         // cookie에 refreshToken 저장
         setCookie('refreshToken', refreshToken, {
@@ -75,7 +75,7 @@ const LoginForm = (props: LoginFormProps) => {
               email: email,
               name: name,
               password: password,
-              nickName: nickName,
+              nickname: nickname,
               image: imgUrl,
               accessToken: accessToken,
               refreshToken: refreshToken,

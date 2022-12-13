@@ -48,7 +48,7 @@ const OAuthRedirect = () => {
             type: 'USER',
             email: decodedUserInfo.email,
             name: userData.name,
-            nickName: userData.nickName,
+            nickname: userData.nickname,
             image: userData.imgUrl,
             accessToken: accessToken,
             refreshToken: userData.refreshToken,

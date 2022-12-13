@@ -35,7 +35,7 @@ const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
             type: 'USER',
             email: '',
             name: '',
-            nickName: '',
+            nickname: '',
             image: '',
             accessToken: '',
             refreshToken: '',

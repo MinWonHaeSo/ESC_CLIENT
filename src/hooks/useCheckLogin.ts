@@ -16,11 +16,11 @@ export const useCheckLogin = async () => {
     const userData = await requestUserInfoAPI('').unwrap();
     console.log(userData);
     if (userData) {
-      const { email, nickName, imgUrl } = userData;
+      const { email, nickname, imgUrl } = userData;
       dispatch(
         sustainLogin({
           email: email,
-          nickName: nickName,
+          nickname: nickname,
           image: imgUrl,
           userType: userType,
           accessToken: accessToken,
