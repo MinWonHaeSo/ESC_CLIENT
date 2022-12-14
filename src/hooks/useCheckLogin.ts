@@ -1,7 +1,6 @@
 import { useRequestUserInfoMutation } from '@/api/authApi';
 import { sustainLogin } from '@/store/authSlice';
 import { useAppDispatch } from '@/store/store';
-import { useEffect } from 'react';
 
 export const useCheckLogin = async () => {
   const [requestUserInfoAPI] = useRequestUserInfoMutation();

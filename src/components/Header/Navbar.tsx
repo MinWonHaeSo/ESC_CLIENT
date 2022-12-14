@@ -44,9 +44,6 @@ const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
         );
         onChangeIsActive();
 
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('userType');
-
         deleteCookie('refreshToken', { path: '/' });
         console.log(getCookie('refreshToken'));
 

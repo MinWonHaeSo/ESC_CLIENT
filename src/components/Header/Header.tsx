@@ -14,6 +14,7 @@ import { RootState, useAppDispatch } from '@/store/store';
 import { useEffect } from 'react';
 import { useCheckLogin } from '@/hooks/useCheckLogin';
 import { sustainLogin } from '@/store/authSlice';
+import { useRequestUserInfoMutation } from '@/api/authApi';
 
 interface HomeProps {}
 
@@ -26,28 +27,10 @@ const Header = (props: HomeProps) => {
   const handleChangeIsActive = () => {
     setIsActive(!isActive);
   };
-
+  const [requestUserInfoAPI] = useRequestUserInfoMutation();
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    if (localStorage.getItem('accessToken')) {
-      const user = localStorage.getItem('user');
-      if (!user) {
-        return;
-      }
-      const userData = JSON.parse(user);
-      dispatch(
-        sustainLogin({
-          email: userData.email,
-          nickName: userData.nickName,
-          image: userData.imgUrl,
-          userType: userData.userType,
-          accessToken: userData.accessToken,
-          loggedIn: true,
-        }),
-      );
-      console.log('로그인 유지 중');
-    }
-  }, []);
+
+  useEffect(() => {}, []);
 
   return (
     <HeaderBlock>
