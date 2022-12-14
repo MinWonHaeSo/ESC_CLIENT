@@ -11,6 +11,7 @@ export interface stadiumWriteState {
   name: string;
   address: string;
   detailAddress: string;
+  phone: string;
   weekdayPricePerHalfHour: string;
   holidayPricePerHalfHour: string;
   images: imagesType[];
@@ -28,6 +29,7 @@ const initialState: stadiumWriteState = {
   id: 0,
   name: '',
   address: '',
+  phone: '',
   detailAddress: '',
   weekdayPricePerHalfHour: '',
   holidayPricePerHalfHour: '',

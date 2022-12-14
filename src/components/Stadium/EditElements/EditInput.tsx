@@ -28,15 +28,7 @@ const EditInput = ({ value, name, title, id, type, placeholder }: EditInputProps
       <Label htmlFor={id} required={false}>
         * {title}
       </Label>
-      <Input
-        type={type}
-        id={id}
-        name={name}
-        placeholder={placeholder}
-        required={true}
-        value={value}
-        onChange={handleChange}
-      />
+      <Input type={type} id={id} name={name} placeholder={placeholder} value={value} onChange={handleChange} />
     </EditInputWrapper>
   );
 };
