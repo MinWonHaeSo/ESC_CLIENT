@@ -59,7 +59,6 @@ const EditTag = ({ tags }: EditTagProps) => {
         태그 추가
       </button>
       <TagList tags={tags} onTagClick={handleRemoveTag} />
-      {/* <ul>{tags.length !== 0 && tags.map((tag, idx) => <Tag />)}</ul> */}
     </EditTagContainer>
   );
 };
