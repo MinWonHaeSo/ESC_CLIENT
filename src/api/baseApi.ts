@@ -46,11 +46,18 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
     console.log('refreshTokenResult', refreshResult);
 
     if (refreshResult.data) {
-      const accessToken = (api.getState() as RootState).auth.accessToken;
+      console.log(refreshResult.data);
+      // const accessToken = (api.getState() as RootState).auth.accessToken;
+      api.dispatch(setCredentials({ ...refreshResult.data }));
 
-      api.dispatch(setCredentials({ accessToken: accessToken }));
+      // 1. 다시 받아온 refreshToken, accessToken을 전역 상태에 저장한다.
+      // 2. cookie에 refreshToken, localStorage에 accessToken을 저장한다.
+      const authUser = useSelector((state: RootState) => state.auth);
+      localStorage.setItem('accessToken', authUser.accessToken);
+      setCookie('refreshToken', authUser.refreshToken);
 
-      // setCookie('refreshToken', refreshResult.data);
+      console.log(`accessToken: ${authUser.accessToken}`);
+      console.log(`refreshToekn: ${authUser.refreshToken}`);
 
       console.log('accessToken is refetched');
 

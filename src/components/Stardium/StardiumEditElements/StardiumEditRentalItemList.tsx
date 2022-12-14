@@ -1,15 +1,18 @@
 import React, { useRef } from 'react';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
-import { changeRentalItemImage, changeRentalItemName, rentalItemType } from '@/store/stardiumWriteSlice';
+import { changeRentalItemImage, changeRentalItemInput, rentalItemType } from '@/store/stardiumWriteSlice';
 import { useDispatch } from 'react-redux';
+import { contextFileType } from '@/context/OriginFilesContext';
+import fileObjectToIdUrlFile from '@/lib/utils/fileObjectToIdUrlFile';
 
 interface RentalItemLisProps {
   rentalItem: rentalItemType;
   onRemoveRental: (id: string) => void;
+  onAddImages: (files: contextFileType, id: string) => void;
 }
 
-const RentalItemList = ({ rentalItem, onRemoveRental }: RentalItemLisProps) => {
+const RentalItemList = ({ rentalItem, onRemoveRental, onAddImages }: RentalItemLisProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useDispatch();
 
@@ -18,25 +21,20 @@ const RentalItemList = ({ rentalItem, onRemoveRental }: RentalItemLisProps) => {
   };
 
   const handleChangeRentalImage = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
-    if (!e.target.files?.length) return
+    if (!e.target.files?.length) return;
 
-    const files = Array.from(e.target.files);
-    const filesPath = files.map(file => URL.createObjectURL(file))[0];
+    const { fileInfoArray, fileInfoExcludeFile } = fileObjectToIdUrlFile(e.target.files);
 
-    dispatch(changeRentalItemImage({ id, url: filesPath }));
+    onAddImages(fileInfoArray[0], id);
+    dispatch(changeRentalItemImage({ id, url: fileInfoExcludeFile[0].url }));
   };
 
-  const handleChangeRentalNameInput = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
-    const { value } = e.target;
+  const handleChangeRentalInputFiled = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
+    const value = e.target.value as string;
+    const name = e.target.name as 'name' | 'price';
 
-    dispatch(changeRentalItemName({ value, id }));
-  }
-
-  const handleChangeRentalPriceInput = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
-    const { value } = e.target;
-
-    dispatch(changeRentalItemName({ value, id }));
-  }
+    dispatch(changeRentalItemInput({ name, value, id }));
+  };
 
   return (
     <RentalItemListContainer>
@@ -52,7 +50,7 @@ const RentalItemList = ({ rentalItem, onRemoveRental }: RentalItemLisProps) => {
           <input
             type="file"
             onChange={e => handleChangeRentalImage(e, rentalItem.id)}
-            accept="application/pdf, image/png"
+            accept=".gif, .jpg, .png"
             style={{ display: 'none' }}
             ref={fileInputRef}
           />
@@ -61,14 +59,14 @@ const RentalItemList = ({ rentalItem, onRemoveRental }: RentalItemLisProps) => {
           <input
             type="text"
             value={rentalItem.name}
-            onChange={e => handleChangeRentalNameInput(e, rentalItem.id)}
+            onChange={e => handleChangeRentalInputFiled(e, rentalItem.id)}
             name="name"
             placeholder="대여 용품 이름"
           />
           <input
-            type="text"
+            type="number"
             value={rentalItem.price}
-            onChange={e => handleChangeRentalPriceInput(e, rentalItem.id)}
+            onChange={e => handleChangeRentalInputFiled(e, rentalItem.id)}
             name="price"
             placeholder="대여 용품 가격"
           />
@@ -113,15 +111,12 @@ const RentalItemListContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-  }
 
-  input[type='text'] {
-    padding: 0.2rem 0.5rem;
-    border-radius: 10px;
-    border: 1px solid ${palette.grey[400]};
-  }
-
-  input[type='file'] {
+    input {
+      padding: 0.2rem 0.5rem;
+      border-radius: 10px;
+      border: 1px solid ${palette.grey[400]};
+    }
   }
 `;
 export default React.memo(RentalItemList);

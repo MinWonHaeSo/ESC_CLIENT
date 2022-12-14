@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import useKakaoMapScript, { setMarker } from '@/hooks/useKakaoMapScript';
+import kakaoService from '@/service/kakaoMapService';
 
 interface MapProps {
   searchResults: any;
@@ -7,10 +7,14 @@ interface MapProps {
 }
 
 const Map = ({ searchResults, onClickMarker }: MapProps) => {
-  const kakaoMap = useKakaoMapScript();
-  setMarker({ map: kakaoMap, placeInfo: searchResults, clickHandle: onClickMarker });
+  useEffect(() => {
+    kakaoService.initScript();
+  }, []);
 
-  console.log(1);
+  useEffect(() => {
+    kakaoService.setMarker({ place: searchResults, handleClick: onClickMarker });
+  }, [searchResults]);
+
   return (
     <div>
       <div

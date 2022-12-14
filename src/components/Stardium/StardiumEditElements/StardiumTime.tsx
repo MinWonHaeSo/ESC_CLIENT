@@ -1,39 +1,32 @@
-import React, { useState } from 'react';
+import React from 'react';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
-import setHours from 'date-fns/setHours';
-import setMinutes from 'date-fns/setMinutes';
-
 import Label from '@/components/common/atoms/Label';
 import CustomDatePicker from '@/components/common/CustomDatePicker';
 import datepickerTime from '@/lib/utils/datepickerTIme';
 import useDefaultTime from '@/hooks/useDefaultTime';
-import { changeTimes, timeType } from '@/store/stardiumWriteSlice';
+import { changeTimes } from '@/store/stardiumWriteSlice';
 import { useDispatch } from 'react-redux';
 
 interface StardiumTimeProps {
-  startTime: timeType;
-  endTime: timeType;
-};
+  startTime: string;
+  endTime: string;
+}
 
 const StardiumTime = ({ startTime, endTime }: StardiumTimeProps) => {
-  const startDate = useDefaultTime(startTime.hh, startTime.mm)
-  const endDate = useDefaultTime(endTime.hh, endTime.mm)
+  const startDate = useDefaultTime(startTime);
+  const endDate = useDefaultTime(endTime);
   const includeTime = datepickerTime(startDate.getHours());
   const dispatch = useDispatch();
 
   const handleChangeStartTime = (date: Date) => {
-    const hh = date.getHours();
-    const mm = date.getMinutes();
-    dispatch(changeTimes({ name: 'startTime', hh, mm }));
-  }
+    dispatch(changeTimes({ name: 'openTime', time: `${date.getHours()}:${date.getMinutes()}:00` }));
+  };
 
   const handleChangeEndTime = (date: Date) => {
-    const hh = date.getHours();
-    const mm = date.getMinutes();
-    dispatch(changeTimes({ name: 'endTime', hh, mm }));
-  }
+    dispatch(changeTimes({ name: 'closeTime', time: `${date.getHours()}:${date.getMinutes()}:00` }));
+  };
 
   return (
     <StardiumTimeContainer>
