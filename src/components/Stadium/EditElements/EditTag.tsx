@@ -1,5 +1,5 @@
 import Input from '@/components/common/atoms/Input';
-import TagList from '@/components/common/Responsive/TagList';
+import TagList from '@/components/common/TagList';
 import Tag from '@/components/common/Tag';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';

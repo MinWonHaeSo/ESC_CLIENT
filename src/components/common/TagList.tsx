@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import React from 'react';
-import Tag from '../Tag';
+import Tag from './Tag';
 
 interface TagListProps {
   tags: string[];
