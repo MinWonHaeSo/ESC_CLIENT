@@ -41,7 +41,6 @@ const OAuthRedirect = () => {
           secure: true,
           // httpOnly: true,
         });
-        localStorage.setItem('accessToken', accessToken);
 
         dispatch(
           setSocialLogin({
@@ -62,9 +61,8 @@ const OAuthRedirect = () => {
         navigate('/login');
       }
     }
-
-    return <Loading />;
   };
+  return <Loading />;
 };
 
 export default OAuthRedirect;

@@ -61,29 +61,22 @@ const LoginForm = (props: LoginFormProps) => {
           secure: true,
           // httpOnly: true,
         });
-        console.log(getCookie('refreshToken'));
-
-        // localStorage에 refreshToken 저장
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('userType', userType);
-
         // dispatch(setCredentials({ token: accessToken }));
-        if (accessToken) {
-          dispatch(
-            setLogin({
-              type: userType,
-              email: email,
-              name: name,
-              password: password,
-              nickname: nickname,
-              image: imgUrl,
-              accessToken: accessToken,
-              refreshToken: refreshToken,
-              loggedIn: true,
-            }),
-          );
-          sw.toast.success('로그인 되었습니다.');
-        }
+        dispatch(
+          setLogin({
+            type: userType,
+            email: email,
+            name: name,
+            password: password,
+            nickname: nickname,
+            image: imgUrl,
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+            loggedIn: true,
+          }),
+        );
+        sw.toast.success('로그인 되었습니다.');
+        navigate('/');
       }
     } catch {
       console.error('잘못된 접근입니다.');
@@ -136,7 +129,7 @@ const LoginForm = (props: LoginFormProps) => {
     <FormBlock onSubmit={handleSubmit}>
       <Input
         type={'text'}
-        value={formState.email}
+        value={email}
         id={'email'}
         placeholder={'아이디(이메일)'}
         onChange={handleFormChange}
@@ -144,7 +137,7 @@ const LoginForm = (props: LoginFormProps) => {
       />
       <Input
         type={'password'}
-        value={formState.password}
+        value={password}
         id={'password'}
         placeholder={'비밀번호'}
         onChange={handleFormChange}

@@ -26,6 +26,12 @@ interface LoginResponse {
 }
 
 interface RefreshResponse {
+  statusCode: number;
+  accessToken: string;
+  refreshToken: string;
+}
+
+interface ReFetchUserResponse {
   email: string;
   nickname: string;
   imgUrl: string;
@@ -53,7 +59,6 @@ const authApi = baseApi.injectEndpoints({
         method: 'POST',
         body: email,
       }),
-      invalidatesTags: ['User'],
     }),
     login: builder.mutation<LoginResponse, LoginRequest>({
       query: credentials => ({
@@ -61,7 +66,6 @@ const authApi = baseApi.injectEndpoints({
         method: 'POST',
         body: { ...credentials },
       }),
-      invalidatesTags: ['User'],
     }),
     logout: builder.mutation<LoginResponse, string>({
       query: (refreshToken: string) => ({
@@ -72,7 +76,16 @@ const authApi = baseApi.injectEndpoints({
         },
       }),
     }),
-    requestUserInfo: builder.mutation<RefreshResponse, string>({
+    refresh: builder.mutation<RefreshResponse, string>({
+      query: (refreshToken: string) => ({
+        url: '/members/auth/refresh-token',
+        method: 'POST',
+        headers: {
+          RefreshToken: `Bearer ${refreshToken}`,
+        },
+      }),
+    }),
+    requestUserInfo: builder.mutation<ReFetchUserResponse, string>({
       query: () => ({
         url: 'members/profiles/info',
         method: 'POST',
@@ -116,6 +129,7 @@ export const {
   useSocialLoginMutation,
   useLoginMutation,
   useLogoutMutation,
+  useRefreshMutation,
   useRequestUserInfoMutation,
   useChangeUserInfoMutation,
   useFindPasswordSendEmailMutation,

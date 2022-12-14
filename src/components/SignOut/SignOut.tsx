@@ -3,6 +3,8 @@ import formRegex from '@/constants/formRegex';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import sw from '@/lib/utils/customSweetAlert';
+import { loggedOut } from '@/store/authSlice';
+import { useAppDispatch } from '@/store/store';
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -17,6 +19,7 @@ const SignOut = () => {
   const navigate = useNavigate();
 
   const [signOutAPI] = useSignOutMutation();
+  const dispatch = useAppDispatch();
 
   const checkEmailValidation = (currentEmail: string) => {
     const { emailRegex } = formRegex;
@@ -38,6 +41,18 @@ const SignOut = () => {
       if (response) {
         sw.confirm(() => {
           sw.toast.success('성공적으로 탈퇴 되었습니다.');
+          dispatch(
+            loggedOut({
+              type: 'USER',
+              email: '',
+              name: '',
+              nickname: '',
+              image: '',
+              accessToken: '',
+              refreshToken: '',
+              loggedIn: false,
+            }),
+          );
           setTimeout(() => {
             navigate('/');
           }, 1000);
