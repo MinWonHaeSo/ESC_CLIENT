@@ -87,23 +87,7 @@ const UserPassword = ({ showPassword, setShowPassword, setEditDisabled }: UserPa
       }
     } else {
       // 화면 리프레쉬 후 전역 상태에서 이전 비밀번호를 인지 못하는 상황
-      try {
-        const response = await changePasswordRequestAPI({
-          email,
-          prePassword: null,
-          newPassword: password,
-          confirmPassword: passwordConfirm,
-          hasToken: false,
-        });
-        if (response) {
-          sw.toast.success('비밀번호가 성공적으로 변경되었습니다.');
-          setShowPassword(false);
-          setEditDisabled(true);
-          dispatch(changePassword(password));
-        }
-      } catch {
-        console.error('이전 비밀번호가 없습니다.');
-      }
+      console.error('이전 비밀번호가 없습니다.');
     }
   };
 

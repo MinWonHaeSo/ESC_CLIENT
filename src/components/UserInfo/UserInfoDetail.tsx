@@ -49,19 +49,6 @@ const UserInfoDetail = ({
     setInputValue('');
   };
 
-  const handleDoubleCheckClick = () => {
-    if (inputValue.length === 0) {
-      return sw.toast.warn('닉네임을 입력하세요.');
-    }
-
-    if (inputValue.length < 2) {
-      return sw.toast.warn('최소 2자 이상의 닉네임을 입력하세요.');
-    }
-    sw.toast.success('사용 가능한 닉네임입니다.');
-    setDoubleCheck(true);
-    dispatch(changeNickname(inputValue));
-  };
-
   useEffect(() => {
     setInputValue(nickname);
   }, []);
@@ -91,8 +78,8 @@ const UserInfoDetail = ({
             </DeleteButton>
           ) : null}
         </Swrapper>
-        <DoubleCheckButton onClick={handleDoubleCheckClick} disabled={editDisabled}>
-          {doubleCheck && inputValue ? (
+        <DoubleCheckButton disabled={editDisabled}>
+          {inputValue.length > 1 ? (
             <i className="fa-solid fa-circle-check" />
           ) : (
             <i className="fa-regular fa-circle-check" />

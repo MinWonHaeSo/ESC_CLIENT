@@ -2,7 +2,8 @@ import { useChangeUserInfoMutation } from '@/api/authApi';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import sw from '@/lib/utils/customSweetAlert';
-import { RootState } from '@/store/store';
+import { changeNickname } from '@/store/authSlice';
+import { RootState, useAppDispatch } from '@/store/store';
 import styled from '@emotion/styled';
 import { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
@@ -26,6 +27,7 @@ const UserInfo = (props: UserInfoProps) => {
   const authUser = useSelector((state: RootState) => state.auth);
   const { nickname, image } = authUser;
   const [changeUserInfoAPI] = useChangeUserInfoMutation();
+  const dispatch = useAppDispatch();
 
   const handleEditClick = () => {
     if (!inputRef.current) {
@@ -42,9 +44,10 @@ const UserInfo = (props: UserInfoProps) => {
     if (inputValue.length < 2) {
       return sw.toast.warn('최소 2자 이상의 닉네임을 입력하세요.');
     }
+    dispatch(changeNickname(inputValue));
 
     try {
-      const response = await changeUserInfoAPI({ nickname: nickname, imgUrl: image });
+      const response = await changeUserInfoAPI({ nickname: inputValue, imgUrl: image });
       if (response) {
         sw.toast.success('수정이 완료되었습니다.');
         setEditDisabled(true);

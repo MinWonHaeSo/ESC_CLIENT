@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import formRegex from '@/constants/formRegex';
 import palette from '@/lib/styles/palette';
 import sw from '@/lib/utils/customSweetAlert';
 import styled from '@emotion/styled';
@@ -13,6 +12,7 @@ import { useAppDispatch } from '@/store/store';
 import EmailValidation from './EmailValidation';
 import { setEmail } from '@/store/userSlice';
 import { checkEmailValidation } from './formValidation';
+import Loading from '../Loading/Loading';
 
 interface EmailFormProps {
   allChecked: AllCheckedState;
@@ -40,7 +40,7 @@ const Email = ({ allChecked, setAllChecked }: EmailFormProps) => {
   const dispatch = useAppDispatch();
 
   const [emailDoubleCheckAPI] = useEmailDoubleCheckMutation();
-  const [sendEmailValidateCodeAPI] = useSendEmailValidateCodeMutation();
+  const [sendEmailValidateCodeAPI, { isLoading }] = useSendEmailValidateCodeMutation();
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentEmail = e.target.value;
@@ -92,6 +92,7 @@ const Email = ({ allChecked, setAllChecked }: EmailFormProps) => {
 
   return (
     <>
+      {isLoading && <Loading />}
       <EmailCheckFormBlock>
         <EmailCheck>
           <Label htmlFor={'email'} required={required}>

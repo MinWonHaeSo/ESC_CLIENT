@@ -51,7 +51,7 @@ const InsertImage = ({ editDisabled, currentImage, currentLocation }: InsertImag
 
   useEffect(() => {
     setImageFile({ ...imageFile, imageURL: currentImage });
-  }, [currentImage]);
+  }, []);
 
   return (
     <ImgBlock>
