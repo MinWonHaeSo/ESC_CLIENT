@@ -1,4 +1,5 @@
 import Input from '@/components/common/atoms/Input';
+import TagList from '@/components/common/Responsive/TagList';
 import Tag from '@/components/common/Tag';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
@@ -57,9 +58,8 @@ const EditTag = ({ tags }: EditTagProps) => {
       <button type="button" className="tag-add-btn" onClick={handleAddTags}>
         태그 추가
       </button>
-      <ul>
-        {tags.length !== 0 && tags.map((tag, idx) => <Tag key={idx} id={idx} title={tag} onClick={handleRemoveTag} />)}
-      </ul>
+      <TagList tags={tags} onTagClick={handleRemoveTag} />
+      {/* <ul>{tags.length !== 0 && tags.map((tag, idx) => <Tag />)}</ul> */}
     </EditTagContainer>
   );
 };
@@ -69,24 +69,6 @@ const EditTagContainer = styled.div`
     font-size: ${typo.micro};
     color: ${palette.grey[400]};
   }
-
-  & > ul {
-    display: flex;
-    gap: 0.2rem;
-    margin-top: 1rem;
-
-    li {
-      padding: 0.2rem 0.5rem;
-      border-radius: 10px;
-      background-color: ${palette.primary.orange};
-
-      span {
-        font-size: ${typo.micro};
-        color: #fff;
-      }
-    }
-  }
-
   .tag-add-btn {
     width: 280px;
     height: 50px;
