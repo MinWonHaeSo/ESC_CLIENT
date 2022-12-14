@@ -71,7 +71,7 @@ const StadiumEdit = ({ write }: StadiumEditProps) => {
   };
 
   return (
-    <StadiumEditBlock>
+    <StadiumEditContainer>
       <StadiumEditForm onSubmit={handleSumbitStadium}>
         <EditImage
           images={write.images}
@@ -88,6 +88,14 @@ const StadiumEdit = ({ write }: StadiumEditProps) => {
           value={write.name}
         />
         <Address address={write.address} detailAddress={write.detailAddress} />
+        <EditInput
+          type="number"
+          name="phone"
+          id="phone"
+          title="체육관 전화번호"
+          placeholder="'-' 를 제외하고 적어주세요."
+          value={write.phone}
+        />
         <EditInput
           type="number"
           name="holidayPricePerHalfHour"
@@ -115,17 +123,12 @@ const StadiumEdit = ({ write }: StadiumEditProps) => {
           등록하기
         </Button>
       </StadiumEditForm>
-    </StadiumEditBlock>
+    </StadiumEditContainer>
   );
 };
 
-const StadiumEditBlock = styled.div`
+const StadiumEditContainer = styled.div`
   padding: 2rem 0;
-
-  hr {
-    width: 100%;
-    border-top: 1px solid #bbb;
-  }
 
   ${Responsive.ResponsiveWrapper}
 `;
