@@ -72,6 +72,7 @@ const Password = ({ allChecked, setAllChecked }: PasswordProps) => {
           placeholder="비밀번호"
           onChange={handleFormChange}
           required={required.password}
+          autoComplete="off"
         />
         <RequiredMessage required={required.password} />
       </PasswordFormBlock>
@@ -86,6 +87,7 @@ const Password = ({ allChecked, setAllChecked }: PasswordProps) => {
           placeholder="비밀번호 확인"
           onChange={handleFormChange}
           required={required.passwordConfirm}
+          autoComplete="off"
         />
         <RequiredMessage required={required.passwordConfirm} />
       </PasswordConfirmBlock>

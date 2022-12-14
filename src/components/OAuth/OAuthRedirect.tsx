@@ -1,6 +1,6 @@
 import { useSocialLoginMutation } from '@/api/authApi';
 import { setCookie } from '@/lib/utils/cookies';
-import { setCredentials, setLogin } from '@/store/authSlice';
+import { setCredentials, setLogin, setSocialLogin } from '@/store/authSlice';
 import { useAppDispatch } from '@/store/store';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
@@ -18,7 +18,7 @@ const OAuthRedirect = () => {
   const { social } = useParams<{ social: string }>();
 
   const dispatch = useAppDispatch();
-  const [socialLogin] = useSocialLoginMutation();
+  const [socialLoginAPI] = useSocialLoginMutation();
 
   useEffect(() => {
     if (social) {
@@ -33,29 +33,33 @@ const OAuthRedirect = () => {
     if (accessToken) {
       const decodedUserInfo: DecodedUserInfo = jwt_decode(accessToken); // 이메일 정보 뽑아내기
       console.log(decodedUserInfo);
+      try {
+        const userData = await socialLoginAPI({ email: decodedUserInfo.email }).unwrap();
+        // dispatch(setCredentials({ token: accessToken })); // 전역 상태에 accessToken 정보 저장
+        setCookie('refreshToken', userData.refreshToken, {
+          path: '/',
+          secure: true,
+          // httpOnly: true,
+        });
 
-      const userData = await socialLogin({ email: decodedUserInfo.email }).unwrap();
-      dispatch(setCredentials({ token: accessToken })); // 전역 상태에 user 정보, accessToken 정보 저장
-      setCookie('refreshToken', userData.refreshToken, {
-        path: '/',
-        secure: true,
-        // httpOnly: true,
-      });
+        dispatch(
+          setSocialLogin({
+            type: 'USER',
+            email: decodedUserInfo.email,
+            name: userData.name,
+            nickname: userData.nickname,
+            image: userData.imgUrl,
+            accessToken: accessToken,
+            refreshToken: userData.refreshToken,
+            loggedIn: true,
+          }),
+        );
 
-      dispatch(
-        setLogin({
-          type: 'USER',
-          email: decodedUserInfo.email,
-          name: userData.name,
-          nickname: userData.nickName,
-          image: userData.imgUrl,
-          accessToken: accessToken,
-          refreshToken: userData.refreshToken,
-          loggedIn: true,
-        }),
-      );
-
-      navigate('/');
+        navigate('/');
+      } catch {
+        console.error('소셜 로그인에 문제가 있습니다.');
+        navigate('/login');
+      }
     }
   };
   return <Loading />;

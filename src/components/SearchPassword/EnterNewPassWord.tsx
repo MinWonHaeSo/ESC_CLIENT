@@ -48,7 +48,7 @@ const EnterNewPassWord = (props: EnterNewPasswordProps) => {
 
   const dispatch = useAppDispatch();
 
-  const [changePasswordRequest] = useChangePasswordRequestMutation();
+  const [changePasswordRequestAPI] = useChangePasswordRequestMutation();
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, id } = e.target;
@@ -74,7 +74,7 @@ const EnterNewPassWord = (props: EnterNewPasswordProps) => {
     };
 
     try {
-      const response = await changePasswordRequest(requestInfo);
+      const response = await changePasswordRequestAPI(requestInfo);
       if (response) {
         sw.toast.success(`성공적으로 변경되었습니다.`);
         dispatch(

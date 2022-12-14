@@ -11,6 +11,10 @@ import usePathHeaderOnlyLogo from '@/hooks/usePathHeaderOnlyLogo';
 import { useGoBack } from '@/hooks/useGoBack';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '@/store/store';
+import { useEffect } from 'react';
+import { useCheckLogin } from '@/hooks/useCheckLogin';
+import { sustainLogin } from '@/store/authSlice';
+import { useRequestUserInfoMutation } from '@/api/authApi';
 
 interface HomeProps {}
 
@@ -23,6 +27,10 @@ const Header = (props: HomeProps) => {
   const handleChangeIsActive = () => {
     setIsActive(!isActive);
   };
+  const [requestUserInfoAPI] = useRequestUserInfoMutation();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {}, []);
 
   return (
     <HeaderBlock>

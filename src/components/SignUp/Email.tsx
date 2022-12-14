@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import formRegex from '@/constants/formRegex';
 import palette from '@/lib/styles/palette';
 import sw from '@/lib/utils/customSweetAlert';
 import styled from '@emotion/styled';
@@ -13,6 +12,7 @@ import { useAppDispatch } from '@/store/store';
 import EmailValidation from './EmailValidation';
 import { setEmail } from '@/store/userSlice';
 import { checkEmailValidation } from './formValidation';
+import Loading from '../Loading/Loading';
 
 interface EmailFormProps {
   allChecked: AllCheckedState;
@@ -39,8 +39,8 @@ const Email = ({ allChecked, setAllChecked }: EmailFormProps) => {
 
   const dispatch = useAppDispatch();
 
-  const [emailDoubleCheck] = useEmailDoubleCheckMutation();
-  const [sendEmailValidateCode] = useSendEmailValidateCodeMutation();
+  const [emailDoubleCheckAPI] = useEmailDoubleCheckMutation();
+  const [sendEmailValidateCodeAPI, { isLoading }] = useSendEmailValidateCodeMutation();
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentEmail = e.target.value;
@@ -54,7 +54,7 @@ const Email = ({ allChecked, setAllChecked }: EmailFormProps) => {
       return sw.toast.warn('이메일을 입력하세요.');
     }
     try {
-      const response = await emailDoubleCheck({ email: inputEmail });
+      const response = await emailDoubleCheckAPI({ email: inputEmail });
       if (response) {
         sw.toast.success(`중복검사가 완료되었습니다.`);
         setTimeout(() => {
@@ -73,7 +73,7 @@ const Email = ({ allChecked, setAllChecked }: EmailFormProps) => {
       return sw.toast.warn('이메일 중복 검사를 먼저 해주세요.');
     }
     try {
-      const response = await sendEmailValidateCode({ email: inputEmail });
+      const response = await sendEmailValidateCodeAPI({ email: inputEmail });
       if (response) {
         sw.toast.success('인증코드가 발송되었습니다.<br>이메일을 확인하세요.');
         setTimeout(() => {
@@ -92,6 +92,7 @@ const Email = ({ allChecked, setAllChecked }: EmailFormProps) => {
 
   return (
     <>
+      {isLoading && <Loading />}
       <EmailCheckFormBlock>
         <EmailCheck>
           <Label htmlFor={'email'} required={required}>
