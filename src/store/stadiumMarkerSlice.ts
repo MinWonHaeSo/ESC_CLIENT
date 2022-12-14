@@ -11,8 +11,8 @@ const initialState: stadiumState = {
   markerInfo: {} as SearchStadiumContent,
 };
 
-export const stadiumSlice = createSlice({
-  name: 'stadium',
+export const stadiumMarkerSlice = createSlice({
+  name: 'stadiumMarker',
   initialState,
   reducers: {
     clickMarker: (state, action: PayloadAction<any>) => {
@@ -29,6 +29,6 @@ export const stadiumSlice = createSlice({
   },
 });
 
-export const { clickMarker, clearMarkerInfo } = stadiumSlice.actions;
+export const { clickMarker, clearMarkerInfo } = stadiumMarkerSlice.actions;
 
-export const stadiumReducer = stadiumSlice.reducer;
+export const stadiumMarkerReducer = stadiumMarkerSlice.reducer;

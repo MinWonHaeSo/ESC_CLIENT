@@ -6,7 +6,7 @@ import StadiumSearch from './StadiumSearch';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import { useDispatch } from 'react-redux';
-import { clearMarkerInfo, clickMarker } from '@/store/stadiumSlice';
+import { clearMarkerInfo, clickMarker } from '@/store/stadiumMarkerSlice';
 import { useGetStadiumListQuery } from '@/api/stadiumApi';
 
 interface MainBasicUserProps {
@@ -15,7 +15,7 @@ interface MainBasicUserProps {
 
 const MainBasicUser = ({ currentLocation }: MainBasicUserProps) => {
   const { data } = useGetStadiumListQuery(currentLocation);
-  const { searchResults, markerInfo } = useSelector((state: RootState) => state.stadium);
+  const { searchResults, markerInfo } = useSelector((state: RootState) => state.stadiumMarker);
   const dispatch = useDispatch();
 
   const handleClickMarker = useMemo(
