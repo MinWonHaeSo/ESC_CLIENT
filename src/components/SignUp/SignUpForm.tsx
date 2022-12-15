@@ -17,6 +17,7 @@ import { RootState } from '@/store/store';
 import { useSelector } from 'react-redux';
 import PATH from '@/constants/path';
 import { userFileUpload } from '@/api/fileUpload';
+import Loading from '../common/Loading/Loading';
 
 interface SignUpFormProps {}
 
@@ -47,7 +48,7 @@ const SignUpForm = React.memo(function SignupForm(props: SignUpFormProps) {
   const registerUser = useSelector((state: RootState) => state.user);
   const authUserImage = useSelector((state: RootState) => state.auth.image);
 
-  const [signUpAPI] = useSignUpMutation();
+  const [signUpAPI, { isLoading }] = useSignUpMutation();
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,6 +77,10 @@ const SignUpForm = React.memo(function SignupForm(props: SignUpFormProps) {
   const handleChangeUserImage = (file: File) => {
     setCloudImage(file);
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <FormBlock onSubmit={handleFormSubmit}>
