@@ -11,13 +11,13 @@ type TagItemProps = {
 
 const TagItem = ({ id, title, onTagClick = () => {} }: TagItemProps) => {
   return (
-    <TagContainer onClick={() => onTagClick(id!)}>
+    <TagItemContainer onClick={() => onTagClick(id!)}>
       <span># {title}</span>
-    </TagContainer>
+    </TagItemContainer>
   );
 };
 
-const TagContainer = styled.li`
+const TagItemContainer = styled.li`
   padding: 0.2rem 0.5rem;
   border-radius: 10px;
   background-color: ${palette.primary.orange};

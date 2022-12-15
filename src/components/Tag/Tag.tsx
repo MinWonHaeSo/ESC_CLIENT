@@ -2,25 +2,25 @@ import styled from '@emotion/styled';
 import React from 'react';
 import TagItem from './TagItem';
 
-interface TagListProps {
+interface TagProps {
   tags: string[];
   onTagClick?: (id: number) => void;
 }
 
-const TagList = ({ tags, onTagClick }: TagListProps) => {
+const Tag = ({ tags, onTagClick }: TagProps) => {
   return (
-    <TagListContainer>
+    <TagContainer>
       {tags.map((tag, idx) => (
         <TagItem id={idx} title={tag} onTagClick={onTagClick} />
       ))}
-    </TagListContainer>
+    </TagContainer>
   );
 };
 
-const TagListContainer = styled.ul`
+const TagContainer = styled.ul`
   display: flex;
   gap: 0.2rem;
   margin-top: 1rem;
 `;
 
-export default TagList;
+export default Tag;
