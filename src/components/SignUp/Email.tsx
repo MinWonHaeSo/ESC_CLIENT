@@ -12,7 +12,7 @@ import { useAppDispatch } from '@/store/store';
 import EmailValidation from './EmailValidation';
 import { setEmail } from '@/store/userSlice';
 import { checkEmailValidation } from './formValidation';
-import Loading from '../Loading/Loading';
+import Loading from '../common/Loading/Loading';
 
 interface EmailFormProps {
   allChecked: AllCheckedState;

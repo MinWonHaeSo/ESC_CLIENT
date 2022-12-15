@@ -45,7 +45,6 @@ const userApi = baseApi.injectEndpoints({
         body: email,
       }),
       transformResponse: (response: { data: Response }) => response.data,
-      invalidatesTags: [{ type: 'User', id: 'LIST' }],
     }),
     sendEmailValidateCode: builder.mutation<Response, Email>({
       query: (email: Email) => ({
@@ -53,14 +52,13 @@ const userApi = baseApi.injectEndpoints({
         method: 'POST',
         body: email,
       }),
-      invalidatesTags: ['User'],
     }),
-    checkEmailValidate: builder.query<{ statusCode: number; error: string; message: string }, string>({
+    checkEmailValidate: builder.mutation<{ statusCode: number; error: string; message: string }, string>({
       query: (key: string) => ({
-        url: `/members/email-authentication/?key=${key}`,
-        method: 'GET',
+        url: `/members/email-authentication`,
+        method: 'POST',
+        body: { key },
       }),
-      providesTags: ['User'],
     }),
     signOut: builder.mutation({
       query: () => ({
@@ -75,6 +73,6 @@ export const {
   useSignUpMutation,
   useEmailDoubleCheckMutation,
   useSendEmailValidateCodeMutation,
-  useCheckEmailValidateQuery,
+  useCheckEmailValidateMutation,
   useSignOutMutation,
 } = userApi;
