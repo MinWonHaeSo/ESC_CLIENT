@@ -1,17 +1,19 @@
+import { stadiumDetailReducer } from './stadiumDetailSlice';
 import { baseApi } from '@/api/baseApi';
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { authReducer } from './authSlice';
 import { searchPasswordReducer } from './searchPassWordSlice';
-import { stadiumReducer } from './stadiumSlice';
+import { stadiumMarkerReducer } from './stadiumMarkerSlice';
 import { stadiumWriteReducer } from './stadiumWriteSlice';
 import { userReducer } from './userSlice';
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
-    stadium: stadiumReducer,
+    stadiumMarker: stadiumMarkerReducer,
     stadiumWrite: stadiumWriteReducer,
+    stadiumDetail: stadiumDetailReducer,
     searchPassword: searchPasswordReducer,
     auth: authReducer,
     [baseApi.reducerPath]: baseApi.reducer,
