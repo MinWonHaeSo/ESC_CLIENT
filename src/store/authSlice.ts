@@ -36,36 +36,39 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, action) => {
-      const { accessToken } = action.payload;
+      const { accessToken, refreshToken } = action.payload;
       state.accessToken = accessToken;
+      state.refreshToken = refreshToken;
     },
     setLogin: (state, action: PayloadAction<LoginType>) => {
-      state.type = action.payload.type;
-      state.email = action.payload.email;
-      state.name = action.payload.name;
-      state.password = action.payload.password;
-      state.nickname = action.payload.nickname;
-      state.image = action.payload.image;
-      state.accessToken = action.payload.accessToken;
-      state.refreshToken = action.payload.refreshToken;
-      state.loggedIn = action.payload.loggedIn;
+      const { type, email, name, password, nickname, image, accessToken, refreshToken, loggedIn } = action.payload;
+      state.type = type;
+      state.email = email;
+      state.name = name;
+      state.password = password;
+      state.nickname = nickname;
+      state.image = image;
+      state.accessToken = accessToken;
+      state.refreshToken = refreshToken;
+      state.loggedIn = loggedIn;
     },
     setSocialLogin: (state, action: PayloadAction<SocialLoginType>) => {
-      state.type = action.payload.type;
-      state.email = action.payload.email;
-      state.name = action.payload.name;
-      state.nickname = action.payload.nickname;
-      state.image = action.payload.image;
-      state.accessToken = action.payload.accessToken;
-      state.refreshToken = action.payload.refreshToken;
-      state.loggedIn = action.payload.loggedIn;
+      const { type, email, name, nickname, image, accessToken, refreshToken, loggedIn } = action.payload;
+      state.type = type;
+      state.email = email;
+      state.name = name;
+      state.nickname = nickname;
+      state.image = image;
+      state.accessToken = accessToken;
+      state.refreshToken = refreshToken;
+      state.loggedIn = loggedIn;
     },
     sustainLogin: (state, action) => {
-      const { type, email, nickname, imgUrl, accessToken, loggedIn } = action.payload;
+      const { type, email, nickname, image, accessToken, loggedIn } = action.payload;
       state.type = type;
       state.email = email;
       state.nickname = nickname;
-      state.image = imgUrl;
+      state.image = image;
       state.accessToken = accessToken;
       state.loggedIn = loggedIn;
     },
@@ -84,16 +87,7 @@ const authSlice = createSlice({
     checkLoggedIn: (state, action: PayloadAction<boolean>) => {
       state.loggedIn = action.payload;
     },
-    loggedOut: (state, action) => {
-      state.type = action.payload.type;
-      state.email = action.payload.email;
-      state.name = action.payload.name;
-      state.nickname = action.payload.nickname;
-      state.image = action.payload.image;
-      state.accessToken = action.payload.accessToken;
-      state.refreshToken = action.payload.refreshToken;
-      state.loggedIn = action.payload.loggedIn;
-    },
+    loggedOut: () => initialState,
   },
 });
 

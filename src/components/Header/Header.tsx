@@ -1,7 +1,6 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useCallback, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
-
 import { ReactComponent as NavbarLogo } from '@/assets/esc-logo.svg';
 import Responsive from '@/components/common/Responsive';
 import Navbar from './Navbar';
@@ -12,9 +11,11 @@ import { useGoBack } from '@/hooks/useGoBack';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '@/store/store';
 import { useEffect } from 'react';
-import { useCheckLogin } from '@/hooks/useCheckLogin';
-import { sustainLogin } from '@/store/authSlice';
+import { setCredentials, sustainLogin } from '@/store/authSlice';
 import { useRequestUserInfoMutation } from '@/api/authApi';
+import { getCookie } from '@/lib/utils/cookies';
+import { getAuthToken } from '@/lib/utils/token';
+import Loading from '../common/Loading/Loading';
 
 interface HomeProps {}
 
@@ -27,10 +28,50 @@ const Header = (props: HomeProps) => {
   const handleChangeIsActive = () => {
     setIsActive(!isActive);
   };
-  const [requestUserInfoAPI] = useRequestUserInfoMutation();
+  const [requestUserInfoAPI, { isLoading }] = useRequestUserInfoMutation();
   const dispatch = useAppDispatch();
 
-  useEffect(() => {}, []);
+  const checkLogin = useCallback(async () => {
+    if (loggedIn) {
+      return;
+    }
+    const accessToken = getAuthToken();
+    const userType = localStorage.getItem('userType');
+    const refreshToken = getCookie('refreshToken');
+    dispatch(setCredentials({ accessToken: accessToken }));
+
+    try {
+      const response = await requestUserInfoAPI(refreshToken).unwrap();
+      const { nickname, email, imgUrl, password } = response;
+      console.log(imgUrl);
+
+      if (response) {
+        dispatch(
+          sustainLogin({
+            type: userType,
+            email: email,
+            nickname: nickname,
+            image: imgUrl,
+            accessToken: accessToken,
+            password: password,
+            loggedIn: true,
+          }),
+        );
+      }
+    } catch {
+      console.error('회원 정보를 다시 받아오는데 문제가 발생했습니다.');
+    }
+  }, []);
+
+  useEffect(() => {
+    if (getAuthToken() && !loggedIn) {
+      checkLogin();
+    }
+  }, []);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <HeaderBlock>
@@ -49,14 +90,12 @@ const Header = (props: HomeProps) => {
         </Link>
       </LogoBlock>
       <Navbar isActive={isActive} onChangeIsActive={handleChangeIsActive} />
-      {loggedIn || checkHeader ? null : (
-        <UserMenu>
-          <Link to={PATH.LOGIN}>로그인</Link>
-        </UserMenu>
-      )}
+      {loggedIn || checkHeader ? null : <UserMenu>{isLoading ? null : <Link to={PATH.LOGIN}>로그인</Link>}</UserMenu>}
     </HeaderBlock>
   );
 };
+
+export default Header;
 
 const HeaderBlock = styled.nav`
   position: relative;
@@ -118,5 +157,3 @@ const UserMenu = styled.div`
     padding: 0.25rem 0.2rem;
   }
 `;
-
-export default Header;

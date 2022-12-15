@@ -1,11 +1,12 @@
 import { useSocialLoginMutation } from '@/api/authApi';
 import { setCookie } from '@/lib/utils/cookies';
-import { setCredentials, setLogin, setSocialLogin } from '@/store/authSlice';
+import { setSocialLogin } from '@/store/authSlice';
 import { useAppDispatch } from '@/store/store';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import Loading from '../Loading/Loading';
+import Loading from '../common/Loading/Loading';
 import jwt_decode from 'jwt-decode';
+import { setAuthToken } from '@/lib/utils/token';
 
 interface DecodedUserInfo {
   email: string;
@@ -35,12 +36,16 @@ const OAuthRedirect = () => {
       console.log(decodedUserInfo);
       try {
         const userData = await socialLoginAPI({ email: decodedUserInfo.email }).unwrap();
-        // dispatch(setCredentials({ token: accessToken })); // 전역 상태에 accessToken 정보 저장
+
+        // cookie에 refreshToken 저장
         setCookie('refreshToken', userData.refreshToken, {
           path: '/',
           secure: true,
-          // httpOnly: true,
         });
+
+        // localStorage에 accessToken 저장
+        setAuthToken(accessToken);
+        localStorage.setItem('userType', 'USER');
 
         dispatch(
           setSocialLogin({
