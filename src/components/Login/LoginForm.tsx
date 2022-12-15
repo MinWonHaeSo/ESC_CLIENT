@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import { useLoginMutation } from '@/api/authApi';
 import { checkEmailValidation, checkPassWordValidation } from './formValidation';
 import { getCookie, setCookie } from '@/lib/utils/cookies';
+import { setAuthToken } from '@/lib/utils/token';
 
 interface LoginFormProps {}
 
@@ -46,40 +47,46 @@ const LoginForm = (props: LoginFormProps) => {
   const dispatch = useAppDispatch();
   const userType = useSelector((state: RootState) => state.user.type);
 
-  const [login] = useLoginMutation();
+  const [loginAPI] = useLoginMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const userData = await login({ email: email, password: password }).unwrap();
+      const userData = await loginAPI({ email: email, password: password }).unwrap();
       if (userData) {
-        const { name, nickname, image, accessToken, refreshToken } = userData;
+        const { name, nickname, imgUrl, accessToken, refreshToken } = userData;
+
+        // cookie에 refreshToken 저장
         setCookie('refreshToken', refreshToken, {
           path: '/',
           secure: true,
-          // httpOnly: true,
         });
-        console.log(getCookie('refreshToken'));
-        dispatch(setCredentials({ token: accessToken }));
+
+        // localStorage에 accessToken 저장
+        setAuthToken(accessToken);
+        localStorage.setItem('userType', userType);
+
+        // redux store - 전역 상태에 저장
         dispatch(
           setLogin({
             type: userType,
             email: email,
             name: name,
+            password: password,
             nickname: nickname,
-            image: image,
+            image: imgUrl,
             accessToken: accessToken,
             refreshToken: refreshToken,
             loggedIn: true,
           }),
         );
         sw.toast.success('로그인 되었습니다.');
+        navigate('/');
       }
     } catch {
-      console.error('잘못된 접근입니다.');
+      sw.toast.error('입력한 정보를 다시 확인해 주세요.');
       return navigate('/login');
     }
-    navigate('/');
   };
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -111,7 +118,7 @@ const LoginForm = (props: LoginFormProps) => {
     <FormBlock onSubmit={handleSubmit}>
       <Input
         type={'text'}
-        value={formState.email}
+        value={email}
         id={'email'}
         placeholder={'아이디(이메일)'}
         onChange={handleFormChange}
@@ -119,11 +126,12 @@ const LoginForm = (props: LoginFormProps) => {
       />
       <Input
         type={'password'}
-        value={formState.password}
+        value={password}
         id={'password'}
         placeholder={'비밀번호'}
         onChange={handleFormChange}
         required={required.password}
+        autoComplete="off"
       />
       <Button
         type={'submit'}

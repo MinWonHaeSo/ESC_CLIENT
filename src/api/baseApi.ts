@@ -1,5 +1,6 @@
-import { getCookie, setCookie } from '@/lib/utils/cookies';
+import { deleteCookie, getCookie, setCookie } from '@/lib/utils/cookies';
 import sw from '@/lib/utils/customSweetAlert';
+import { getAuthToken, setAuthToken } from '@/lib/utils/token';
 import { loggedOut, setCredentials } from '@/store/authSlice';
 import { RootState } from '@/store/store';
 import { BaseQueryFn, createApi, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
@@ -11,9 +12,11 @@ const baseQuery = fetchBaseQuery({
   baseUrl: `${BASE_URL}`,
   prepareHeaders: (headers, { getState }) => {
     const accessToken = (getState() as RootState).auth.accessToken;
+    headers.set('ngrok-skip-browser-warning', 'true');
     if (accessToken) {
       headers.set('Authorization', `Bearer ${accessToken}`);
     }
+    headers.set('Content-Type', 'application/json');
     return headers;
   },
 });
@@ -26,7 +29,7 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
   let result = await baseQuery(args, api, extraOptions);
 
   // [] Todo : 에러 핸들링 안됨 -> refresh token 관리 필요
-  if (result.error && result.error.status === 400) {
+  if (result.error && result.error.status === 404) {
     console.log('sending refresh token');
 
     // send refresh token to get new access token
@@ -43,39 +46,30 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
       api,
       extraOptions,
     );
-    console.log('refreshTokenResult', refreshResult);
+    console.log('refreshTokenResult', refreshResult.data);
 
     if (refreshResult.data) {
-      console.log(refreshResult.data);
-      // const accessToken = (api.getState() as RootState).auth.accessToken;
+      // accessToken, refreshToken 전역 상태(auth)에 저장
       api.dispatch(setCredentials({ ...refreshResult.data }));
+      // 기존 refreshToken 삭제
+      deleteCookie('refreshToken');
 
-      // 1. 다시 받아온 refreshToken, accessToken을 전역 상태에 저장한다.
-      // 2. cookie에 refreshToken, localStorage에 accessToken을 저장한다.
+      // 다시 받아온 refreshToken은 cookie, accessToken은 localStorage에 저장한다.
       const authUser = useSelector((state: RootState) => state.auth);
-      localStorage.setItem('accessToken', authUser.accessToken);
+      setAuthToken(authUser.accessToken);
       setCookie('refreshToken', authUser.refreshToken);
 
-      console.log(`accessToken: ${authUser.accessToken}`);
-      console.log(`refreshToekn: ${authUser.refreshToken}`);
+      console.log(`redux - accessToken: ${authUser.accessToken}`);
+      console.log(`localStorage - accessToken: ${getAuthToken()}`);
+      console.log(`redux - refreshToken: ${authUser.refreshToken}`);
+      console.log(`cookie - refreshToken: ${getCookie('refreshToken')}`);
 
       console.log('accessToken is refetched');
 
-      // retry the initial query
+      // retry the initial query - header에 전역 상태에 있는 accessToken을 담아서 다시 API 요청
       result = await baseQuery(args, api, extraOptions);
     } else {
-      api.dispatch(
-        loggedOut({
-          type: 'USER',
-          email: '',
-          name: '',
-          nickname: '',
-          image: '',
-          accessToken: '',
-          refreshToken: '',
-          loggedIn: false,
-        }),
-      );
+      api.dispatch(loggedOut());
       sw.toast.warn('자동 로그인 기간이 만료되어 다시 로그인이 필요합니다');
     }
   }

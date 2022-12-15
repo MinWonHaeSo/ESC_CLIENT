@@ -1,6 +1,6 @@
 import React from 'react';
 import { contextFileType } from '@/context/OriginFilesContext';
-import { imagesType } from '@/store/stardiumWriteSlice';
+import { imagesType } from '@/store/stadiumWriteSlice';
 import { v4 as uuidv4 } from 'uuid';
 
 const fileObjectToIdUrlFile = (files: FileList) => {

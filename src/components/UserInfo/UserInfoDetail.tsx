@@ -1,8 +1,11 @@
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
-import sw from '@/lib/utils/customSweetAlert';
+import { RootState } from '@/store/store';
 import styled from '@emotion/styled';
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router';
+import InsertImage from '../common/InsertImage';
 
 interface UserInfoDetailProps {
   editDisabled: boolean;
@@ -11,16 +14,23 @@ interface UserInfoDetailProps {
   doubleCheck: boolean;
   setDoubleCheck: React.Dispatch<React.SetStateAction<boolean>>;
   inputRef: React.MutableRefObject<HTMLInputElement | null>;
+  setCloudImage: React.Dispatch<React.SetStateAction<File | undefined>>;
 }
 
 const UserInfoDetail = ({
   editDisabled,
   inputValue,
   setInputValue,
-  doubleCheck,
   setDoubleCheck,
   inputRef,
+  setCloudImage,
 }: UserInfoDetailProps) => {
+  const authUser = useSelector((state: RootState) => state.auth);
+  console.log(authUser);
+  const { email, nickname, image } = authUser;
+  const location = useLocation();
+  const currentLocation = location.pathname;
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
@@ -30,36 +40,31 @@ const UserInfoDetail = ({
       setDoubleCheck(false);
     }
   };
+
   const handleDeleteClick = () => {
     setDoubleCheck(false);
     setInputValue('');
   };
 
-  const handleDoubleCheckClick = () => {
-    if (inputValue === 'nickname') {
-      setDoubleCheck(false);
-      return sw.toast.error('이미 존재하는 닉네임입니다.');
-    }
-    if (inputValue.length === 0) {
-      return sw.toast.warn('닉네임을 입력하세요.');
-    }
-
-    if (inputValue.length < 3) {
-      return sw.toast.warn('최소 3자 이상의 닉네임을 입력하세요.');
-    }
-    sw.toast.success('사용 가능한 닉네임입니다.');
-    setDoubleCheck(true);
+  const handleChangeUserImage = (file: File) => {
+    setCloudImage(file);
   };
 
   useEffect(() => {
-    setInputValue('');
-  }, []);
+    setInputValue(nickname);
+  }, [nickname]);
 
   return (
     <InfoDetailBlock>
+      <InsertImage
+        editDisabled={editDisabled}
+        currentImage={image}
+        currentLocation={currentLocation}
+        onChangeImage={handleChangeUserImage}
+      />
       <InfoDetail>
         <InfoDetailTitle>아이디</InfoDetailTitle>
-        <p>example@email.com</p>
+        <Id email={email}>{email.length === 0 ? 'example@email.com' : email}</Id>
       </InfoDetail>
       <InfoDetail>
         <InfoDetailTitle>닉네임</InfoDetailTitle>
@@ -73,14 +78,14 @@ const UserInfoDetail = ({
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
           />
-          {inputValue && !editDisabled ? (
+          {inputValue.length > 1 && !editDisabled ? (
             <DeleteButton onClick={handleDeleteClick}>
               <i className="fa-solid fa-xmark" />
             </DeleteButton>
           ) : null}
         </Swrapper>
-        <DoubleCheckButton onClick={handleDoubleCheckClick} disabled={editDisabled}>
-          {doubleCheck && inputValue ? (
+        <DoubleCheckButton disabled={editDisabled}>
+          {inputValue.length > 1 ? (
             <i className="fa-solid fa-circle-check" />
           ) : (
             <i className="fa-regular fa-circle-check" />
@@ -97,8 +102,8 @@ const InfoDetailBlock = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  margin-top: 4rem;
-  padding: 16px 16px;
+  margin-top: 2rem;
+  padding: 0 16px 32px 16px;
   background-color: ${palette.grey[100]};
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
@@ -123,6 +128,9 @@ const InfoDetailTitle = styled.div`
   background-color: #fff;
 `;
 
+const Id = styled.p<{ email: string }>`
+  color: ${({ email }) => (email ? `${palette.black[200]}` : `${palette.grey[300]}`)};
+`;
 const Swrapper = styled.div`
   position: relative;
   display: flex;

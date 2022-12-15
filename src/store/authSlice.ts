@@ -1,10 +1,6 @@
 import { UserType } from '@/types/userType';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface ImageType {
-  imageUrl: string;
-}
-
 interface UserState {
   key: string;
   type: UserType;
@@ -18,7 +14,8 @@ interface UserState {
   loggedIn: boolean;
 }
 
-type LoginType = Omit<UserState, 'key' | 'password'>;
+type LoginType = Omit<UserState, 'key'>;
+type SocialLoginType = Omit<UserState, 'key' | 'password'>;
 
 const initialState: UserState = {
   key: '',
@@ -39,28 +36,41 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, action) => {
-      const { token } = action.payload;
-      state.accessToken = token;
+      const { accessToken, refreshToken } = action.payload;
+      state.accessToken = accessToken;
+      state.refreshToken = refreshToken;
     },
     setLogin: (state, action: PayloadAction<LoginType>) => {
-      state.type = action.payload.type;
-      state.email = action.payload.email;
-      state.name = action.payload.name;
-      state.nickname = action.payload.nickname;
-      state.image = action.payload.image;
-      state.accessToken = action.payload.accessToken;
-      state.refreshToken = action.payload.refreshToken;
-      state.loggedIn = action.payload.loggedIn;
+      const { type, email, name, password, nickname, image, accessToken, refreshToken, loggedIn } = action.payload;
+      state.type = type;
+      state.email = email;
+      state.name = name;
+      state.password = password;
+      state.nickname = nickname;
+      state.image = image;
+      state.accessToken = accessToken;
+      state.refreshToken = refreshToken;
+      state.loggedIn = loggedIn;
     },
-    setSocialLogin: (state, action: PayloadAction<LoginType>) => {
-      state.type = action.payload.type;
-      state.email = action.payload.email;
-      state.name = action.payload.name;
-      state.nickname = action.payload.nickname;
-      state.image = action.payload.image;
-      state.accessToken = action.payload.accessToken;
-      state.refreshToken = action.payload.refreshToken;
-      state.loggedIn = action.payload.loggedIn;
+    setSocialLogin: (state, action: PayloadAction<SocialLoginType>) => {
+      const { type, email, name, nickname, image, accessToken, refreshToken, loggedIn } = action.payload;
+      state.type = type;
+      state.email = email;
+      state.name = name;
+      state.nickname = nickname;
+      state.image = image;
+      state.accessToken = accessToken;
+      state.refreshToken = refreshToken;
+      state.loggedIn = loggedIn;
+    },
+    sustainLogin: (state, action) => {
+      const { type, email, nickname, image, accessToken, loggedIn } = action.payload;
+      state.type = type;
+      state.email = email;
+      state.nickname = nickname;
+      state.image = image;
+      state.accessToken = accessToken;
+      state.loggedIn = loggedIn;
     },
     changeUserType: (state, action: PayloadAction<UserType>) => {
       state.type = action.payload;
@@ -68,22 +78,30 @@ const authSlice = createSlice({
     uploadImage: (state, action: PayloadAction<string>) => {
       state.image = action.payload;
     },
+    changeNickname: (state, action: PayloadAction<string>) => {
+      state.nickname = action.payload;
+    },
+    changePassword: (state, action: PayloadAction<string>) => {
+      state.password = action.payload;
+    },
     checkLoggedIn: (state, action: PayloadAction<boolean>) => {
       state.loggedIn = action.payload;
     },
-    loggedOut: (state, action) => {
-      state.type = action.payload.type;
-      state.email = action.payload.email;
-      state.name = action.payload.name;
-      state.nickname = action.payload.nickname;
-      state.image = action.payload.image;
-      state.accessToken = action.payload.accessToken;
-      state.refreshToken = action.payload.refreshToken;
-      state.loggedIn = action.payload.loggedIn;
-    },
+    loggedOut: () => initialState,
   },
 });
 
-export const { setCredentials, setLogin, changeUserType, uploadImage, checkLoggedIn, loggedOut } = authSlice.actions;
+export const {
+  setCredentials,
+  setLogin,
+  setSocialLogin,
+  sustainLogin,
+  changeUserType,
+  uploadImage,
+  changeNickname,
+  changePassword,
+  checkLoggedIn,
+  loggedOut,
+} = authSlice.actions;
 
 export const authReducer = authSlice.reducer;

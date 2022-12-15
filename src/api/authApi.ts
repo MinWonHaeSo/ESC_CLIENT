@@ -22,10 +22,25 @@ interface LoginResponse {
   refreshToken: string;
   name: string;
   nickname: string;
-  image: string;
+  imgUrl: string;
+}
+
+interface RefreshResponse {
+  statusCode: number;
+  accessToken: string;
+  refreshToken: string;
+}
+
+interface RefetchUserResponse {
+  email: string;
+  nickname: string;
+  imgUrl: string;
+  password: string;
+  statusCode: number;
 }
 
 type LoginRequest = Pick<User, 'email' | 'password'>;
+type SocialLoginRequest = Pick<User, 'email'>;
 
 type PasswordChangeRequest = {
   email: string;
@@ -45,7 +60,6 @@ const authApi = baseApi.injectEndpoints({
         method: 'POST',
         body: email,
       }),
-      invalidatesTags: ['User'],
     }),
     login: builder.mutation<LoginResponse, LoginRequest>({
       query: credentials => ({
@@ -53,7 +67,6 @@ const authApi = baseApi.injectEndpoints({
         method: 'POST',
         body: { ...credentials },
       }),
-      invalidatesTags: ['User'],
     }),
     logout: builder.mutation<LoginResponse, string>({
       query: (refreshToken: string) => ({
@@ -63,6 +76,32 @@ const authApi = baseApi.injectEndpoints({
           RefreshToken: `Bearer ${refreshToken}`,
         },
       }),
+    }),
+    refresh: builder.mutation<RefreshResponse, string>({
+      query: (refreshToken: string) => ({
+        url: '/members/auth/refresh-token',
+        method: 'POST',
+        headers: {
+          RefreshToken: `Bearer ${refreshToken}`,
+        },
+      }),
+    }),
+    requestUserInfo: builder.mutation<RefetchUserResponse, string>({
+      query: (refreshToken: string) => ({
+        url: 'members/profiles/info',
+        method: 'POST',
+        headers: {
+          RefreshToken: `Bearer ${refreshToken}`,
+        },
+      }),
+    }),
+    changeUserInfo: builder.mutation<ApiResponse, { nickname: string; imgUrl: string }>({
+      query: userInfo => ({
+        url: 'members/profiles/info',
+        method: 'PATCH',
+        body: { ...userInfo },
+      }),
+      invalidatesTags: ['User'],
     }),
     findPasswordSendEmail: builder.mutation<ApiResponse, Email>({
       query: (email: Email) => ({
@@ -94,6 +133,9 @@ export const {
   useSocialLoginMutation,
   useLoginMutation,
   useLogoutMutation,
+  useRefreshMutation,
+  useRequestUserInfoMutation,
+  useChangeUserInfoMutation,
   useFindPasswordSendEmailMutation,
   useFindPasswordValidateEmailQuery,
   useChangePasswordRequestMutation,

@@ -33,7 +33,7 @@ const EnterValidateCode = (props: EnterValidateCodeProps) => {
   }, [inputValue]);
 
   const { data, error } = useFindPasswordValidateEmailQuery(sendCorrectInputValue());
-  const [findPasswordSendEmail] = useFindPasswordSendEmailMutation();
+  const [findPasswordSendEmailAPI] = useFindPasswordSendEmailMutation();
 
   const checkValidationCode = (currentNumber: string) => {
     if (currentNumber.length !== 6) {
@@ -68,7 +68,7 @@ const EnterValidateCode = (props: EnterValidateCodeProps) => {
 
   const handleSendNewCodeButtonClick = async () => {
     try {
-      const response = await findPasswordSendEmail({ email: email });
+      const response = await findPasswordSendEmailAPI({ email: email });
       if (response) {
         sw.toast.success('인증코드를 새롭게 발송하였습니다.');
         setTimeout(() => {
