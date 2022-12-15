@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import React from 'react';
-import Tag from './Tag';
+import TagItem from './TagItem';
 
 interface TagListProps {
   tags: string[];
@@ -11,7 +11,7 @@ const TagList = ({ tags, onTagClick }: TagListProps) => {
   return (
     <TagListContainer>
       {tags.map((tag, idx) => (
-        <Tag id={idx} title={tag} onTagClick={onTagClick} />
+        <TagItem id={idx} title={tag} onTagClick={onTagClick} />
       ))}
     </TagListContainer>
   );

@@ -1,12 +1,11 @@
-import Input from '@/components/common/atoms/Input';
-import TagList from '@/components/common/TagList';
-import Tag from '@/components/common/Tag';
+import React, { useCallback, useState } from 'react';
+import styled from '@emotion/styled';
+import { useDispatch } from 'react-redux';
+import { addTags, removeTags } from '@/store/stadiumWriteSlice';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
-import { addTags, removeTags } from '@/store/stadiumWriteSlice';
-import styled from '@emotion/styled';
-import React, { useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import Input from '@/components/common/atoms/Input';
+import Tag from '@/components/Tag/Tag';
 
 interface EditTagProps {
   tags: string[];
@@ -58,7 +57,7 @@ const EditTag = ({ tags }: EditTagProps) => {
       <button type="button" className="tag-add-btn" onClick={handleAddTags}>
         태그 추가
       </button>
-      <TagList tags={tags} onTagClick={handleRemoveTag} />
+      <Tag tags={tags} onTagClick={handleRemoveTag} />
     </EditTagContainer>
   );
 };

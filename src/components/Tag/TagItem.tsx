@@ -3,13 +3,13 @@ import styled from '@emotion/styled';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 
-type TagProps = {
+type TagItemProps = {
   id?: number;
   title: string;
   onTagClick?: (id: number) => void;
 };
 
-const Tag = ({ id, title, onTagClick = () => {} }: TagProps) => {
+const TagItem = ({ id, title, onTagClick = () => {} }: TagItemProps) => {
   return (
     <TagContainer onClick={() => onTagClick(id!)}>
       <span># {title}</span>
@@ -28,4 +28,4 @@ const TagContainer = styled.li`
   }
 `;
 
-export default Tag;
+export default TagItem;
