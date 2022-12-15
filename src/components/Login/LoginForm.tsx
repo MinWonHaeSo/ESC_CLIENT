@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import { useLoginMutation } from '@/api/authApi';
 import { checkEmailValidation, checkPassWordValidation } from './formValidation';
 import { getCookie, setCookie } from '@/lib/utils/cookies';
+import { setAuthToken } from '@/lib/utils/token';
 
 interface LoginFormProps {}
 
@@ -59,9 +60,13 @@ const LoginForm = (props: LoginFormProps) => {
         setCookie('refreshToken', refreshToken, {
           path: '/',
           secure: true,
-          // httpOnly: true,
         });
-        // dispatch(setCredentials({ token: accessToken }));
+
+        // localStorage에 accessToken 저장
+        setAuthToken(accessToken);
+        localStorage.setItem('userType', userType);
+
+        // redux store - 전역 상태에 저장
         dispatch(
           setLogin({
             type: userType,
@@ -79,25 +84,9 @@ const LoginForm = (props: LoginFormProps) => {
         navigate('/');
       }
     } catch {
-      console.error('잘못된 접근입니다.');
+      sw.toast.error('입력한 정보를 다시 확인해 주세요.');
       return navigate('/login');
     }
-    // dispatch(setCredentials({ token: '1234' }));
-    // dispatch(
-    //   setLogin({
-    //     type: userType,
-    //     email: email,
-    //     name: 'kyle',
-    //     password: password,
-    //     nickname: 'kyle',
-    //     image: `src/assets/react.svg`,
-    //     accessToken: '1234',
-    //     refreshToken: '1234',
-    //     loggedIn: true,
-    //   }),
-    // );
-    // sw.toast.success('로그인 되었습니다.');
-    // navigate('/');
   };
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {

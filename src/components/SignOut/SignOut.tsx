@@ -41,18 +41,7 @@ const SignOut = () => {
       if (response) {
         sw.confirm(() => {
           sw.toast.success('성공적으로 탈퇴 되었습니다.');
-          dispatch(
-            loggedOut({
-              type: 'USER',
-              email: '',
-              name: '',
-              nickname: '',
-              image: '',
-              accessToken: '',
-              refreshToken: '',
-              loggedIn: false,
-            }),
-          );
+          dispatch(loggedOut());
           setTimeout(() => {
             navigate('/');
           }, 1000);

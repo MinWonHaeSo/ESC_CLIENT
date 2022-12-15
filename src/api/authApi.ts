@@ -31,10 +31,11 @@ interface RefreshResponse {
   refreshToken: string;
 }
 
-interface ReFetchUserResponse {
+interface RefetchUserResponse {
   email: string;
   nickname: string;
   imgUrl: string;
+  password: string;
   statusCode: number;
 }
 
@@ -85,10 +86,13 @@ const authApi = baseApi.injectEndpoints({
         },
       }),
     }),
-    requestUserInfo: builder.mutation<ReFetchUserResponse, string>({
-      query: () => ({
+    requestUserInfo: builder.mutation<RefetchUserResponse, string>({
+      query: (refreshToken: string) => ({
         url: 'members/profiles/info',
         method: 'POST',
+        headers: {
+          RefreshToken: `Bearer ${refreshToken}`,
+        },
       }),
     }),
     changeUserInfo: builder.mutation<ApiResponse, { nickname: string; imgUrl: string }>({

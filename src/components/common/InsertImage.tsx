@@ -11,36 +11,35 @@ interface InsertImageProps {
   editDisabled: boolean;
   currentImage: string;
   currentLocation: string;
+  onChangeImage: (file: File) => void;
 }
 
 interface ImageFile {
   imageURL: string;
 }
 
-const InsertImage = ({ editDisabled, currentImage, currentLocation }: InsertImageProps) => {
+const InsertImage = ({ editDisabled, currentImage, currentLocation, onChangeImage }: InsertImageProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [imageFile, setImageFile] = useState<ImageFile | null>({ imageURL: '' });
+  const [imageFile, setImageFile] = useState<ImageFile>({ imageURL: '' });
 
   const authUser = useSelector((state: RootState) => state.auth);
-  // const { image } = authUser;
+  const { image } = authUser;
   const dispatch = useAppDispatch();
+  console.log(image);
 
   const handleClickFileButton = () => {
-    if (!fileInputRef.current) {
-      return;
-    }
+    if (!fileInputRef.current) return;
     if (!editDisabled) {
       fileInputRef.current.click();
     }
   };
 
   const handleUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) {
-      return;
-    }
+    if (!e.target.files) return;
     const selectedImg = e.target.files[0];
     const imageURL = URL.createObjectURL(selectedImg);
     setImageFile({ ...imageFile, imageURL: imageURL });
+    onChangeImage(selectedImg);
 
     if (currentLocation === '/mypage') {
       dispatch(uploadImage(imageURL));
@@ -50,17 +49,20 @@ const InsertImage = ({ editDisabled, currentImage, currentLocation }: InsertImag
   };
 
   useEffect(() => {
+    if (!fileInputRef) {
+      return;
+    }
     setImageFile({ ...imageFile, imageURL: currentImage });
-  }, []);
+  }, [currentImage]);
 
   return (
     <ImgBlock>
       <Img
-        src={imageFile?.imageURL.length === 0 ? 'src/assets/defaultProfileImage.svg' : imageFile?.imageURL}
+        src={!imageFile.imageURL ? 'src/assets/defaultProfileImage.svg' : currentImage}
         alt="프로필"
         disabled={editDisabled}
       />
-      <PlusButton onClick={handleClickFileButton}>
+      <PlusButton onClick={handleClickFileButton} type={'button'}>
         {editDisabled ? null : <i className="fa-solid fa-plus" />}
       </PlusButton>
       <FileInput type="file" ref={fileInputRef} onChange={handleUploadImage} accept="image/*" />

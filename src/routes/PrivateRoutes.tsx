@@ -1,5 +1,5 @@
-import { RootState } from '@/store/store';
-import { useSelector } from 'react-redux';
+import { getCookie } from '@/lib/utils/cookies';
+import { getAuthToken } from '@/lib/utils/token';
 import { Navigate, Outlet } from 'react-router';
 
 interface PrivateRouteProps {
@@ -7,10 +7,10 @@ interface PrivateRouteProps {
 }
 
 const PrivateRoute = ({}: PrivateRouteProps) => {
-  const loggedIn = useSelector((state: RootState) => state.auth.loggedIn);
-  const accessToken = useSelector((state: RootState) => state.auth.accessToken);
+  const accessToken = getAuthToken();
+  const refreshToken = getCookie('refreshToken');
 
-  return accessToken && loggedIn ? <Outlet /> : <Navigate to="/login" state={{ from: location }} />;
+  return accessToken && refreshToken ? <Outlet /> : <Navigate to="/login" state={{ from: location }} />;
 };
 
 export default PrivateRoute;
