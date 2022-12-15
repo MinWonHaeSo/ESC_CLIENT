@@ -2,7 +2,7 @@ import setMinutes from 'date-fns/setMinutes';
 import setHours from 'date-fns/setHours';
 import { useState, useEffect } from 'react';
 
-const datepickerTime = (startDate: number, endDate = 24) => {
+const useDatepickerTIme = (startDate: number, endDate = 24) => {
   const [includeTime, setIncludeTime] = useState<Date[]>([]);
 
   useEffect(() => {
@@ -19,4 +19,4 @@ const datepickerTime = (startDate: number, endDate = 24) => {
   return includeTime;
 };
 
-export default datepickerTime;
+export default useDatepickerTIme;

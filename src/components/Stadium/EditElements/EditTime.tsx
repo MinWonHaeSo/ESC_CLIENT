@@ -4,7 +4,7 @@ import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
 import Label from '@/components/common/atoms/Label';
 import CustomDatePicker from '@/components/common/CustomDatePicker';
-import datepickerTime from '@/lib/utils/datepickerTIme';
+import useDatepickerTIme from '@/hooks/useDatepickerTIme';
 import useDefaultTime from '@/hooks/useDefaultTime';
 import { changeTimes } from '@/store/stadiumWriteSlice';
 import { useDispatch } from 'react-redux';
@@ -17,7 +17,7 @@ interface EditStadiumTimeProps {
 const EditStadiumTime = ({ startTime, endTime }: EditStadiumTimeProps) => {
   const startDate = useDefaultTime(startTime);
   const endDate = useDefaultTime(endTime);
-  const includeTime = datepickerTime(startDate.getHours());
+  const includeTime = useDatepickerTIme(startDate.getHours());
   const dispatch = useDispatch();
 
   const handleChangeStartTime = (date: Date) => {
