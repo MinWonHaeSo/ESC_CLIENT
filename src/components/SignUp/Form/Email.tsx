@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react';
 import palette from '@/lib/styles/palette';
 import sw from '@/lib/utils/customSweetAlert';
 import styled from '@emotion/styled';
-import Input from '../common/atoms/Input';
-import Button from '../common/atoms/Button';
-import Label from '../common/atoms/Label';
-import RequiredMessage from './RequiredMessage';
-import { AllCheckedState } from './SignUpForm';
+import Input from '../../common/atoms/Input';
+import Button from '../../common/atoms/Button';
+import Label from '../../common/atoms/Label';
+import RequiredMessage from '../RequiredMessage';
+import { AllCheckedState } from '../SignUpForm';
 import { useEmailDoubleCheckMutation, useSendEmailValidateCodeMutation } from '@/api/userApi';
 import { useAppDispatch } from '@/store/store';
 import EmailValidation from './EmailValidation';
 import { setEmail } from '@/store/userSlice';
-import { checkEmailValidation } from './formValidation';
-import Loading from '../common/Loading/Loading';
+import { checkEmailValidation } from '../formValidation';
+import Loading from '../../common/Loading/Loading';
 
 interface EmailFormProps {
   allChecked: AllCheckedState;
