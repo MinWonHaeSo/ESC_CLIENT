@@ -12,6 +12,7 @@ const baseQuery = fetchBaseQuery({
   baseUrl: `${BASE_URL}`,
   prepareHeaders: (headers, { getState }) => {
     const accessToken = (getState() as RootState).auth.accessToken;
+    headers.set('ngrok-skip-browser-warning', 'true');
     if (accessToken) {
       headers.set('Authorization', `Bearer ${accessToken}`);
     }
