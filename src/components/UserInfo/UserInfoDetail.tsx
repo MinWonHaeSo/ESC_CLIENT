@@ -4,7 +4,7 @@ import sw from '@/lib/utils/customSweetAlert';
 import { changeNickname } from '@/store/authSlice';
 import { RootState, useAppDispatch } from '@/store/store';
 import styled from '@emotion/styled';
-import { useEffect } from 'react';
+import { ReactText, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
 import InsertImage from '../common/InsertImage';
@@ -16,23 +16,22 @@ interface UserInfoDetailProps {
   doubleCheck: boolean;
   setDoubleCheck: React.Dispatch<React.SetStateAction<boolean>>;
   inputRef: React.MutableRefObject<HTMLInputElement | null>;
+  setCloudImage: React.Dispatch<React.SetStateAction<File | undefined>>;
 }
 
 const UserInfoDetail = ({
   editDisabled,
   inputValue,
   setInputValue,
-  doubleCheck,
   setDoubleCheck,
   inputRef,
+  setCloudImage,
 }: UserInfoDetailProps) => {
   const authUser = useSelector((state: RootState) => state.auth);
   console.log(authUser);
   const { email, nickname, image } = authUser;
   const location = useLocation();
   const currentLocation = location.pathname;
-
-  const dispatch = useAppDispatch();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -49,13 +48,22 @@ const UserInfoDetail = ({
     setInputValue('');
   };
 
+  const handleChangeUserImage = (file: File) => {
+    setCloudImage(file);
+  };
+
   useEffect(() => {
     setInputValue(nickname);
-  }, []);
+  }, [nickname]);
 
   return (
     <InfoDetailBlock>
-      <InsertImage editDisabled={editDisabled} currentImage={image} currentLocation={currentLocation} />
+      <InsertImage
+        editDisabled={editDisabled}
+        currentImage={image}
+        currentLocation={currentLocation}
+        onChangeImage={handleChangeUserImage}
+      />
       <InfoDetail>
         <InfoDetailTitle>아이디</InfoDetailTitle>
         <Id email={email}>{email.length === 0 ? 'example@email.com' : email}</Id>
@@ -72,7 +80,7 @@ const UserInfoDetail = ({
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
           />
-          {inputValue && !editDisabled ? (
+          {inputValue.length > 1 && !editDisabled ? (
             <DeleteButton onClick={handleDeleteClick}>
               <i className="fa-solid fa-xmark" />
             </DeleteButton>

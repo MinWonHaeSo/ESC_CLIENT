@@ -8,7 +8,7 @@ import UserName from './UserName';
 import Email from './Email';
 import Password from './PassWord';
 import NickName from './NickName';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import sw from '@/lib/utils/customSweetAlert';
 import { useSignUpMutation } from '@/api/userApi';
 import formStateCheck from '@/lib/utils/formStateCheck';
@@ -16,6 +16,7 @@ import InsertImage from '../common/InsertImage';
 import { RootState } from '@/store/store';
 import { useSelector } from 'react-redux';
 import PATH from '@/constants/path';
+import { userFileUpload } from '@/api/fileUpload';
 
 interface SignUpFormProps {}
 
@@ -35,8 +36,9 @@ const initialState: AllCheckedState = {
   nickName: false,
 };
 
-const SignUpForm = (props: SignUpFormProps) => {
+const SignUpForm = React.memo(function SignupForm(props: SignUpFormProps) {
   const [allChecked, setAllChecked] = useState<AllCheckedState>(initialState);
+  const [cloudImage, setCloudImage] = useState<File>();
   const goBack = useGoBack();
   const navigate = useNavigate();
   const location = useLocation();
@@ -44,23 +46,24 @@ const SignUpForm = (props: SignUpFormProps) => {
 
   const registerUser = useSelector((state: RootState) => state.user);
   const authUserImage = useSelector((state: RootState) => state.auth.image);
-  console.log(registerUser);
-  console.log(authUserImage);
+
   const [signUpAPI] = useSignUpMutation();
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      if (formStateCheck(allChecked)) {
-        const response = await signUpAPI(registerUser);
-        console.log(response);
-        sw.toast.success('성공적으로 가입되었습니다. 로그인 해주세요.');
+      if (!formStateCheck(allChecked)) return;
+      const cloudinaryResponse = await userFileUpload(cloudImage);
+      const userForm = { ...registerUser, image: cloudinaryResponse?.data.url };
+      const response = await signUpAPI(userForm);
+      if (response) {
+        sw.toast.success('성공적으로 가입되었습니다.');
         setTimeout(() => {
           navigate(PATH.LOGIN);
         }, 1500);
       }
     } catch {
-      throw new Error('error');
+      throw new Error('회원가입에 문제가 발생하였습니다.');
     }
   };
 
@@ -70,9 +73,18 @@ const SignUpForm = (props: SignUpFormProps) => {
     }
   };
 
+  const handleChangeUserImage = (file: File) => {
+    setCloudImage(file);
+  };
+
   return (
     <FormBlock onSubmit={handleFormSubmit}>
-      <InsertImage editDisabled={false} currentImage={authUserImage} currentLocation={currentLocation} />
+      <InsertImage
+        editDisabled={false}
+        currentImage={authUserImage}
+        currentLocation={currentLocation}
+        onChangeImage={handleChangeUserImage}
+      />
       <UserName allChecked={allChecked} setAllChecked={setAllChecked} />
       <Email allChecked={allChecked} setAllChecked={setAllChecked} />
       <Password allChecked={allChecked} setAllChecked={setAllChecked} />
@@ -87,7 +99,7 @@ const SignUpForm = (props: SignUpFormProps) => {
       </QuestionDesc>
     </FormBlock>
   );
-};
+});
 
 export default SignUpForm;
 

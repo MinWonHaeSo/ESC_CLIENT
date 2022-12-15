@@ -43,6 +43,14 @@ export const fileUpload = <T extends Record<string, any>>(
   return axios.all([...uploaders]);
 };
 
+export const userFileUpload = (file: File | undefined) => {
+  if (typeof file === 'undefined') {
+    return;
+  }
+  const { formData, config } = fileForm(file);
+  return axios.post(`https://api.cloudinary.com/v1_1/${CLOUDINARY_NAME}/image/upload`, formData, config);
+};
+
 const fileForm = (file: File) => {
   // Initial FormData
   const formData = new FormData();

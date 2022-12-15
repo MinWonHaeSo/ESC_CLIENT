@@ -1,8 +1,9 @@
 import { useChangeUserInfoMutation } from '@/api/authApi';
+import { userFileUpload } from '@/api/fileUpload';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import sw from '@/lib/utils/customSweetAlert';
-import { changeNickname } from '@/store/authSlice';
+import { changeNickname, uploadImage } from '@/store/authSlice';
 import { RootState, useAppDispatch } from '@/store/store';
 import styled from '@emotion/styled';
 import { useState, useRef } from 'react';
@@ -10,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import Button from '../common/atoms/Button';
 import Title from '../common/atoms/Title';
+import Loading from '../common/Loading/Loading';
 import Responsive from '../common/Responsive';
 import UserInfoDetail from './UserInfoDetail';
 import UserPassword from './UserPassword';
@@ -21,12 +23,13 @@ const UserInfo = (props: UserInfoProps) => {
   const [inputValue, setInputValue] = useState<string>('');
   const [doubleCheck, setDoubleCheck] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [cloudImage, setCloudImage] = useState<File>();
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
   const authUser = useSelector((state: RootState) => state.auth);
   const { nickname, image } = authUser;
-  const [changeUserInfoAPI] = useChangeUserInfoMutation();
+  const [changeUserInfoAPI, { isLoading }] = useChangeUserInfoMutation();
   const dispatch = useAppDispatch();
 
   const handleEditClick = () => {
@@ -47,12 +50,15 @@ const UserInfo = (props: UserInfoProps) => {
     dispatch(changeNickname(inputValue));
 
     try {
-      const response = await changeUserInfoAPI({ nickname: inputValue, imgUrl: image });
+      const cloudinaryResponse = await userFileUpload(cloudImage);
+      console.log(cloudinaryResponse?.data.url);
+      const response = await changeUserInfoAPI({ nickname: inputValue, imgUrl: cloudinaryResponse?.data.url });
       if (response) {
         sw.toast.success('수정이 완료되었습니다.');
         setEditDisabled(true);
         setDoubleCheck(false);
         setShowPassword(false);
+        console.log(response);
       }
     } catch {
       console.error('회원 정보를 수정하는 데 문제가 발생하였습니다.');
@@ -65,6 +71,10 @@ const UserInfo = (props: UserInfoProps) => {
   const handleProfileDeleteClick = () => {
     setTimeout(() => navigate('/signout'), 500);
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <UserInfoBlock>
@@ -81,6 +91,7 @@ const UserInfo = (props: UserInfoProps) => {
         doubleCheck={doubleCheck}
         setDoubleCheck={setDoubleCheck}
         inputRef={inputRef}
+        setCloudImage={setCloudImage}
       />
 
       {showPassword ? (
