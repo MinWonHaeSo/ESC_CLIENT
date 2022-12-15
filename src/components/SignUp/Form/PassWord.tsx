@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
-import Input from '../common/atoms/Input';
-import Label from '../common/atoms/Label';
-import RequiredMessage from './RequiredMessage';
-import { AllCheckedState } from './SignUpForm';
+import Input from '../../common/atoms/Input';
+import Label from '../../common/atoms/Label';
+import RequiredMessage from '../RequiredMessage';
+import { AllCheckedState } from '../SignUpForm';
 import { useAppDispatch } from '@/store/store';
 import { setPassword } from '@/store/userSlice';
 import { useEffect } from 'react';
-import { checkPasswordConfirmValidation, checkPasswordValidation } from './formValidation';
+import { checkPasswordConfirmValidation, checkPasswordValidation } from '../formValidation';
 
 interface PasswordProps {
   allChecked: AllCheckedState;

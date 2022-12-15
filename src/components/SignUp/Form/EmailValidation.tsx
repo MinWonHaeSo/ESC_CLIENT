@@ -5,9 +5,9 @@ import sw from '@/lib/utils/customSweetAlert';
 import { useAppDispatch } from '@/store/store';
 import { setKey } from '@/store/userSlice';
 import styled from '@emotion/styled';
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { useEffect } from 'react';
-import Button from '../common/atoms/Button';
+import Button from '../../common/atoms/Button';
 import { ValidateState } from './Email';
 
 interface EmailValidationProps {

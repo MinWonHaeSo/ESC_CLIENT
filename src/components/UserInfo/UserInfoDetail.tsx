@@ -1,10 +1,8 @@
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
-import sw from '@/lib/utils/customSweetAlert';
-import { changeNickname } from '@/store/authSlice';
-import { RootState, useAppDispatch } from '@/store/store';
+import { RootState } from '@/store/store';
 import styled from '@emotion/styled';
-import { ReactText, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
 import InsertImage from '../common/InsertImage';

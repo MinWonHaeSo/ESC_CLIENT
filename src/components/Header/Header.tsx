@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { ReactComponent as NavbarLogo } from '@/assets/esc-logo.svg';
 import Responsive from '@/components/common/Responsive';
@@ -28,6 +28,7 @@ const Header = (props: HomeProps) => {
   const handleChangeIsActive = () => {
     setIsActive(!isActive);
   };
+
   const [requestUserInfoAPI, { isLoading }] = useRequestUserInfoMutation();
   const dispatch = useAppDispatch();
 

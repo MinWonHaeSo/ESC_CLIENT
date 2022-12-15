@@ -61,6 +61,7 @@ const LoginForm = (props: LoginFormProps) => {
           path: '/',
           secure: true,
         });
+
         // localStorage에 accessToken 저장
         setAuthToken(accessToken);
         localStorage.setItem('userType', userType);

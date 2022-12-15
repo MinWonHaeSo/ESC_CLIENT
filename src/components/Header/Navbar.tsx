@@ -37,6 +37,7 @@ const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
       if (response) {
         dispatch(loggedOut());
         onChangeIsActive();
+
         deleteCookie('refreshToken', { path: '/' });
 
         // accessToken localStorage에서 삭제
