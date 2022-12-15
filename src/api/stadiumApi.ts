@@ -30,7 +30,7 @@ export const stadiumApi = baseApi.injectEndpoints({
         url: `/stadiums/near-loc?lat=${location.lat}&lnt=${location.lnt}`,
         headers: {
           Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Inkya2RqOTcyM0BuYXZlci5jb20iLCJpYXQiOjE2NzA5MzAxNDcsImV4cCI6MTY3MTUzNDk0N30.BpnzuVog-enOtsxkibExTYJfIGV_so4qaU20qAQow5w',
+            'Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Inkya2RqOTcyM0BuYXZlci5jb20iLCJpYXQiOjE2NzExMTI1NjAsImV4cCI6MTY3MTcxNzM2MH0.DsX3Aty8RJnXc3HX1bTEBTfSBBe5Lk_QVV-Um2k4VSE',
         },
         method: 'GET',
       }),
@@ -41,7 +41,7 @@ export const stadiumApi = baseApi.injectEndpoints({
         method: 'POST',
         headers: {
           Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Inkya2RqOTcyM0BuYXZlci5jb20iLCJpYXQiOjE2NzA5MzAxNDcsImV4cCI6MTY3MTUzNDk0N30.BpnzuVog-enOtsxkibExTYJfIGV_so4qaU20qAQow5w',
+            'Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Inkya2RqOTcyM0BuYXZlci5jb20iLCJpYXQiOjE2NzExMTI1NjAsImV4cCI6MTY3MTcxNzM2MH0.DsX3Aty8RJnXc3HX1bTEBTfSBBe5Lk_QVV-Um2k4VSE',
         },
         body: stadium,
       }),

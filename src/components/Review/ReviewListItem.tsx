@@ -1,10 +1,11 @@
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { useState } from 'react';
 
 interface ReviewListItemProps {}
 
 const ReviewListItem = (props: ReviewListItemProps) => {
+  const [reviewOption, setReviewOption] = useState(false);
   return (
     <ReviewListItemContainer>
       <div>

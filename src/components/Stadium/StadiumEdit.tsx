@@ -14,13 +14,15 @@ import OriginFilesContext, { contextFileType } from '@/context/OriginFilesContex
 import Button from '../common/atoms/Button';
 import palette from '@/lib/styles/palette';
 import { fileUpload } from '@/api/fileUpload';
+import sw from '@/lib/utils/customSweetAlert';
+import Loading from '../Loading/Loading';
 
 interface StadiumEditProps {
   write: stadiumWriteState;
 }
 
 const StadiumEdit = ({ write }: StadiumEditProps) => {
-  const [addStadiumAPI] = useAddStadiumMutation();
+  const [addStadiumAPI, { isLoading }] = useAddStadiumMutation();
   const value = useContext(OriginFilesContext);
 
   const handleAddStadiumImages = (files: contextFileType[]) => {
@@ -65,13 +67,16 @@ const StadiumEdit = ({ write }: StadiumEditProps) => {
       }));
 
       const response = await addStadiumAPI({ ...form, images: resStadiumImage, rentalItems });
+
+      console.log(response);
     } catch (e) {
-      console.error('e');
+      sw.toast.error('다시 시도해 주세요.');
     }
   };
 
   return (
     <StadiumEditContainer>
+      {isLoading ? <Loading /> : null}
       <StadiumEditForm onSubmit={handleSumbitStadium}>
         <EditImage
           images={write.images}
