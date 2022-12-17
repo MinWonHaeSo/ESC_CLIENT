@@ -33,7 +33,7 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 
     // send refresh token to get new access token
     const refreshToken = getCookie('refreshToken');
-    console.log(refreshToken);
+
     const refreshResult = await baseQuery(
       {
         url: '/members/auth/refresh-token',
