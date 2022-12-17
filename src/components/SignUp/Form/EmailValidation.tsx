@@ -1,4 +1,5 @@
 import { useCheckEmailValidateMutation } from '@/api/userApi';
+import MILLI_SECONDS from '@/constants/milliSeconds';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import sw from '@/lib/utils/customSweetAlert';
@@ -47,7 +48,7 @@ const EmailValidation = ({ required, validateProcess, setValidateProcess }: Emai
           validationActive: false,
           validationComplete: true,
         });
-      }, 1400);
+      }, MILLI_SECONDS.oneHalf);
     } catch {
       throw new Error('정상 인증되지 않았습니다.');
     }

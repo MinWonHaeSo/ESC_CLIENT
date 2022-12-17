@@ -13,6 +13,7 @@ import EmailValidation from './EmailValidation';
 import { setEmail } from '@/store/userSlice';
 import { checkEmailValidation } from '../formValidation';
 import Loading from '../../common/Loading/Loading';
+import MILLI_SECONDS from '@/constants/milliSeconds';
 
 interface EmailFormProps {
   allChecked: AllCheckedState;
@@ -45,7 +46,7 @@ const Email = ({ allChecked, setAllChecked }: EmailFormProps) => {
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentEmail = e.target.value;
     setInputEmail(currentEmail);
-    checkEmailValidation(currentEmail, setRequired, setAllChecked, allChecked);
+    checkEmailValidation({ currentEmail, setRequired, setAllChecked, allChecked });
     setAllChecked({ ...allChecked, email: true });
   };
 
@@ -59,7 +60,7 @@ const Email = ({ allChecked, setAllChecked }: EmailFormProps) => {
         sw.toast.success(`중복검사가 완료되었습니다.`);
         setTimeout(() => {
           setValidateProcess({ ...validateProcess, emailOverlapCheck: true });
-        }, 1000);
+        }, MILLI_SECONDS.one);
       }
     } catch {
       sw.toast.error('중복된 이메일 입니다.');
@@ -78,7 +79,7 @@ const Email = ({ allChecked, setAllChecked }: EmailFormProps) => {
         sw.toast.success('인증코드가 발송되었습니다.<br>이메일을 확인하세요.');
         setTimeout(() => {
           setValidateProcess({ ...validateProcess, validationActive: true });
-        }, 1000);
+        }, MILLI_SECONDS.one);
       }
     } catch {
       throw new Error('이메일 발송 오류가 발생했습니다.');

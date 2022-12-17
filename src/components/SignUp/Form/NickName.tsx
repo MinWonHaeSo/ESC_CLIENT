@@ -31,7 +31,7 @@ const NickName = ({ allChecked, setAllChecked }: NickNameProps) => {
   const handleNickNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentNickName = e.target.value;
     setNickName(currentNickName);
-    checkNickNameValidation(currentNickName, setRequired, setAllChecked, allChecked);
+    checkNickNameValidation({ currentNickName, setRequired, setAllChecked, allChecked });
   };
 
   return (
