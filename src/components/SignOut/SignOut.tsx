@@ -1,8 +1,12 @@
 import { useSignOutMutation } from '@/api/userApi';
 import formRegex from '@/constants/formRegex';
+import MILLI_SECONDS from '@/constants/milliSeconds';
+import PATH from '@/constants/path';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
+import { deleteCookie } from '@/lib/utils/cookies';
 import sw from '@/lib/utils/customSweetAlert';
+import { removeAuthToken } from '@/lib/utils/token';
 import { loggedOut } from '@/store/authSlice';
 import { useAppDispatch } from '@/store/store';
 import styled from '@emotion/styled';
@@ -35,18 +39,21 @@ const SignOut = () => {
     checkEmailValidation(currentEmail);
   };
 
-  const handleSignOutClick = async () => {
+  const handleSignOutClick = () => {
     try {
-      const response = await signOutAPI('').unwrap();
-      if (response) {
-        sw.confirm(() => {
+      sw.confirm(async () => {
+        const response = await signOutAPI('').unwrap();
+        if (response) {
           sw.toast.success('성공적으로 탈퇴 되었습니다.');
           dispatch(loggedOut());
+          removeAuthToken();
+          localStorage.removeItem('userType');
+          deleteCookie('refreshToken');
           setTimeout(() => {
-            navigate('/');
-          }, 1000);
-        });
-      }
+            navigate(`${PATH.ROOT}`);
+          }, MILLI_SECONDS.one);
+        }
+      });
     } catch {
       console.error('탈퇴하는데 문제가 발생하였습니다.');
     }
