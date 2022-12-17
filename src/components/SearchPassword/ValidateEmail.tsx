@@ -1,4 +1,5 @@
 import { useFindPasswordSendEmailMutation } from '@/api/authApi';
+import MILLI_SECONDS from '@/constants/milliSeconds';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import sw from '@/lib/utils/customSweetAlert';
@@ -29,7 +30,7 @@ const ValidateEmail = (props: ValidateEmailProps) => {
   const handleInputEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentEmail = e.target.value;
     setInputEmail(currentEmail);
-    checkEmailValidation(currentEmail, setRequired, setRegisteredCheck);
+    checkEmailValidation({ currentEmail, setRequired, setRegisteredCheck });
   };
 
   const handleValidationCodeButtonClick = async () => {
@@ -43,7 +44,7 @@ const ValidateEmail = (props: ValidateEmailProps) => {
         dispatch(saveEmailTemporary(inputEmail));
         setTimeout(() => {
           dispatch(changeIndex(orderIndex + 1));
-        }, 1200);
+        }, MILLI_SECONDS.custom(1200));
       }
     } catch {
       console.error(`이메일이 잘못되었습니다.`);

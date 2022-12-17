@@ -1,4 +1,5 @@
-import { useFindPasswordSendEmailMutation, useFindPasswordValidateEmailQuery } from '@/api/authApi';
+import { useFindPasswordSendEmailMutation, useFindPasswordValidateEmailMutation } from '@/api/authApi';
+import MILLI_SECONDS from '@/constants/milliSeconds';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import sw from '@/lib/utils/customSweetAlert';
@@ -25,14 +26,7 @@ const EnterValidateCode = (props: EnterValidateCodeProps) => {
   const orderIndex = useSelector((state: RootState) => state.searchPassword.index);
   const email = useSelector((state: RootState) => state.searchPassword.email);
 
-  const sendCorrectInputValue = useCallback(() => {
-    if (inputValue.length < 6) {
-      return '';
-    }
-    return inputValue;
-  }, [inputValue]);
-
-  const { data, error } = useFindPasswordValidateEmailQuery(sendCorrectInputValue());
+  const [findPasswordValidateEmailAPI] = useFindPasswordValidateEmailMutation();
   const [findPasswordSendEmailAPI] = useFindPasswordSendEmailMutation();
 
   const checkValidationCode = (currentNumber: string) => {
@@ -49,20 +43,22 @@ const EnterValidateCode = (props: EnterValidateCodeProps) => {
     checkValidationCode(currentNumber);
   };
 
-  const handleConfirmButtonClick = () => {
+  const handleConfirmButtonClick = async () => {
     // [] 이메일로 발송된 인증코드와 입력한 인증코드가 같지 않은 경우,
     // 1. 인증코드 다시 입력 알림 띄우기
     // 2. 인증코드 다시 보내기 버튼 생성
     if (inputValue.length !== 6) {
       return;
     }
-    if (error) {
+    try {
+      const response = await findPasswordValidateEmailAPI(inputValue);
+      if (response) {
+        sw.toast.success('인증코드가 일치합니다.');
+        dispatch(changeIndex(orderIndex + 1));
+      }
+    } catch {
       setNewCode(true);
-      return sw.toast.error('인증코드가 정확하지 않습니다.');
-    }
-    if (data) {
-      sw.toast.success('인증코드가 일치합니다.');
-      dispatch(changeIndex(orderIndex + 1));
+      sw.toast.error('인증코드가 정확하지 않습니다.');
     }
   };
 
@@ -74,7 +70,7 @@ const EnterValidateCode = (props: EnterValidateCodeProps) => {
         setTimeout(() => {
           setInputValue('');
           setNewCode(false);
-        }, 500);
+        }, MILLI_SECONDS.half);
       }
     } catch {
       console.error('이메일을 다시 발송하는데 문제가 발생하였습니다.');
