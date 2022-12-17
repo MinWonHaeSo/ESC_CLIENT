@@ -1,7 +1,7 @@
-import UserInfo from '@/components/UserInfo/UserInfo';
+import MeInfo from '@/components/MeInfo/MeInfo';
 
 const MyPage = () => {
-  return <UserInfo />;
+  return <MeInfo />;
 };
 
 export default MyPage;
