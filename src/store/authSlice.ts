@@ -64,12 +64,13 @@ const authSlice = createSlice({
       state.loggedIn = loggedIn;
     },
     sustainLogin: (state, action) => {
-      const { type, email, nickname, image, accessToken, loggedIn } = action.payload;
+      const { type, email, nickname, imgUrl, accessToken, password, loggedIn } = action.payload;
       state.type = type;
       state.email = email;
       state.nickname = nickname;
-      state.image = image;
+      state.image = imgUrl;
       state.accessToken = accessToken;
+      state.password = password;
       state.loggedIn = loggedIn;
     },
     changeUserType: (state, action: PayloadAction<UserType>) => {
