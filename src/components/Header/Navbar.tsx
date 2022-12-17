@@ -11,8 +11,10 @@ import sw from '@/lib/utils/customSweetAlert';
 import { UserType } from '@/types/userType';
 import { useLogoutMutation } from '@/api/authApi';
 import { deleteCookie, getCookie } from '@/lib/utils/cookies';
-import { removeAuthToken } from '@/lib/utils/token';
+import { getAuthToken, removeAuthToken } from '@/lib/utils/token';
 import { typo } from '@/lib/styles/typo';
+import { DEFAULT_ICONURL } from '@/constants/defaultImage';
+import NotificationButton from './NotificationButton';
 
 interface NavbarProps {
   isActive: boolean;
@@ -22,7 +24,6 @@ interface NavbarProps {
 const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
   const [loginType, setLoginType] = useState<UserType>('USER'); //user, manager
   const navigate = useNavigate();
-
   const dispatch = useAppDispatch();
   const authUser = useSelector((state: RootState) => state.auth);
   const { nickname, loggedIn, type, image } = authUser;
@@ -38,7 +39,7 @@ const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
         dispatch(loggedOut());
         onChangeIsActive();
 
-        deleteCookie('refreshToken', { path: '/' });
+        deleteCookie('refreshToken', { path: `${PATH.ROOT}` });
 
         // accessToken localStorage에서 삭제
         removeAuthToken();
@@ -51,8 +52,9 @@ const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
   };
 
   const handleListClick = () => {
-    if (!loggedIn) {
-      sw.toast.warn('로그인 해주세요');
+    if (!loggedIn && !getAuthToken()) {
+      navigate(`${PATH.LOGIN}`);
+      console.error('로그인 해주세요');
     }
     onChangeIsActive();
   };
@@ -66,13 +68,14 @@ const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
       <NavbarMenu isActive={isActive}>
         <UserProfile>
           <div>
-            <img src={image ? image : 'src/assets/defaultProfileIcon.svg'} alt="프로필" width="70px" height="70px" />
+            <img src={image ? image : DEFAULT_ICONURL} alt="프로필" width="70px" height="70px" />
           </div>
           <span>{nickname ? nickname : 'someone'}</span>
         </UserProfile>
+        <NotificationButton onListClick={handleListClick} />
         {HEADER_NAV[loginType].map(nav => (
           <li key={nav.id} onClick={handleListClick}>
-            <Link to={loggedIn ? nav.to : PATH.LOGIN}>{nav.title}</Link>
+            <Link to={nav.to}>{nav.title}</Link>
           </li>
         ))}
         {loggedIn && (
@@ -105,8 +108,7 @@ const NavbarMenu = styled.ul<IsActiveProps>`
   overflow-x: hidden;
   background-color: #fff;
   font-size: ${typo.base};
-
-  z-index: 2;
+  z-index: 5;
   transition: all 0.2s ease-in;
 
   & > li {
@@ -170,7 +172,7 @@ const BackgroundLayout = styled.div<IsActiveProps>`
     height: 100%;
     top: 0;
     right: 0;
-    background-color: rgba(33, 38, 41);
+    background-color: rgb(33, 38, 41);
     opacity: 0.5;
     `}
 `;
@@ -179,10 +181,10 @@ const UserProfile = styled.div`
   display: flex;
   align-items: center;
   gap: 2.4rem;
-  margin: 1rem 1rem 4rem 1rem;
+  margin: 1rem 1rem 1rem 1rem;
   padding: 0.75rem 1rem;
   background-color: ${palette.grey[100]};
-  box-shadow: rgba(29, 34, 53, 0.08) 0 3px 6px 0;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   border-radius: 10px;
 
   & > div {
@@ -197,6 +199,8 @@ const UserProfile = styled.div`
   }
 
   span {
+    display: inline-block;
+    padding-top: 1.5rem;
     font-size: ${typo.medium};
     font-weight: 600;
   }

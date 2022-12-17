@@ -13,6 +13,7 @@ import { useLoginMutation } from '@/api/authApi';
 import { checkEmailValidation, checkPassWordValidation } from './formValidation';
 import { getCookie, setCookie } from '@/lib/utils/cookies';
 import { setAuthToken } from '@/lib/utils/token';
+import PATH from '@/constants/path';
 
 interface LoginFormProps {}
 
@@ -81,11 +82,11 @@ const LoginForm = (props: LoginFormProps) => {
           }),
         );
         sw.toast.success('로그인 되었습니다.');
-        navigate('/');
+        navigate(`${PATH.ROOT}`);
       }
     } catch {
       sw.toast.error('입력한 정보를 다시 확인해 주세요.');
-      return navigate('/login');
+      return navigate(`${PATH.LOGIN}`);
     }
   };
 
