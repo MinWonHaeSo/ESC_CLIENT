@@ -1,32 +1,32 @@
+import usePrevious from '@/hooks/usePrevious';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import { RootState } from '@/store/store';
 import styled from '@emotion/styled';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
 import InsertImage from '../common/InsertImage';
+import { handleKeyDown } from './formValidation';
 
-interface UserInfoDetailProps {
+interface MeInfoDetailProps {
   editDisabled: boolean;
   inputValue: string;
   setInputValue: React.Dispatch<React.SetStateAction<string>>;
-  doubleCheck: boolean;
-  setDoubleCheck: React.Dispatch<React.SetStateAction<boolean>>;
+  setNicknameCheck: React.Dispatch<React.SetStateAction<boolean>>;
   inputRef: React.MutableRefObject<HTMLInputElement | null>;
   setCloudImage: React.Dispatch<React.SetStateAction<File | undefined>>;
 }
 
-const UserInfoDetail = ({
+const MeInfoDetail = ({
   editDisabled,
   inputValue,
   setInputValue,
-  setDoubleCheck,
+  setNicknameCheck,
   inputRef,
   setCloudImage,
-}: UserInfoDetailProps) => {
+}: MeInfoDetailProps) => {
   const authUser = useSelector((state: RootState) => state.auth);
-  console.log(authUser);
   const { email, nickname, image } = authUser;
   const location = useLocation();
   const currentLocation = location.pathname;
@@ -35,14 +35,8 @@ const UserInfoDetail = ({
     setInputValue(e.target.value);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Backspace') {
-      setDoubleCheck(false);
-    }
-  };
-
   const handleDeleteClick = () => {
-    setDoubleCheck(false);
+    setNicknameCheck(false);
     setInputValue('');
   };
 
@@ -76,7 +70,7 @@ const UserInfoDetail = ({
             placeholder="닉네임을 입력하세요"
             disabled={editDisabled}
             onChange={handleInputChange}
-            onKeyDown={handleKeyDown}
+            onKeyDown={e => handleKeyDown({ e, setNicknameCheck })}
           />
           {inputValue.length > 1 && !editDisabled ? (
             <DeleteButton onClick={handleDeleteClick}>
@@ -96,7 +90,7 @@ const UserInfoDetail = ({
   );
 };
 
-export default UserInfoDetail;
+export default MeInfoDetail;
 
 const InfoDetailBlock = styled.div`
   display: flex;
