@@ -2,23 +2,17 @@ import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-
-import { ReactComponent as NavbarLogo } from '@/assets/esc-logo.svg';
 
 const Footer = () => {
   const [show, setShow] = useState<boolean>(false);
   const developers = ['dongjjji', 'SoaLee', 'phc09188', 'younjaewon', 'olhkyle'];
   return (
     <FooterBlock>
-      <FooterTitle>
-        ESC Sports Club
-        {/* <NavbarLogo width="20px" height="20px" fill={'white'} /> */}
-      </FooterTitle>
+      <FooterTitle>ESC Sports Club</FooterTitle>
       <Sponsor>
         <label>Sponsored</label>
         <span>
-          <Link to={'https://zero-base.co.kr/'}>ZEROBASE</Link>
+          <a href={'https://zero-base.co.kr/'}>ZEROBASE</a>
         </span>
       </Sponsor>
       <Copyright show={show}>
