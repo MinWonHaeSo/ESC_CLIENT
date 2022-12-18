@@ -86,13 +86,13 @@ const StadiumEdit = ({ write }: StadiumEditProps) => {
       } else {
         // 추가 API
         response = await addStadiumAPI({ ...form, imgs: resStadiumImage, rentalItems }).unwrap();
-        redirectId = response.data.id;
+        redirectId = response.stadium.id;
       }
 
       sw.toast.success('성공적으로 저장 되었습니다.');
       setIsLoading(false);
 
-      navigate(`/${PATH.STADIUM_DETAIL}/${redirectId}`);
+      navigate(`${PATH.STADIUM_DETAIL}/${redirectId}`);
     } catch (e) {
       setIsLoading(false);
       sw.toast.error('다시 시도해 주세요.');
