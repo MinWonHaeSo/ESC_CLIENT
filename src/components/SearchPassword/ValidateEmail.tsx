@@ -1,4 +1,5 @@
-import { useFindPasswordSendEmailMutation } from '@/api/authApi';
+import { useSearchPasswordSendEmailMutation } from '@/api/authApi';
+import MILLI_SECONDS from '@/constants/milliSeconds';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import sw from '@/lib/utils/customSweetAlert';
@@ -24,12 +25,12 @@ const ValidateEmail = (props: ValidateEmailProps) => {
   const orderIndex = useSelector((state: RootState) => state.searchPassword.index);
   const dispatch = useAppDispatch();
 
-  const [findPasswordSendEmailAPI] = useFindPasswordSendEmailMutation();
+  const [searchPasswordSendEmailAPI] = useSearchPasswordSendEmailMutation();
 
   const handleInputEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentEmail = e.target.value;
     setInputEmail(currentEmail);
-    checkEmailValidation(currentEmail, setRequired, setRegisteredCheck);
+    checkEmailValidation({ currentEmail, setRequired, setRegisteredCheck });
   };
 
   const handleValidationCodeButtonClick = async () => {
@@ -37,13 +38,13 @@ const ValidateEmail = (props: ValidateEmailProps) => {
       return sw.toast.warn('올바른 형식으로 이메일을 입력해주세요.');
     }
     try {
-      const response = await findPasswordSendEmailAPI({ email: inputEmail }).unwrap();
+      const response = await searchPasswordSendEmailAPI({ email: inputEmail }).unwrap();
       if (response) {
         sw.toast.success('이메일로 인증 코드가 발송되었습니다.');
         dispatch(saveEmailTemporary(inputEmail));
         setTimeout(() => {
           dispatch(changeIndex(orderIndex + 1));
-        }, 1200);
+        }, MILLI_SECONDS.custom(1200));
       }
     } catch {
       console.error(`이메일이 잘못되었습니다.`);

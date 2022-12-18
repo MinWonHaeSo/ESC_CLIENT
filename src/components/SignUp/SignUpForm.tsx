@@ -13,11 +13,13 @@ import sw from '@/lib/utils/customSweetAlert';
 import { useSignUpMutation } from '@/api/userApi';
 import formStateCheck from '@/lib/utils/formStateCheck';
 import InsertImage from '../common/InsertImage';
-import { RootState } from '@/store/store';
+import { RootState, useAppDispatch } from '@/store/store';
 import { useSelector } from 'react-redux';
 import PATH from '@/constants/path';
 import { userFileUpload } from '@/api/fileUpload';
 import Loading from '../common/Loading/Loading';
+import MILLI_SECONDS from '@/constants/milliSeconds';
+import { uploadImage } from '@/store/authSlice';
 
 interface SignUpFormProps {}
 
@@ -44,6 +46,7 @@ const SignUpForm = React.memo(function SignupForm(props: SignUpFormProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const currentLocation = location.pathname;
+  const dispatch = useAppDispatch();
 
   const registerUser = useSelector((state: RootState) => state.user);
   const authUserImage = useSelector((state: RootState) => state.auth.image);
@@ -58,10 +61,11 @@ const SignUpForm = React.memo(function SignupForm(props: SignUpFormProps) {
       const userForm = { ...registerUser, image: cloudinaryResponse?.data.url };
       const response = await signUpAPI(userForm);
       if (response) {
+        dispatch(uploadImage(cloudinaryResponse?.data.url));
         sw.toast.success('성공적으로 가입되었습니다.');
         setTimeout(() => {
           navigate(PATH.LOGIN);
-        }, 1500);
+        }, MILLI_SECONDS.oneHalf);
       }
     } catch {
       throw new Error('회원가입에 문제가 발생하였습니다.');

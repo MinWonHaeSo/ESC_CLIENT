@@ -10,7 +10,7 @@ const PrivateRoute = ({}: PrivateRouteProps) => {
   const accessToken = getAuthToken();
   const refreshToken = getCookie('refreshToken');
 
-  return accessToken && refreshToken ? <Outlet /> : <Navigate to="/login" state={{ from: location }} />;
+  return accessToken && refreshToken ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export default PrivateRoute;

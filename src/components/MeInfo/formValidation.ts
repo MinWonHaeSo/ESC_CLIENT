@@ -1,14 +1,9 @@
 import formRegex from '@/constants/formRegex';
+import React from 'react';
 
 interface Required {
   password: boolean;
   passwordConfirm: boolean;
-}
-
-interface EmailValidation {
-  currentEmail: string;
-  setRequired: React.Dispatch<React.SetStateAction<boolean>>;
-  setRegisteredCheck: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface PasswordValidation {
@@ -24,14 +19,10 @@ interface PasswordConfirmValidation {
   required: Required;
 }
 
-const checkEmailValidation = ({ currentEmail, setRequired, setRegisteredCheck }: EmailValidation) => {
-  const { emailRegex } = formRegex;
-  if (!emailRegex.test(currentEmail)) {
-    return setRequired(true);
-  }
-  setRequired(false);
-  setRegisteredCheck(true);
-};
+interface HandleKeyDown {
+  e: React.KeyboardEvent<HTMLInputElement>;
+  setNicknameCheck: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 const checkPasswordValidation = ({ currentPassword, setRequired, required }: PasswordValidation) => {
   const { passwordRegex } = formRegex;
@@ -53,4 +44,10 @@ const checkPasswordConfirmValidation = ({
   setRequired({ ...required, passwordConfirm: false });
 };
 
-export { checkEmailValidation, checkPasswordValidation, checkPasswordConfirmValidation };
+const handleKeyDown = ({ e, setNicknameCheck }: HandleKeyDown) => {
+  if (e.key === 'Backspace') {
+    setNicknameCheck(false);
+  }
+};
+
+export { checkPasswordValidation, checkPasswordConfirmValidation, handleKeyDown };

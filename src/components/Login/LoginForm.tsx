@@ -4,7 +4,6 @@ import styled from '@emotion/styled';
 import sw from '@/lib/utils/customSweetAlert';
 import { RootState, useAppDispatch } from '@/store/store';
 import { setLogin } from '@/store/authSlice';
-import { setCredentials } from '@/store/authSlice';
 import { useNavigate } from 'react-router';
 import Input from '../common/atoms/Input';
 import Button from '../common/atoms/Button';
@@ -13,6 +12,7 @@ import { useLoginMutation } from '@/api/authApi';
 import { checkEmailValidation, checkPassWordValidation } from './formValidation';
 import { getCookie, setCookie } from '@/lib/utils/cookies';
 import { setAuthToken } from '@/lib/utils/token';
+import PATH from '@/constants/path';
 
 interface LoginFormProps {}
 
@@ -54,7 +54,7 @@ const LoginForm = (props: LoginFormProps) => {
     try {
       const userData = await loginAPI({ email: email, password: password }).unwrap();
       if (userData) {
-        const { name, nickname, imgUrl, accessToken, refreshToken } = userData;
+        const { id, name, nickname, imgUrl, accessToken, refreshToken } = userData;
 
         // cookie에 refreshToken 저장
         setCookie('refreshToken', refreshToken, {
@@ -69,6 +69,7 @@ const LoginForm = (props: LoginFormProps) => {
         // redux store - 전역 상태에 저장
         dispatch(
           setLogin({
+            id: id,
             type: userType,
             email: email,
             name: name,
@@ -81,11 +82,11 @@ const LoginForm = (props: LoginFormProps) => {
           }),
         );
         sw.toast.success('로그인 되었습니다.');
-        navigate('/');
+        navigate(`${PATH.ROOT}`);
       }
     } catch {
       sw.toast.error('입력한 정보를 다시 확인해 주세요.');
-      return navigate('/login');
+      return navigate(`${PATH.LOGIN}`);
     }
   };
 

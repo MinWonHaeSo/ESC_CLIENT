@@ -18,12 +18,6 @@ const UserName = ({ allChecked, setAllChecked }: UserNameProps) => {
 
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    if (allChecked.userName) {
-      dispatch(setName(userName));
-    }
-  }, [allChecked]);
-
   const handleUserNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setUserName(value);
@@ -33,6 +27,12 @@ const UserName = ({ allChecked, setAllChecked }: UserNameProps) => {
     setRequired(false);
     setAllChecked({ ...allChecked, userName: true });
   };
+
+  useEffect(() => {
+    if (allChecked.userName) {
+      dispatch(setName(userName));
+    }
+  }, [allChecked]);
 
   return (
     <UserNameBlock>
