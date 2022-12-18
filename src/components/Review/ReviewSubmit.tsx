@@ -1,15 +1,40 @@
+import React, { useState } from 'react';
+import styled from '@emotion/styled';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '@/store/store';
+import { changeComment } from '@/store/stadiumReview';
+import { useAddReviewMutation } from '@/api/reviewApi';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
-import styled from '@emotion/styled';
-import React from 'react';
 
-interface ReviewSubmitProps {}
+interface ReviewSubmitProps {
+  id: string;
+}
 
-const ReviewSubmit = (props: ReviewSubmitProps) => {
+const ReviewSubmit = ({ id }: ReviewSubmitProps) => {
+  const review = useSelector((state: RootState) => state.stadiumReview);
+  const [addReviewAPI] = useAddReviewMutation();
+  const dispatch = useDispatch();
+
+  const handleSumbitReview = async () => {
+    const response = await addReviewAPI({ id, comment: review.comment, star: review.star });
+    console.log(response);
+  };
+
+  const handleChangeReviewComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    dispatch(changeComment(e.target.value));
+  };
+
   return (
     <ReviewSubmitContainer>
-      <textarea placeholder="리뷰를 작성하세요. (100자 이내)" />
-      <button type="button">등록하기</button>
+      <textarea
+        value={review.comment}
+        onChange={handleChangeReviewComment}
+        placeholder="리뷰를 작성하세요. (100자 이내)"
+      />
+      <button type="button" onClick={handleSumbitReview}>
+        등록하기
+      </button>
     </ReviewSubmitContainer>
   );
 };
