@@ -1,11 +1,19 @@
+import { ContentType } from '@/api/reviewApi';
 import palette from '@/lib/styles/palette';
+import { RootState } from '@/store/store';
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import StarRate from '../common/StarRate';
 
-interface ReviewListItemProps {}
+interface ReviewListItemProps {
+  content: ContentType;
+}
 
-const ReviewListItem = (props: ReviewListItemProps) => {
+const ReviewListItem = ({ content }: ReviewListItemProps) => {
   const [reviewOption, setReviewOption] = useState(false);
+  const user = useSelector((state: RootState) => state.user);
+
   return (
     <ReviewListItemContainer>
       <div>
@@ -13,12 +21,17 @@ const ReviewListItem = (props: ReviewListItemProps) => {
       </div>
       <div className="user-review-info-container">
         <div className="user-info">
-          <span className="user-name">유저명</span>
-          <span className="review-date">2022-12-15</span>
+          <span className="user-name">{content.nickname}</span>
+          <span>
+            <StarRate starRating={content.star} />
+          </span>
+          <span className="review-date">{content.createdAt}</span>
         </div>
-        <div className="review-content">
-          여기 체육관 진짜 좋은데여기 체육관 진짜 좋은데여기 체육관 진짜 좋은데여기 체육관 진짜 좋은데여기 체육관 진짜
-          좋은데 여기 체육관 진짜 좋은데 여기 체육관 진짜 좋은데
+        <div className="review-content">{content.comment}</div>
+        <div className="review-btn-container">
+          <button className="review-submit-btn">등록</button>
+          <button className="review-edit-btn">수정</button>
+          <button className="review-remove-btn">삭제</button>
         </div>
       </div>
     </ReviewListItemContainer>
@@ -42,6 +55,10 @@ const ReviewListItemContainer = styled.li`
   }
 
   .user-review-info-container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 0.5rem;
     font-size: 12px;
     color: ${palette.grey[500]};
 
@@ -53,6 +70,36 @@ const ReviewListItemContainer = styled.li`
     .user-name {
       font-size: 14px;
       font-weight: bold;
+    }
+
+    .review-content {
+      min-height: 60px;
+      padding: 0.5rem 0.5rem;
+      border-radius: 10px;
+      border: 1px solid ${palette.grey[300]};
+    }
+  }
+
+  .review-btn-container {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+
+    button {
+      border-radius: 10px;
+      padding: 0.2rem 1rem;
+      font-size: 12px;
+      color: #fff;
+    }
+
+    .review-submit-btn {
+      background-color: ${palette.primary.blue};
+    }
+    .review-edit-btn {
+      background-color: ${palette.primary.green};
+    }
+    .review-remove-btn {
+      background-color: ${palette.primary.red};
     }
   }
 `;

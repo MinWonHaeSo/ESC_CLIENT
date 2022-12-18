@@ -1,16 +1,21 @@
+import { ContentType } from '@/api/reviewApi';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
 import React from 'react';
 import ReviewListItem from './ReviewListItem';
 
-interface ReviewListProps {}
+interface ReviewListProps {
+  contents: ContentType[];
+}
 
-const ReviewList = (props: ReviewListProps) => {
+const ReviewList = ({ contents }: ReviewListProps) => {
   return (
     <ReviewListContainer>
-      {Array.from({ length: 5 }).map(review => (
-        <ReviewListItem />
-      ))}
+      {contents.length ? (
+        contents.map((review, idx) => <ReviewListItem key={idx} content={review} />)
+      ) : (
+        <div>없는데용?</div>
+      )}
     </ReviewListContainer>
   );
 };
@@ -18,5 +23,7 @@ const ReviewList = (props: ReviewListProps) => {
 const ReviewListContainer = styled.ul`
   margin-top: 1rem;
 `;
+
+const EmptyReviewContainer = styled.div``;
 
 export default ReviewList;
