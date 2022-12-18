@@ -70,10 +70,7 @@ const OAuthRedirect = () => {
     }
   };
 
-  if (isLoading) {
-    <Loading />;
-  }
-  return <Loading />;
+  return <>{isLoading ? <Loading /> : null}</>;
 };
 
 export default OAuthRedirect;
