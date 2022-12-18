@@ -1,5 +1,5 @@
 import { geoLocationType } from '@/hooks/useCurrentLocation';
-import { stadiumWriteState } from '@/store/stadiumWriteSlice';
+import { rentalItemType, stadiumWriteState } from '@/store/stadiumWriteSlice';
 import { baseApi } from './baseApi';
 
 export interface SearchStadiumContent {
@@ -23,15 +23,40 @@ export interface SearchStadiumResponse {
   totalPages: number;
 }
 
+export type ImagesType = {
+  imgUrl: string;
+  publicId: string;
+};
+
+export interface DetailStadiumResponse {
+  id: string;
+  name: string;
+  address: string;
+  detailAddress: string;
+  phone: string;
+  lnt: string;
+  lat: string;
+  imgs: ImagesType[];
+  imtes: rentalItemType[];
+  openTime: string;
+  closeTime: string;
+  holidayPricePerHalfHour: number;
+  weekdayPricePerHalfHour: number;
+  tags: string[];
+  likes: any;
+}
+
 export const stadiumApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     getStadiumList: builder.query({
       query: (location: geoLocationType) => ({
         url: `/stadiums/near-loc?lat=${location.lat}&lnt=${location.lnt}`,
-        headers: {
-          Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Inkya2RqOTcyM0BuYXZlci5jb20iLCJpYXQiOjE2NzExMTI1NjAsImV4cCI6MTY3MTcxNzM2MH0.DsX3Aty8RJnXc3HX1bTEBTfSBBe5Lk_QVV-Um2k4VSE',
-        },
+        method: 'GET',
+      }),
+    }),
+    getStadiumDetail: builder.query<stadiumWriteState, string>({
+      query: id => ({
+        url: `/stadiums/${id}/info`,
         method: 'GET',
       }),
     }),
@@ -39,10 +64,13 @@ export const stadiumApi = baseApi.injectEndpoints({
       query: (stadium: stadiumWriteState) => ({
         url: '/stadiums/register',
         method: 'POST',
-        headers: {
-          Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Inkya2RqOTcyM0BuYXZlci5jb20iLCJpYXQiOjE2NzExMTI1NjAsImV4cCI6MTY3MTcxNzM2MH0.DsX3Aty8RJnXc3HX1bTEBTfSBBe5Lk_QVV-Um2k4VSE',
-        },
+        body: stadium,
+      }),
+    }),
+    updateStadiumInfo: builder.mutation({
+      query: ({ stadium, id }: { stadium: stadiumWriteState; id: number }) => ({
+        url: `/stadiums/${id}/info`,
+        method: 'PATCH',
         body: stadium,
       }),
     }),
@@ -53,7 +81,20 @@ export const stadiumApi = baseApi.injectEndpoints({
         method: 'GET',
       }),
     }),
+    postLikeStadium: builder.mutation<any, string>({
+      query: id => ({
+        url: `/stadiums/${id}/likes`,
+        method: 'POST',
+      }),
+    }),
   }),
 });
 
-export const { useGetStadiumListQuery, useAddStadiumMutation, useSearchStadiumMutation } = stadiumApi;
+export const {
+  useGetStadiumListQuery,
+  useGetStadiumDetailQuery,
+  useAddStadiumMutation,
+  useUpdateStadiumInfoMutation,
+  useSearchStadiumMutation,
+  usePostLikeStadiumMutation,
+} = stadiumApi;

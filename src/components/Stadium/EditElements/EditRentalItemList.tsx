@@ -26,7 +26,7 @@ const EditRentalItemList = ({ rentalItem, onRemoveRental, onAddImages }: EditRen
     const { fileInfoArray, fileInfoExcludeFile } = fileObjectToIdUrlFile(e.target.files);
 
     onAddImages(fileInfoArray[0], id);
-    dispatch(changeRentalItemImage({ id, url: fileInfoExcludeFile[0].url }));
+    dispatch(changeRentalItemImage({ id, url: fileInfoExcludeFile[0].imgUrl }));
   };
 
   const handleChangeRentalInputFiled = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {

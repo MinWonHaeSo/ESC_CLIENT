@@ -4,7 +4,7 @@ export type tagType = { id: number; name: string };
 
 export type rentalItemType = { id: string; img: string; name: string; price: string };
 
-export type imagesType = { public_id: string; id: string; url: string };
+export type imagesType = { imgUrl: string; publicId: string };
 
 export interface stadiumWriteState {
   id: number;
@@ -14,7 +14,7 @@ export interface stadiumWriteState {
   phone: string;
   weekdayPricePerHalfHour: string;
   holidayPricePerHalfHour: string;
-  images: imagesType[];
+  imgs: imagesType[];
   tags: string[];
   openTime: string;
   closeTime: string;
@@ -33,10 +33,10 @@ const initialState: stadiumWriteState = {
   detailAddress: '',
   weekdayPricePerHalfHour: '',
   holidayPricePerHalfHour: '',
-  images: [],
+  imgs: [],
   tags: [],
-  openTime: '09:00:00',
-  closeTime: '22:00:00',
+  openTime: '09:00',
+  closeTime: '22:00',
   rentalItems: [],
   lat: '',
   lnt: '',
@@ -46,15 +46,16 @@ export const staidumWriteSlice = createSlice({
   name: 'stadium',
   initialState,
   reducers: {
+    updateStadium: (state, action: PayloadAction<stadiumWriteState>) => action.payload,
     changeFiled: (state, action: PayloadAction<{ name: string; value: string }>) => {
       state[action.payload.name] = action.payload.value;
     },
     addImages: (state, action: PayloadAction<imagesType[]>) => {
-      state.images = action.payload;
+      state.imgs = action.payload;
     },
     removeImage: (state, action: PayloadAction<string>) => {
-      const filterImages = state.images.filter(image => image.id !== action.payload);
-      state.images = filterImages;
+      const filterImages = state.imgs.filter(image => image.publicId !== action.payload);
+      state.imgs = filterImages;
     },
     changeAddress: (state, action: PayloadAction<{ address: string; lat: string; lnt: string }>) => {
       state.address = action.payload.address;
@@ -90,6 +91,7 @@ export const staidumWriteSlice = createSlice({
 });
 
 export const {
+  updateStadium,
   clearStadiumWrite,
   changeFiled,
   addImages,

@@ -14,6 +14,8 @@ interface EditStadiumTimeProps {
   endTime: string;
 }
 
+const timeFormatterZero = (time: number) => (time < 10 ? '0' + String(time) : time);
+
 const EditStadiumTime = ({ startTime, endTime }: EditStadiumTimeProps) => {
   const startDate = useDefaultTime(startTime);
   const endDate = useDefaultTime(endTime);
@@ -21,11 +23,21 @@ const EditStadiumTime = ({ startTime, endTime }: EditStadiumTimeProps) => {
   const dispatch = useDispatch();
 
   const handleChangeStartTime = (date: Date) => {
-    dispatch(changeTimes({ name: 'openTime', time: `${date.getHours()}:${date.getMinutes()}:00` }));
+    dispatch(
+      changeTimes({
+        name: 'openTime',
+        time: `${timeFormatterZero(date.getHours())}:${timeFormatterZero(date.getMinutes())}`,
+      }),
+    );
   };
 
   const handleChangeEndTime = (date: Date) => {
-    dispatch(changeTimes({ name: 'closeTime', time: `${date.getHours()}:${date.getMinutes()}:00` }));
+    dispatch(
+      changeTimes({
+        name: 'closeTime',
+        time: `${timeFormatterZero(date.getHours())}:${timeFormatterZero(date.getMinutes())}`,
+      }),
+    );
   };
 
   return (

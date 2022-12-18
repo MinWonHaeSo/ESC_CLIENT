@@ -59,7 +59,12 @@ const EditImage = ({ images, onAddImages, onRemoveImages }: EditImageProps) => {
         <span className="preview-count">{images.length} / 5</span>
         <ul>
           {images.map(image => (
-            <EditImageList key={image.id} id={image.id} url={image.url} onDeleteImage={handleDeleteImages} />
+            <EditImageList
+              key={image.publicId}
+              id={image.publicId}
+              url={image.imgUrl}
+              onDeleteImage={handleDeleteImages}
+            />
           ))}
         </ul>
       </ImagesPreviewContainer>
