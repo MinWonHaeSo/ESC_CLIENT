@@ -16,7 +16,7 @@ const HEADER_NAV: { [key: string]: HeaderNavItemType[] } = {
   ],
   MANAGER: [
     { id: 1, to: PATH.ME, title: '마이 페이지', icon: '' },
-    { id: 2, to: PATH.MANAGER_STARDIUM_UPLOAD, title: '체육관 등록', icon: '' },
+    { id: 2, to: PATH.MANAGER_STADIUM_UPLOAD, title: '체육관 등록', icon: '' },
     { id: 3, to: PATH.MANAGER_RESERVATION_LIST, title: '내가 올린 체육관', icon: '' },
   ],
 };

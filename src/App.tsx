@@ -1,6 +1,6 @@
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Homepage from './pages/Homepage';
+import MainPage from './pages/MainPage';
 import NotFoundPage from './pages/NotFoundPage';
 import Layout from './routes/Layout';
 import LoginPage from './pages/LoginPage';
@@ -8,7 +8,7 @@ import { store } from './store/store';
 import SignUpPage from './pages/SignUpPage';
 import MyPage from './pages/MyPage';
 import PrivateRoute from './routes/PrivateRoutes';
-import StardiumUploadPage from './pages/StardiumUploadPage';
+import StadiumUploadPage from './pages/StadiumUploadPage';
 import SearchPasswordPage from './pages/SearchPasswordPage';
 import SignOutPage from './pages/SignOutPage';
 import OAuthRedirectPage from './pages/OAuthRedirectPage';
@@ -19,6 +19,8 @@ import NotificationPage from './pages/NotificationPage';
 import { CookiesProvider } from 'react-cookie';
 import { OriginFilesProvider } from './context/OriginFilesContext';
 import PATH from './constants/path';
+import StadiumDetailPage from './pages/StadiumDetailPage';
+import StadiumListPage from './pages/StadiumListPage';
 
 const App = () => {
   return (
@@ -28,11 +30,13 @@ const App = () => {
           <BrowserRouter>
             <Routes>
               <Route element={<Layout />}>
-                <Route path={PATH.ROOT} element={<Homepage />} />
+                <Route path={PATH.ROOT} element={<MainPage />} />
                 <Route path={PATH.LOGIN} element={<LoginPage />} />
                 <Route path="/oauth2/:social" element={<OAuthRedirectPage />} />
                 <Route path={PATH.SEARCH_PASSWORD} element={<SearchPasswordPage />} />
                 <Route path={PATH.SIGN_UP} element={<SignUpPage />} />
+                <Route path={PATH.STADIUM_DETAIL} element={<StadiumListPage />} />
+                <Route path={`${PATH.STADIUM_DETAIL}/:id`} element={<StadiumDetailPage />} />
                 <Route path="*" element={<NotFoundPage />} />
                 {/* <Route element={<PrivateRoute />}> */}
                 <Route path={PATH.ME} element={<MyPage />} />
@@ -41,7 +45,7 @@ const App = () => {
                 <Route path={PATH.ME_RENTAL_LIST} element={<MeRentalListPage />} />
                 <Route path={PATH.ME_RECENT_SEARCH_LIST} element={<MeRecentSearchPage />} />
                 <Route path={PATH.ME_LIKE_STADIUM_LIST} element={<MeLikeStadiumPage />} />
-                <Route path={PATH.MANAGER_STARDIUM_UPLOAD} element={<StardiumUploadPage />} />
+                <Route path={PATH.MANAGER_STADIUM_UPLOAD} element={<StadiumUploadPage />} />
                 {/* </Route> */}
               </Route>
             </Routes>
