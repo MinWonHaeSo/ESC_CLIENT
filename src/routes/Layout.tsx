@@ -40,7 +40,7 @@ const MainWrapper = styled.main`
 
 const FooterWrapper = styled.footer<{ userType: 'USER' | 'MANAGER' }>`
   ${media.xsmallMin} {
-    margin-top: 18rem;
+    margin-top: 24rem;
     ${({ userType }) => userType === 'MANAGER' && `margin-top: 26.8rem`};
   }
 `;
