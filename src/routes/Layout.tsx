@@ -39,11 +39,9 @@ const MainWrapper = styled.main`
 `;
 
 const FooterWrapper = styled.footer<{ userType: 'USER' | 'MANAGER' }>`
-  margin-top: 10rem;
-
-  ${media.smallMin} {
+  ${media.xsmallMin} {
     margin-top: 18rem;
-    ${({ userType }) => userType === 'MANAGER' && `margin-top: 25rem`};
+    ${({ userType }) => userType === 'MANAGER' && `margin-top: 26.8rem`};
   }
 `;
 export default Layout;
