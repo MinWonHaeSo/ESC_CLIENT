@@ -3,6 +3,9 @@ import styled from '@emotion/styled';
 import Button from '../common/atoms/Button';
 import media from '@/lib/styles/media';
 import { typo } from '@/lib/styles/typo';
+import Modal from '@/Portals/Modal';
+import { useContext } from 'react';
+import { ModalDispatchContext, ModalStateContext } from '@/context/ModalContext';
 
 interface MeRentalInfoProps {
   stadiumInfo: {
@@ -16,44 +19,65 @@ interface MeRentalInfoProps {
 
 const MeRentalInfo = ({ stadiumInfo }: MeRentalInfoProps) => {
   const { tags, date, time, people, items } = stadiumInfo;
+
+  const modalState = useContext(ModalStateContext);
+  const modalDispatch = useContext(ModalDispatchContext);
+  const { open: openModal, close: closeModal } = modalDispatch;
+
+  const handleShowDetailClick = () => {
+    if (modalState) {
+      closeModal();
+    } else {
+      openModal();
+    }
+  };
+
   return (
-    <RentalInfoBlock>
-      <StadiumTagList>
-        {tags.map(tag => (
-          <StadiumTag key={tag}>{tag}</StadiumTag>
-        ))}
-      </StadiumTagList>
-      <RentalDetail>
-        <DetailWrapper>
-          <Title>예약날짜</Title>
-          <Desc>{date}</Desc>
-        </DetailWrapper>
-        <DetailWrapper>
-          <Title>예약시간</Title>
-          <Desc>{time}</Desc>
-        </DetailWrapper>
-        <DetailWrapper>
-          <Title>예약인원</Title>
-          <Desc>
-            <span>{people} </span>명
-          </Desc>
-        </DetailWrapper>
-        <DetailWrapper>
-          <Title>대여용품</Title>
-          <Desc>
-            총<span> &nbsp;{items}</span>개
-          </Desc>
-        </DetailWrapper>
-      </RentalDetail>
-      <ButtonWrapper>
-        <Button type={'button'} size={'small'} backgroundColor={`${palette.black[100]}`} onClick={() => {}}>
-          상세보기
-        </Button>
-        <Button type={'button'} size={'small'} backgroundColor={`${palette.primary.red}`} onClick={() => {}}>
-          예약취소
-        </Button>
-      </ButtonWrapper>
-    </RentalInfoBlock>
+    <>
+      <RentalInfoBlock>
+        <StadiumTagList>
+          {tags.map(tag => (
+            <StadiumTag key={tag}>{tag}</StadiumTag>
+          ))}
+        </StadiumTagList>
+        <RentalDetail>
+          <DetailWrapper>
+            <Title>예약날짜</Title>
+            <Desc>{date}</Desc>
+          </DetailWrapper>
+          <DetailWrapper>
+            <Title>예약시간</Title>
+            <Desc>{time}</Desc>
+          </DetailWrapper>
+          <DetailWrapper>
+            <Title>예약인원</Title>
+            <Desc>
+              <span>{people} </span>명
+            </Desc>
+          </DetailWrapper>
+          <DetailWrapper>
+            <Title>대여용품</Title>
+            <Desc>
+              총<span> &nbsp;{items}</span>개
+            </Desc>
+          </DetailWrapper>
+        </RentalDetail>
+        <ButtonWrapper>
+          <Button
+            type={'button'}
+            size={'small'}
+            backgroundColor={`${palette.black[100]}`}
+            onClick={handleShowDetailClick}
+          >
+            상세보기
+          </Button>
+          <Button type={'button'} size={'small'} backgroundColor={`${palette.primary.red}`} onClick={() => {}}>
+            예약취소
+          </Button>
+        </ButtonWrapper>
+      </RentalInfoBlock>
+      <Modal id={'ME_Rental_List_Modal'} isOpen={modalState} onClose={closeModal} />
+    </>
   );
 };
 
