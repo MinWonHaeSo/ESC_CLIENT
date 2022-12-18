@@ -1,20 +1,19 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store/store';
 import Review from '@/components/Review/Review';
 import Dividers from '@/components/common/Dividers';
 import Detail from '@/components/StadiumDetail/Detail';
 import Responsive from '@/components/common/Responsive';
+import { useParams } from 'react-router-dom';
 
 const StadiumDetailPage = () => {
-  const detail = useSelector((state: RootState) => state.stadiumDetail);
+  const { id } = useParams();
 
   return (
     <Container>
-      <Detail detail={detail} />
+      <Detail stadiumId={id!} />
       <Dividers />
-      <Review />
+      <Review stadiumId={id!} />
     </Container>
   );
 };

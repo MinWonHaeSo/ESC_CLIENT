@@ -2,23 +2,48 @@ import React from 'react';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
 import Tag from '../Tag/Tag';
+import { stadiumWriteState } from '@/store/stadiumWriteSlice';
 
-interface InfoProps {}
+interface InfoProps {
+  info: stadiumWriteState;
+}
 
-const Info = (props: InfoProps) => {
+const Info = ({ info }: InfoProps) => {
   return (
     <DetailInfoBlock>
       <div className="info-item-wrapper">
         <div className="title">주 소</div>
-        <div className="info">서울시 강남구 논현동 123길</div>
+        <div className="info">{info.address}</div>
       </div>
       <div className="info-item-wrapper">
-        <div className="title">가 격</div>
-        <div className="info">10,000원</div>
+        <div className="title">상세주소</div>
+        <div className="info">{info.detailAddress}</div>
+      </div>
+      <div className="info-item-wrapper">
+        <div className="title">주말가격</div>
+        <div className="info">
+          {new Intl.NumberFormat('ko', { style: 'currency', currency: 'KRW' }).format(
+            Number(info.holidayPricePerHalfHour),
+          )}
+        </div>
+      </div>
+      <div className="info-item-wrapper">
+        <div className="title">평일가격</div>
+        <div className="info">
+          {new Intl.NumberFormat('ko', { style: 'currency', currency: 'KRW' }).format(
+            Number(info.weekdayPricePerHalfHour),
+          )}
+        </div>
       </div>
       <div className="info-item-wrapper">
         <div className="title">운영시간</div>
-        <div className="info">오전 09시 ~ 오후 10시</div>
+        <div className="info">
+          {info.openTime} ~ {info.closeTime}
+        </div>
+      </div>
+      <div className="info-item-wrapper">
+        <div className="title">연락처</div>
+        <div className="info">{info.phone}</div>
       </div>
     </DetailInfoBlock>
   );
