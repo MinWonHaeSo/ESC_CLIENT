@@ -1,7 +1,7 @@
 import { UserType } from '@/types/userType';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface UserState {
+interface AuthState {
   key: string;
   type: UserType;
   email: string;
@@ -14,10 +14,10 @@ interface UserState {
   loggedIn: boolean;
 }
 
-type LoginType = Omit<UserState, 'key'>;
-type SocialLoginType = Omit<UserState, 'key' | 'password'>;
+type LoginType = Omit<AuthState, 'key'>;
+type SocialLoginType = Omit<AuthState, 'key' | 'password'>;
 
-const initialState: UserState = {
+const initialState: AuthState = {
   key: '',
   type: 'USER',
   email: '',
