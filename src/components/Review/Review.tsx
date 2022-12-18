@@ -5,15 +5,25 @@ import { typo } from '@/lib/styles/typo';
 import ReviewHeader from './ReviewHeader';
 import ReviewSubmit from './ReviewSubmit';
 import ReviewList from './ReviewList';
+import { useGetReviewListQuery } from '@/api/reviewApi';
+import Loading from '../common/Loading/Loading';
 
-type Props = {};
+interface ReviewProps {
+  stadiumId: string;
+}
 
-const Review = (props: Props) => {
+const Review = ({ stadiumId }: ReviewProps) => {
+  const { data, isLoading, error } = useGetReviewListQuery({ id: stadiumId });
+
+  if (isLoading || !data) {
+    return <Loading />;
+  }
+
   return (
     <ReviewContainer>
       <ReviewHeader />
-      <ReviewSubmit />
-      <ReviewList />
+      <ReviewSubmit id={stadiumId} />
+      <ReviewList contents={data.content} />
     </ReviewContainer>
   );
 };

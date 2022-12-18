@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
+import ReviewDropdown from './ReviewDropdown';
 
 interface ReviewHeaderProps {}
 
@@ -8,7 +9,7 @@ const ReviewHeader = (props: ReviewHeaderProps) => {
   return (
     <ReviewHeaderContainer>
       <span className="title">리뷰</span>
-      <div>별점 매기기</div>
+      <ReviewDropdown />
     </ReviewHeaderContainer>
   );
 };
@@ -26,11 +27,6 @@ const ReviewHeaderContainer = styled.div`
     border-radius: 10px;
     background-color: #fff;
     text-align: center;
-  }
-
-  div {
-    display: flex;
-    align-items: flex-end;
   }
 `;
 

@@ -1,41 +1,81 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { stadiumDetailState } from '@/store/stadiumDetailSlice';
 import Tag from '../Tag/Tag';
 import Slider from '../Slide/Slider';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import Info from './Info';
+import { useGetStadiumDetailQuery, usePostLikeStadiumMutation } from '@/api/stadiumApi';
+import Loading from '../common/Loading/Loading';
+import sw from '@/lib/utils/customSweetAlert';
+import { useNavigate } from 'react-router-dom';
+import PATH from '@/constants/path';
+import Title from '../common/atoms/Title';
+import useThrottleRef from '@/hooks/useThrottleRef';
+import { useDispatch } from 'react-redux';
+import { updateStadium } from '@/store/stadiumWriteSlice';
 
 interface DetailProps {
-  detail: stadiumDetailState;
+  stadiumId: string;
 }
 
-const tagData = ['축구', '풋살'];
-
-const Detail = ({ detail }: DetailProps) => {
+const Detail = ({ stadiumId }: DetailProps) => {
   const [stadiumLike, setStadiumLike] = useState(false);
+  const { data, isLoading, error } = useGetStadiumDetailQuery(stadiumId);
+  const [postLikeStadiumAPI] = usePostLikeStadiumMutation();
+  const likeCallbackAPI = useThrottleRef(() => postLikeStadiumAPI(stadiumId));
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleChangeStadiumLike = () => {
     // 찜하기 logic 작성
-
     setStadiumLike(!stadiumLike);
+    postLikeStadiumAPI(stadiumId);
+    likeCallbackAPI();
   };
+
+  const handleGotoEdit = useCallback(() => {
+    if (data) {
+      dispatch(updateStadium(data));
+      navigate(`${PATH.MANAGER_STADIUM_UPLOAD}`);
+    }
+  }, [dispatch, data]);
+
+  const handleGotoRental = () => {
+    navigate(`${PATH.ROOT}`);
+  };
+
+  useEffect(() => {
+    if (error) {
+      sw.toast.error('잘못된 요청입니다.');
+      navigate(PATH.ROOT);
+    }
+  }, [error]);
+
+  useLayoutEffect(() => {
+    document.documentElement.scrollTop = 0;
+  }, []);
+
+  if (isLoading || !data) {
+    return <Loading />;
+  }
 
   return (
     <div>
-      <h1>체육관 이름</h1>
+      <Title fontSize={`${typo.xLarge}`}>{data.name}</Title>
       <SliderWrapper>
-        <Slider />
+        <Slider images={data.imgs} />
       </SliderWrapper>
-      <Tag tags={tagData} />
-      <Info />
+      <Tag tags={data.tags} />
+      <Info info={data} />
       <ButtonActionContainer>
         <button className="book-mark" onClick={handleChangeStadiumLike}>
           <i className={stadiumLike ? 'fa-solid fa-bookmark' : 'fa-regular fa-bookmark'}></i>
         </button>
-        <button className="btn btn-action">예약하기</button>
-        {/* <button className="btn btn-action">수정하기</button> */}
+        {/* <button className="btn btn-action" onClick={handleGotoRental}>예약하기</button> */}
+        <button className="btn btn-action" onClick={handleGotoEdit}>
+          수정하기
+        </button>
       </ButtonActionContainer>
     </div>
   );
@@ -69,6 +109,7 @@ const ButtonActionContainer = styled.div`
 
 const SliderWrapper = styled.div`
   display: flex;
+  margin-top: 1rem;
   justify-content: center;
 `;
 

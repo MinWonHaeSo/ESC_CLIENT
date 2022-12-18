@@ -21,7 +21,7 @@ const MarkerStadiumInfo = ({ markerInfo }: MarkerStadiumInfoProps) => {
   };
 
   const toUploadNavigate = () => {
-    navigate(`${PATH.STADIUM_DETAIL}/1`);
+    navigate(`${PATH.STADIUM_DETAIL}/${markerInfo.id}`);
   };
 
   if (!Object.keys(markerInfo).length) {

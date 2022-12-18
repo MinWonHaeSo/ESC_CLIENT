@@ -1,4 +1,4 @@
-import { stadiumDetailReducer } from './stadiumDetailSlice';
+import { stadiumReviewReducer } from './stadiumReview';
 import { baseApi } from '@/api/baseApi';
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
@@ -13,8 +13,8 @@ export const store = configureStore({
     user: userReducer,
     stadiumMarker: stadiumMarkerReducer,
     stadiumWrite: stadiumWriteReducer,
-    stadiumDetail: stadiumDetailReducer,
     searchPassword: searchPasswordReducer,
+    stadiumReview: stadiumReviewReducer,
     auth: authReducer,
     [baseApi.reducerPath]: baseApi.reducer,
   },
