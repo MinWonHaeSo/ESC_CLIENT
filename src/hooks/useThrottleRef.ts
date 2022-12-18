@@ -3,14 +3,15 @@ import React, { useRef } from 'react';
 type Props = {};
 
 const useThrottleRef = (callback: () => void) => {
-  const throttleRef = useRef<boolean | null>(null);
+  const throttleRef = useRef<boolean>(false);
 
   const callbackApi = () => {
-    if (!throttleRef.current) return;
-    throttleRef.current = false;
+    console.log(throttleRef);
+    if (throttleRef.current) return;
+    throttleRef.current = true;
 
     setTimeout(() => {
-      throttleRef.current = true;
+      throttleRef.current = false;
       callback();
     }, 600);
   };

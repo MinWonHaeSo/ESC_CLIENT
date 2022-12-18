@@ -1,36 +1,37 @@
+import { ImagesType } from '@/api/stadiumApi';
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import SliderBtn from './SliderBtn';
 import SliderCurrentInfo from './SliderCurrentInfo';
 import SliderList from './SliderList';
 
-const data = [
-  'http://via.placeholder.com/340x150',
-  'http://via.placeholder.com/340x160',
-  'http://via.placeholder.com/340x170',
-];
+interface SliderProps {
+  images: ImagesType[] | undefined;
+}
 
-interface SliderProps {}
-
-const Slider = (props: SliderProps) => {
+const Slider = ({ images }: SliderProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  if (!images) {
+    return null;
+  }
 
   const handleSlidePrev = () => {
     const isFirstSlide = currentIndex === 0;
-    const newIndex = isFirstSlide ? data.length - 1 : currentIndex - 1;
+    const newIndex = isFirstSlide ? images.length - 1 : currentIndex - 1;
     setCurrentIndex(newIndex);
   };
 
   const handleSlideNext = () => {
-    const isLastSlide = currentIndex === data.length - 1;
+    const isLastSlide = currentIndex === images.length - 1;
     const newIndex = isLastSlide ? 0 : currentIndex + 1;
     setCurrentIndex(newIndex);
   };
 
   return (
     <SliderContainer>
-      <SliderList slides={data} currentIndex={currentIndex} />
-      <SliderCurrentInfo currentIndex={currentIndex + 1} imagesLength={data.length} />
+      <SliderList slides={images} currentIndex={currentIndex} />
+      <SliderCurrentInfo currentIndex={currentIndex + 1} imagesLength={images.length} />
       <SliderBtn direction="prev" onSlideMove={handleSlidePrev} />
       <SliderBtn direction="next" onSlideMove={handleSlideNext} />
     </SliderContainer>

@@ -13,9 +13,10 @@ interface EditInputProps {
   id: string;
   type: string;
   placeholder: string;
+  maxLength?: number;
 }
 
-const EditInput = ({ value, name, title, id, type, placeholder }: EditInputProps) => {
+const EditInput = ({ value, name, title, id, type, placeholder, maxLength }: EditInputProps) => {
   const dispatch = useDispatch();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +29,15 @@ const EditInput = ({ value, name, title, id, type, placeholder }: EditInputProps
       <Label htmlFor={id} required={false}>
         * {title}
       </Label>
-      <Input type={type} id={id} name={name} placeholder={placeholder} value={value} onChange={handleChange} />
+      <Input
+        type={type}
+        id={id}
+        name={name}
+        placeholder={placeholder}
+        value={value}
+        maxLength={maxLength}
+        onChange={handleChange}
+      />
     </EditInputWrapper>
   );
 };
