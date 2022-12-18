@@ -42,11 +42,12 @@ const Header = (props: HomeProps) => {
 
     try {
       const response = await requestUserInfoAPI('').unwrap();
-      const { nickname, name, email, imgUrl, password } = response;
+      const { id, nickname, name, email, imgUrl, password } = response;
 
       if (response) {
         dispatch(
           sustainLogin({
+            id: id,
             type: userType,
             email: email,
             nickname: nickname,

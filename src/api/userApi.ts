@@ -44,7 +44,7 @@ const userApi = baseApi.injectEndpoints({
         method: 'POST',
         body: email,
       }),
-      transformResponse: (response: { data: Response }) => response.data,
+      // transformResponse: (response: { data: Response }) => response.data,
     }),
     sendEmailValidateCode: builder.mutation<Response, Email>({
       query: (email: Email) => ({

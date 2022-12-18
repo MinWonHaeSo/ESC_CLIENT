@@ -50,6 +50,7 @@ const OAuthRedirect = () => {
 
         dispatch(
           setSocialLogin({
+            id: userData.id,
             type: 'USER',
             email: decodedUserInfo.email,
             name: userData.name,

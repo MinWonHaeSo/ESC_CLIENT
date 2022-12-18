@@ -4,7 +4,6 @@ import styled from '@emotion/styled';
 import sw from '@/lib/utils/customSweetAlert';
 import { RootState, useAppDispatch } from '@/store/store';
 import { setLogin } from '@/store/authSlice';
-import { setCredentials } from '@/store/authSlice';
 import { useNavigate } from 'react-router';
 import Input from '../common/atoms/Input';
 import Button from '../common/atoms/Button';
@@ -55,7 +54,7 @@ const LoginForm = (props: LoginFormProps) => {
     try {
       const userData = await loginAPI({ email: email, password: password }).unwrap();
       if (userData) {
-        const { name, nickname, imgUrl, accessToken, refreshToken } = userData;
+        const { id, name, nickname, imgUrl, accessToken, refreshToken } = userData;
 
         // cookie에 refreshToken 저장
         setCookie('refreshToken', refreshToken, {
@@ -70,6 +69,7 @@ const LoginForm = (props: LoginFormProps) => {
         // redux store - 전역 상태에 저장
         dispatch(
           setLogin({
+            id: id,
             type: userType,
             email: email,
             name: name,
