@@ -19,8 +19,10 @@ const Tag = ({ tags, onTagClick }: TagProps) => {
 
 const TagContainer = styled.ul`
   display: flex;
+  width: 280px;
   gap: 0.5rem;
   margin-top: 1rem;
+  flex-wrap: wrap;
 `;
 
 export default Tag;
