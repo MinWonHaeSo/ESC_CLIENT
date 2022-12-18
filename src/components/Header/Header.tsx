@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '@/store/store';
 import { useEffect } from 'react';
 import { setCredentials, sustainLogin } from '@/store/authSlice';
-import { useRequestUserInfoMutation } from '@/api/authApi';
+import { useRefetchUserInfoMutation } from '@/api/authApi';
 import { getAuthToken } from '@/lib/utils/token';
 import Loading from '../common/Loading/Loading';
 
@@ -29,7 +29,7 @@ const Header = (props: HomeProps) => {
     setIsActive(!isActive);
   };
 
-  const [requestUserInfoAPI, { isLoading }] = useRequestUserInfoMutation();
+  const [refetchUserInfoAPI, { isLoading }] = useRefetchUserInfoMutation();
   const dispatch = useAppDispatch();
 
   const checkLogin = useCallback(async () => {
@@ -41,7 +41,7 @@ const Header = (props: HomeProps) => {
     dispatch(setCredentials({ accessToken: accessToken }));
 
     try {
-      const response = await requestUserInfoAPI('').unwrap();
+      const response = await refetchUserInfoAPI('').unwrap();
       const { id, nickname, name, email, imgUrl, password } = response;
 
       if (response) {

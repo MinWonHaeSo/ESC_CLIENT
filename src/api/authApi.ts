@@ -86,7 +86,7 @@ const authApi = baseApi.injectEndpoints({
         },
       }),
     }),
-    requestUserInfo: builder.mutation<RefetchUserResponse, string>({
+    refetchUserInfo: builder.mutation<RefetchUserResponse, string>({
       query: (refreshToken: string) => ({
         url: 'members/profiles/info',
         method: 'POST',
@@ -102,14 +102,14 @@ const authApi = baseApi.injectEndpoints({
         body: { ...userInfo },
       }),
     }),
-    findPasswordSendEmail: builder.mutation<ApiResponse, Email>({
+    searchPasswordSendEmail: builder.mutation<ApiResponse, Email>({
       query: (email: Email) => ({
         url: '/members/profiles/password/send-email',
         method: 'POST',
         body: email,
       }),
     }),
-    findPasswordValidateEmail: builder.mutation<ApiResponse, string>({
+    searchPasswordValidateEmail: builder.mutation<ApiResponse, string>({
       query: key => ({
         url: `/members/profiles/password/config`,
         method: 'POST',
@@ -131,9 +131,9 @@ export const {
   useSocialLoginMutation,
   useLoginMutation,
   useLogoutMutation,
-  useRequestUserInfoMutation,
+  useRefetchUserInfoMutation,
   useChangeUserInfoMutation,
-  useFindPasswordSendEmailMutation,
-  useFindPasswordValidateEmailMutation,
+  useSearchPasswordSendEmailMutation,
+  useSearchPasswordValidateEmailMutation,
   useChangePasswordRequestMutation,
 } = authApi;

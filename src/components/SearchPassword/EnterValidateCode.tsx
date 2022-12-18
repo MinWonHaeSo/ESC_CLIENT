@@ -1,4 +1,4 @@
-import { useFindPasswordSendEmailMutation, useFindPasswordValidateEmailMutation } from '@/api/authApi';
+import { useSearchPasswordSendEmailMutation, useSearchPasswordValidateEmailMutation } from '@/api/authApi';
 import MILLI_SECONDS from '@/constants/milliSeconds';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
@@ -26,8 +26,8 @@ const EnterValidateCode = (props: EnterValidateCodeProps) => {
   const orderIndex = useSelector((state: RootState) => state.searchPassword.index);
   const email = useSelector((state: RootState) => state.searchPassword.email);
 
-  const [findPasswordValidateEmailAPI] = useFindPasswordValidateEmailMutation();
-  const [findPasswordSendEmailAPI] = useFindPasswordSendEmailMutation();
+  const [searchPasswordValidateEmailAPI] = useSearchPasswordValidateEmailMutation();
+  const [searchPasswordSendEmailAPI] = useSearchPasswordSendEmailMutation();
 
   const checkValidationCode = (currentNumber: string) => {
     if (currentNumber.length !== 6) {
@@ -51,7 +51,7 @@ const EnterValidateCode = (props: EnterValidateCodeProps) => {
       return;
     }
     try {
-      const response = await findPasswordValidateEmailAPI(inputValue);
+      const response = await searchPasswordValidateEmailAPI(inputValue);
       if (response) {
         sw.toast.success('인증코드가 일치합니다.');
         dispatch(changeIndex(orderIndex + 1));
@@ -64,7 +64,7 @@ const EnterValidateCode = (props: EnterValidateCodeProps) => {
 
   const handleSendNewCodeButtonClick = async () => {
     try {
-      const response = await findPasswordSendEmailAPI({ email: email });
+      const response = await searchPasswordSendEmailAPI({ email: email });
       if (response) {
         sw.toast.success('인증코드를 새롭게 발송하였습니다.');
         setTimeout(() => {
