@@ -4,7 +4,6 @@ import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import StyledPadding from '../common/StyledPadding';
 
 interface CardStadiumProps {
   stadium: {
@@ -25,11 +24,6 @@ interface CardStadiumProps {
 const CardStadium = ({ stadium, currentLocation }: CardStadiumProps) => {
   const { name, status, address } = stadium;
 
-  const noticeCurrentLocation = () => {
-    console.log(currentLocation);
-    return currentLocation;
-  };
-
   const [stardiumLike, setStardiumLike] = useState(false);
 
   const handleChangeStardiumLike = () => {
@@ -40,7 +34,7 @@ const CardStadium = ({ stadium, currentLocation }: CardStadiumProps) => {
     <CardStadiumBlock>
       <StadiumImageWrapper>
         <img src="../../src/assets/gym.jpg" alt="체육관이미지" />
-        {noticeCurrentLocation() !== `${PATH.ME_RENTAL_LIST}` ? null : <StatusTag status={status}>{status}</StatusTag>}
+        {currentLocation !== `${PATH.ME_RENTAL_LIST}` ? null : <StatusTag status={status}>{status}</StatusTag>}
         {currentLocation === `${PATH.ME_LIKE_STADIUM_LIST}` ? (
           <Bookmark>
             <i className="fa-solid fa-bookmark" onClick={handleChangeStardiumLike} />
