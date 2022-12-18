@@ -21,8 +21,6 @@ const initialState: UserState = {
   image: '',
 };
 
-// signUp(회원가입) , mypage (마이페이지) -> 회원가입 시 관리되는 각 폼 요소가 개별로 존재하기 때문에,
-// 각 요소마다 입력이 완료되었을 때 해당 상태가 저장되도록 reducer들을 분리할 수 밖에 없음
 const userSlice = createSlice({
   name: 'user',
   initialState,

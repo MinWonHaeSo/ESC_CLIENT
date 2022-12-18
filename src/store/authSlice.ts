@@ -1,8 +1,9 @@
 import { UserType } from '@/types/userType';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface UserState {
+interface AuthState {
   key: string;
+  id: number;
   type: UserType;
   email: string;
   name: string;
@@ -14,10 +15,11 @@ interface UserState {
   loggedIn: boolean;
 }
 
-type LoginType = Omit<UserState, 'key'>;
-type SocialLoginType = Omit<UserState, 'key' | 'password'>;
+type LoginType = Omit<AuthState, 'key'>;
+type SocialLoginType = Omit<AuthState, 'key' | 'password'>;
 
-const initialState: UserState = {
+const initialState: AuthState = {
+  id: 0,
   key: '',
   type: 'USER',
   email: '',
@@ -41,7 +43,8 @@ const authSlice = createSlice({
       state.refreshToken = refreshToken;
     },
     setLogin: (state, action: PayloadAction<LoginType>) => {
-      const { type, email, name, password, nickname, image, accessToken, refreshToken, loggedIn } = action.payload;
+      const { id, type, email, name, password, nickname, image, accessToken, refreshToken, loggedIn } = action.payload;
+      state.id = id;
       state.type = type;
       state.email = email;
       state.name = name;
@@ -53,7 +56,8 @@ const authSlice = createSlice({
       state.loggedIn = loggedIn;
     },
     setSocialLogin: (state, action: PayloadAction<SocialLoginType>) => {
-      const { type, email, name, nickname, image, accessToken, refreshToken, loggedIn } = action.payload;
+      const { id, type, email, name, nickname, image, accessToken, refreshToken, loggedIn } = action.payload;
+      state.id = id;
       state.type = type;
       state.email = email;
       state.name = name;
@@ -64,7 +68,8 @@ const authSlice = createSlice({
       state.loggedIn = loggedIn;
     },
     sustainLogin: (state, action) => {
-      const { type, email, nickname, imgUrl, accessToken, password, loggedIn } = action.payload;
+      const { id, type, email, nickname, imgUrl, accessToken, password, loggedIn } = action.payload;
+      state.id = id;
       state.type = type;
       state.email = email;
       state.nickname = nickname;
