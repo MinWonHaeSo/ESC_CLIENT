@@ -1,7 +1,8 @@
+import Reservation from '@/components/StadiumReservation/Reservation';
 import React from 'react';
 
 const StadiumReservationPage = () => {
-  return <div>StadiumBooking</div>;
+  return <Reservation />;
 };
 
 export default StadiumReservationPage;
