@@ -8,18 +8,14 @@ import { useSelector } from 'react-redux';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-const customAccessToken =
-  'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imluc2VydHh5ekBuYXZlci5jb20iLCJpYXQiOjE2NzEyMTE4NTYsImV4cCI6MTY3MTgxNjY1Nn0.MV5D_j_2P_aNuYG-ORJhqyrJxhfHYGe8lkKh3dZVwHQ';
-
 const baseQuery = fetchBaseQuery({
   baseUrl: `${BASE_URL}`,
   prepareHeaders: (headers, { getState }) => {
     const accessToken = (getState() as RootState).auth.accessToken;
     headers.set('ngrok-skip-browser-warning', 'true');
-    // if (accessToken) {
-    //   headers.set('Authorization', `Bearer ${accessToken}`);
-    // }
-    headers.set('Authorization', `Bearer ${customAccessToken}`);
+    if (accessToken) {
+      headers.set('Authorization', `Bearer ${accessToken}`);
+    }
     headers.set('Content-Type', 'application/json');
     return headers;
   },

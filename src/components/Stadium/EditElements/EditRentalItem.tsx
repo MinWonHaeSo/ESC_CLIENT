@@ -21,8 +21,8 @@ const EditRentalItem = ({ rentalItems, onAddImages, onRemoveImages }: EditRental
   const handleAddkRentalContentLength = useCallback(() => {
     dispatch(
       addRentalItem({
-        id: uuidv4(),
-        img: '',
+        publicId: uuidv4(),
+        imgUrl: '',
         name: '',
         price: '',
       }),
@@ -49,7 +49,7 @@ const EditRentalItem = ({ rentalItems, onAddImages, onRemoveImages }: EditRental
       <RentalItemContent>
         {rentalItems.map(item => (
           <RentalItemList
-            key={item.id}
+            key={item.publicId}
             rentalItem={item}
             onRemoveRental={handleRemoveRental}
             onAddImages={onAddImages}
