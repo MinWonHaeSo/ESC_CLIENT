@@ -22,6 +22,7 @@ import PATH from './constants/path';
 import StadiumDetailPage from './pages/StadiumDetailPage';
 import StadiumListPage from './pages/StadiumListPage';
 import { ModalProvider } from './context/ModalContext';
+import { ScrollToTop } from './hooks/useScollToTop';
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
         <ModalProvider>
           <Provider store={store}>
             <BrowserRouter>
+              <ScrollToTop />
               <Routes>
                 <Route element={<Layout />}>
                   <Route path={PATH.ROOT} element={<MainPage />} />
