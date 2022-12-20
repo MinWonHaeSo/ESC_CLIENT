@@ -49,7 +49,7 @@ interface ChangeUserInfoResponse {
   imgUrl: string;
 }
 
-type LoginRequest = Pick<User, 'email' | 'password'>;
+type LoginRequest = Pick<User, 'email' | 'password' | 'type'>;
 
 type PasswordChangeRequest = {
   email: string;
