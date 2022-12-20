@@ -44,7 +44,7 @@ const MainWrapper = styled.main`
 
 const FooterWrapper = styled.footer<{ userType: 'USER' | 'MANAGER' }>`
   ${media.xsmallMin} {
-    margin-top: 10rem;
+    margin-top: 12rem;
   }
 `;
 export default Layout;
