@@ -14,7 +14,6 @@ interface TimeSelectItemProps {
 const TimeSelectItem = ({ times, reservedTimes }: TimeSelectItemProps) => {
   const selectedDate = useSelector((state: RootState) => state.stadiumReservation.data.reservingTimes);
   const dispatch = useDispatch();
-  // timeDivedesDate || selectedDate 로 className 비교
 
   const handleSelectTime = useCallback(
     (date: string) => {
