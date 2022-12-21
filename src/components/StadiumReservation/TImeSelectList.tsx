@@ -3,25 +3,26 @@ import styled from '@emotion/styled';
 import Dividers from '../common/Dividers';
 import TimeSelectItem from './TimeSelectItem';
 import excludeTimes from '@/lib/utils/excludeTimes';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 
-interface TImeSelectListProps {}
+interface TImeSelectListProps {
+  openTime: string;
+  closeTime: string;
+}
 
-const openDate = '9:00';
-const closeDate = '20:30';
-
-const disabledDate = ['12:00', '11:00', '13:00', '20:00'];
-
-const TImeSelectList = (props: TImeSelectListProps) => {
-  const amTime = excludeTimes({ excludeTime: openDate, type: 'am' });
-  const pmTime = excludeTimes({ excludeTime: closeDate, type: 'pm' });
+const TImeSelectList = ({ openTime, closeTime }: TImeSelectListProps) => {
+  const reservedTimes = useSelector((state: RootState) => state.stadiumReservation.data.reservedTimes);
+  const amTime = excludeTimes({ excludeTime: openTime, type: 'am' });
+  const pmTime = excludeTimes({ excludeTime: closeTime, type: 'pm' });
 
   return (
     <div>
       <span>오전</span>
-      <TimeSelectItem times={amTime} reservedTimes={disabledDate} />
+      <TimeSelectItem times={amTime} reservedTimes={reservedTimes} />
       <Dividers />
       <span>오후</span>
-      <TimeSelectItem times={pmTime} reservedTimes={disabledDate} />
+      <TimeSelectItem times={pmTime} reservedTimes={reservedTimes} />
       <div></div>
     </div>
   );
