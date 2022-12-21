@@ -20,6 +20,7 @@ interface LoginResponse {
   statusCode: number;
   accessToken: string;
   refreshToken: string;
+  id: number;
   name: string;
   nickname: string;
   imgUrl: string;
@@ -32,15 +33,23 @@ interface RefreshResponse {
 }
 
 interface RefetchUserResponse {
+  id: number;
   email: string;
+  name: string;
   nickname: string;
   imgUrl: string;
   password: string;
   statusCode: number;
 }
 
+interface ChangeUserInfoResponse {
+  message: string;
+  statusCode: number;
+  nickname: string;
+  imgUrl: string;
+}
+
 type LoginRequest = Pick<User, 'email' | 'password'>;
-type SocialLoginRequest = Pick<User, 'email'>;
 
 type PasswordChangeRequest = {
   email: string;
@@ -77,16 +86,7 @@ const authApi = baseApi.injectEndpoints({
         },
       }),
     }),
-    refresh: builder.mutation<RefreshResponse, string>({
-      query: (refreshToken: string) => ({
-        url: '/members/auth/refresh-token',
-        method: 'POST',
-        headers: {
-          RefreshToken: `Bearer ${refreshToken}`,
-        },
-      }),
-    }),
-    requestUserInfo: builder.mutation<RefetchUserResponse, string>({
+    refetchUserInfo: builder.mutation<RefetchUserResponse, string>({
       query: (refreshToken: string) => ({
         url: 'members/profiles/info',
         method: 'POST',
@@ -95,28 +95,26 @@ const authApi = baseApi.injectEndpoints({
         },
       }),
     }),
-    changeUserInfo: builder.mutation<ApiResponse, { nickname: string; imgUrl: string }>({
+    changeUserInfo: builder.mutation<ChangeUserInfoResponse, { nickname: string; imgUrl: string }>({
       query: userInfo => ({
         url: 'members/profiles/info',
         method: 'PATCH',
         body: { ...userInfo },
       }),
-      invalidatesTags: ['User'],
     }),
-    findPasswordSendEmail: builder.mutation<ApiResponse, Email>({
+    searchPasswordSendEmail: builder.mutation<ApiResponse, Email>({
       query: (email: Email) => ({
         url: '/members/profiles/password/send-email',
         method: 'POST',
         body: email,
       }),
-      invalidatesTags: ['User'],
     }),
-    findPasswordValidateEmail: builder.query<ApiResponse, string>({
+    searchPasswordValidateEmail: builder.mutation<ApiResponse, string>({
       query: key => ({
-        url: `/members/profiles/password?key=${key}`,
-        method: 'GET',
+        url: `/members/profiles/password/config`,
+        method: 'POST',
+        body: { key },
       }),
-      providesTags: ['User'],
     }),
     changePasswordRequest: builder.mutation<ApiResponse, PasswordChangeRequest>({
       query: ({ email, prePassword, newPassword, confirmPassword, hasToken }) => ({
@@ -133,10 +131,9 @@ export const {
   useSocialLoginMutation,
   useLoginMutation,
   useLogoutMutation,
-  useRefreshMutation,
-  useRequestUserInfoMutation,
+  useRefetchUserInfoMutation,
   useChangeUserInfoMutation,
-  useFindPasswordSendEmailMutation,
-  useFindPasswordValidateEmailQuery,
+  useSearchPasswordSendEmailMutation,
+  useSearchPasswordValidateEmailMutation,
   useChangePasswordRequestMutation,
 } = authApi;

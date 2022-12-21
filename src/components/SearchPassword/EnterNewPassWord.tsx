@@ -1,4 +1,6 @@
 import { useChangePasswordRequestMutation } from '@/api/authApi';
+import MILLI_SECONDS from '@/constants/milliSeconds';
+import PATH from '@/constants/path';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import sw from '@/lib/utils/customSweetAlert';
@@ -54,9 +56,9 @@ const EnterNewPassWord = (props: EnterNewPasswordProps) => {
     const { value, id } = e.target;
     setFormState({ ...formState, [id]: value });
     if (id === 'password') {
-      checkPasswordValidation(value, setRequired, required);
+      checkPasswordValidation({ currentPassword: value, setRequired, required });
     } else if (id === 'passwordConfirm') {
-      checkPasswordConfirmValidation(password, value, setRequired, required);
+      checkPasswordConfirmValidation({ password, currentPasswordConfirm: value, setRequired, required });
     }
   };
 
@@ -87,8 +89,8 @@ const EnterNewPassWord = (props: EnterNewPasswordProps) => {
           }),
         );
         setTimeout(() => {
-          navigate('/login');
-        }, 1000);
+          navigate(`${PATH.LOGIN}`);
+        }, MILLI_SECONDS.one);
       }
     } catch {
       console.error('이전 비밀번호와 같을 수 있습니다.');

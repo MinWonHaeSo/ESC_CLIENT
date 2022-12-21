@@ -6,6 +6,7 @@ import { uploadImage } from '@/store/authSlice';
 import { setImage } from '@/store/userSlice';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { DEFAULT_PROFILE_IMGURL } from '@/constants/defaultImage';
 
 interface InsertImageProps {
   editDisabled: boolean;
@@ -25,7 +26,6 @@ const InsertImage = ({ editDisabled, currentImage, currentLocation, onChangeImag
   const authUser = useSelector((state: RootState) => state.auth);
   const { image } = authUser;
   const dispatch = useAppDispatch();
-  console.log(image);
 
   const handleClickFileButton = () => {
     if (!fileInputRef.current) return;
@@ -44,6 +44,7 @@ const InsertImage = ({ editDisabled, currentImage, currentLocation, onChangeImag
     if (currentLocation === '/mypage') {
       dispatch(uploadImage(imageURL));
     } else if (currentLocation === '/signup') {
+      dispatch(uploadImage(imageURL));
       dispatch(setImage(imageURL));
     }
   };
@@ -57,11 +58,7 @@ const InsertImage = ({ editDisabled, currentImage, currentLocation, onChangeImag
 
   return (
     <ImgBlock>
-      <Img
-        src={!imageFile.imageURL ? 'src/assets/defaultProfileImage.svg' : currentImage}
-        alt="프로필"
-        disabled={editDisabled}
-      />
+      <Img src={currentImage ? imageFile.imageURL : DEFAULT_PROFILE_IMGURL} alt="프로필" disabled={editDisabled} />
       <PlusButton onClick={handleClickFileButton} type={'button'}>
         {editDisabled ? null : <i className="fa-solid fa-plus" />}
       </PlusButton>

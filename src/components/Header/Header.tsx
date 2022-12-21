@@ -12,8 +12,7 @@ import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '@/store/store';
 import { useEffect } from 'react';
 import { setCredentials, sustainLogin } from '@/store/authSlice';
-import { useRequestUserInfoMutation } from '@/api/authApi';
-import { getCookie } from '@/lib/utils/cookies';
+import { useRefetchUserInfoMutation } from '@/api/authApi';
 import { getAuthToken } from '@/lib/utils/token';
 import Loading from '../common/Loading/Loading';
 
@@ -21,6 +20,7 @@ interface HomeProps {}
 
 const Header = (props: HomeProps) => {
   const loggedIn = useSelector((state: RootState) => state.auth.loggedIn);
+
   const [isActive, setIsActive] = useState(false);
   const checkHeader = usePathHeaderOnlyLogo();
 
@@ -29,7 +29,7 @@ const Header = (props: HomeProps) => {
     setIsActive(!isActive);
   };
 
-  const [requestUserInfoAPI, { isLoading }] = useRequestUserInfoMutation();
+  const [refetchUserInfoAPI, { isLoading }] = useRefetchUserInfoMutation();
   const dispatch = useAppDispatch();
 
   const checkLogin = useCallback(async () => {
@@ -38,21 +38,21 @@ const Header = (props: HomeProps) => {
     }
     const accessToken = getAuthToken();
     const userType = localStorage.getItem('userType');
-    const refreshToken = getCookie('refreshToken');
     dispatch(setCredentials({ accessToken: accessToken }));
 
     try {
-      const response = await requestUserInfoAPI(refreshToken).unwrap();
-      const { nickname, email, imgUrl, password } = response;
-      console.log(imgUrl);
+      const response = await refetchUserInfoAPI('').unwrap();
+      const { id, nickname, name, email, imgUrl, password } = response;
 
       if (response) {
         dispatch(
           sustainLogin({
+            id: id,
             type: userType,
             email: email,
             nickname: nickname,
-            image: imgUrl,
+            name: name,
+            imgUrl: imgUrl,
             accessToken: accessToken,
             password: password,
             loggedIn: true,

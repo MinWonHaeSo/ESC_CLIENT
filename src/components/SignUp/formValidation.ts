@@ -7,12 +7,38 @@ interface Required {
   passwordConfirm: boolean;
 }
 
-const checkEmailValidation = (
-  currentEmail: string,
-  setRequired: React.Dispatch<React.SetStateAction<boolean>>,
-  setAllChecked: React.Dispatch<React.SetStateAction<AllCheckedState>>,
-  allChecked: AllCheckedState,
-) => {
+interface EmailValidation {
+  currentEmail: string;
+  setRequired: React.Dispatch<React.SetStateAction<boolean>>;
+  setAllChecked: React.Dispatch<React.SetStateAction<AllCheckedState>>;
+  allChecked: AllCheckedState;
+}
+
+interface PasswordValidation {
+  currentPassWord: string;
+  setRequired: React.Dispatch<React.SetStateAction<Required>>;
+  required: Required;
+  setAllChecked: React.Dispatch<React.SetStateAction<AllCheckedState>>;
+  allChecked: AllCheckedState;
+}
+
+interface PasswordConfirmValidation {
+  formState: { password: string; passwordConfirm: string };
+  currentPassWordConfirm: string;
+  setRequired: React.Dispatch<React.SetStateAction<Required>>;
+  required: Required;
+  setAllChecked: React.Dispatch<React.SetStateAction<AllCheckedState>>;
+  allChecked: AllCheckedState;
+}
+
+interface NickNameValidation {
+  currentNickName: string;
+  setRequired: React.Dispatch<React.SetStateAction<boolean>>;
+  setAllChecked: React.Dispatch<React.SetStateAction<AllCheckedState>>;
+  allChecked: AllCheckedState;
+}
+
+const checkEmailValidation = ({ currentEmail, setRequired, setAllChecked, allChecked }: EmailValidation) => {
   const { emailRegex } = formRegex;
   if (!emailRegex.test(currentEmail)) {
     return setRequired(true);
@@ -21,13 +47,13 @@ const checkEmailValidation = (
   setAllChecked({ ...allChecked, email: true });
 };
 
-const checkPasswordValidation = (
-  currentPassWord: string,
-  setRequired: React.Dispatch<React.SetStateAction<Required>>,
-  required: Required,
-  setAllChecked: React.Dispatch<React.SetStateAction<AllCheckedState>>,
-  allChecked: AllCheckedState,
-) => {
+const checkPasswordValidation = ({
+  currentPassWord,
+  setRequired,
+  required,
+  setAllChecked,
+  allChecked,
+}: PasswordValidation) => {
   const { passwordRegex } = formRegex;
   if (!passwordRegex.test(currentPassWord)) {
     return setRequired({ ...required, password: true });
@@ -36,14 +62,14 @@ const checkPasswordValidation = (
   setAllChecked({ ...allChecked, password: true });
 };
 
-const checkPasswordConfirmValidation = (
-  formState: { password: string; passwordConfirm: string },
-  currentPassWordConfirm: string,
-  setRequired: React.Dispatch<React.SetStateAction<Required>>,
-  required: Required,
-  setAllChecked: React.Dispatch<React.SetStateAction<AllCheckedState>>,
-  allChecked: AllCheckedState,
-) => {
+const checkPasswordConfirmValidation = ({
+  formState,
+  currentPassWordConfirm,
+  setRequired,
+  required,
+  setAllChecked,
+  allChecked,
+}: PasswordConfirmValidation) => {
   const { password } = formState;
   if (password !== currentPassWordConfirm) {
     return setRequired({ ...required, passwordConfirm: true });
@@ -52,12 +78,7 @@ const checkPasswordConfirmValidation = (
   setAllChecked({ ...allChecked, passwordConfirm: true });
 };
 
-const checkNickNameValidation = (
-  currentNickName: string,
-  setRequired: React.Dispatch<React.SetStateAction<boolean>>,
-  setAllChecked: React.Dispatch<React.SetStateAction<AllCheckedState>>,
-  allChecked: AllCheckedState,
-) => {
+const checkNickNameValidation = ({ currentNickName, setRequired, setAllChecked, allChecked }: NickNameValidation) => {
   const nickNameLengthCheck = currentNickName.length < 2 || currentNickName.length > 15;
   if (nickNameLengthCheck) {
     return setRequired(true);

@@ -52,9 +52,16 @@ const Password = ({ allChecked, setAllChecked }: PasswordProps) => {
     const { value, id } = e.target;
     setFormState({ ...formState, [id]: value });
     if (id === 'password') {
-      checkPasswordValidation(value, setRequired, required, setAllChecked, allChecked);
+      checkPasswordValidation({ currentPassWord: value, setRequired, required, setAllChecked, allChecked });
     } else if (id === 'passwordConfirm') {
-      checkPasswordConfirmValidation(formState, value, setRequired, required, setAllChecked, allChecked);
+      checkPasswordConfirmValidation({
+        formState,
+        currentPassWordConfirm: value,
+        setRequired,
+        required,
+        setAllChecked,
+        allChecked,
+      });
     }
   };
 

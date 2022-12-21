@@ -12,10 +12,10 @@ const baseQuery = fetchBaseQuery({
   baseUrl: `${BASE_URL}`,
   prepareHeaders: (headers, { getState }) => {
     const accessToken = (getState() as RootState).auth.accessToken;
-    headers.set('ngrok-skip-browser-warning', 'true');
     if (accessToken) {
       headers.set('Authorization', `Bearer ${accessToken}`);
     }
+    headers.set('ngrok-skip-browser-warning', 'true');
     headers.set('Content-Type', 'application/json');
     return headers;
   },
@@ -28,13 +28,12 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 ) => {
   let result = await baseQuery(args, api, extraOptions);
 
-  // [] Todo : 에러 핸들링 안됨 -> refresh token 관리 필요
   if (result.error && result.error.status === 404) {
     console.log('sending refresh token');
 
     // send refresh token to get new access token
     const refreshToken = getCookie('refreshToken');
-    console.log(refreshToken);
+
     const refreshResult = await baseQuery(
       {
         url: '/members/auth/refresh-token',
