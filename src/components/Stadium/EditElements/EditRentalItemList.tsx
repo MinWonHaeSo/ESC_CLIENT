@@ -26,7 +26,7 @@ const EditRentalItemList = ({ rentalItem, onRemoveRental, onAddImages }: EditRen
     const { fileInfoArray, fileInfoExcludeFile } = fileObjectToIdUrlFile(e.target.files);
 
     onAddImages(fileInfoArray[0], id);
-    dispatch(changeRentalItemImage({ id, url: fileInfoExcludeFile[0].imgUrl }));
+    dispatch(changeRentalItemImage({ id, imgUrl: fileInfoExcludeFile[0].imgUrl }));
   };
 
   const handleChangeRentalInputFiled = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
@@ -40,8 +40,8 @@ const EditRentalItemList = ({ rentalItem, onRemoveRental, onAddImages }: EditRen
     <RentalItemListContainer>
       <div className="rental-list-content">
         <div>
-          {rentalItem.img ? (
-            <img src={rentalItem.img} alt="" width="100px" height="100px" />
+          {rentalItem.imgUrl ? (
+            <img src={rentalItem.imgUrl} alt="" width="100px" height="100px" />
           ) : (
             <button className="rental-item-image-add-btn" type="button" onClick={handleClickFileButton}>
               이미지 추가
@@ -49,7 +49,7 @@ const EditRentalItemList = ({ rentalItem, onRemoveRental, onAddImages }: EditRen
           )}
           <input
             type="file"
-            onChange={e => handleChangeRentalImage(e, rentalItem.id)}
+            onChange={e => handleChangeRentalImage(e, rentalItem.publicId)}
             accept=".gif, .jpg, .png"
             style={{ display: 'none' }}
             ref={fileInputRef}
@@ -59,20 +59,20 @@ const EditRentalItemList = ({ rentalItem, onRemoveRental, onAddImages }: EditRen
           <input
             type="text"
             value={rentalItem.name}
-            onChange={e => handleChangeRentalInputFiled(e, rentalItem.id)}
+            onChange={e => handleChangeRentalInputFiled(e, rentalItem.publicId)}
             name="name"
             placeholder="대여 용품 이름"
           />
           <input
             type="number"
             value={rentalItem.price}
-            onChange={e => handleChangeRentalInputFiled(e, rentalItem.id)}
+            onChange={e => handleChangeRentalInputFiled(e, rentalItem.publicId)}
             name="price"
             placeholder="대여 용품 가격"
           />
         </div>
       </div>
-      <button className="rental-item-remove-btn" type="button" onClick={() => onRemoveRental(rentalItem.id)}>
+      <button className="rental-item-remove-btn" type="button" onClick={() => onRemoveRental(rentalItem.publicId)}>
         삭제
       </button>
     </RentalItemListContainer>

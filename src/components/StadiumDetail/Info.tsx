@@ -3,6 +3,7 @@ import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
 import Tag from '../Tag/Tag';
 import { stadiumWriteState } from '@/store/stadiumWriteSlice';
+import formatter from '@/lib/utils/formatter';
 
 interface InfoProps {
   info: stadiumWriteState;
@@ -21,19 +22,11 @@ const Info = ({ info }: InfoProps) => {
       </div>
       <div className="info-item-wrapper">
         <div className="title">주말가격</div>
-        <div className="info">
-          {new Intl.NumberFormat('ko', { style: 'currency', currency: 'KRW' }).format(
-            Number(info.holidayPricePerHalfHour),
-          )}
-        </div>
+        <div className="info">{formatter.getIntlCurrencyKr(Number(info.holidayPricePerHalfHour))}</div>
       </div>
       <div className="info-item-wrapper">
         <div className="title">평일가격</div>
-        <div className="info">
-          {new Intl.NumberFormat('ko', { style: 'currency', currency: 'KRW' }).format(
-            Number(info.weekdayPricePerHalfHour),
-          )}
-        </div>
+        <div className="info">{formatter.getIntlCurrencyKr(Number(info.weekdayPricePerHalfHour))}</div>
       </div>
       <div className="info-item-wrapper">
         <div className="title">운영시간</div>
