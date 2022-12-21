@@ -1,18 +1,31 @@
-import React, { useState } from 'react';
+import React, { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from '@emotion/styled';
 import CustomDate from '../common/CustomDate';
-import { addDays } from 'date-fns';
+import formatter from '@/lib/utils/formatter';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 
-interface ReservationDateProps {}
+interface ReservationDateProps {
+  trigger: any;
+}
 
-const ReservationDate = (props: ReservationDateProps) => {
-  const [date, setDate] = useState(new Date());
+const ReservationDate = ({ trigger }: ReservationDateProps) => {
+  const reservation = useSelector((state: RootState) => state.stadiumReservation);
+  const dispatch = useDispatch();
+
+  const handleChangeDate = useCallback(
+    (date: Date) => {
+      const yyyymmddDate = formatter.getFullDate(date);
+      trigger({ id: reservation.id, date: yyyymmddDate });
+    },
+    [dispatch],
+  );
 
   return (
     <CustomDate
-      value={date}
-      onChange={date => setDate(date)}
-      excludeDays={[addDays(new Date(), 1), addDays(new Date(), 5)]}
+      value={new Date(reservation.data.reservingDate.replace(/-/g, '-'))}
+      onChange={handleChangeDate}
       customInput={<CustomInput />}
     />
   );

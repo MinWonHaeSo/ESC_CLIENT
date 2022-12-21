@@ -1,20 +1,25 @@
-import React, { useState } from 'react';
-import { typo } from '@/lib/styles/typo';
+import React, { useCallback, useState } from 'react';
 import styled from '@emotion/styled';
+import { RootState } from '@/store/store';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { typo } from '@/lib/styles/typo';
+import { changeCount } from '@/store/stadiumReservationSlice';
 
 interface ReservationPersonProps {}
 
 const ReservationPerson = (props: ReservationPersonProps) => {
-  const [count, setCount] = useState(0);
+  const count = useSelector((state: RootState) => state.stadiumReservation.data.headCount);
+  const dispatch = useDispatch();
 
-  const handlePlus = () => {
-    setCount(prev => prev + 1);
-  };
+  const handlePlus = useCallback(() => {
+    dispatch(changeCount(count + 1));
+  }, [dispatch, count]);
 
-  const handleMinus = () => {
+  const handleMinus = useCallback(() => {
     if (!count) return;
-    setCount(prev => prev - 1);
-  };
+    dispatch(changeCount(count - 1));
+  }, [dispatch, count]);
 
   return (
     <SelectContainer>

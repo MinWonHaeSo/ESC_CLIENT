@@ -1,94 +1,78 @@
-import React from 'react';
-import palette from '@/lib/styles/palette';
+import React, { useCallback } from 'react';
 import styled from '@emotion/styled';
+import { RentalItemsType } from '@/api/reservationApi';
+import { useDispatch } from 'react-redux';
+import { changeRentalItemCount, RentalItemsToggleType, toggleRentalItem } from '@/store/stadiumReservationSlice';
+import formatter from '@/lib/utils/formatter';
 
-type Props = {};
+interface ReservationRentalItemProps {
+  item: RentalItemsToggleType;
+}
 
-const ReservationRentalItem = (props: Props) => {
+const ReservationRentalItem = ({ item }: ReservationRentalItemProps) => {
+  const dispatch = useDispatch();
+
+  const handleToggleItem = useCallback(
+    (item: RentalItemsType) => {
+      dispatch(toggleRentalItem(item));
+    },
+    [dispatch],
+  );
+
+  const handleChangeItemCountPlus = useCallback(
+    (id: string, count: number) => {
+      dispatch(changeRentalItemCount({ id, count }));
+    },
+    [dispatch],
+  );
+
+  const handleChangeItemCountMinus = useCallback(
+    (id: string, count: number) => {
+      if (!item.count) return;
+      dispatch(changeRentalItemCount({ id, count }));
+    },
+    [dispatch, item.count],
+  );
+
   return (
-    <ReservationRentalItemContainer>
-      <div className="rental-item-container">
-        <div className="checkbox-container">
-          <input type="checkbox" />
-        </div>
-        <div className="image-container">
-          <img src="https://via.placeholder.com/80x80" alt="" width="80" height="80" />
-        </div>
-        <div className="item-info-container">
-          <span>이름 : 축구화</span>
-          <div className="count-container">
-            <span>갯수 : </span>
-            <button className="btn count-minus">-</button>
-            <span>0</span>
-            <button className="btn count-plus">+</button>
-          </div>
-          <span>
-            가격 : <strong>13,000원</strong>
-          </span>
-        </div>
+    <RentalItemContainer>
+      <div className="checkbox-container">
+        <input type="checkbox" checked={item.toggle!} onChange={() => handleToggleItem(item)} />
       </div>
-      <div className="rental-item-container">
-        <div className="checkbox-container">
-          <input type="checkbox" />
-        </div>
-        <div className="image-container">
-          <img src="https://via.placeholder.com/80x80" alt="" width="80" height="80" />
-        </div>
-        <div className="item-info-container">
-          <span>이름 : 축구화</span>
-          <div className="count-container">
-            <span>갯수 : </span>
-            <button className="btn count-minus">-</button>
-            <span>0</span>
-            <button className="btn count-plus">+</button>
-          </div>
-          <span>
-            가격 : <strong>13,000원</strong>
-          </span>
-        </div>
+      <div className="image-container">
+        <img src={item.imgUrl ? item.imgUrl : `https://via.placeholder.com/80x80`} alt="" width="80" height="80" />
       </div>
-      <div className="rental-item-container">
-        <div className="checkbox-container">
-          <input type="checkbox" />
+      <div className="item-info-container">
+        <span>이름 : {item.name}</span>
+        <div className="count-container">
+          <span>갯수 : </span>
+          <button className="btn count-minus" onClick={() => handleChangeItemCountMinus(item.id, item.count - 1)}>
+            -
+          </button>
+          <span>{item.count}</span>
+          <button className="btn count-plus" onClick={() => handleChangeItemCountPlus(item.id, item.count + 1)}>
+            +
+          </button>
         </div>
-        <div className="image-container">
-          <img src="https://via.placeholder.com/80x80" alt="" width="80" height="80" />
-        </div>
-        <div className="item-info-container">
-          <span>이름 : 축구화</span>
-          <div className="count-container">
-            <span>갯수 : </span>
-            <button className="btn count-minus">-</button>
-            <span>0</span>
-            <button className="btn count-plus">+</button>
-          </div>
-          <span>
-            가격 : <strong>13,000원</strong>
-          </span>
-        </div>
+        <span>
+          가격 : <strong>{formatter.getIntlCurrencyKr(item.price)}</strong>
+        </span>
       </div>
-    </ReservationRentalItemContainer>
+    </RentalItemContainer>
   );
 };
 
-const ReservationRentalItemContainer = styled.div`
-  height: 400px;
-  padding: 1rem 0.5rem;
-  overflow-y: scroll;
-  margin-top: 1rem;
+const RentalItemContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 110px;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 10px;
+  box-shadow: 3px 2px 10px rgb(197 197 197);
+  align-items: center;
 
-  .rental-item-container {
-    display: flex;
-    width: 100%;
-    height: 110px;
-    gap: 0.5rem;
-    padding: 0.5rem;
-    border-radius: 10px;
-    box-shadow: 3px 2px 10px rgb(197 197 197);
-    align-items: center;
-  }
-
-  .rental-item-container + .rental-item-container {
+  & + & {
     margin-top: 1rem;
   }
 

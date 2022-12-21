@@ -1,26 +1,31 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { GetReservationStadiumTimeReseponse, reservationApi } from '@/api/reservationApi';
 import { typo } from '@/lib/styles/typo';
 import palette from '@/lib/styles/palette';
 import Title from '../common/atoms/Title';
 import Responsive from '../common/Responsive';
 import ReservationPerson from './ReservationPerson';
-import ReservationTime from './ReservationTime';
 import ReservationDate from './ReservationDate';
 import ReservationButton from './ReservationButton';
 import ReservationAccordion from './ReservationAccordion';
 import TImeSelectList from './TImeSelectList';
 
-interface ReservationStepOneProps {}
+interface ReservationStepOneProps {
+  data: GetReservationStadiumTimeReseponse;
+}
 
-const ReservationStepOne = (props: ReservationStepOneProps) => {
+const ReservationStepOne = ({ data }: ReservationStepOneProps) => {
+  const [trigger, { data: resevation, isLoading, isError }] =
+    reservationApi.endpoints.getReservationStadiumTime.useLazyQuery();
+
   return (
     <ReservationContainer>
       <Title fontSize={typo.large}>체육관 예약</Title>
       <h4 className="sub-title">(날짜, 시간, 인원)</h4>
       <ReservationInfo>
-        <ReservationDate />
-        <ReservationAccordion component={<TImeSelectList />} />
+        <ReservationDate trigger={trigger} />
+        <ReservationAccordion component={<TImeSelectList openTime={data.openTime} closeTime={data.closeTime} />} />
         <ReservationPerson />
       </ReservationInfo>
       <ReservationButton />

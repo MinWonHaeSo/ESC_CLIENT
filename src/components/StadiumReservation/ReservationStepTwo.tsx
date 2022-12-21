@@ -6,11 +6,15 @@ import Title from '../common/atoms/Title';
 import Responsive from '../common/Responsive';
 import ReservationButton from './ReservationButton';
 import ReservationPrevStepButton from './ReservationPrevStepButton';
-import ReservationRentalItem from './ReservationRentalItem';
+import ReservationRentalList from './ReservationRentalList';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 
 interface ReservationStepTwoProps {}
 
-const ReservationStepTwo = (props: ReservationStepTwoProps) => {
+const ReservationStepTwo = ({}: ReservationStepTwoProps) => {
+  const rentalItems = useSelector((state: RootState) => state.stadiumReservation.data.items);
+
   return (
     <ReservationContainer>
       <div className="title-container">
@@ -18,7 +22,7 @@ const ReservationStepTwo = (props: ReservationStepTwoProps) => {
         <Title fontSize={typo.large}>체육관 예약</Title>
       </div>
       <h4 className="sub-title">(대여 상품)</h4>
-      <ReservationRentalItem />
+      <ReservationRentalList rentalItems={rentalItems} />
       <ReservationButton />
     </ReservationContainer>
   );

@@ -1,22 +1,33 @@
-import { useGetReservationStadiumTimeQuery } from '@/api/reservationApi';
-import { RootState } from '@/store/store';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
+import { useGetReservationStadiumTimeQuery } from '@/api/reservationApi';
+import sw from '@/lib/utils/customSweetAlert';
+import Loading from '../common/Loading/Loading';
 import StepComponentProcess from '../common/StepComponentProcess';
 import ReservationStepOne from './ReservationStepOne';
 import ReservationStepThree from './ReservationStepThree';
 import ReservationStepTwo from './ReservationStepTwo';
 
-interface ReservationProps {}
+interface ReservationProps {
+  id: string;
+}
 
-const Reservation = (props: ReservationProps) => {
-  const { data } = useGetReservationStadiumTimeQuery('1');
+const Reservation = ({ id }: ReservationProps) => {
+  const { data, isLoading, isError } = useGetReservationStadiumTimeQuery({ id });
   const step = useSelector((state: RootState) => state.stadiumReservation.step);
 
-  // Page Component에서 GET API 후 Data Slice 에 저장 하기.
-  // 각각의 컴포넌트에서 useSelector 호출 하여 Slice 참조.
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (isError) {
+    sw.toast.error('통신중 오류 발생. 다시 시도 해 주세요.');
+    return null;
+  }
+
   const reservationComponent = [
-    { step: 1, component: <ReservationStepOne /> },
+    { step: 1, component: <ReservationStepOne data={data!} /> },
     { step: 2, component: <ReservationStepTwo /> },
     { step: 3, component: <ReservationStepThree /> },
   ];
