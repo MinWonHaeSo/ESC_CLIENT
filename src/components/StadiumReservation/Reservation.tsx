@@ -1,28 +1,27 @@
+import { useGetReservationStadiumTimeQuery } from '@/api/reservationApi';
+import { RootState } from '@/store/store';
 import React from 'react';
-import styled from '@emotion/styled';
-import { typo } from '@/lib/styles/typo';
-import Title from '../common/atoms/Title';
-import Responsive from '../common/Responsive';
-import palette from '@/lib/styles/palette';
+import { useSelector } from 'react-redux';
+import StepComponentProcess from '../common/StepComponentProcess';
+import ReservationStepOne from './ReservationStepOne';
+import ReservationStepThree from './ReservationStepThree';
+import ReservationStepTwo from './ReservationStepTwo';
 
 interface ReservationProps {}
 
 const Reservation = (props: ReservationProps) => {
-  return (
-    <ReservationContainer>
-      <Title fontSize={typo.large}>체육관 예약</Title>
-      <h4 className="sub-title">(날짜, 시간, 인원)</h4>
-    </ReservationContainer>
-  );
+  const { data } = useGetReservationStadiumTimeQuery('1');
+  const step = useSelector((state: RootState) => state.stadiumReservation.step);
+
+  // Page Component에서 GET API 후 Data Slice 에 저장 하기.
+  // 각각의 컴포넌트에서 useSelector 호출 하여 Slice 참조.
+  const reservationComponent = [
+    { step: 1, component: <ReservationStepOne /> },
+    { step: 2, component: <ReservationStepTwo /> },
+    { step: 3, component: <ReservationStepThree /> },
+  ];
+
+  return <StepComponentProcess {...reservationComponent.find(component => component.step === step)} />;
 };
-
-const ReservationContainer = styled.div`
-  ${Responsive.ResponsiveWrapper}
-  margin-top: 1rem;
-
-  .sub-title {
-    color: ${palette.grey[300]};
-  }
-`;
 
 export default Reservation;
