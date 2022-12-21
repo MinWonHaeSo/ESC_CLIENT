@@ -1,27 +1,37 @@
 import { baseApi } from './baseApi';
 
-type RenstalItems = {
+export interface RentalItemsType {
   id: string;
   name: string;
   imgUrl: string;
+  price: number;
   count: number;
-  pirce: number;
-};
+}
 
-interface GetReservationStadiumTimeReseponse {
+export interface GetReservationStadiumTimeReseponse {
   stadiumId: string;
   stadiumName: string;
+  date: string;
+  openTime: string;
+  closeTime: string;
   pricePerHalfHour: number;
   reservedTimes: string[];
-  rentalItems: RenstalItems[];
+  rentalItems: RentalItemsType[];
+}
+
+interface GetReservationStadiumTimeRequest {
+  id: string;
+  date?: string;
 }
 
 export const reservationApi = baseApi.injectEndpoints({
   endpoints: builder => ({
-    getReservationStadiumTime: builder.query<GetReservationStadiumTimeReseponse, string>({
-      query: id => ({
+    getReservationStadiumTime: builder.query<GetReservationStadiumTimeReseponse, GetReservationStadiumTimeRequest>({
+      query: ({ id, date }) => ({
         url: `/stadiums/${id}/reservation`,
+        transformResponse: (response: { data: GetReservationStadiumTimeReseponse }) => response.data,
         method: 'GET',
+        params: { date },
       }),
     }),
   }),
