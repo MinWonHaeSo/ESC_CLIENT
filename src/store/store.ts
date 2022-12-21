@@ -1,3 +1,4 @@
+import { stadiumReservationReducer } from './stadiumReservationSlice';
 import { stadiumReviewReducer } from './stadiumReview';
 import { baseApi } from '@/api/baseApi';
 import { configureStore } from '@reduxjs/toolkit';
@@ -15,6 +16,7 @@ export const store = configureStore({
     stadiumWrite: stadiumWriteReducer,
     searchPassword: searchPasswordReducer,
     stadiumReview: stadiumReviewReducer,
+    stadiumReservation: stadiumReservationReducer,
     auth: authReducer,
     [baseApi.reducerPath]: baseApi.reducer,
   },
