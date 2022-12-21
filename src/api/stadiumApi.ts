@@ -48,6 +48,13 @@ export interface DetailStadiumResponse {
 
 export const stadiumApi = baseApi.injectEndpoints({
   endpoints: builder => ({
+    searchStadium: builder.mutation<SearchStadiumResponse, string>({
+      query: search => ({
+        url: `/stadiums/search?searchValue=${search}`,
+        transformResponse: (response: { data: SearchStadiumResponse }) => response.data,
+        method: 'GET',
+      }),
+    }),
     getStadiumList: builder.query({
       query: (location: geoLocationType) => ({
         url: `/stadiums/near-loc?lat=${location.lat}&lnt=${location.lnt}`,
@@ -72,13 +79,6 @@ export const stadiumApi = baseApi.injectEndpoints({
         url: `/stadiums/${id}/info`,
         method: 'PATCH',
         body: stadium,
-      }),
-    }),
-    searchStadium: builder.mutation<SearchStadiumResponse, string>({
-      query: search => ({
-        url: `/stadiums/search?searchValue=${search}`,
-        transformResponse: (response: { data: SearchStadiumResponse }) => response.data,
-        method: 'GET',
       }),
     }),
     postLikeStadium: builder.mutation<any, string>({
