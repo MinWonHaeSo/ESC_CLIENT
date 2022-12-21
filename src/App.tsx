@@ -48,6 +48,7 @@ const App = () => {
                   <Route path={PATH.ME_RECENT_SEARCH_LIST} element={<MeRecentSearchPage />} />
                   <Route path={PATH.ME_LIKE_STADIUM_LIST} element={<MeLikeStadiumPage />} />
                   <Route path={PATH.MANAGER_STADIUM_UPLOAD} element={<StadiumUploadPage />} />
+                </Route>
               </Route>
             </Routes>
           </BrowserRouter>

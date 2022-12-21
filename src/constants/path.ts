@@ -12,7 +12,7 @@ const PATH = {
   ME_NOTIFICATION: '/me/notification',
   STADIUM_DETAIL: '/stardium/detail',
   STADIUM_RENTAL: '/stardium/rental',
-  MANAGER_STARDIUM_UPLOAD: '/manager/stadium/upload',
+  MANAGER_STADIUM_UPLOAD: '/manager/stadium/upload',
   MANAGER_RESERVATION_LIST: '/manager/reservation',
   MANAGER_RESERVATION_DETAILS: '/manager/reservation/details',
   MANAGER_HOME: '/manager/home',
