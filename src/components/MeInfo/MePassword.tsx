@@ -8,9 +8,9 @@ import React, { SetStateAction, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Button from '../common/atoms/Button';
 import Label from '../common/atoms/Label';
-import { checkPasswordConfirmValidation, checkPasswordValidation } from './formValidation';
+import { checkPasswordConfirmValidation, checkPasswordValidation, handleKeyDown } from './formValidation';
 
-interface UserPasswordProps {
+interface MePasswordProps {
   showPassword: boolean;
   setShowPassword: React.Dispatch<SetStateAction<boolean>>;
   setEditDisabled: React.Dispatch<SetStateAction<boolean>>;
@@ -36,7 +36,7 @@ const initialRequiredState: Required = {
   passwordConfirm: false,
 };
 
-const UserPassword = ({ showPassword, setShowPassword, setEditDisabled }: UserPasswordProps) => {
+const MePassword = ({ showPassword, setShowPassword, setEditDisabled }: MePasswordProps) => {
   const [formState, setFormState] = useState<InitialFormState>(initialFormState);
   const [required, setRequired] = useState<Required>(initialRequiredState);
   const { password, passwordConfirm } = formState;
@@ -51,9 +51,9 @@ const UserPassword = ({ showPassword, setShowPassword, setEditDisabled }: UserPa
     const { value, id } = e.target;
     setFormState({ ...formState, [id]: value });
     if (id === 'newPassword') {
-      checkPasswordValidation(value, setRequired, required);
+      checkPasswordValidation({ currentPassword: value, setRequired, required });
     } else if (id === 'newPasswordConfirm') {
-      checkPasswordConfirmValidation(password, value, setRequired, required);
+      checkPasswordConfirmValidation({ password, currentPasswordConfirm: value, setRequired, required });
     }
   };
 
@@ -97,7 +97,7 @@ const UserPassword = ({ showPassword, setShowPassword, setEditDisabled }: UserPa
   };
 
   return (
-    <UserPasswordBlock showPassword={showPassword}>
+    <MePasswordBlock showPassword={showPassword}>
       <Password>
         <Label htmlFor="password" required={false}>
           새로운 비밀번호
@@ -110,10 +110,13 @@ const UserPassword = ({ showPassword, setShowPassword, setEditDisabled }: UserPa
             minLength={8}
             placeholder={'새로운 비밀번호'}
             onChange={handleFormChange}
-            // onKeyDown={handlePasswordKeyDown}
             required={required.password}
           />
-          {password.length ? <i className="fa-solid fa-face-smile"></i> : <i className="fa-regular fa-face-smile"></i>}
+          {password.length > 7 ? (
+            <i className="fa-solid fa-face-smile"></i>
+          ) : (
+            <i className="fa-regular fa-face-smile"></i>
+          )}
         </SWrapper>
       </Password>
       <PasswordConfirm>
@@ -128,10 +131,9 @@ const UserPassword = ({ showPassword, setShowPassword, setEditDisabled }: UserPa
             minLength={8}
             placeholder={'새로운 비밀번호 확인'}
             onChange={handleFormChange}
-            // onKeyDown={handlePasswordConfirmKeyDown}
             required={required.passwordConfirm}
           />
-          {passwordConfirm === password && passwordConfirm.length > 0 ? (
+          {passwordConfirm === password && passwordConfirm.length > 7 ? (
             <i className="fa-solid fa-face-smile"></i>
           ) : (
             <i className="fa-regular fa-face-smile"></i>
@@ -146,13 +148,13 @@ const UserPassword = ({ showPassword, setShowPassword, setEditDisabled }: UserPa
           변경 취소
         </Button>
       </ButtonWrapper>
-    </UserPasswordBlock>
+    </MePasswordBlock>
   );
 };
 
-export default UserPassword;
+export default MePassword;
 
-const UserPasswordBlock = styled.div<{ showPassword: boolean }>`
+const MePasswordBlock = styled.div<{ showPassword: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 20px;

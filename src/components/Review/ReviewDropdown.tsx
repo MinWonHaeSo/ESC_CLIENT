@@ -54,6 +54,7 @@ const ReviewDropdown = (props: ReviewDropdownProps) => {
       <ul className={`${starGradView ? 'dropdown-menu show' : 'dropdown-menu'}`}>
         {Array.from({ length: 5 }).map((_, idx) => (
           <DropdownMenu
+            key={idx}
             idx={idx}
             onClick={() => {
               dispatch(changeStar(idx + 1));

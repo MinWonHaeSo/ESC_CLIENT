@@ -1,8 +1,10 @@
+import { stadiumReservationReducer } from './stadiumReservationSlice';
 import { stadiumReviewReducer } from './stadiumReview';
 import { baseApi } from '@/api/baseApi';
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { authReducer } from './authSlice';
+import { notificationReducer } from './notificationSlice';
 import { searchPasswordReducer } from './searchPassWordSlice';
 import { stadiumMarkerReducer } from './stadiumMarkerSlice';
 import { stadiumWriteReducer } from './stadiumWriteSlice';
@@ -15,7 +17,9 @@ export const store = configureStore({
     stadiumWrite: stadiumWriteReducer,
     searchPassword: searchPasswordReducer,
     stadiumReview: stadiumReviewReducer,
+    stadiumReservation: stadiumReservationReducer,
     auth: authReducer,
+    notification: notificationReducer,
     [baseApi.reducerPath]: baseApi.reducer,
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(baseApi.middleware),

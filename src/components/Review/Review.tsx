@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { useGetReviewListQuery } from '@/api/reviewApi';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import ReviewHeader from './ReviewHeader';
 import ReviewSubmit from './ReviewSubmit';
 import ReviewList from './ReviewList';
-import { useGetReviewListQuery } from '@/api/reviewApi';
 import Loading from '../common/Loading/Loading';
 
 interface ReviewProps {

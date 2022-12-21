@@ -1,44 +1,44 @@
 import { useChangeUserInfoMutation } from '@/api/authApi';
 import { userFileUpload } from '@/api/fileUpload';
+import MILLI_SECONDS from '@/constants/milliSeconds';
+import PATH from '@/constants/path';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import sw from '@/lib/utils/customSweetAlert';
 import { changeNickname, uploadImage } from '@/store/authSlice';
-import { RootState, useAppDispatch } from '@/store/store';
+import { useAppDispatch } from '@/store/store';
 import styled from '@emotion/styled';
+import { useCallback } from 'react';
 import { useState, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import Button from '../common/atoms/Button';
 import Title from '../common/atoms/Title';
 import Loading from '../common/Loading/Loading';
 import Responsive from '../common/Responsive';
-import UserInfoDetail from './UserInfoDetail';
-import UserPassword from './UserPassword';
+import MeInfoDetail from './MeInfoDetail';
+import MePassword from './MePassword';
 
-interface UserInfoProps {}
+interface MeInfoProps {}
 
-const UserInfo = (props: UserInfoProps) => {
+const MeInfo = (props: MeInfoProps) => {
   const [editDisabled, setEditDisabled] = useState<boolean>(true);
   const [inputValue, setInputValue] = useState<string>('');
-  const [doubleCheck, setDoubleCheck] = useState<boolean>(false);
+  const [nicknameCheck, setNicknameCheck] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [cloudImage, setCloudImage] = useState<File>();
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
-  const authUser = useSelector((state: RootState) => state.auth);
-  const { nickname, image } = authUser;
   const [changeUserInfoAPI, { isLoading }] = useChangeUserInfoMutation();
   const dispatch = useAppDispatch();
 
-  const handleEditClick = () => {
+  const handleEditClick = useCallback(() => {
     if (!inputRef.current) {
       return;
     }
     inputRef.current.focus();
     setEditDisabled(false);
-  };
+  }, []);
 
   const handleCompleteClick = async () => {
     if (!inputValue) {
@@ -52,13 +52,13 @@ const UserInfo = (props: UserInfoProps) => {
     try {
       const cloudinaryResponse = await userFileUpload(cloudImage);
       console.log(cloudinaryResponse?.data.url);
-      const response = await changeUserInfoAPI({ nickname: inputValue, imgUrl: cloudinaryResponse?.data.url });
+      const response = await changeUserInfoAPI({ nickname: inputValue, imgUrl: cloudinaryResponse?.data.url }).unwrap();
       if (response) {
+        dispatch(uploadImage(response.imgUrl));
         sw.toast.success('수정이 완료되었습니다.');
         setEditDisabled(true);
-        setDoubleCheck(false);
+        setNicknameCheck(false);
         setShowPassword(false);
-        console.log(response);
       }
     } catch {
       console.error('회원 정보를 수정하는 데 문제가 발생하였습니다.');
@@ -69,33 +69,29 @@ const UserInfo = (props: UserInfoProps) => {
   };
 
   const handleProfileDeleteClick = () => {
-    setTimeout(() => navigate('/signout'), 500);
+    setTimeout(() => navigate(`${PATH.SIGN_OUT}`), MILLI_SECONDS.half);
   };
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
   return (
-    <UserInfoBlock>
+    <MeInfoBlock>
+      {isLoading ? <Loading /> : null}
       <TitleWrapper>
         <Title fontSize={`${typo.xxLarge}`}>내 정보</Title>
         <Button type="button" size={'medium'} backgroundColor={palette.primary['point']} onClick={handleEditClick}>
           프로필 편집
         </Button>
       </TitleWrapper>
-      <UserInfoDetail
+      <MeInfoDetail
         editDisabled={editDisabled}
         inputValue={inputValue}
         setInputValue={setInputValue}
-        doubleCheck={doubleCheck}
-        setDoubleCheck={setDoubleCheck}
+        setNicknameCheck={setNicknameCheck}
         inputRef={inputRef}
         setCloudImage={setCloudImage}
       />
 
       {showPassword ? (
-        <UserPassword showPassword={showPassword} setShowPassword={setShowPassword} setEditDisabled={setEditDisabled} />
+        <MePassword showPassword={showPassword} setShowPassword={setShowPassword} setEditDisabled={setEditDisabled} />
       ) : null}
 
       {editDisabled ? null : (
@@ -118,13 +114,13 @@ const UserInfo = (props: UserInfoProps) => {
           </SWrapper>
         </SWrapper>
       )}
-    </UserInfoBlock>
+    </MeInfoBlock>
   );
 };
 
-export default UserInfo;
+export default MeInfo;
 
-const UserInfoBlock = styled.section`
+const MeInfoBlock = styled.section`
   width: 100%;
   ${Responsive.ResponsiveWrapper}
 `;

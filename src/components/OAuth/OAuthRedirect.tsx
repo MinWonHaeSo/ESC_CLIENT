@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router';
 import Loading from '../common/Loading/Loading';
 import jwt_decode from 'jwt-decode';
 import { setAuthToken } from '@/lib/utils/token';
+import PATH from '@/constants/path';
 
 interface DecodedUserInfo {
   email: string;
@@ -19,7 +20,7 @@ const OAuthRedirect = () => {
   const { social } = useParams<{ social: string }>();
 
   const dispatch = useAppDispatch();
-  const [socialLoginAPI] = useSocialLoginMutation();
+  const [socialLoginAPI, { isLoading }] = useSocialLoginMutation();
 
   useEffect(() => {
     if (social) {
@@ -49,6 +50,7 @@ const OAuthRedirect = () => {
 
         dispatch(
           setSocialLogin({
+            id: userData.id,
             type: 'USER',
             email: decodedUserInfo.email,
             name: userData.name,
@@ -60,14 +62,15 @@ const OAuthRedirect = () => {
           }),
         );
 
-        navigate('/');
+        navigate(`${PATH.ROOT}`);
       } catch {
         console.error('소셜 로그인에 문제가 있습니다.');
-        navigate('/login');
+        navigate(`${PATH.LOGIN}`);
       }
     }
   };
-  return <Loading />;
+
+  return <>{isLoading ? <Loading /> : null}</>;
 };
 
 export default OAuthRedirect;
