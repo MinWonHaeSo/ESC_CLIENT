@@ -47,6 +47,7 @@ export interface DetailStadiumResponse {
 }
 
 interface LikeStadium {
+  id: number;
   stadiumId: number;
   name: string;
   address: string;
@@ -146,6 +147,7 @@ export const stadiumApi = baseApi.injectEndpoints({
         url: `/stadiums/likelist`,
         method: 'GET',
       }),
+      providesTags: ['User'],
     }),
     getRentalStadiumList: builder.query<RentalStadiumListResponse, string>({
       query: () => ({
