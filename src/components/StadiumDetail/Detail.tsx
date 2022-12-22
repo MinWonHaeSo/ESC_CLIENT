@@ -1,51 +1,25 @@
-import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import styled from '@emotion/styled';
-import Tag from '../Tag/Tag';
-import Slider from '../Slide/Slider';
+import { useNavigate } from 'react-router-dom';
+import { useGetStadiumDetailQuery, usePostLikeStadiumMutation } from '@/api/stadiumApi';
+import sw from '@/lib/utils/customSweetAlert';
+import PATH from '@/constants/path';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
-import Info from './Info';
-import { useGetStadiumDetailQuery, usePostLikeStadiumMutation } from '@/api/stadiumApi';
-import Loading from '../common/Loading/Loading';
-import sw from '@/lib/utils/customSweetAlert';
-import { useNavigate } from 'react-router-dom';
-import PATH from '@/constants/path';
 import Title from '../common/atoms/Title';
-import useThrottleRef from '@/hooks/useThrottleRef';
-import { useDispatch } from 'react-redux';
-import { updateStadium } from '@/store/stadiumWriteSlice';
+import Slider from '../Slide/Slider';
+import Loading from '../common/Loading/Loading';
+import Tag from '../Tag/Tag';
+import Info from './Info';
+import UserActionButton from './UserActionButton';
 
 interface DetailProps {
   stadiumId: string;
 }
 
 const Detail = ({ stadiumId }: DetailProps) => {
-  const [stadiumLike, setStadiumLike] = useState(false);
   const { data, isLoading, error } = useGetStadiumDetailQuery(stadiumId);
-  const [postLikeStadiumAPI] = usePostLikeStadiumMutation();
-  const likeCallbackAPI = useThrottleRef(() => postLikeStadiumAPI(stadiumId));
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const handleChangeStadiumLike = () => {
-    setStadiumLike(!stadiumLike);
-    likeCallbackAPI();
-  };
-
-  const handleGotoEdit = useCallback(() => {
-    if (data) {
-      dispatch(updateStadium(data));
-      navigate(`${PATH.MANAGER_STADIUM_UPLOAD}`);
-    }
-  }, [dispatch, data]);
-
-  const handleGotoRental = () => {
-    navigate(`${PATH.STADIUM_RENTAL}`, {
-      state: {
-        id: stadiumId,
-      },
-    });
-  };
 
   useEffect(() => {
     if (error) {
@@ -70,17 +44,7 @@ const Detail = ({ stadiumId }: DetailProps) => {
       </SliderWrapper>
       <Tag tags={data.tags} />
       <Info info={data} />
-      <ButtonActionContainer>
-        <button className="book-mark" onClick={handleChangeStadiumLike}>
-          <i className={stadiumLike ? 'fa-solid fa-bookmark' : 'fa-regular fa-bookmark'}></i>
-        </button>
-        <button className="btn btn-action" onClick={handleGotoRental}>
-          예약하기
-        </button>
-        <button className="btn btn-action" onClick={handleGotoEdit}>
-          수정하기
-        </button>
-      </ButtonActionContainer>
+      <UserActionButton post={data} stadiumId={stadiumId} />
     </div>
   );
 };
