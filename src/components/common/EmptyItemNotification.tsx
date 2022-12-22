@@ -1,5 +1,4 @@
 import { DEFAULT_ICONURL } from '@/constants/defaultImage';
-import PATH from '@/constants/path';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router';
@@ -7,23 +6,28 @@ import Button from './atoms/Button';
 
 interface EmptyItemProps {
   message: string;
+  btnActive: boolean;
+  btnText?: string;
+  path?: string;
 }
 
-const EmptyItemNotification = ({ message }: EmptyItemProps) => {
+const EmptyItemNotification = ({ message, btnActive, btnText, path }: EmptyItemProps) => {
   const navigate = useNavigate();
   return (
     <EmptyItemNotificationBlock>
       <img src={DEFAULT_ICONURL} alt="스마일" />
       <EmptyDesc>{message}</EmptyDesc>
-      <Button
-        type={'button'}
-        size={'large'}
-        backgroundColor={`${palette.primary['green']}`}
-        onClick={() => navigate(`${PATH.ROOT}`)}
-      >
-        체육관 보러가기
-        <ArrowIcon className="fa-solid fa-location-arrow" />
-      </Button>
+      {btnActive && (
+        <Button
+          type={'button'}
+          size={'large'}
+          backgroundColor={`${palette.primary['green']}`}
+          onClick={() => navigate(path!)}
+        >
+          {btnText}
+          <ArrowIcon className="fa-solid fa-location-arrow" />
+        </Button>
+      )}
     </EmptyItemNotificationBlock>
   );
 };
