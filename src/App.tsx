@@ -21,10 +21,9 @@ import { OriginFilesProvider } from './context/OriginFilesContext';
 import PATH from './constants/path';
 import StadiumDetailPage from './pages/StadiumDetailPage';
 import StadiumReservationPage from './pages/StadiumReservationPage';
-import ModalProvider from './context/ModalContext';
 import StadiumListPage from './pages/StadiumListPage';
-import { ModalProvider } from './context/ModalContext';
 import { ScrollToTop } from './hooks/useScollToTop';
+import ModalProvider from './context/ModalContext';
 
 const App = () => {
   return (
