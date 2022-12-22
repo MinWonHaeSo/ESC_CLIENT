@@ -26,12 +26,6 @@ interface LoginResponse {
   imgUrl: string;
 }
 
-interface RefreshResponse {
-  statusCode: number;
-  accessToken: string;
-  refreshToken: string;
-}
-
 interface RefetchUserResponse {
   id: number;
   email: string;
