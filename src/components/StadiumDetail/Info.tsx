@@ -5,6 +5,7 @@ import { stadiumWriteState } from '@/store/stadiumWriteSlice';
 import { typo } from '@/lib/styles/typo';
 import { useLocation } from 'react-router';
 import { addAccessStadium } from '@/lib/utils/accessStadium';
+import formatter from '@/lib/utils/formatter';
 
 interface InfoProps {
   info: stadiumWriteState;
@@ -36,19 +37,11 @@ const Info = ({ info }: InfoProps) => {
       </div>
       <div className="info-item-wrapper">
         <div className="title">주말가격</div>
-        <div className="info">
-          {new Intl.NumberFormat('ko', { style: 'currency', currency: 'KRW' }).format(
-            Number(info.holidayPricePerHalfHour),
-          )}
-        </div>
+        <div className="info">{formatter.getIntlCurrencyKr(Number(info.holidayPricePerHalfHour))}</div>
       </div>
       <div className="info-item-wrapper">
         <div className="title">평일가격</div>
-        <div className="info">
-          {new Intl.NumberFormat('ko', { style: 'currency', currency: 'KRW' }).format(
-            Number(info.weekdayPricePerHalfHour),
-          )}
-        </div>
+        <div className="info">{formatter.getIntlCurrencyKr(Number(info.weekdayPricePerHalfHour))}</div>
       </div>
       <div className="info-item-wrapper">
         <div className="title">운영시간</div>

@@ -6,6 +6,7 @@ import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import Input from '@/components/common/atoms/Input';
 import Tag from '@/components/Tag/Tag';
+import useThrottleRef from '@/hooks/useThrottleRef';
 
 interface EditTagProps {
   tags: string[];
@@ -28,10 +29,12 @@ const EditTag = ({ tags }: EditTagProps) => {
     setTagText('');
   };
 
+  const intervallCall = useThrottleRef(() => handleAddTags());
+
   const handleEnterTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
+      intervallCall();
       e.preventDefault();
-      handleAddTags();
     }
   };
 

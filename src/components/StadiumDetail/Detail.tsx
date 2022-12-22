@@ -40,7 +40,11 @@ const Detail = ({ stadiumId }: DetailProps) => {
   }, [dispatch, data]);
 
   const handleGotoRental = () => {
-    navigate(`${PATH.ROOT}`);
+    navigate(`${PATH.STADIUM_RENTAL}`, {
+      state: {
+        id: stadiumId,
+      },
+    });
   };
 
   useEffect(() => {
@@ -70,7 +74,9 @@ const Detail = ({ stadiumId }: DetailProps) => {
         <button className="book-mark" onClick={handleChangeStadiumLike}>
           <i className={stadiumLike ? 'fa-solid fa-bookmark' : 'fa-regular fa-bookmark'}></i>
         </button>
-        {/* <button className="btn btn-action" onClick={handleGotoRental}>예약하기</button> */}
+        <button className="btn btn-action" onClick={handleGotoRental}>
+          예약하기
+        </button>
         <button className="btn btn-action" onClick={handleGotoEdit}>
           수정하기
         </button>

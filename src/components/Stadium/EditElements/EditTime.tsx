@@ -3,7 +3,7 @@ import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
 import Label from '@/components/common/atoms/Label';
-import CustomDatePicker from '@/components/common/CustomDatePicker';
+import CustomTime from '@/components/common/CustomTime';
 import useDatepickerTIme from '@/hooks/useDatepickerTIme';
 import useDefaultTime from '@/hooks/useDefaultTime';
 import { changeTimes } from '@/store/stadiumWriteSlice';
@@ -50,11 +50,11 @@ const EditStadiumTime = ({ startTime, endTime }: EditStadiumTimeProps) => {
           <div>
             <span>시작시간</span>
           </div>
-          <CustomDatePicker value={startDate} onChange={handleChangeStartTime} />
+          <CustomTime value={startDate} onChange={handleChangeStartTime} />
         </div>
         <div>
           <span>종료시간</span>
-          <CustomDatePicker value={endDate} onChange={handleChangeEndTime} includeTimes={includeTime} />
+          <CustomTime value={endDate} onChange={handleChangeEndTime} includeTimes={includeTime} />
         </div>
       </div>
     </StadiumTimeContainer>

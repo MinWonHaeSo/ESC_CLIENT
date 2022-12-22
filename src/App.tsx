@@ -20,9 +20,11 @@ import { CookiesProvider } from 'react-cookie';
 import { OriginFilesProvider } from './context/OriginFilesContext';
 import PATH from './constants/path';
 import StadiumDetailPage from './pages/StadiumDetailPage';
+import StadiumReservationPage from './pages/StadiumReservationPage';
 import StadiumListPage from './pages/StadiumListPage';
 import { ModalProvider } from './context/ModalContext';
 import { ScrollToTop } from './hooks/useScollToTop';
+
 
 const App = () => {
   return (
@@ -46,6 +48,8 @@ const App = () => {
                   <Route path={PATH.ME} element={<MyPage />} />
                   <Route path={PATH.ME_NOTIFICATION} element={<NotificationPage />} />
                   <Route path={PATH.SIGN_OUT} element={<SignOutPage />} />
+                  <Route path={`${PATH.STADIUM_DETAIL}/:id`} element={<StadiumDetailPage />} />
+                  <Route path={PATH.STADIUM_RENTAL} element={<StadiumReservationPage />} />
                   <Route path={PATH.ME_RENTAL_LIST} element={<MeRentalListPage />} />
                   <Route path={PATH.ME_RECENT_SEARCH_LIST} element={<MeRecentSearchPage />} />
                   <Route path={PATH.ME_LIKE_STADIUM_LIST} element={<MeLikeStadiumPage />} />

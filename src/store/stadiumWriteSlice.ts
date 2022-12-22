@@ -2,9 +2,9 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type tagType = { id: number; name: string };
 
-export type rentalItemType = { id: string; img: string; name: string; price: string };
+export type rentalItemType = { publicId: string; imgUrl: string; name: string; price: string };
 
-export type imagesType = { imgUrl: string; publicId: string };
+export type imagesType = { publicId: string; imgUrl: string };
 
 export interface stadiumWriteState {
   id: number;
@@ -75,16 +75,16 @@ export const stadiumWriteSlice = createSlice({
       state.rentalItems.push(action.payload);
     },
     removeRentalItem: (state, action: PayloadAction<string>) => {
-      const filterRentalItems = state.rentalItems.filter(item => item.id !== action.payload);
+      const filterRentalItems = state.rentalItems.filter(item => item.publicId !== action.payload);
       state.rentalItems = filterRentalItems;
     },
     changeRentalItemInput: (state, action: PayloadAction<{ id: string; name: 'name' | 'price'; value: string }>) => {
-      const idx = state.rentalItems.findIndex(item => item.id === action.payload.id);
+      const idx = state.rentalItems.findIndex(item => item.publicId === action.payload.id);
       state.rentalItems[idx][action.payload.name] = action.payload.value;
     },
-    changeRentalItemImage: (state, action: PayloadAction<{ id: string; url: string }>) => {
-      const idx = state.rentalItems.findIndex(item => item.id === action.payload.id);
-      state.rentalItems[idx].img = action.payload.url;
+    changeRentalItemImage: (state, action: PayloadAction<{ id: string; imgUrl: string }>) => {
+      const idx = state.rentalItems.findIndex(item => item.publicId === action.payload.id);
+      state.rentalItems[idx].imgUrl = action.payload.imgUrl;
     },
     clearStadiumWrite: () => initialState,
   },

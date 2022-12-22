@@ -18,9 +18,7 @@ export const stadiumMarkerSlice = createSlice({
     clickMarker: (state, action: PayloadAction<any>) => {
       state.markerInfo = action.payload;
     },
-    clearMarkerInfo: (state, action: PayloadAction) => {
-      // state.markerInfo = {};
-    },
+    clearMarkerInfo: (state, action: PayloadAction) => initialState,
   },
   extraReducers: builder => {
     builder.addMatcher(stadiumApi.endpoints.searchStadium.matchFulfilled, (state, { payload }) => {

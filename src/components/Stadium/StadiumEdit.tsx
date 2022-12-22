@@ -9,7 +9,7 @@ import Address from './EditElements/EditAddress';
 import EditTime from './EditElements/EditTime';
 import EditRentalItem from './EditElements/EditRentalItem';
 import Dividers from '../common/Dividers';
-import { useAddStadiumMutation, useUpdateStadiumInfoMutation } from '@/api/stadiumApi';
+import { useAddStadiumMutation, useGetStadiumDetailQuery, useUpdateStadiumInfoMutation } from '@/api/stadiumApi';
 import OriginFilesContext, { contextFileType } from '@/context/OriginFilesContext';
 import Button from '../common/atoms/Button';
 import palette from '@/lib/styles/palette';
@@ -26,6 +26,7 @@ interface StadiumEditProps {
 const StadiumEdit = ({ write }: StadiumEditProps) => {
   const [addStadiumAPI] = useAddStadiumMutation();
   const [updateStadiumAPI] = useUpdateStadiumInfoMutation();
+  const { refetch } = useGetStadiumDetailQuery(String(write.id));
   const [isLoading, setIsLoading] = useState(false); // Cloudinary API Loading
   const value = useContext(OriginFilesContext);
   const navigate = useNavigate();
@@ -63,14 +64,20 @@ const StadiumEdit = ({ write }: StadiumEditProps) => {
         publicId: image.data.public_id,
         imgUrl: image.data.url,
       }));
+
       const resRentalImage = uploadRental.map(image => ({ url: image.data.url, public_id: image.data.public_id }));
+
+      // form stadiumImages 데이터 변경
+      const stadiumImages = form.imgs.map((img, idx) => ({
+        publicId: resStadiumImage[idx]?.publicId ?? img.publicId,
+        imgUrl: resStadiumImage[idx]?.imgUrl ?? img.imgUrl,
+      }));
 
       // form rentalItems 데이터 변경
       const rentalItems = form.rentalItems.map((rental, idx) => ({
         ...rental,
-        publicId: resRentalImage[idx].public_id,
-        id: resRentalImage[idx].public_id,
-        imgUrl: resRentalImage[idx].url,
+        publicId: resRentalImage[idx]?.public_id ?? rental.publicId,
+        imgUrl: resRentalImage[idx]?.url ?? rental.imgUrl,
       }));
 
       let response;
@@ -79,20 +86,21 @@ const StadiumEdit = ({ write }: StadiumEditProps) => {
       if (write.id) {
         // 수정 API
         response = await updateStadiumAPI({
-          stadium: { ...form, imgs: resStadiumImage, rentalItems },
+          stadium: { ...form, imgs: stadiumImages, rentalItems },
           id: write.id,
         }).unwrap();
         redirectId = response.id;
       } else {
         // 추가 API
-        response = await addStadiumAPI({ ...form, imgs: resStadiumImage, rentalItems }).unwrap();
-        redirectId = response.data.id;
+        response = await addStadiumAPI({ ...form, imgs: stadiumImages, rentalItems }).unwrap();
+        redirectId = response.stadium.id;
       }
 
+      refetch();
       sw.toast.success('성공적으로 저장 되었습니다.');
       setIsLoading(false);
 
-      navigate(`/${PATH.STADIUM_DETAIL}/${redirectId}`);
+      navigate(`${PATH.STADIUM_DETAIL}/${redirectId}`);
     } catch (e) {
       setIsLoading(false);
       sw.toast.error('다시 시도해 주세요.');
