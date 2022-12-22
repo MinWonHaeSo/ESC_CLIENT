@@ -52,7 +52,7 @@ const LoginForm = (props: LoginFormProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const userData = await loginAPI({ email: email, password: password }).unwrap();
+      const userData = await loginAPI({ email: email, password: password, type: userType }).unwrap();
       if (userData) {
         const { id, name, nickname, imgUrl, accessToken, refreshToken } = userData;
 

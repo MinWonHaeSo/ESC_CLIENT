@@ -20,25 +20,31 @@ import { CookiesProvider } from 'react-cookie';
 import { OriginFilesProvider } from './context/OriginFilesContext';
 import PATH from './constants/path';
 import StadiumDetailPage from './pages/StadiumDetailPage';
-import StadiumListPage from './pages/StadiumListPage';
 import StadiumReservationPage from './pages/StadiumReservationPage';
+import StadiumListPage from './pages/StadiumListPage';
+import { ModalProvider } from './context/ModalContext';
+import { ScrollToTop } from './hooks/useScollToTop';
+
 
 const App = () => {
   return (
     <CookiesProvider>
       <OriginFilesProvider>
-        <Provider store={store}>
-          <BrowserRouter>
-            <Routes>
-              <Route element={<Layout />}>
-                <Route path={PATH.ROOT} element={<MainPage />} />
-                <Route path={PATH.LOGIN} element={<LoginPage />} />
-                <Route path="/oauth2/:social" element={<OAuthRedirectPage />} />
-                <Route path={PATH.SEARCH_PASSWORD} element={<SearchPasswordPage />} />
-                <Route path={PATH.SIGN_UP} element={<SignUpPage />} />
-                <Route path={PATH.STADIUM_DETAIL} element={<StadiumListPage />} />
-                <Route path="*" element={<NotFoundPage />} />
-                <Route element={<PrivateRoute />}>
+        <ModalProvider>
+          <Provider store={store}>
+            <BrowserRouter>
+              <ScrollToTop />
+              <Routes>
+                <Route element={<Layout />}>
+                  <Route path={PATH.ROOT} element={<MainPage />} />
+                  <Route path={PATH.LOGIN} element={<LoginPage />} />
+                  <Route path="/oauth2/:social" element={<OAuthRedirectPage />} />
+                  <Route path={PATH.SEARCH_PASSWORD} element={<SearchPasswordPage />} />
+                  <Route path={PATH.SIGN_UP} element={<SignUpPage />} />
+                  <Route path={PATH.STADIUM_DETAIL} element={<StadiumListPage />} />
+                  <Route path={`${PATH.STADIUM_DETAIL}/:id`} element={<StadiumDetailPage />} />
+                  <Route path="*" element={<NotFoundPage />} />
+                  {/* <Route element={<PrivateRoute />}> */}
                   <Route path={PATH.ME} element={<MyPage />} />
                   <Route path={PATH.ME_NOTIFICATION} element={<NotificationPage />} />
                   <Route path={PATH.SIGN_OUT} element={<SignOutPage />} />
@@ -48,11 +54,12 @@ const App = () => {
                   <Route path={PATH.ME_RECENT_SEARCH_LIST} element={<MeRecentSearchPage />} />
                   <Route path={PATH.ME_LIKE_STADIUM_LIST} element={<MeLikeStadiumPage />} />
                   <Route path={PATH.MANAGER_STADIUM_UPLOAD} element={<StadiumUploadPage />} />
+                  {/* </Route> */}
                 </Route>
-              </Route>
-            </Routes>
-          </BrowserRouter>
-        </Provider>
+              </Routes>
+            </BrowserRouter>
+          </Provider>
+        </ModalProvider>
       </OriginFilesProvider>
     </CookiesProvider>
   );

@@ -46,6 +46,60 @@ export interface DetailStadiumResponse {
   likes: any;
 }
 
+interface LikeStadium {
+  stadiumId: number;
+  name: string;
+  address: string;
+  starAvg: number;
+  imgUrl: string;
+}
+
+export type LikeStadiumListResponse = {
+  content: LikeStadium[];
+};
+
+export type ReservationStatus = 'RESERVED' | 'EXECUTED' | 'CANCELED';
+
+export interface RentalStadium {
+  reservationId?: number;
+  stadiumId: number;
+  name: string;
+  address: string;
+  imgUrl: string;
+  starAvg: number;
+  status?: ReservationStatus;
+}
+
+interface RentalStadiumListResponse {
+  content: RentalStadium[];
+}
+
+interface RentalStadiumItems {
+  id: number;
+  name: string;
+  imgUrl: string;
+  price: number;
+  count: number;
+}
+
+interface RentalStadiumDetail {
+  reservationId: number;
+  stadiumId: number;
+  name: string;
+  status: 'RESERVED' | 'EXECUTED' | 'CANCELED';
+  member: {
+    id: number;
+    nickname: string;
+    email: string;
+  };
+  reservingDate: string;
+  reservingTime: string[];
+  headCount: number;
+  price: number;
+  paymentType: string;
+  items: RentalStadiumItems[];
+}
+
 export const stadiumApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     searchStadium: builder.mutation<SearchStadiumResponse, string>({
@@ -87,6 +141,24 @@ export const stadiumApi = baseApi.injectEndpoints({
         method: 'POST',
       }),
     }),
+    getLikeStadiumList: builder.query<LikeStadiumListResponse, string>({
+      query: () => ({
+        url: `/stadiums/likelist`,
+        method: 'GET',
+      }),
+    }),
+    getRentalStadiumList: builder.query<RentalStadiumListResponse, string>({
+      query: () => ({
+        url: `/stadiums/reservations`,
+        method: 'GET',
+      }),
+    }),
+    getRentalStadiumDetail: builder.query<RentalStadiumDetail, { stadiumId: string; reservationId: string }>({
+      query: ({ stadiumId, reservationId }) => ({
+        url: `/stadiums/${stadiumId}/reservations/${reservationId}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
@@ -97,4 +169,7 @@ export const {
   useUpdateStadiumInfoMutation,
   useSearchStadiumMutation,
   usePostLikeStadiumMutation,
+  useGetLikeStadiumListQuery,
+  useGetRentalStadiumListQuery,
+  useGetRentalStadiumDetailQuery,
 } = stadiumApi;

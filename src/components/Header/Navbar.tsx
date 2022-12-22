@@ -70,7 +70,7 @@ const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
           <div>
             <img src={image ? image : DEFAULT_ICONURL} alt="프로필" width="70px" height="70px" />
           </div>
-          <span>{nickname ? nickname : 'someone'}</span>
+          <span>{nickname ? nickname : 'Welcome'}</span>
         </UserProfile>
         <NotificationButton onListClick={handleListClick} />
         {HEADER_NAV[loginType].map(nav => (
@@ -78,11 +78,13 @@ const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
             <Link to={nav.to}>{nav.title}</Link>
           </li>
         ))}
-        {loggedIn && (
+        {loggedIn ? (
           <LogOutButton to={PATH.ROOT} onClick={handleLogOut}>
             <span>로그아웃</span>
             <i className="fa-solid fa-arrow-right-from-bracket" />
           </LogOutButton>
+        ) : (
+          <LoginCheckMessage>로그인 후 이용이 가능합니다 💡</LoginCheckMessage>
         )}
       </NavbarMenu>
       <BackgroundLayout isActive={isActive} onClick={onChangeIsActive} />
@@ -180,7 +182,7 @@ const BackgroundLayout = styled.div<IsActiveProps>`
 const UserProfile = styled.div`
   display: flex;
   align-items: center;
-  gap: 2.4rem;
+  gap: 2rem;
   margin: 1rem 1rem 1rem 1rem;
   padding: 0.75rem 1rem;
   background-color: ${palette.grey[100]};
@@ -204,4 +206,19 @@ const UserProfile = styled.div`
     font-size: ${typo.medium};
     font-weight: 600;
   }
+`;
+
+const LoginCheckMessage = styled.p`
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  width: 100%;
+  font-size: ${typo.small};
+  font-weight: 400;
+  text-align: start;
+  color: ${palette.grey[500]};
+  border: 1px solid ${palette.grey[200]};
+  box-shadow: rgba(29, 34, 53, 0.08) 0 3px 6px 0;
 `;

@@ -18,7 +18,9 @@ const TagItem = ({ id, title, onTagClick = () => {} }: TagItemProps) => {
 };
 
 const TagItemContainer = styled.li`
-  padding: 0.2rem 0.5rem;
+  display: flex;
+  align-items: center;
+  padding: 0.3rem 0.5rem;
   border-radius: 10px;
   background-color: ${palette.primary.orange};
 

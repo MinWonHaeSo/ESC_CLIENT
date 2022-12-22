@@ -42,7 +42,7 @@ const initialState: stadiumWriteState = {
   lnt: '',
 };
 
-export const staidumWriteSlice = createSlice({
+export const stadiumWriteSlice = createSlice({
   name: 'stadium',
   initialState,
   reducers: {
@@ -104,6 +104,6 @@ export const {
   removeRentalItem,
   changeRentalItemInput,
   changeRentalItemImage,
-} = staidumWriteSlice.actions;
+} = stadiumWriteSlice.actions;
 
-export const stadiumWriteReducer = staidumWriteSlice.reducer;
+export const stadiumWriteReducer = stadiumWriteSlice.reducer;
