@@ -1,4 +1,5 @@
 import { baseApi } from './baseApi';
+import { DetailStadiumResponse } from './stadiumApi';
 
 export interface RentalItemsType {
   id: string;
@@ -8,15 +9,17 @@ export interface RentalItemsType {
   count: number;
 }
 
+export interface GetReservationStadiumResponse extends DetailStadiumResponse {
+  rentalItems: RentalItemsType[];
+}
+
 export interface GetReservationStadiumTimeReseponse {
-  stadiumId: string;
-  stadiumName: string;
   date: string;
   openTime: string;
   closeTime: string;
   pricePerHalfHour: number;
   reservedTimes: string[];
-  rentalItems: RentalItemsType[];
+  stadium: GetReservationStadiumResponse;
 }
 
 interface GetReservationStadiumTimeRequest {

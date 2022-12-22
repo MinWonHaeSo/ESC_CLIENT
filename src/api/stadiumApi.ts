@@ -33,6 +33,7 @@ export interface DetailStadiumResponse {
   name: string;
   address: string;
   detailAddress: string;
+  memberId: string;
   phone: string;
   lnt: string;
   lat: string;
