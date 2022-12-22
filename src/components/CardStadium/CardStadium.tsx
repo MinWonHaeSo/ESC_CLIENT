@@ -12,18 +12,22 @@ import StatusTag from './StatusTag';
 interface CardStadiumProps {
   stadium: RentalStadium;
   currentLocation: string;
+  refetch?: any;
 }
 
-const CardStadium = ({ stadium, currentLocation }: CardStadiumProps) => {
+const CardStadium = ({ stadium, currentLocation, refetch }: CardStadiumProps) => {
   const [stadiumLike, setStadiumLike] = useState<boolean>(true);
   const { stadiumId, name, address, starAvg, imgUrl, status } = stadium;
 
   const navigate = useNavigate();
 
   const [postLikeStadiumAPI] = usePostLikeStadiumMutation();
-  const likeCallbackAPI = useThrottleRef(() => postLikeStadiumAPI(String(stadiumId)));
+  const likeCallbackAPI = useThrottleRef(async () => {
+    await postLikeStadiumAPI(String(stadiumId));
+    refetch();
+  });
 
-  const handleChangeStadiumLike = () => {
+  const handleChangeStadiumLike = async () => {
     setStadiumLike(false);
     likeCallbackAPI();
   };

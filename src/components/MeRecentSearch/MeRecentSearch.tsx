@@ -1,10 +1,11 @@
+import PATH from '@/constants/path';
 import media from '@/lib/styles/media';
 import { typo } from '@/lib/styles/typo';
 import { CurrentStadium, getAccessStadium } from '@/lib/utils/accessStadium';
 import styled from '@emotion/styled';
 import CardStadium from '../CardStadium/CardStadium';
 import Title from '../common/atoms/Title';
-import EmptyItem from '../common/EmptyItemNotification';
+import EmptyItemNotification from '../common/EmptyItemNotification';
 import Responsive from '../common/Responsive';
 import StyledPadding from '../common/StyledPadding';
 
@@ -27,7 +28,12 @@ const MeRecentSearch = ({}: MeRecentSearchProps) => {
           ))}
         </RecentSearchList>
       ) : (
-        <EmptyItem message="최근 본 체육관이 없습니다" />
+        <EmptyItemNotification
+          message="최근 본 체육관이 없습니다"
+          btnActive={true}
+          btnText={'체육관 보러가기'}
+          path={PATH.ROOT}
+        />
       )}
       <StyledPadding />
     </MeRecentSearchBlock>

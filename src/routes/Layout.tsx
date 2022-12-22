@@ -39,12 +39,13 @@ const HeaderWrapper = styled.header`
 `;
 
 const MainWrapper = styled.main`
+  height: calc(100% - 240px);
   padding-top: 5rem;
 `;
 
 const FooterWrapper = styled.footer<{ userType: 'USER' | 'MANAGER' }>`
   ${media.xsmallMin} {
-    margin-top: 12rem;
+    margin-top: 5rem;
   }
 `;
 export default Layout;

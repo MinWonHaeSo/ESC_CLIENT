@@ -4,7 +4,8 @@ import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import { useNavigate } from 'react-router-dom';
 import PATH from '@/constants/path';
-import { SearchStadiumContent } from '@/api/stadiumApi';
+import { SearchStadiumContent, usePostLikeStadiumMutation } from '@/api/stadiumApi';
+import useThrottleRef from '@/hooks/useThrottleRef';
 
 interface MarkerStadiumInfoProps {
   markerInfo: SearchStadiumContent;
@@ -14,10 +15,12 @@ const MarkerStadiumInfo = ({ markerInfo }: MarkerStadiumInfoProps) => {
   const [stadiumLike, setStadiumLike] = useState(false);
   const navigate = useNavigate();
 
-  const handleChangeStadiumLike = () => {
-    // 찜하기 logic 작성
+  const [postLikeStadiumAPI] = usePostLikeStadiumMutation();
+  const likeCallbackAPI = useThrottleRef(() => postLikeStadiumAPI(String(markerInfo.id)));
 
-    setStadiumLike(!stadiumLike);
+  const handleChangeStadiumLike = () => {
+    setStadiumLike(true);
+    likeCallbackAPI();
   };
 
   const toUploadNavigate = () => {
