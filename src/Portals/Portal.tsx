@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom';
 
-const Portal = ({ id, children }: { id: string; children: React.ReactNode }) => {
-  const modalElement = document.getElementById(id);
+const Portal = ({ children }: { children: React.ReactNode }) => {
+  const modalElement = document.getElementById('modal');
 
   return ReactDOM.createPortal(children, modalElement as HTMLElement);
 };
