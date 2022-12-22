@@ -1,6 +1,8 @@
 import { useGetLikeStadiumListQuery } from '@/api/stadiumApi';
+import PATH from '@/constants/path';
 import media from '@/lib/styles/media';
 import { typo } from '@/lib/styles/typo';
+import sw from '@/lib/utils/customSweetAlert';
 import styled from '@emotion/styled';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router';
@@ -15,15 +17,17 @@ interface MeLikeStadiumProps {}
 
 const MeLikeStadium = ({}: MeLikeStadiumProps) => {
   const location = useLocation();
-  const { data, isLoading, error } = useGetLikeStadiumListQuery('');
-  const likeStadiumList = data?.content;
+  const { data, isLoading, error, refetch } = useGetLikeStadiumListQuery('', {
+    refetchOnMountOrArgChange: true,
+  });
 
-  // stadium.stadiumId 수정하기
-  useEffect(() => {
-    if (error) {
-      console.error('잘못된 요청입니다.');
-    }
-  }, [error]);
+  const likeStadiumList = data?.content;
+  console.log(likeStadiumList);
+
+  if (error) {
+    sw.toast.error('잘못된 요청입니다.');
+    console.error('잘못된 요청입니다.');
+  }
 
   if (isLoading || !data) {
     return <Loading />;
@@ -36,14 +40,19 @@ const MeLikeStadium = ({}: MeLikeStadiumProps) => {
           찜한 체육관
         </Title>
       </TitleWrapper>
-      {likeStadiumList ? (
+      {likeStadiumList!.length > 0 ? (
         <LikeStadiumList>
-          {likeStadiumList.map(stadium => (
-            <CardStadium key={stadium.name} stadium={stadium} currentLocation={location.pathname} />
+          {likeStadiumList!.map(stadium => (
+            <CardStadium key={stadium.name} stadium={stadium} currentLocation={location.pathname} refetch={refetch} />
           ))}
         </LikeStadiumList>
       ) : (
-        <EmptyItemNotification message="찜한 체육관이 없습니다" />
+        <EmptyItemNotification
+          message="찜한 체육관이 없습니다"
+          btnActive={true}
+          btnText={'체육관 보러가기'}
+          path={PATH.ROOT}
+        />
       )}
       <StyledPadding />
     </MeLikeStadiumBlock>
