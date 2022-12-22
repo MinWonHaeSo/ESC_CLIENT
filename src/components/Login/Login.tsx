@@ -22,7 +22,7 @@ const Login = (props: LoginProps) => {
       {userType === 'USER' && <SocialLogin />}
       <RegisterBlock>
         <Li>
-          <Link to={PATH.REGISTER}>회원가입</Link>
+          <Link to={PATH.SIGN_UP}>회원가입</Link>
         </Li>
         <Li>
           <Link to={PATH.SEARCH_PASSWORD}>비밀번호 찾기</Link>

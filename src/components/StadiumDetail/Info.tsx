@@ -1,8 +1,10 @@
-import React from 'react';
+import { useEffect } from 'react';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
-import Tag from '../Tag/Tag';
 import { stadiumWriteState } from '@/store/stadiumWriteSlice';
+import { typo } from '@/lib/styles/typo';
+import { useLocation } from 'react-router';
+import { addAccessStadium } from '@/lib/utils/accessStadium';
 import formatter from '@/lib/utils/formatter';
 
 interface InfoProps {
@@ -10,6 +12,19 @@ interface InfoProps {
 }
 
 const Info = ({ info }: InfoProps) => {
+  useEffect(() => {
+    if (!info) return;
+    const filteredData = {
+      stadiumId: info.id,
+      imgUrl: info.imgs[0].imgUrl,
+      starAvg: 0,
+      name: info.name,
+      address: info.address,
+    };
+
+    addAccessStadium('stadiums', filteredData);
+  }, [info]);
+
   return (
     <DetailInfoBlock>
       <div className="info-item-wrapper">
@@ -54,7 +69,7 @@ const DetailInfoBlock = styled.div`
 
   .info-item-wrapper {
     display: flex;
-    font-size: 12px;
+    font-size: ${typo.small};
     line-height: 21px;
     align-items: center;
   }
@@ -73,7 +88,7 @@ const DetailInfoBlock = styled.div`
     width: 100%;
     margin-left: 1rem;
     align-self: center;
-    font-weight: bold;
+    font-weight: 500;
   }
 `;
 

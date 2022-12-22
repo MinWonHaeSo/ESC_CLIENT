@@ -1,7 +1,6 @@
 const PATH = {
   ROOT: '/',
   LOGIN: '/login',
-  REGISTER: '/signup',
   SIGN_UP: '/signup',
   SIGN_OUT: '/signout',
   SEARCH_PASSWORD: '/searchpassword',

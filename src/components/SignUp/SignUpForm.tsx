@@ -65,7 +65,7 @@ const SignUpForm = React.memo(function SignupForm(props: SignUpFormProps) {
         sw.toast.success('성공적으로 가입되었습니다.');
         setTimeout(() => {
           navigate(PATH.LOGIN);
-        }, MILLI_SECONDS.oneHalf);
+        }, MILLI_SECONDS.one);
       }
     } catch {
       throw new Error('회원가입에 문제가 발생하였습니다.');

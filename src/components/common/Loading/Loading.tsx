@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import Spinner from '@/assets/spinner.gif';
+import media from '@/lib/styles/media';
 
 const Loading = () => {
   return (
@@ -23,4 +24,10 @@ const Background = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  img {
+    ${media.mediumMin} {
+      width: 10%;
+    }
+  }
 `;

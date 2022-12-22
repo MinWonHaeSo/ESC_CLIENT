@@ -1,20 +1,17 @@
+import media from '@/lib/styles/media';
 import { typo } from '@/lib/styles/typo';
-import { getCookie } from '@/lib/utils/cookies';
+import { CurrentStadium, getAccessStadium } from '@/lib/utils/accessStadium';
 import styled from '@emotion/styled';
-import { useLocation } from 'react-router';
 import CardStadium from '../CardStadium/CardStadium';
 import Title from '../common/atoms/Title';
+import EmptyItem from '../common/EmptyItemNotification';
 import Responsive from '../common/Responsive';
 import StyledPadding from '../common/StyledPadding';
-import { stadiumData } from '../MeRentalList/MeRentalStadium';
 
 interface MeRecentSearchProps {}
 
 const MeRecentSearch = ({}: MeRecentSearchProps) => {
-  const location = useLocation();
-
-  // [] todo: 최근 본 체육관 상세 정보에 들어갈 때마다, cookie에 해당 정보 저장
-  const recentSearchStadiumList = getCookie('recentSearchStadium');
+  const recentSearchStadiumList: CurrentStadium[] = getAccessStadium('stadiums');
 
   return (
     <MeRecentSearchBlock>
@@ -23,11 +20,15 @@ const MeRecentSearch = ({}: MeRecentSearchProps) => {
           최근 본 체육관
         </Title>
       </TitleWrapper>
-      <RecentSearchList>
-        {stadiumData.map((stadium, idx) => {
-          return <CardStadium key={idx} stadium={stadium} currentLocation={location.pathname} />;
-        })}
-      </RecentSearchList>
+      {recentSearchStadiumList !== undefined ? (
+        <RecentSearchList>
+          {recentSearchStadiumList.map(stadium => (
+            <CardStadium key={stadium.stadiumId} stadium={stadium} currentLocation={location.pathname} />
+          ))}
+        </RecentSearchList>
+      ) : (
+        <EmptyItem message="최근 본 체육관이 없습니다" />
+      )}
       <StyledPadding />
     </MeRecentSearchBlock>
   );
@@ -46,8 +47,16 @@ const TitleWrapper = styled.div`
   margin-bottom: 30px;
 `;
 
-const RecentSearchList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+const RecentSearchList = styled.ul`
+  display: grid;
   gap: 12px;
+
+  ${media.xsmallMin} {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  ${media.mediumMin} {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+  }
 `;

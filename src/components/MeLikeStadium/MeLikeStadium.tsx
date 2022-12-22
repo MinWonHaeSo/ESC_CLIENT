@@ -1,27 +1,50 @@
+import { useGetLikeStadiumListQuery } from '@/api/stadiumApi';
+import media from '@/lib/styles/media';
 import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
+import { useEffect } from 'react';
 import { useLocation } from 'react-router';
 import CardStadium from '../CardStadium/CardStadium';
 import Title from '../common/atoms/Title';
+import EmptyItemNotification from '../common/EmptyItemNotification';
+import Loading from '../common/Loading/Loading';
 import Responsive from '../common/Responsive';
 import StyledPadding from '../common/StyledPadding';
-import { stadiumData } from '../MeRentalList/MeRentalStadium';
 
-const MeLikeStadium = () => {
+interface MeLikeStadiumProps {}
+
+const MeLikeStadium = ({}: MeLikeStadiumProps) => {
   const location = useLocation();
+  const { data, isLoading, error } = useGetLikeStadiumListQuery('');
+  const likeStadiumList = data?.content;
+
+  // stadium.stadiumId 수정하기
+  useEffect(() => {
+    if (error) {
+      console.error('잘못된 요청입니다.');
+    }
+  }, [error]);
+
+  if (isLoading || !data) {
+    return <Loading />;
+  }
 
   return (
     <MeLikeStadiumBlock>
       <TitleWrapper>
         <Title fontSize={`${typo.xxLarge}`} marginTop={'20px'}>
-          찜한 리스트
+          찜한 체육관
         </Title>
       </TitleWrapper>
-      <LikeStadiumList>
-        {stadiumData.map((stadium, idx) => {
-          return <CardStadium key={idx} stadium={stadium} currentLocation={location.pathname} />;
-        })}
-      </LikeStadiumList>
+      {likeStadiumList ? (
+        <LikeStadiumList>
+          {likeStadiumList.map(stadium => (
+            <CardStadium key={stadium.name} stadium={stadium} currentLocation={location.pathname} />
+          ))}
+        </LikeStadiumList>
+      ) : (
+        <EmptyItemNotification message="찜한 체육관이 없습니다" />
+      )}
       <StyledPadding />
     </MeLikeStadiumBlock>
   );
@@ -41,7 +64,15 @@ const TitleWrapper = styled.div`
 `;
 
 const LikeStadiumList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
   gap: 12px;
+
+  ${media.xsmallMin} {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  ${media.mediumMin} {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+  }
 `;

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import Tag from '../Tag/Tag';
 import Slider from '../Slide/Slider';
@@ -28,9 +28,7 @@ const Detail = ({ stadiumId }: DetailProps) => {
   const navigate = useNavigate();
 
   const handleChangeStadiumLike = () => {
-    // 찜하기 logic 작성
     setStadiumLike(!stadiumLike);
-    postLikeStadiumAPI(stadiumId);
     likeCallbackAPI();
   };
 
@@ -89,6 +87,7 @@ const Detail = ({ stadiumId }: DetailProps) => {
 
 const ButtonActionContainer = styled.div`
   display: flex;
+  align-items: center;
   margin: 1rem 0;
   gap: 1rem;
 
@@ -109,6 +108,7 @@ const ButtonActionContainer = styled.div`
   }
 
   i {
+    font-size: ${typo.xLarge};
     color: ${palette.primary['orange']};
   }
 `;

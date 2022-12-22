@@ -26,6 +26,7 @@ const MeInfo = (props: MeInfoProps) => {
   const [nicknameCheck, setNicknameCheck] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [cloudImage, setCloudImage] = useState<File>();
+  const [cloudinaryApiLoading, setCloudinaryApiLoading] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
@@ -48,10 +49,11 @@ const MeInfo = (props: MeInfoProps) => {
       return sw.toast.warn('최소 2자 이상의 닉네임을 입력하세요.');
     }
     dispatch(changeNickname(inputValue));
+    setCloudinaryApiLoading(true);
 
     try {
       const cloudinaryResponse = await userFileUpload(cloudImage);
-      console.log(cloudinaryResponse?.data.url);
+      setCloudinaryApiLoading(false);
       const response = await changeUserInfoAPI({ nickname: inputValue, imgUrl: cloudinaryResponse?.data.url }).unwrap();
       if (response) {
         dispatch(uploadImage(response.imgUrl));
@@ -74,7 +76,7 @@ const MeInfo = (props: MeInfoProps) => {
 
   return (
     <MeInfoBlock>
-      {isLoading ? <Loading /> : null}
+      {cloudinaryApiLoading || isLoading ? <Loading /> : null}
       <TitleWrapper>
         <Title fontSize={`${typo.xxLarge}`}>내 정보</Title>
         <Button type="button" size={'medium'} backgroundColor={palette.primary['point']} onClick={handleEditClick}>
