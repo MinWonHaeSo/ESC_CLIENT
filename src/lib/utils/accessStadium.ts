@@ -1,10 +1,9 @@
 export interface CurrentStadium {
-  id: number;
-  imgUrl: string;
-  starAvg: number;
+  stadiumId: number;
   name: string;
   address: string;
-  urlParam: string;
+  imgUrl: string;
+  starAvg: number;
 }
 
 export const getAccessStadium = (name: string) => {
@@ -29,8 +28,10 @@ export const addAccessStadium = (name: string, currentStadium: CurrentStadium) =
     const stadiumList = JSON.parse(stadiums);
 
     const doubleCheck = getAccessStadium(name).filter(
-      (stadium: CurrentStadium) => stadium.id === currentStadium.id,
+      (stadium: CurrentStadium) => stadium.stadiumId === currentStadium.stadiumId,
     ).length;
+
+    console.log(doubleCheck);
 
     if (doubleCheck) {
       return;

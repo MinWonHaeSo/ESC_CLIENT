@@ -1,8 +1,8 @@
 import media from '@/lib/styles/media';
 import { typo } from '@/lib/styles/typo';
-import { getAccessStadium } from '@/lib/utils/accessStadium';
+import { CurrentStadium, getAccessStadium } from '@/lib/utils/accessStadium';
 import styled from '@emotion/styled';
-import CardStadium, { StadiumData } from '../CardStadium/CardStadium';
+import CardStadium from '../CardStadium/CardStadium';
 import Title from '../common/atoms/Title';
 import EmptyItem from '../common/EmptyItemNotification';
 import Responsive from '../common/Responsive';
@@ -11,7 +11,7 @@ import StyledPadding from '../common/StyledPadding';
 interface MeRecentSearchProps {}
 
 const MeRecentSearch = ({}: MeRecentSearchProps) => {
-  const recentSearchStadiumList: StadiumData[] = getAccessStadium('stadiums');
+  const recentSearchStadiumList: CurrentStadium[] = getAccessStadium('stadiums');
 
   return (
     <MeRecentSearchBlock>
@@ -22,9 +22,9 @@ const MeRecentSearch = ({}: MeRecentSearchProps) => {
       </TitleWrapper>
       {recentSearchStadiumList !== undefined ? (
         <RecentSearchList>
-          {recentSearchStadiumList.map((stadium, idx) => {
-            return <CardStadium key={idx} stadium={stadium} currentLocation={location.pathname} />;
-          })}
+          {recentSearchStadiumList.map(stadium => (
+            <CardStadium key={stadium.stadiumId} stadium={stadium} currentLocation={location.pathname} />
+          ))}
         </RecentSearchList>
       ) : (
         <EmptyItem message="최근 본 체육관이 없습니다" />
