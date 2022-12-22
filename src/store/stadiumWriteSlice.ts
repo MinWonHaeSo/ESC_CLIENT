@@ -8,6 +8,7 @@ export type imagesType = { publicId: string; imgUrl: string };
 
 export interface stadiumWriteState {
   id: number;
+  memberId: number;
   name: string;
   address: string;
   detailAddress: string;
@@ -27,6 +28,7 @@ export interface stadiumWriteState {
 
 const initialState: stadiumWriteState = {
   id: 0,
+  memberId: 0,
   name: '',
   address: '',
   phone: '',
