@@ -62,8 +62,8 @@ export const stadiumReservationSlice = createSlice({
   },
   extraReducers: builder => {
     builder.addMatcher(reservationApi.endpoints.getReservationStadiumTime.matchFulfilled, (state, { payload }) => {
-      state.id = payload.stadiumId;
-      state.data.items = payload.rentalItems.map(item => ({ ...item, toggle: false, count: 1 }));
+      state.id = payload.stadium.id;
+      state.data.items = payload.stadium.rentalItems.map(item => ({ ...item, toggle: false, count: 1 }));
       state.data.reservingDate = payload.date;
       state.data.reservingTimes = [] as string[];
       state.data.reservedTimes = payload.reservedTimes;
