@@ -15,6 +15,7 @@ import { setCredentials, sustainLogin } from '@/store/authSlice';
 import { useRefetchUserInfoMutation } from '@/api/authApi';
 import { getAuthToken } from '@/lib/utils/token';
 import Loading from '../common/Loading/Loading';
+import { getCookie } from '@/lib/utils/cookies';
 
 interface HomeProps {}
 
@@ -38,10 +39,11 @@ const Header = (props: HomeProps) => {
     }
     const accessToken = getAuthToken();
     const userType = localStorage.getItem('userType');
+    const refreshToken = getCookie('refreshToken');
     dispatch(setCredentials({ accessToken: accessToken }));
 
     try {
-      const response = await refetchUserInfoAPI('').unwrap();
+      const response = await refetchUserInfoAPI(refreshToken).unwrap();
       const { id, nickname, name, email, imgUrl, password } = response;
 
       if (response) {
