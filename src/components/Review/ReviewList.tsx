@@ -2,6 +2,7 @@ import { ContentType } from '@/api/reviewApi';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
 import React from 'react';
+import EmptyItemNotification from '../common/EmptyItemNotification';
 import ReviewListItem from './ReviewListItem';
 
 interface ReviewListProps {
@@ -14,7 +15,7 @@ const ReviewList = ({ contents }: ReviewListProps) => {
       {contents.length ? (
         contents.map((review, idx) => <ReviewListItem key={idx} content={review} />)
       ) : (
-        <div>없는데용?</div>
+        <EmptyItemNotification message={'작성된 리뷰가 없습니다.'} btnActive={false} />
       )}
     </ReviewListContainer>
   );
