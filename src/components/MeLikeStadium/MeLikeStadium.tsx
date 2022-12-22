@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router';
 import CardStadium from '../CardStadium/CardStadium';
 import Title from '../common/atoms/Title';
-import EmptyItem from '../common/EmptyItemNotification';
+import EmptyItemNotification from '../common/EmptyItemNotification';
 import Loading from '../common/Loading/Loading';
 import Responsive from '../common/Responsive';
 import StyledPadding from '../common/StyledPadding';
@@ -16,14 +16,14 @@ interface MeLikeStadiumProps {}
 const MeLikeStadium = ({}: MeLikeStadiumProps) => {
   const location = useLocation();
   const { data, isLoading, error } = useGetLikeStadiumListQuery('');
-
   const likeStadiumList = data?.content;
 
+  // stadium.stadiumId 수정하기
   useEffect(() => {
     if (error) {
       console.error('잘못된 요청입니다.');
     }
-  });
+  }, [error]);
 
   if (isLoading || !data) {
     return <Loading />;
@@ -38,12 +38,12 @@ const MeLikeStadium = ({}: MeLikeStadiumProps) => {
       </TitleWrapper>
       {likeStadiumList ? (
         <LikeStadiumList>
-          {likeStadiumList.map(stadium => {
-            return <CardStadium key={stadium.id} stadium={stadium} currentLocation={location.pathname} />;
-          })}
+          {likeStadiumList.map(stadium => (
+            <CardStadium key={stadium.name} stadium={stadium} currentLocation={location.pathname} />
+          ))}
         </LikeStadiumList>
       ) : (
-        <EmptyItem message="찜한 체육관이 없습니다" />
+        <EmptyItemNotification message="찜한 체육관이 없습니다" />
       )}
       <StyledPadding />
     </MeLikeStadiumBlock>
