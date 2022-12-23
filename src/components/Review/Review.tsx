@@ -17,7 +17,7 @@ interface ReviewProps {
 
 const Review = ({ stadiumId }: ReviewProps) => {
   // const { isLoading, error } = useGetReviewListQuery({ id: stadiumId });
-  const [trigger, { isLoading, isError }] = reviewApi.endpoints.getReviewList.useLazyQuery();
+  const [trigger] = reviewApi.endpoints.getReviewList.useLazyQuery();
   const { isLast, nextPage } = useSelector((state: RootState) => ({
     isLast: state.stadiumReview.isLast,
     nextPage: state.stadiumReview.nextPage,
@@ -38,10 +38,6 @@ const Review = ({ stadiumId }: ReviewProps) => {
       dispatch(clearReview());
     };
   }, [dispatch]);
-
-  if (isLoading) {
-    return <Loading />;
-  }
 
   return (
     <ReviewContainer>
