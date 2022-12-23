@@ -20,6 +20,7 @@ interface LoginResponse {
   statusCode: number;
   accessToken: string;
   refreshToken: string;
+  type: UserType;
   id: number;
   name: string;
   nickname: string;
@@ -81,12 +82,9 @@ const authApi = baseApi.injectEndpoints({
       }),
     }),
     refetchUserInfo: builder.mutation<RefetchUserResponse, string>({
-      query: (refreshToken: string) => ({
+      query: () => ({
         url: 'members/profiles/info',
         method: 'POST',
-        headers: {
-          RefreshToken: `Bearer ${refreshToken}`,
-        },
       }),
     }),
     changeUserInfo: builder.mutation<ChangeUserInfoResponse, { nickname: string; imgUrl: string }>({
