@@ -1,10 +1,9 @@
 import React, { useEffect, useLayoutEffect } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import { useGetStadiumDetailQuery, usePostLikeStadiumMutation } from '@/api/stadiumApi';
+import { useGetStadiumDetailQuery } from '@/api/stadiumApi';
 import sw from '@/lib/utils/customSweetAlert';
 import PATH from '@/constants/path';
-import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import Title from '../common/atoms/Title';
 import Slider from '../Slide/Slider';
@@ -48,34 +47,6 @@ const Detail = ({ stadiumId }: DetailProps) => {
     </div>
   );
 };
-
-const ButtonActionContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 1rem 0;
-  gap: 1rem;
-
-  .book-mark {
-    right: 0.4rem;
-    font-size: ${typo.xLarge};
-  }
-
-  .btn {
-    width: 100%;
-    padding: 12px 16px;
-    border-radius: 10px;
-    background-color: #000;
-    font-size: 16px;
-    font-weight: 500;
-    color: #fff;
-    cursor: pointer;
-  }
-
-  i {
-    font-size: ${typo.xLarge};
-    color: ${palette.primary['orange']};
-  }
-`;
 
 const SliderWrapper = styled.div`
   display: flex;
