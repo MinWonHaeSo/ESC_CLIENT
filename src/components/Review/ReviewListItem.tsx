@@ -11,28 +11,55 @@ interface ReviewListItemProps {
 }
 
 const ReviewListItem = ({ content }: ReviewListItemProps) => {
-  const [reviewOption, setReviewOption] = useState(false);
-  const user = useSelector((state: RootState) => state.user);
+  const [isEditBtn, setIsEditBtn] = useState(false);
+  const [editComment, setEditComment] = useState(content.comment);
+  const auth = useSelector((state: RootState) => state.auth);
+
+  const handleSubmitEditComment = () => {
+    // submit POST API
+
+    setIsEditBtn(false);
+  };
 
   return (
     <ReviewListItemContainer>
-      <div>
-        <img src="http://via.placeholder.com/50x50" alt="유저프로필" width="50px" height="50px" />
+      <div className="user-name-container">
+        <img src={content.member.imgUrl} alt="유저프로필" width="50px" height="50px" />
+        <div>
+          <span className="user-name">{content.member.nickname}</span>
+        </div>
       </div>
       <div className="user-review-info-container">
         <div className="user-info">
-          <span className="user-name">{content.nickname}</span>
           <span>
             <StarRate starRating={content.star} />
           </span>
           <span className="review-date">{content.createdAt}</span>
         </div>
-        <div className="review-content">{content.comment}</div>
-        <div className="review-btn-container">
-          <button className="review-submit-btn">등록</button>
-          <button className="review-edit-btn">수정</button>
-          <button className="review-remove-btn">삭제</button>
-        </div>
+        {isEditBtn ? (
+          <input
+            type="text"
+            className="review-content"
+            value={editComment}
+            onChange={e => setEditComment(e.target.value)}
+          />
+        ) : (
+          <div className="review-content">{content.comment}</div>
+        )}
+        {String(auth.id) === content.member.id ? (
+          <div className="review-btn-container">
+            {isEditBtn ? (
+              <button className="review-submit-btn" onClick={handleSubmitEditComment}>
+                등록
+              </button>
+            ) : (
+              <button className="review-edit-btn" onClick={() => setIsEditBtn(true)}>
+                수정
+              </button>
+            )}
+            <button className="review-remove-btn">삭제</button>
+          </div>
+        ) : null}
       </div>
     </ReviewListItemContainer>
   );
@@ -54,6 +81,16 @@ const ReviewListItemContainer = styled.li`
     border: 1px solid ${palette.grey[400]};
   }
 
+  .user-name-container {
+    width: 100px;
+    flex: 1;
+  }
+
+  .user-name {
+    font-size: 12px;
+    font-weight: bold;
+  }
+
   .user-review-info-container {
     display: flex;
     width: 100%;
@@ -65,11 +102,6 @@ const ReviewListItemContainer = styled.li`
     .user-info {
       display: flex;
       justify-content: space-between;
-    }
-
-    .user-name {
-      font-size: 14px;
-      font-weight: bold;
     }
 
     .review-content {

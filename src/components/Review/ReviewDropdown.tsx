@@ -15,7 +15,7 @@ const DropdownMenu = ({ idx, onClick }: DropDownMenuProps) => {
   return (
     <li className="dropdown-option">
       <button className="option-select-btn" onClick={onClick}>
-        <StarRate starRating={idx} />
+        <StarRate starRating={idx + 1} />
       </button>
     </li>
   );

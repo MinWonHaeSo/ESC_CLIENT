@@ -8,13 +8,13 @@ interface StarRateProps {
 const StarRate = ({ starRating }: StarRateProps) => {
   return (
     <>
-      {Array.from({ length: 5 }).map((star, idx) =>
-        starRating >= idx + 1 ? (
-          <i className="fa-solid fa-star" style={{ color: palette.primary.orange }} key={idx}></i>
-        ) : (
-          <i className="fa-regular fa-star" style={{ color: palette.primary.orange }} key={idx}></i>
-        ),
-      )}
+      {Array.from({ length: 5 }).map((_, idx) => (
+        <i
+          className={`${starRating >= idx + 1 ? 'fa-solid' : 'fa-regular'} fa-star`}
+          style={{ color: palette.primary.orange }}
+          key={idx}
+        ></i>
+      ))}
     </>
   );
 };

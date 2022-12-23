@@ -24,18 +24,17 @@ const TimeSelectItem = ({ times, reservedTimes }: TimeSelectItemProps) => {
 
   return (
     <TimeSelectItemContainer>
-      {times.map(time =>
-        reservedTimes.includes(time) ? null : (
-          <DateButtonContainer key={time}>
-            <button
-              className={`${selectedDate.includes(time) ? 'btn btn-disabled' : 'btn btn-actived'}`}
-              onClick={() => handleSelectTime(time)}
-            >
-              {time}
-            </button>
-          </DateButtonContainer>
-        ),
-      )}
+      {times.map(time => (
+        <DateButtonContainer key={time}>
+          <button
+            className={`${selectedDate.includes(time) ? 'btn btn-seleted' : 'btn btn-actived'}`}
+            onClick={() => handleSelectTime(time)}
+            disabled={reservedTimes.includes(time)}
+          >
+            {time}
+          </button>
+        </DateButtonContainer>
+      ))}
     </TimeSelectItemContainer>
   );
 };
@@ -59,7 +58,12 @@ const DateButtonContainer = styled.div`
     color: #000;
   }
 
-  .btn-disabled {
+  .btn-seleted {
+    background-color: #fff570;
+    border: 1px solid ${palette.primary.orange};
+  }
+
+  .btn:disabled {
     background-color: ${palette.grey[100]};
     border: 1px solid ${palette.grey[300]};
     color: ${palette.grey[400]};

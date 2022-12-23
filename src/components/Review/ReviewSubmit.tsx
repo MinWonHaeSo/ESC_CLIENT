@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/store/store';
-import { changeComment } from '@/store/stadiumReview';
+import { changeComment, clearReview } from '@/store/stadiumReview';
 import { useAddReviewMutation } from '@/api/reviewApi';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
@@ -18,7 +18,7 @@ const ReviewSubmit = ({ id }: ReviewSubmitProps) => {
 
   const handleSumbitReview = async () => {
     const response = await addReviewAPI({ id, comment: review.comment, star: review.star });
-    console.log(response);
+    dispatch(clearReview());
   };
 
   const handleChangeReviewComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

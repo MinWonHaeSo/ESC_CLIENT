@@ -16,8 +16,7 @@ interface ReservationStepOneProps {
 }
 
 const ReservationStepOne = ({ data }: ReservationStepOneProps) => {
-  const [trigger, { data: resevation, isLoading, isError }] =
-    reservationApi.endpoints.getReservationStadiumTime.useLazyQuery();
+  const [trigger] = reservationApi.endpoints.getReservationStadiumTime.useLazyQuery();
 
   return (
     <ReservationContainer>
