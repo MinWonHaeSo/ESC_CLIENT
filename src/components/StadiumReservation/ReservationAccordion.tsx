@@ -1,9 +1,9 @@
+import React, { useState } from 'react';
+import styled from '@emotion/styled';
+import { useSelector } from 'react-redux';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import { RootState } from '@/store/store';
-import styled from '@emotion/styled';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 
 interface ReservationAccordionProps {
   component: React.ReactNode;
