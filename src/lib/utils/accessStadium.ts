@@ -31,8 +31,6 @@ export const addAccessStadium = (name: string, currentStadium: CurrentStadium) =
       (stadium: CurrentStadium) => stadium.stadiumId === currentStadium.stadiumId,
     ).length;
 
-    console.log(doubleCheck);
-
     if (doubleCheck) {
       return;
     }
