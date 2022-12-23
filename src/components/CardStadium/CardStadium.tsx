@@ -5,6 +5,7 @@ import media from '@/lib/styles/media';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
+import { useCallback } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StatusTag from './StatusTag';
@@ -32,9 +33,9 @@ const CardStadium = ({ stadium, currentLocation, refetch }: CardStadiumProps) =>
     likeCallbackAPI();
   };
 
-  const handleCardClick = () => {
+  const handleCardClick = useCallback(() => {
     navigate(`${PATH.STADIUM_DETAIL}/${stadiumId}`);
-  };
+  }, []);
 
   return (
     <CardStadiumBlock>
@@ -66,7 +67,7 @@ const CardStadiumBlock = styled.li`
   display: flex;
   flex-direction: column;
   gap: 4px;
-  width: calc((100vw - 2.75rem) / 2);
+  width: calc((100% - 2.5rem) / 2);
 
   ${media.xsmallMin} {
     min-width: 156px;
@@ -96,7 +97,7 @@ const Bookmark = styled.button`
 
 const StadiumImageWrapper = styled.div`
   position: relative;
-  width: 100%;
+  width: 165px;
   border-radius: 10px;
 
   img {

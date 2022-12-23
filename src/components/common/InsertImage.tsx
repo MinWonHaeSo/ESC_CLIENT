@@ -1,11 +1,10 @@
 import { useRef, useState } from 'react';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
-import { RootState, useAppDispatch } from '@/store/store';
+import { useAppDispatch } from '@/store/store';
 import { uploadImage } from '@/store/authSlice';
 import { setImage } from '@/store/userSlice';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { DEFAULT_PROFILE_IMGURL } from '@/constants/defaultImage';
 
 interface InsertImageProps {
@@ -23,8 +22,6 @@ const InsertImage = ({ editDisabled, currentImage, currentLocation, onChangeImag
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [imageFile, setImageFile] = useState<ImageFile>({ imageURL: '' });
 
-  const authUser = useSelector((state: RootState) => state.auth);
-  const { image } = authUser;
   const dispatch = useAppDispatch();
 
   const handleClickFileButton = () => {
