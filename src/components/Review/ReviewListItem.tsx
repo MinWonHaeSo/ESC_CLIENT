@@ -11,8 +11,15 @@ interface ReviewListItemProps {
 }
 
 const ReviewListItem = ({ content }: ReviewListItemProps) => {
-  const [reviewOption, setReviewOption] = useState(false);
-  const user = useSelector((state: RootState) => state.user);
+  const [isEditBtn, setIsEditBtn] = useState(false);
+  const [editComment, setEditComment] = useState(content.comment);
+  const auth = useSelector((state: RootState) => state.auth);
+
+  const handleSubmitEditComment = () => {
+    // submit POST API
+
+    setIsEditBtn(false);
+  };
 
   return (
     <ReviewListItemContainer>
@@ -29,12 +36,30 @@ const ReviewListItem = ({ content }: ReviewListItemProps) => {
           </span>
           <span className="review-date">{content.createdAt}</span>
         </div>
-        <div className="review-content">{content.comment}</div>
-        <div className="review-btn-container">
-          <button className="review-submit-btn">등록</button>
-          <button className="review-edit-btn">수정</button>
-          <button className="review-remove-btn">삭제</button>
-        </div>
+        {isEditBtn ? (
+          <input
+            type="text"
+            className="review-content"
+            value={editComment}
+            onChange={e => setEditComment(e.target.value)}
+          />
+        ) : (
+          <div className="review-content">{content.comment}</div>
+        )}
+        {String(auth.id) === content.member.id ? (
+          <div className="review-btn-container">
+            {isEditBtn ? (
+              <button className="review-submit-btn" onClick={handleSubmitEditComment}>
+                등록
+              </button>
+            ) : (
+              <button className="review-edit-btn" onClick={() => setIsEditBtn(true)}>
+                수정
+              </button>
+            )}
+            <button className="review-remove-btn">삭제</button>
+          </div>
+        ) : null}
       </div>
     </ReviewListItemContainer>
   );
