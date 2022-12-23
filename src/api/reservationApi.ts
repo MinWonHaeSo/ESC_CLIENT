@@ -26,6 +26,9 @@ interface GetReservationStadiumTimeRequest {
   id: string;
   date?: string;
 }
+interface FinishStadiumUtilization {}
+
+interface CancelReservation {}
 
 export const reservationApi = baseApi.injectEndpoints({
   endpoints: builder => ({
@@ -37,7 +40,20 @@ export const reservationApi = baseApi.injectEndpoints({
         params: { date },
       }),
     }),
+    finishStadiumUtilization: builder.mutation<any, { stadiumId: number; reservationId: number }>({
+      query: ({ stadiumId, reservationId }) => ({
+        url: `/stadiums/${stadiumId}/reservations/${reservationId}`,
+        method: 'PATCH',
+      }),
+    }),
+    cancelReservation: builder.mutation<any, { stadiumId: number; reservationId: number }>({
+      query: ({ stadiumId, reservationId }) => ({
+        url: `/stadiums/${stadiumId}/reservations/${reservationId}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
-export const { useGetReservationStadiumTimeQuery } = reservationApi;
+export const { useGetReservationStadiumTimeQuery, useFinishStadiumUtilizationMutation, useCancelReservationMutation } =
+  reservationApi;

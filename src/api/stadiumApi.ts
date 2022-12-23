@@ -84,7 +84,7 @@ interface RentalStadiumItems {
   count: number;
 }
 
-interface RentalStadiumDetail {
+export interface RentalStadiumDetail {
   reservationId: number;
   stadiumId: number;
   name: string;
@@ -156,7 +156,7 @@ export const stadiumApi = baseApi.injectEndpoints({
         method: 'GET',
       }),
     }),
-    getRentalStadiumDetail: builder.query<RentalStadiumDetail, { stadiumId: string; reservationId: string }>({
+    getRentalStadiumDetail: builder.query<RentalStadiumDetail, { reservationId: number; stadiumId: number }>({
       query: ({ stadiumId, reservationId }) => ({
         url: `/stadiums/${stadiumId}/reservations/${reservationId}`,
         method: 'GET',
