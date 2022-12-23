@@ -18,8 +18,8 @@ const ReservationButton = (props: ReservationButtonProps) => {
 
   return (
     <ReservationButtonContainer>
-      <Button backgroundColor={palette.black[200]} size={'large'} type={'button'} onClick={handleNextStep}>
-        다음
+      <Button size={'large'} type={'button'} backgroundColor={palette.black[100]} onClick={handleNextStep}>
+        다 음
       </Button>
     </ReservationButtonContainer>
   );

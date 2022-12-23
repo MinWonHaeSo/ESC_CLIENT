@@ -1,7 +1,10 @@
+import { setCookie } from '@/lib/utils/cookies';
+import { setAuthToken } from '@/lib/utils/token';
 import { UserType } from '@/types/userType';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface AuthState {
+  grantType?: string;
   key: string;
   id: number;
   type: UserType;
@@ -10,7 +13,7 @@ interface AuthState {
   password: string;
   nickname: string;
   image: string;
-  accessToken: string;
+  accessToken?: string;
   refreshToken: string;
   loggedIn: boolean;
 }
@@ -19,6 +22,7 @@ type LoginType = Omit<AuthState, 'key'>;
 type SocialLoginType = Omit<AuthState, 'key' | 'password'>;
 
 const initialState: AuthState = {
+  grantType: '',
   id: 0,
   key: '',
   type: 'USER',
@@ -38,9 +42,15 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, action) => {
-      const { accessToken, refreshToken } = action.payload;
+      const { grantType, accessToken, refreshToken } = action.payload;
       state.accessToken = accessToken;
       state.refreshToken = refreshToken;
+      state.grantType = grantType;
+      setAuthToken(accessToken);
+      setCookie('refreshToken', refreshToken, {
+        path: '/',
+        secure: true,
+      });
     },
     setLogin: (state, action: PayloadAction<LoginType>) => {
       const { id, type, email, name, password, nickname, image, accessToken, refreshToken, loggedIn } = action.payload;

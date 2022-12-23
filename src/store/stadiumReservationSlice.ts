@@ -5,17 +5,19 @@ export interface RentalItemsToggleType extends RentalItemsType {
   toggle?: boolean;
 }
 
-interface StadiumReservationState {
+export interface StadiumReservationStateData {
+  headCount: number;
+  items: RentalItemsToggleType[];
+  paymentType: string;
+  reservingDate: string;
+  reservingTimes: string[];
+  reservedTimes: string[];
+  pricePerHalfHour: number;
+}
+
+export interface StadiumReservationState {
   id: string;
-  data: {
-    headCount: number;
-    items: RentalItemsToggleType[];
-    paymentType: number;
-    reservingDate: string;
-    reservingTimes: string[];
-    reservedTimes: string[];
-    pricePerHalfHour: number;
-  };
+  data: StadiumReservationStateData;
   step: number;
 }
 
@@ -24,7 +26,7 @@ const initialState: StadiumReservationState = {
   data: {
     headCount: 1,
     items: [],
-    paymentType: 0,
+    paymentType: '',
     reservingDate: '',
     reservingTimes: [],
     reservedTimes: [],

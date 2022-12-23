@@ -4,6 +4,7 @@ import { RootState } from '@/store/store';
 import { nextStep } from '@/store/stadiumReservationSlice';
 import styled from '@emotion/styled';
 import { typo } from '@/lib/styles/typo';
+import palette from '@/lib/styles/palette';
 
 interface ReservationPrevStepButtonProps {}
 
@@ -23,8 +24,15 @@ const ReservationPrevStepButton = (props: ReservationPrevStepButtonProps) => {
 };
 
 const ReservationPrevStepButtonContainer = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid ${palette.black[200]};
+  border-radius: 50%;
   i {
-    font-size: ${typo.large};
+    font-size: ${typo.medium};
   }
 `;
 

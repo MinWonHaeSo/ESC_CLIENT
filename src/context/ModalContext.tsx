@@ -8,7 +8,7 @@ interface modalContextValue {
   closeModal: () => void;
 }
 
-const modalContext = createContext<modalContextValue | null>(null);
+export const modalContext = createContext<modalContextValue | null>(null);
 
 const ModalProvider = ({ children }: { children: React.ReactNode }) => {
   const [content, setContent] = useState<React.ReactNode>();

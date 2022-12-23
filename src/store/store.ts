@@ -13,12 +13,12 @@ import { userReducer } from './userSlice';
 export const store = configureStore({
   reducer: {
     user: userReducer,
+    auth: authReducer,
     stadiumMarker: stadiumMarkerReducer,
     stadiumWrite: stadiumWriteReducer,
     searchPassword: searchPasswordReducer,
     stadiumReview: stadiumReviewReducer,
     stadiumReservation: stadiumReservationReducer,
-    auth: authReducer,
     notification: notificationReducer,
     [baseApi.reducerPath]: baseApi.reducer,
   },

@@ -1,4 +1,3 @@
-import usePrevious from '@/hooks/usePrevious';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import { RootState } from '@/store/store';
