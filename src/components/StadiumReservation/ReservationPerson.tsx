@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { typo } from '@/lib/styles/typo';
 import { changeCount } from '@/store/stadiumReservationSlice';
+import palette from '@/lib/styles/palette';
 
 interface ReservationPersonProps {}
 
@@ -25,9 +26,13 @@ const ReservationPerson = (props: ReservationPersonProps) => {
     <SelectContainer>
       <span>인원</span>
       <CountContainer>
-        <CountButton onClick={handleMinus}>-</CountButton>
+        <CountButton onClick={handleMinus}>
+          <i className="fa-solid fa-minus" />
+        </CountButton>
         <span>{count}</span>
-        <CountButton onClick={handlePlus}>+</CountButton>
+        <CountButton onClick={handlePlus}>
+          <i className="fa-solid fa-plus" />
+        </CountButton>
       </CountContainer>
     </SelectContainer>
   );
@@ -36,6 +41,7 @@ const ReservationPerson = (props: ReservationPersonProps) => {
 const SelectContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   border-radius: 10px;
   border: 1px solid gray;
@@ -53,9 +59,16 @@ const CountContainer = styled.div`
 `;
 
 const CountButton = styled.button`
-  width: 35px;
-  border: 1px solid black;
+  width: 32px;
+  height: 24px;
+  border: 1px solid ${palette.grey[300]};
   border-radius: 10px;
-  scale: 1.4;
+  &:active {
+    border: 1px solid ${palette.black[200]};
+  }
+
+  i {
+    font-size: ${typo.small};
+  }
 `;
 export default ReservationPerson;

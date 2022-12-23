@@ -5,6 +5,7 @@ import CustomDate from '../common/CustomDate';
 import formatter from '@/lib/utils/formatter';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
+import { typo } from '@/lib/styles/typo';
 
 interface ReservationDateProps {
   trigger: any;
@@ -38,7 +39,7 @@ const CustomInput = styled.input`
   border-radius: 10px;
   background-color: white;
   height: 60px;
-  font-size: 20px;
+  font-size: ${typo.medium};
   border: 1px solid grey;
 `;
 

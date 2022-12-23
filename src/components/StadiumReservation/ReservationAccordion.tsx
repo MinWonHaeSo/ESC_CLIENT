@@ -37,6 +37,7 @@ const ReservationAccordionContainer = styled.div`
   display: flex;
   position: relative;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   min-height: 60px;
   padding: 1rem;
@@ -48,9 +49,12 @@ const ReservationAccordionContainer = styled.div`
 
 const AccordionToggle = styled.button`
   position: absolute;
-  width: 40px;
-  height: 40px;
   top: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
   bottom: 0;
   right: 10px;
   border-radius: 50%;
@@ -58,8 +62,8 @@ const AccordionToggle = styled.button`
   transform: translate(0, -50%);
 
   i {
-    font-size: 18px;
-    color: ${palette.grey[400]};
+    font-size: ${typo.small};
+    color: ${palette.grey[500]};
     transition: all 0.3s;
   }
 `;
