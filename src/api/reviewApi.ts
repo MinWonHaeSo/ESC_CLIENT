@@ -1,14 +1,21 @@
 import { PageType } from './../types/pageType';
 import { baseApi } from '@/api/baseApi';
 
-export type ContentType = {
+interface MemberType {
+  id: string;
+  email: string;
+  imgUrl: string;
+  name: string;
+  nickname: string;
+}
+
+export interface ContentType {
   id: string;
   star: number;
   comment: string;
-  nickname: string;
-  memberId: string;
   createdAt: string;
-};
+  member: MemberType;
+}
 
 interface GetReviewResponse extends PageType {
   content: ContentType[];
@@ -16,9 +23,10 @@ interface GetReviewResponse extends PageType {
 
 export const reviewApi = baseApi.injectEndpoints({
   endpoints: builder => ({
-    getReviewList: builder.query<GetReviewResponse, { id: string; pageNum?: number }>({
-      query: ({ id, pageNum = 0 }) => ({
-        url: `/stadiums/${id}/reviews?page=${pageNum}&size=${5}&sort=${'createdAt'},DESC`,
+    getReviewList: builder.query<GetReviewResponse, { id: string; page?: number }>({
+      query: ({ id, page = 0 }) => ({
+        url: `/stadiums/${id}/reviews?page=${page}&size=${5}&sort=${'createdAt'},DESC`,
+        transformResponse: (response: { data: GetReviewResponse }) => response.data,
         method: 'GET',
       }),
     }),

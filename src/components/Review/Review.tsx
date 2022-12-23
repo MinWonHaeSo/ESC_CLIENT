@@ -1,22 +1,37 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { useGetReviewListQuery } from '@/api/reviewApi';
-import palette from '@/lib/styles/palette';
-import { typo } from '@/lib/styles/typo';
+import { useDispatch } from 'react-redux';
+import { reviewApi, useGetReviewListQuery } from '@/api/reviewApi';
+import { clearReview } from '@/store/stadiumReview';
+import useInfinityScroll from '@/hooks/useInfinityScroll';
+import Loading from '../common/Loading/Loading';
 import ReviewHeader from './ReviewHeader';
 import ReviewSubmit from './ReviewSubmit';
 import ReviewList from './ReviewList';
-import Loading from '../common/Loading/Loading';
-import { useDispatch } from 'react-redux';
-import { clearReview } from '@/store/stadiumReview';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 
 interface ReviewProps {
   stadiumId: string;
 }
 
 const Review = ({ stadiumId }: ReviewProps) => {
-  const { data, isLoading, error } = useGetReviewListQuery({ id: stadiumId });
+  // const { isLoading, error } = useGetReviewListQuery({ id: stadiumId });
+  const [trigger, { isLoading, isError }] = reviewApi.endpoints.getReviewList.useLazyQuery();
+  const { isLast, nextPage } = useSelector((state: RootState) => ({
+    isLast: state.stadiumReview.isLast,
+    nextPage: state.stadiumReview.nextPage,
+  }));
+
   const dispatch = useDispatch();
+  const fetchNextPage = () => {
+    if (isLast) return;
+    const page = nextPage ? nextPage : 0;
+
+    trigger({ id: stadiumId, page: page });
+  };
+
+  const $observerTarget = useInfinityScroll(fetchNextPage);
 
   useEffect(() => {
     return () => {
@@ -24,7 +39,7 @@ const Review = ({ stadiumId }: ReviewProps) => {
     };
   }, [dispatch]);
 
-  if (isLoading || !data) {
+  if (isLoading) {
     return <Loading />;
   }
 
@@ -32,7 +47,8 @@ const Review = ({ stadiumId }: ReviewProps) => {
     <ReviewContainer>
       <ReviewHeader />
       <ReviewSubmit id={stadiumId} />
-      <ReviewList contents={data.content} />
+      <ReviewList />
+      <div ref={$observerTarget}></div>
     </ReviewContainer>
   );
 };

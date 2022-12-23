@@ -16,12 +16,14 @@ const ReviewListItem = ({ content }: ReviewListItemProps) => {
 
   return (
     <ReviewListItemContainer>
-      <div>
-        <img src="http://via.placeholder.com/50x50" alt="유저프로필" width="50px" height="50px" />
+      <div className="user-name-container">
+        <img src={content.member.imgUrl} alt="유저프로필" width="50px" height="50px" />
+        <div>
+          <span className="user-name">{content.member.nickname}</span>
+        </div>
       </div>
       <div className="user-review-info-container">
         <div className="user-info">
-          <span className="user-name">{content.nickname}</span>
           <span>
             <StarRate starRating={content.star} />
           </span>
@@ -54,6 +56,16 @@ const ReviewListItemContainer = styled.li`
     border: 1px solid ${palette.grey[400]};
   }
 
+  .user-name-container {
+    width: 100px;
+    flex: 1;
+  }
+
+  .user-name {
+    font-size: 12px;
+    font-weight: bold;
+  }
+
   .user-review-info-container {
     display: flex;
     width: 100%;
@@ -65,11 +77,6 @@ const ReviewListItemContainer = styled.li`
     .user-info {
       display: flex;
       justify-content: space-between;
-    }
-
-    .user-name {
-      font-size: 14px;
-      font-weight: bold;
     }
 
     .review-content {
