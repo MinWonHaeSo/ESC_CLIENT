@@ -26,12 +26,14 @@ const Header = (props: HomeProps) => {
   const checkHeader = usePathHeaderOnlyLogo();
 
   const goBack = useGoBack();
+
+  const [refetchUserInfoAPI, { isLoading }] = useRefetchUserInfoMutation();
+
+  const dispatch = useAppDispatch();
+
   const handleChangeIsActive = () => {
     setIsActive(!isActive);
   };
-
-  const [refetchUserInfoAPI, { isLoading }] = useRefetchUserInfoMutation();
-  const dispatch = useAppDispatch();
 
   const checkLogin = useCallback(async () => {
     if (loggedIn) {
