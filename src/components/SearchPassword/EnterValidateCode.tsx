@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import Button from '../common/atoms/Button';
 import Input from '../common/atoms/Input';
 import Title from '../common/atoms/Title';
+import Loading from '../common/Loading/Loading';
 import Responsive from '../common/Responsive';
 import RequiredMessage from '../SignUp/RequiredMessage';
 
@@ -23,11 +24,12 @@ const EnterValidateCode = (props: EnterValidateCodeProps) => {
 
   const dispatch = useAppDispatch();
 
-  const orderIndex = useSelector((state: RootState) => state.searchPassword.index);
-  const email = useSelector((state: RootState) => state.searchPassword.email);
+  const searchPassword = useSelector((state: RootState) => state.searchPassword);
+  const { index: orderIndex, email } = searchPassword;
 
-  const [searchPasswordValidateEmailAPI] = useSearchPasswordValidateEmailMutation();
-  const [searchPasswordSendEmailAPI] = useSearchPasswordSendEmailMutation();
+  const [searchPasswordValidateEmailAPI, { isLoading: validateEmailLoading }] =
+    useSearchPasswordValidateEmailMutation();
+  const [searchPasswordSendEmailAPI, { isLoading: sendEmailLoading }] = useSearchPasswordSendEmailMutation();
 
   const checkValidationCode = (currentNumber: string) => {
     if (currentNumber.length !== 6) {
@@ -76,6 +78,10 @@ const EnterValidateCode = (props: EnterValidateCodeProps) => {
       console.error('이메일을 다시 발송하는데 문제가 발생하였습니다.');
     }
   };
+
+  if (validateEmailLoading || sendEmailLoading) {
+    return <Loading />;
+  }
 
   return (
     <EnterValidateCodeBlock>
