@@ -10,6 +10,7 @@ import Title from '../common/atoms/Title';
 import EmptyItemNotification from '../common/EmptyItemNotification';
 import Loading from '../common/Loading/Loading';
 import Responsive from '../common/Responsive';
+import ScrollToTopButton from '../common/ScrollToTopButton';
 import StyledPadding from '../common/StyledPadding';
 
 interface MeLikeStadiumProps {}
@@ -54,6 +55,7 @@ const MeLikeStadium = ({}: MeLikeStadiumProps) => {
         />
       )}
       <StyledPadding />
+      <ScrollToTopButton />
     </MeLikeStadiumBlock>
   );
 };
