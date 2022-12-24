@@ -18,6 +18,10 @@ interface GetUnreadNotificationResponse {
   result: boolean;
 }
 
+interface ReadNotificationResponse {
+  result: boolean;
+}
+
 const authApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     getNotification: builder.query<NotificationState, string>({
@@ -33,7 +37,7 @@ const authApi = baseApi.injectEndpoints({
       }),
       providesTags: (result, error, id) => [{ type: 'User', id }],
     }),
-    readNotification: builder.mutation({
+    readNotification: builder.mutation<ReadNotificationResponse, number>({
       query: (notificationId: number) => ({
         url: `/notifications/${notificationId}`,
         method: 'PATCH',
