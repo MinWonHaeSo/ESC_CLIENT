@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import Button from '../common/atoms/Button';
 import Input from '../common/atoms/Input';
 import Title from '../common/atoms/Title';
+import Loading from '../common/Loading/Loading';
 import Responsive from '../common/Responsive';
 import RequiredMessage from '../SignUp/RequiredMessage';
 import { checkEmailValidation } from './formValidation';
@@ -25,7 +26,7 @@ const ValidateEmail = (props: ValidateEmailProps) => {
   const orderIndex = useSelector((state: RootState) => state.searchPassword.index);
   const dispatch = useAppDispatch();
 
-  const [searchPasswordSendEmailAPI] = useSearchPasswordSendEmailMutation();
+  const [searchPasswordSendEmailAPI, { isLoading }] = useSearchPasswordSendEmailMutation();
 
   const handleInputEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentEmail = e.target.value;
@@ -50,6 +51,10 @@ const ValidateEmail = (props: ValidateEmailProps) => {
       console.error(`이메일이 잘못되었습니다.`);
     }
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <FindPasswordBlock>
