@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from '@emotion/styled';
 import CustomDate from '../common/CustomDate';
@@ -18,7 +18,6 @@ const ReservationDate = ({ trigger }: ReservationDateProps) => {
   const handleChangeDate = useCallback(
     (date: Date) => {
       const yyyymmddDate = formatter.getFullDate(date);
-      debugger;
       trigger({ id: reservation.id, date: yyyymmddDate });
     },
     [dispatch],

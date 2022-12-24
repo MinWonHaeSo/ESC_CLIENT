@@ -9,6 +9,7 @@ import ReservationDate from './ReservationDate';
 import ReservationButton from './ReservationButton';
 import ReservationAccordion from './ReservationAccordion';
 import TimeSelectList from './TImeSelectList';
+import { ScrollToTop } from '@/hooks/useScollToTop';
 
 interface ReservationStepOneProps {
   data: GetReservationStadiumTimeReseponse;
@@ -19,6 +20,7 @@ const ReservationStepOne = ({ data }: ReservationStepOneProps) => {
 
   return (
     <ReservationContainer>
+      <ScrollToTop />
       <Title fontSize={typo.large}>체육관 예약</Title>
       <SubTitle>날짜, 시간, 인원</SubTitle>
       <ReservationInfo>

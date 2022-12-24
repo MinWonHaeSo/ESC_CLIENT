@@ -60,6 +60,9 @@ export const stadiumReservationSlice = createSlice({
       const findIdx = state.data.items.findIndex(item => item.id === action.payload.id);
       state.data.items[findIdx].count = action.payload.count;
     },
+    setPaymentType: (state, action: PayloadAction<string>) => {
+      state.data.paymentType = action.payload;
+    },
     clearReservation: () => initialState,
   },
   extraReducers: builder => {
@@ -74,7 +77,14 @@ export const stadiumReservationSlice = createSlice({
   },
 });
 
-export const { nextStep, selectDate, changeCount, changeRentalItemCount, toggleRentalItem, clearReservation } =
-  stadiumReservationSlice.actions;
+export const {
+  nextStep,
+  selectDate,
+  changeCount,
+  changeRentalItemCount,
+  toggleRentalItem,
+  setPaymentType,
+  clearReservation,
+} = stadiumReservationSlice.actions;
 
 export const stadiumReservationReducer = stadiumReservationSlice.reducer;

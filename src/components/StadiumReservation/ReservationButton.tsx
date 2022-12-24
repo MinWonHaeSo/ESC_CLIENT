@@ -1,20 +1,25 @@
-import React, { useCallback } from 'react';
 import styled from '@emotion/styled';
 import { useDispatch, useSelector } from 'react-redux';
 import palette from '@/lib/styles/palette';
 import { nextStep } from '@/store/stadiumReservationSlice';
 import { RootState } from '@/store/store';
 import Button from '../common/atoms/Button';
+import sw from '@/lib/utils/customSweetAlert';
 
 interface ReservationButtonProps {}
 
 const ReservationButton = (props: ReservationButtonProps) => {
   const step = useSelector((state: RootState) => state.stadiumReservation.step);
   const dispatch = useDispatch();
+  const reservationData = useSelector((state: RootState) => state.stadiumReservation.data);
+  const { reservingTimes: selectedDate, items: rentalItems } = reservationData;
 
-  const handleNextStep = useCallback(() => {
+  const handleNextStep = () => {
+    if (selectedDate.length === 0) {
+      return sw.toast.warn('예약 시간을 선택해 주세요.');
+    }
     dispatch(nextStep(step + 1));
-  }, [dispatch]);
+  };
 
   return (
     <ReservationButtonContainer>

@@ -6,6 +6,8 @@ import { changeRentalItemCount, RentalItemsToggleType, toggleRentalItem } from '
 import formatter from '@/lib/utils/formatter';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 
 interface ReservationRentalItemProps {
   item: RentalItemsToggleType;
@@ -40,7 +42,12 @@ const ReservationRentalItem = ({ item, step }: ReservationRentalItemProps) => {
   return (
     <RentalItemContainer>
       <div className="checkbox-container">
-        {step === 3 ? null : <input type="checkbox" checked={item.toggle!} onChange={() => handleToggleItem(item)} />}
+        {step === 3 ? null : (
+          <>
+            <input type="checkbox" id="checkbox" checked={item.toggle!} onChange={() => handleToggleItem(item)} />{' '}
+            <label htmlFor="checkbox"></label>
+          </>
+        )}
       </div>
       <div className="image-container">
         <img src={item.imgUrl ? item.imgUrl : `https://via.placeholder.com/80x80`} alt="" width="80" height="80" />
@@ -85,6 +92,39 @@ const RentalItemContainer = styled.div`
 
   .checkbox-container {
     margin-bottom: auto;
+
+    input[type='checkbox'] {
+      width: 18px;
+      height: 18px;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background: #fff;
+      border-radius: 4px;
+      border: 1px solid ${palette.grey[300]};
+      cursor: pointer;
+    }
+
+    input[type='checkbox']::after {
+      content: '';
+      display: none;
+      top: 20%;
+      left: 37%;
+      width: 15%;
+      height: 40%;
+      border: solid #fff;
+      border-width: 0 2px 2px 0;
+      position: relative;
+      transform: rotate(45deg);
+    }
+
+    input[type='checkbox']:checked {
+      border: #fff;
+      background-color: ${palette.primary['green']};
+    }
+    input[type='checkbox']:checked::after {
+      display: block;
+    }
   }
 
   .image-container {

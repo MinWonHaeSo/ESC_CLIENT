@@ -5,28 +5,30 @@ import { StadiumReservationStateData } from '@/store/stadiumReservationSlice';
 import styled from '@emotion/styled';
 import AccordionToggleButton from './ToggleButton';
 import StyledSeparateLine from './StyledSerparateLine';
+import { useState } from 'react';
 
 interface ReservationInfoProps {
-  infoOpen: boolean;
-  onReserveInfoToggle: () => void;
   infoData: StadiumReservationStateData;
+  price: {
+    rentalItemTotalPrice: number;
+    totalPaymentPrice: number;
+  };
 }
 
-const ReservationInfo = ({ infoOpen, onReserveInfoToggle, infoData }: ReservationInfoProps) => {
-  const { items, pricePerHalfHour, reservingDate, reservedTimes, headCount } = infoData;
-
-  const rentalItemTotalPrice = items.reduce((acc, curr) => {
-    acc += curr.price;
-    return acc;
-  }, 0);
-
-  const totalPrice = pricePerHalfHour * 1 + rentalItemTotalPrice;
+const ReservationInfo = ({ infoData, price }: ReservationInfoProps) => {
+  const [infoOpen, setInfoOpen] = useState<boolean>(false);
+  const handleReserveInfoToggle = () => {
+    setInfoOpen(prev => !prev);
+  };
+  const { items, pricePerHalfHour, reservingDate, reservingTimes, reservedTimes, headCount } = infoData;
+  const { rentalItemTotalPrice, totalPaymentPrice } = price;
+  console.log(reservingTimes);
 
   return (
     <ReservationInfoBlock>
       <TitleWrapper>
         <h2>예약 정보</h2>
-        <AccordionToggleButton open={infoOpen} onAccordionToggle={onReserveInfoToggle} />
+        <AccordionToggleButton open={infoOpen} onAccordionToggle={handleReserveInfoToggle} />
       </TitleWrapper>
       <StyledSeparateLine />
       <ReservationInfoBody open={infoOpen}>
@@ -37,7 +39,8 @@ const ReservationInfo = ({ infoOpen, onReserveInfoToggle, infoData }: Reservatio
         <div>
           <dt>예약 시간</dt>
           <dd>
-            {reservedTimes[0]}외 {reservedTimes.length}개
+            <span>{reservingTimes.length === 0 ? null : reservingTimes[0]}</span>외{' '}
+            <span>{reservingTimes.length === 0 ? '0' : reservingTimes.length - 1}</span>개
           </dd>
         </div>
         <div>
@@ -47,16 +50,16 @@ const ReservationInfo = ({ infoOpen, onReserveInfoToggle, infoData }: Reservatio
         <StyledSeparateLine />
         <div>
           <dt>체육관 예약 금액</dt>
-          <dd>{formatter.getIntlCurrencyKr(pricePerHalfHour)}</dd>
+          <dd>{formatter.getIntlCurrencyKr(pricePerHalfHour * reservingTimes.length)}</dd>
         </div>
         <div>
-          <dt>대여용품 총 금액</dt>
-          <dd>{formatter.getIntlCurrencyKr(rentalItemTotalPrice)}</dd>
+          <dt>총 대여용품 금액</dt>
+          <dd>{formatter.getIntlCurrencyKr(rentalItemTotalPrice * items.length)}</dd>
         </div>
       </ReservationInfoBody>
       <InfoBodyTotalPrice>
         <dt>최종 결제 금액</dt>
-        <dd>{formatter.getIntlCurrencyKr(totalPrice)}</dd>
+        <dd>{formatter.getIntlCurrencyKr(totalPaymentPrice)}</dd>
       </InfoBodyTotalPrice>
     </ReservationInfoBlock>
   );
@@ -103,10 +106,28 @@ const ReservationInfoBody = styled.div<{ open: boolean }>`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-left: 6px;
+    padding-right: 6px;
   }
 
   dt {
     font-weight: 500;
+  }
+
+  dd {
+    span {
+      margin-right: 2px;
+      padding: 1px 8px;
+      color: #fff;
+      border-radius: 50%;
+      background-color: ${palette.primary['green']};
+    }
+
+    span:first-of-type {
+      color: ${palette.primary['green']};
+      background-color: #fff;
+      text-decoration: underline;
+    }
   }
 `;
 
@@ -116,12 +137,15 @@ const InfoBodyTotalPrice = styled.div`
   align-items: center;
   height: 50px;
   margin-top: 8px;
-  padding: 4px;
+  padding: 6px;
   border: 1px solid ${palette.primary['green']};
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   font-weight: 500;
 
+  dt {
+    color: ${palette.primary['green']};
+  }
   dd {
     color: ${palette.primary['green']};
   }

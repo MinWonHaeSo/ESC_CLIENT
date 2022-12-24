@@ -17,17 +17,17 @@ const TimeSelectList = ({ openTime, closeTime }: TimeSelectListProps) => {
   const pmTime = excludeTimes({ excludeTime: closeTime, type: 'pm' });
 
   return (
-    <div>
+    <TimeSelectButtonContainer>
       <span>오전</span>
       <TimeSelectItem times={amTime} reservedTimes={reservedTimes} />
       <Dividers />
       <span>오후</span>
       <TimeSelectItem times={pmTime} reservedTimes={reservedTimes} />
       <div></div>
-    </div>
+    </TimeSelectButtonContainer>
   );
 };
 
-const TomeSelectButtonContainer = styled.div``;
+const TimeSelectButtonContainer = styled.div``;
 
 export default TimeSelectList;
