@@ -30,6 +30,29 @@ interface FinishStadiumUtilization {}
 
 interface CancelReservation {}
 
+interface MakeReservationData {
+  date: string;
+  openTime?: string;
+  closeTime?: string;
+  headCount: number;
+  pricePerHalfHour: number;
+  items: RentalItemsType[];
+  totalPrice: number;
+  reservingTimes: string[];
+  email: string;
+  paymentType: string;
+}
+
+interface MakeReservationRequest {
+  id: string;
+  finalReservationData: MakeReservationData;
+}
+
+interface MakeReservationResponse {
+  statusCode: number;
+  successMessage: string;
+}
+
 export const reservationApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     getReservationStadiumTime: builder.query<GetReservationStadiumTimeReseponse, GetReservationStadiumTimeRequest>({
@@ -38,6 +61,13 @@ export const reservationApi = baseApi.injectEndpoints({
         transformResponse: (response: { data: GetReservationStadiumTimeReseponse }) => response.data,
         method: 'GET',
         params: { date },
+      }),
+    }),
+    makeReservation: builder.mutation<MakeReservationResponse, MakeReservationRequest>({
+      query: ({ id, finalReservationData }) => ({
+        url: `/stadiums/${id}/payment`,
+        method: 'POST',
+        body: finalReservationData,
       }),
     }),
     finishStadiumUtilization: builder.mutation<any, { stadiumId: number; reservationId: number }>({
@@ -55,5 +85,9 @@ export const reservationApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetReservationStadiumTimeQuery, useFinishStadiumUtilizationMutation, useCancelReservationMutation } =
-  reservationApi;
+export const {
+  useGetReservationStadiumTimeQuery,
+  useMakeReservationMutation,
+  useFinishStadiumUtilizationMutation,
+  useCancelReservationMutation,
+} = reservationApi;
