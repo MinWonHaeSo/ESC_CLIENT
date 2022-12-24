@@ -1,95 +1,75 @@
-import { NotificationTabList } from '@/constants/notificationTab';
+import { useGetNotificationQuery, useReadNotificationMutation } from '@/api/notificationApi';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
+import { useCallback } from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import Title from '../common/atoms/Title';
+import Loading from '../common/Loading/Loading';
 import Responsive from '../common/Responsive';
+import ScrollToTopButton from '../common/ScrollToTopButton';
+import NotificationList from './NotificationList';
+import NotificationTab from './NotificationTab';
 
 interface NotificationProps {}
 
 const Notification = ({}: NotificationProps) => {
   const [currentTab, setCurrentTab] = useState<number>(0);
+  const { data, isLoading, refetch } = useGetNotificationQuery('', { refetchOnMountOrArgChange: true });
+  const [readNotificationAPI, { isLoading: readIsLoading }] = useReadNotificationMutation();
 
   const handleTabClick = (index: number) => {
     setCurrentTab(index);
   };
 
+  const handleNotificationClick = useCallback(async (notificationId: number) => {
+    const response = await readNotificationAPI(notificationId);
+    try {
+      if (response) {
+        refetch();
+      }
+    } catch {
+      console.error('알림 내역을 다시 가져오는데 실패하였습니다.');
+    }
+  }, []);
+
+  if (isLoading || !data || readIsLoading) {
+    return <Loading />;
+  }
+
+  const notificationData = data.content;
+
+  const unReadNotificationData = notificationData.filter(notification => notification.read === false);
+  const readNotificationData = notificationData.filter(notification => notification.read === true);
+
   return (
     <NotificationBlock>
       <TitleWrapper>
-        <Title fontSize={`${typo.xxLarge}`} marginTop={'20px'}>
+        <Title fontSize={typo.xxLarge} marginTop={'20px'}>
           알림 내역
         </Title>
         <TotalNotification>
-          <span>3 </span>개
+          {currentTab === 0 ? (
+            <div>
+              <span>{unReadNotificationData.length} </span>개
+            </div>
+          ) : (
+            <div>
+              <span>{readNotificationData.length} </span>개
+            </div>
+          )}
         </TotalNotification>
       </TitleWrapper>
-      <TabList>
-        {NotificationTabList.map(tab => (
-          <Tab key={tab.id} isActive={currentTab === tab.id ? true : false} onClick={() => handleTabClick(tab.id)}>
-            {tab.name}
-          </Tab>
-        ))}
-      </TabList>
+      <NotificationTab currentTab={currentTab} onTabClick={handleTabClick} />
       <StyledLine />
-      <NotificationList>
-        <Li>
-          <Link to={''}>
-            <SWrapper>
-              <NotificationId></NotificationId>
-              <Message>홍길동이 리뷰를 작성하였습니다.</Message>
-            </SWrapper>
-            <LocalDateTime>2022-12-15 03:25</LocalDateTime>
-          </Link>
-        </Li>
-        <Li>
-          <Link to={''}>
-            <SWrapper>
-              <NotificationId></NotificationId>
-              <Message>홍길동이 리뷰를 작성하였습니다.</Message>
-            </SWrapper>
-            <LocalDateTime>2022-12-15 03:25</LocalDateTime>
-          </Link>
-        </Li>
-        <Li>
-          <Link to={''}>
-            <SWrapper>
-              <NotificationId></NotificationId>
-              <Message>홍길동이 리뷰를 작성하였습니다.</Message>
-            </SWrapper>
-            <LocalDateTime>2022-12-15 03:25</LocalDateTime>
-          </Link>
-        </Li>
-        <Li>
-          <Link to={''}>
-            <SWrapper>
-              <NotificationId></NotificationId>
-              <Message>홍길동이 리뷰를 작성하였습니다.</Message>
-            </SWrapper>
-            <LocalDateTime>2022-12-15 03:25</LocalDateTime>
-          </Link>
-        </Li>
-        <Li>
-          <Link to={''}>
-            <SWrapper>
-              <NotificationId></NotificationId>
-              <Message>홍길동이 리뷰를 작성하였습니다.</Message>
-            </SWrapper>
-            <LocalDateTime>2022-12-15 03:25</LocalDateTime>
-          </Link>
-        </Li>
-        <Li>
-          <Link to={''}>
-            <SWrapper>
-              <NotificationId></NotificationId>
-              <Message>홍길동이 리뷰를 작성하였습니다.</Message>
-            </SWrapper>
-            <LocalDateTime>2022-12-15 03:25</LocalDateTime>
-          </Link>
-        </Li>
-      </NotificationList>
+      <NotificationList
+        currentTab={currentTab}
+        onNotificationClick={handleNotificationClick}
+        unReadNotificationData={unReadNotificationData}
+        readNotificationData={readNotificationData}
+      />
+      {unReadNotificationData.length === 0 || readNotificationData.length < 2 ? <StyledPadding /> : null}
+      <ScrollToTopButton />
     </NotificationBlock>
   );
 };
@@ -111,32 +91,12 @@ const TitleWrapper = styled.div`
 const TotalNotification = styled.div`
   margin-right: 8px;
   font-weight: 600;
-  span {
-    font-size: ${typo.xxLarge};
-    color: ${palette.primary['green']};
+  div {
+    span {
+      font-size: ${typo.xxLarge};
+      color: ${palette.primary['green']};
+    }
   }
-`;
-
-const TabList = styled.ul`
-  position: -webkit-sticky;
-  position: sticky;
-  top: 80px;
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.5rem;
-  background-color: #fff;
-  z-index: 999;
-`;
-
-const Tab = styled.li<{ isActive: boolean }>`
-  padding: 6px;
-  width: 70px;
-  font-size: ${typo.base};
-  font-weight: 600;
-  color: ${({ isActive }) => (isActive ? `${palette.black[200]}` : `${palette.grey[300]}`)};
-  background-color: #fff;
-  border-bottom: ${({ isActive }) => (isActive ? `4px solid ${palette.black[200]}` : '')};
-  text-align: center;
 `;
 
 const StyledLine = styled.div`
@@ -149,58 +109,6 @@ const StyledLine = styled.div`
   background-color: ${palette.grey[200]};
 `;
 
-const NotificationList = styled.ul`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-const Li = styled.li`
-  position: relative;
-  padding: 8px 20px;
-  width: 100%;
-  border-radius: 10px;
-  border: 1px solid ${palette.grey[100]};
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-
-  &:hover {
-    i {
-      display: block;
-    }
-  }
-
-  i {
-    display: none;
-    position: absolute;
-    top: 50%;
-    right: 20px;
-    font-size: 24px;
-    transform: translateY(-50%);
-  }
-`;
-
-const SWrapper = styled.div`
-  display: flex;
-  justify-content: flex-start;
-`;
-
-const NotificationId = styled.span`
-  display: inline-block;
-  margin: 7px 8px 0 0;
-  width: 10px;
-  height: 10px;
-  border: 1px solid ${palette.grey[200]};
-  border-radius: 50%;
-  background-color: ${palette.primary.green};
-`;
-
-const Message = styled.p`
-  margin-bottom: 12px;
-  font-size: ${typo.base};
-  font-weight: 500;
-`;
-
-const LocalDateTime = styled.div`
-  font-size: ${typo.small};
-  color: ${palette.grey[400]};
+const StyledPadding = styled.div`
+  height: 210px;
 `;

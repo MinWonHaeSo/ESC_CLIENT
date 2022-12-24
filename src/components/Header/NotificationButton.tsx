@@ -1,9 +1,11 @@
+import { useGetUnreadNotificationQuery } from '@/api/notificationApi';
 import PATH from '@/constants/path';
 import palette from '@/lib/styles/palette';
 import { RootState } from '@/store/store';
 import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Loading from '../common/Loading/Loading';
 
 interface NotificationButton {
   onListClick: () => void;
@@ -11,13 +13,20 @@ interface NotificationButton {
 
 const NotificationButton = ({ onListClick }: NotificationButton) => {
   const loggedIn = useSelector((state: RootState) => state.auth.loggedIn);
+  const { currentData = { cnt: 0, result: true }, isLoading: unreadIsLoading } = useGetUnreadNotificationQuery('');
 
+  if (unreadIsLoading || !currentData) {
+    return <Loading />;
+  }
+
+  const notificationFigure = currentData.result as boolean;
+  console.log(notificationFigure);
   return (
     <NotificationButtonBlock onClick={onListClick}>
       <NotificationLink to={PATH.ME_NOTIFICATION}>
         <i className="fa-regular fa-bell" />
       </NotificationLink>
-      {loggedIn ? <NotificationStatus unRead={false}></NotificationStatus> : null}
+      {loggedIn ? <NotificationStatus unRead={notificationFigure}></NotificationStatus> : null}
     </NotificationButtonBlock>
   );
 };
@@ -44,9 +53,6 @@ const NotificationLink = styled(Link)`
   font-size: 21px;
   color: ${palette.grey[500]};
   transition: all 0.01s ease-out;
-  i {
-    color: ${{}};
-  }
 `;
 
 const NotificationStatus = styled.span<{ unRead: boolean }>`
@@ -56,5 +62,5 @@ const NotificationStatus = styled.span<{ unRead: boolean }>`
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  background-color: ${({ unRead }) => (unRead ? `${palette.primary['red']}` : `${palette.primary['green']}`)};
+  background-color: ${({ unRead }) => (unRead ? `${palette.primary['green']}` : 'transparent')};
 `;
