@@ -49,7 +49,10 @@ const NotificationList = ({
           </Li>
         ))}
 
-      {unReadNotificationData.length === 0 || readNotificationData.length === 0 ? (
+      {unReadNotificationData.length === 0 && currentTab === 0 ? (
+        <EmptyItemNotification message={'알림을 모두 확인하였습니다'} btnActive={false} />
+      ) : null}
+      {readNotificationData.length === 0 && currentTab === 1 ? (
         <EmptyItemNotification message={'알림을 모두 확인하였습니다'} btnActive={false} />
       ) : null}
     </NotificationListBlock>

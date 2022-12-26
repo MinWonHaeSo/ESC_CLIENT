@@ -1,4 +1,8 @@
-import { useGetNotificationQuery, useReadNotificationMutation } from '@/api/notificationApi';
+import {
+  useGetReadNotificationQuery,
+  useGetUnreadNotificationQuery,
+  useReadNotificationMutation,
+} from '@/api/notificationApi';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
@@ -15,32 +19,57 @@ interface NotificationProps {}
 
 const Notification = ({}: NotificationProps) => {
   const [currentTab, setCurrentTab] = useState<number>(0);
-  const { data, isLoading, refetch } = useGetNotificationQuery('', { refetchOnMountOrArgChange: true });
-  const [readNotificationAPI, { isLoading: readIsLoading }] = useReadNotificationMutation();
+  const {
+    data: readData,
+    isLoading: readDataIsLoading,
+    refetch: readDataRefetch,
+  } = useGetReadNotificationQuery('', { refetchOnMountOrArgChange: true });
+
+  const {
+    data: unReadData,
+    isLoading: unReadDataIsLoading,
+    refetch: unReadDataRefetch,
+  } = useGetUnreadNotificationQuery('', {
+    refetchOnMountOrArgChange: true,
+  });
+
+  const [readNotificationAPI, { isLoading: readMutationIsLoading }] = useReadNotificationMutation();
+
+  console.log(unReadData);
+  console.log(readData);
 
   const handleTabClick = (index: number) => {
     setCurrentTab(index);
+    if (index === 0) {
+      unReadDataRefetch();
+    }
+    if (index === 1) {
+      readDataRefetch();
+    }
   };
 
   const handleNotificationClick = useCallback(async (notificationId: number) => {
     const response = await readNotificationAPI(notificationId);
     try {
       if (response) {
-        refetch();
+        console.log('읽음 처리 되었습니다.');
       }
-    } catch {
+    } catch (error) {
+      console.log(error);
       console.error('알림 내역을 다시 가져오는데 실패하였습니다.');
     }
   }, []);
 
-  if (isLoading || !data || readIsLoading) {
+  if (readDataIsLoading || !readData || !unReadData || readMutationIsLoading) {
     return <Loading />;
   }
 
-  const notificationData = data.content;
+  if (unReadDataIsLoading || !unReadData) {
+    return <Loading />;
+  }
 
-  const unReadNotificationData = notificationData.filter(notification => notification.read === false);
-  const readNotificationData = notificationData.filter(notification => notification.read === true);
+  const readNotificationData = readData.content;
+  const unReadNotificationData = unReadData.content;
 
   return (
     <NotificationBlock>
@@ -51,11 +80,11 @@ const Notification = ({}: NotificationProps) => {
         <TotalNotification>
           {currentTab === 0 ? (
             <div>
-              <span>{unReadNotificationData.length} </span>개
+              <span>{unReadData.totalElements} </span>개
             </div>
           ) : (
             <div>
-              <span>{readNotificationData.length} </span>개
+              <span>{readData.totalElements} </span>개
             </div>
           )}
         </TotalNotification>
@@ -65,8 +94,8 @@ const Notification = ({}: NotificationProps) => {
       <NotificationList
         currentTab={currentTab}
         onNotificationClick={handleNotificationClick}
-        unReadNotificationData={unReadNotificationData}
         readNotificationData={readNotificationData}
+        unReadNotificationData={unReadNotificationData}
       />
       {unReadNotificationData.length === 0 || readNotificationData.length < 2 ? <StyledPadding /> : null}
       <ScrollToTopButton />
