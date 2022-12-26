@@ -7,6 +7,7 @@ import { RootState, useAppDispatch } from '@/store/store';
 import styled from '@emotion/styled';
 import { useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 import EmptyItemNotification from '../common/EmptyItemNotification';
 import Loading from '../common/Loading/Loading';
 
@@ -17,7 +18,7 @@ interface NotificationUnreadProps {
 const NotificationUnread = ({ content }: NotificationUnreadProps) => {
   const [readNotificationAPI, { isLoading: readMutationIsLoading }] = useReadNotificationMutation();
   const [unReadtrigger] = notificationApi.endpoints.getUnreadNotification.useLazyQuery();
-
+  const navigate = useNavigate();
   const { isLast, nextPage } = useSelector((state: RootState) => state.notification);
   const dispatch = useAppDispatch();
 
@@ -29,10 +30,11 @@ const NotificationUnread = ({ content }: NotificationUnreadProps) => {
 
   const $observerTarget = useInfinityScroll(fetchNextPage);
 
-  const handleNotificationClick = useCallback(async (notificationId: string) => {
+  const handleNotificationClick = useCallback(async (notificationId: string, notificationUrl: string) => {
     const response = await readNotificationAPI(notificationId);
     try {
       if (response) {
+        navigate(notificationUrl);
         console.log('읽음 처리 되었습니다.');
       }
     } catch (error) {
@@ -55,7 +57,7 @@ const NotificationUnread = ({ content }: NotificationUnreadProps) => {
     <Container>
       {content.map(notification => (
         <Li key={notification.id}>
-          <button onClick={() => handleNotificationClick(notification.id)}>
+          <button onClick={() => handleNotificationClick(notification.id, notification.url)}>
             <SWrapper>
               <NotificationId />
               <Message>{notification.message}</Message>
