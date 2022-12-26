@@ -1,9 +1,14 @@
-import { useGetLikeStadiumListQuery } from '@/api/stadiumApi';
+import { stadiumApi } from '@/api/stadiumApi';
 import PATH from '@/constants/path';
+import useInfinityScroll from '@/hooks/useInfinityScroll';
 import media from '@/lib/styles/media';
 import { typo } from '@/lib/styles/typo';
 import sw from '@/lib/utils/customSweetAlert';
+import { clearPaging } from '@/store/pagingSlice';
+import { RootState, useAppDispatch } from '@/store/store';
 import styled from '@emotion/styled';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
 import CardStadium from '../CardStadium/CardStadium';
 import Title from '../common/atoms/Title';
@@ -17,21 +22,36 @@ interface MeLikeStadiumProps {}
 
 const MeLikeStadium = ({}: MeLikeStadiumProps) => {
   const location = useLocation();
-  const { data, isLoading, error, refetch } = useGetLikeStadiumListQuery('', {
-    refetchOnMountOrArgChange: true,
-  });
+  const dispatch = useAppDispatch();
 
-  const likeStadiumList = data?.content;
-  console.log(likeStadiumList);
+  const [trigger, { isLoading, error }] = stadiumApi.endpoints.getLikeStadiumList.useLazyQuery();
+  const { content, isLast, nextPage } = useSelector((state: RootState) => state.paging);
+
+  const fetchNextPage = () => {
+    if (isLast) return;
+    const page = nextPage ? nextPage : 0;
+    trigger(page.toString());
+  };
+
+  const $observerTarget = useInfinityScroll(fetchNextPage);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearPaging());
+    };
+  }, [dispatch]);
 
   if (error) {
     sw.toast.error('잘못된 요청입니다.');
     console.error('잘못된 요청입니다.');
   }
 
-  if (isLoading || !data) {
+  if (isLoading) {
     return <Loading />;
   }
+
+  const likeStadiumList = content;
+  console.log(likeStadiumList);
 
   return (
     <MeLikeStadiumBlock>
@@ -40,10 +60,10 @@ const MeLikeStadium = ({}: MeLikeStadiumProps) => {
           찜한 체육관
         </Title>
       </TitleWrapper>
-      {likeStadiumList!.length > 0 ? (
+      {likeStadiumList!.length ? (
         <LikeStadiumList>
           {likeStadiumList!.map(stadium => (
-            <CardStadium key={stadium.name} stadium={stadium} currentLocation={location.pathname} refetch={refetch} />
+            <CardStadium key={stadium.name} stadium={stadium} currentLocation={location.pathname} />
           ))}
         </LikeStadiumList>
       ) : (
@@ -54,6 +74,7 @@ const MeLikeStadium = ({}: MeLikeStadiumProps) => {
           path={PATH.ROOT}
         />
       )}
+      <div ref={$observerTarget} />
       <StyledPadding />
       <ScrollToTopButton />
     </MeLikeStadiumBlock>
