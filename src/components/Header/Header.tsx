@@ -26,12 +26,14 @@ const Header = (props: HomeProps) => {
   const checkHeader = usePathHeaderOnlyLogo();
 
   const goBack = useGoBack();
+
+  const [refetchUserInfoAPI, { isLoading }] = useRefetchUserInfoMutation();
+
+  const dispatch = useAppDispatch();
+
   const handleChangeIsActive = () => {
     setIsActive(!isActive);
   };
-
-  const [refetchUserInfoAPI, { isLoading }] = useRefetchUserInfoMutation();
-  const dispatch = useAppDispatch();
 
   const checkLogin = useCallback(async () => {
     if (loggedIn) {
@@ -40,11 +42,12 @@ const Header = (props: HomeProps) => {
     const accessToken = getAuthToken();
     const userType = localStorage.getItem('userType');
     const refreshToken = getCookie('refreshToken');
-    dispatch(setCredentials({ accessToken: accessToken }));
+    dispatch(setCredentials({ accessToken, refreshToken }));
 
     try {
-      const response = await refetchUserInfoAPI(refreshToken).unwrap();
+      const response = await refetchUserInfoAPI('').unwrap();
       const { id, nickname, name, email, imgUrl, password } = response;
+      const accessToken = getAuthToken();
 
       if (response) {
         dispatch(

@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import CustomTime from '../common/CustomTime';
 
-interface RserevationTimeProps {}
+interface ReservationTimeProps {}
 
-const RserevationTime = (props: RserevationTimeProps) => {
+const ReservationTime = (props: ReservationTimeProps) => {
   const [time, setTime] = useState(new Date());
 
   return <CustomTime value={time} onChange={date => setTime(date!)} customInput={<CustomInput />} />;
@@ -20,4 +20,4 @@ const CustomInput = styled.input`
   border: 1px solid grey;
 `;
 
-export default RserevationTime;
+export default ReservationTime;

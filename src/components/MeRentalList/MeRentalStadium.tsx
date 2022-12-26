@@ -1,44 +1,16 @@
-import { RentalStadium, useGetRentalStadiumListQuery } from '@/api/stadiumApi';
-import { DEFAULT_ICONURL } from '@/constants/defaultImage';
+import { useCancelReservationMutation } from '@/api/reservationApi';
+import { useGetRentalStadiumListQuery } from '@/api/stadiumApi';
+import { modalContext } from '@/context/ModalContext';
 import media from '@/lib/styles/media';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
+import { useContext } from 'react';
 import { useLocation } from 'react-router';
 import CardStadium from '../CardStadium/CardStadium';
 import Button from '../common/atoms/Button';
 import EmptyItemNotification from '../common/EmptyItemNotification';
 import Loading from '../common/Loading/Loading';
-
-// mock Data
-const stadiumData: RentalStadium[] = [
-  {
-    status: 'RESERVED',
-    name: '강남 체육관',
-    address: '서울시 강남구 언주로 45길 123',
-    starAvg: 4.5,
-    imgUrl: DEFAULT_ICONURL,
-    reservationId: 1,
-    stadiumId: 9,
-  },
-  {
-    status: 'CANCELED',
-    name: '강남 체육관',
-    address: '서울시 강남구 언주로 45길 123',
-    starAvg: 4.5,
-    imgUrl: DEFAULT_ICONURL,
-    reservationId: 1,
-    stadiumId: 2,
-  },
-  {
-    status: 'CANCELED',
-    name: '강남 체육관',
-    address: '서울시 강남구 언주로 45길 123',
-    starAvg: 4.5,
-    imgUrl: DEFAULT_ICONURL,
-    reservationId: 1,
-    stadiumId: 3,
-  },
-];
+import MeRentalStadiumDetailModal from './MeRentalStadiumDetailModal';
 
 interface MeRentalStadiumProps {
   sort: 'up' | 'down';
@@ -47,30 +19,54 @@ interface MeRentalStadiumProps {
 const MeRentalStadium = ({ sort }: MeRentalStadiumProps) => {
   const location = useLocation();
 
-  const handleShowDetailClick = () => {};
+  const openModal = useContext(modalContext)?.openModal;
+  const closeModal = useContext(modalContext)?.closeModal;
 
-  const { data, isLoading } = useGetRentalStadiumListQuery('');
-  const rentalStadiumData = data?.content;
-  console.log(rentalStadiumData);
+  const {
+    data,
+    isLoading,
+    refetch: rentalStadiumListRefetch,
+  } = useGetRentalStadiumListQuery('', { refetchOnMountOrArgChange: true });
+  console.log(data);
+  const [cancelReservationAPI, { isLoading: cancelLoading }] = useCancelReservationMutation();
 
-  if (isLoading || !data) {
+  const handleShowDetailClick = async (reservationId: number, stadiumId: number) => {
+    openModal?.(
+      <MeRentalStadiumDetailModal
+        reservationId={reservationId}
+        stadiumId={stadiumId}
+        closeModal={closeModal!}
+        rentalStadiumListRefetch={rentalStadiumListRefetch}
+      />,
+    );
+  };
+
+  const handleCancelClick = async (reservationId: number, stadiumId: number) => {
+    await cancelReservationAPI({ reservationId, stadiumId });
+    rentalStadiumListRefetch();
+  };
+
+  if (isLoading || !data || cancelLoading) {
     return <Loading />;
   }
 
+  const rentalStadiumData = data.content;
+
   return (
     <>
-      {rentalStadiumData!.length > 0 && sort === 'up' ? (
+      {rentalStadiumData.length > 0 && sort === 'up' ? (
         <MeRentalStadiumGrid>
-          {rentalStadiumData!.map(stadium => {
+          {rentalStadiumData.map(stadium => {
+            const { reservationId, stadiumId } = stadium;
             return (
-              <MeRentalStadiumBlock key={stadium.stadiumId}>
+              <MeRentalStadiumBlock key={stadium.reservationId}>
                 <CardStadium stadium={stadium} currentLocation={location.pathname} />
                 <ButtonWrapper>
                   <Button
                     type={'button'}
                     size={'small'}
                     backgroundColor={`${palette.black[100]}`}
-                    onClick={handleShowDetailClick}
+                    onClick={() => handleShowDetailClick(reservationId!, stadiumId)}
                   >
                     상세보기
                   </Button>
@@ -79,7 +75,7 @@ const MeRentalStadium = ({ sort }: MeRentalStadiumProps) => {
                       type={'button'}
                       size={'small'}
                       backgroundColor={`${palette.primary.red}`}
-                      onClick={() => {}}
+                      onClick={() => handleCancelClick(reservationId!, stadiumId)}
                     >
                       예약취소
                     </Button>
@@ -91,17 +87,18 @@ const MeRentalStadium = ({ sort }: MeRentalStadiumProps) => {
         </MeRentalStadiumGrid>
       ) : sort === 'down' ? (
         <MeRentalStadiumGrid>
-          {rentalStadiumData!
+          {rentalStadiumData
             .map(stadium => {
+              const { reservationId, stadiumId } = stadium;
               return (
-                <MeRentalStadiumBlock key={stadium.stadiumId}>
+                <MeRentalStadiumBlock key={stadium.reservationId}>
                   <CardStadium stadium={stadium} currentLocation={location.pathname} />
                   <ButtonWrapper>
                     <Button
                       type={'button'}
                       size={'small'}
                       backgroundColor={`${palette.black[100]}`}
-                      onClick={handleShowDetailClick}
+                      onClick={() => handleShowDetailClick(reservationId!, stadiumId)}
                     >
                       상세보기
                     </Button>
@@ -110,7 +107,7 @@ const MeRentalStadium = ({ sort }: MeRentalStadiumProps) => {
                         type={'button'}
                         size={'small'}
                         backgroundColor={`${palette.primary.red}`}
-                        onClick={() => {}}
+                        onClick={() => handleCancelClick(reservationId!, stadiumId)}
                       >
                         예약취소
                       </Button>
@@ -122,7 +119,7 @@ const MeRentalStadium = ({ sort }: MeRentalStadiumProps) => {
             .reverse()}
         </MeRentalStadiumGrid>
       ) : (
-        <EmptyItemNotification message="예약한 체육관이 없습니다." />
+        <EmptyItemNotification message="예약한 체육관이 없습니다." btnActive={false} />
       )}
     </>
   );
@@ -148,10 +145,8 @@ const MeRentalStadiumBlock = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 1rem;
-  padding: 10px;
   gap: 0.8rem;
   border-radius: 10px;
-  /* box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px; */
 
   ${media.mediumMin} {
     gap: 1rem;

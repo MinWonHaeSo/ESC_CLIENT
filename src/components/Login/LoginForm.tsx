@@ -54,7 +54,7 @@ const LoginForm = (props: LoginFormProps) => {
     try {
       const userData = await loginAPI({ email: email, password: password, type: userType }).unwrap();
       if (userData) {
-        const { id, name, nickname, imgUrl, accessToken, refreshToken } = userData;
+        const { type, id, name, nickname, imgUrl, accessToken, refreshToken } = userData;
 
         // cookie에 refreshToken 저장
         setCookie('refreshToken', refreshToken, {
@@ -62,15 +62,13 @@ const LoginForm = (props: LoginFormProps) => {
           secure: true,
         });
 
-        // localStorage에 accessToken 저장
         setAuthToken(accessToken);
-        localStorage.setItem('userType', userType);
+        localStorage.setItem('userType', type);
 
-        // redux store - 전역 상태에 저장
         dispatch(
           setLogin({
             id: id,
-            type: userType,
+            type: type,
             email: email,
             name: name,
             password: password,

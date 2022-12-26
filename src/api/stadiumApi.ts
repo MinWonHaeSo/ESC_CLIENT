@@ -70,9 +70,9 @@ interface LikeStadium {
   imgUrl: string;
 }
 
-export type LikeStadiumListResponse = {
+export interface LikeStadiumListResponse extends PageType {
   content: LikeStadium[];
-};
+}
 
 export type ReservationStatus = 'RESERVED' | 'EXECUTED' | 'CANCELED';
 
@@ -86,7 +86,7 @@ export interface RentalStadium {
   status?: ReservationStatus;
 }
 
-interface RentalStadiumListResponse {
+interface RentalStadiumListResponse extends PageType {
   content: RentalStadium[];
 }
 
@@ -102,7 +102,7 @@ interface GetManagerListResponse extends PageType {
   content: RentalStadium[];
 }
 
-interface RentalStadiumDetail {
+export interface RentalStadiumDetail {
   reservationId: number;
   stadiumId: number;
   name: string;
@@ -180,7 +180,7 @@ export const stadiumApi = baseApi.injectEndpoints({
         method: 'GET',
       }),
     }),
-    getRentalStadiumDetail: builder.query<RentalStadiumDetail, { stadiumId: string; reservationId: string }>({
+    getRentalStadiumDetail: builder.query<RentalStadiumDetail, { reservationId: number; stadiumId: number }>({
       query: ({ stadiumId, reservationId }) => ({
         url: `/stadiums/${stadiumId}/reservations/${reservationId}`,
         method: 'GET',

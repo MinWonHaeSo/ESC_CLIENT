@@ -29,8 +29,8 @@ const App = () => {
   return (
     <CookiesProvider>
       <OriginFilesProvider>
-        <ModalProvider>
-          <Provider store={store}>
+        <Provider store={store}>
+          <ModalProvider>
             <BrowserRouter>
               <ScrollToTop />
               <Routes>
@@ -56,8 +56,8 @@ const App = () => {
                 </Route>
               </Routes>
             </BrowserRouter>
-          </Provider>
-        </ModalProvider>
+          </ModalProvider>
+        </Provider>
       </OriginFilesProvider>
     </CookiesProvider>
   );

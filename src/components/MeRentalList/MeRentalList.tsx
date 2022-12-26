@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import Title from '../common/atoms/Title';
 import Responsive from '../common/Responsive';
+import ScrollToTopButton from '../common/ScrollToTopButton';
 import StyledPadding from '../common/StyledPadding';
 import MeRentalStadium from './MeRentalStadium';
 
@@ -58,13 +59,7 @@ const MeRentalList = ({}: MeRentalListProps) => {
             setShow(prev => !prev);
           }}
         />
-        <ScrollToTopButton
-          onClick={() => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-        >
-          <i className="fa-solid fa-angle-up" />
-        </ScrollToTopButton>
+        <ScrollToTopButton />
       </MeRentalListBlock>
     </>
   );
@@ -148,15 +143,4 @@ const DimmedBackground = styled.div<{ show: boolean }>`
   visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
   transition: visibility 0.2s ease-in-out;
   opacity: 0.4;
-`;
-
-const ScrollToTopButton = styled.button`
-  position: fixed;
-  bottom: 4.2rem;
-  right: 16px;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid black;
-  z-index: 999;
 `;

@@ -1,10 +1,11 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from '@emotion/styled';
 import CustomDate from '../common/CustomDate';
 import formatter from '@/lib/utils/formatter';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
+import { typo } from '@/lib/styles/typo';
 
 interface ReservationDateProps {
   trigger: any;
@@ -17,7 +18,6 @@ const ReservationDate = ({ trigger }: ReservationDateProps) => {
   const handleChangeDate = useCallback(
     (date: Date) => {
       const yyyymmddDate = formatter.getFullDate(date);
-      debugger;
       trigger({ id: reservation.id, date: yyyymmddDate });
     },
     [dispatch],
@@ -38,7 +38,7 @@ const CustomInput = styled.input`
   border-radius: 10px;
   background-color: white;
   height: 60px;
-  font-size: 20px;
+  font-size: ${typo.medium};
   border: 1px solid grey;
 `;
 

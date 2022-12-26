@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Portal from '@/Portal/Portal';
 import styled from '@emotion/styled';
+import Title from '../common/atoms/Title';
+import { typo } from '@/lib/styles/typo';
+import palette from '@/lib/styles/palette';
 
 interface Props {
   children: React.ReactNode;
@@ -19,26 +22,30 @@ const Modal = ({ children, openModal, setOpenModal }: Props) => {
     setOpenModal(false);
   };
 
+  useEffect(() => {
+    if (openModal) {
+      document.body.style.cssText = `
+            position: fixed; 
+            top: -${window.scrollY}px;
+            overflow-y: scroll;
+            width: 100%;`;
+      return () => {
+        const scrollY = document.body.style.top;
+        document.body.style.cssText = '';
+        window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+      };
+    }
+  }, [openModal]);
+
   return (
     <Portal>
       {openModal && (
         <ModalContainer onClick={handleCloseButton}>
           <Content>
             <Header>
-              <img src="" alt="" width="50px" height="50px" />
+              <Title fontSize={`${typo.large}`}>예약 상세 정보</Title>
               <CloseButton type="button" onClick={modalClose}>
-                <svg
-                  stroke="currentColor"
-                  fill="currentColor"
-                  strokeWidth="0"
-                  viewBox="0 0 24 24"
-                  tabIndex={1}
-                  height="1em"
-                  width="1em"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
-                </svg>
+                <i className="fa-solid fa-xmark" />
               </CloseButton>
             </Header>
             {children}
@@ -49,6 +56,8 @@ const Modal = ({ children, openModal, setOpenModal }: Props) => {
   );
 };
 
+export default Modal;
+
 const ModalContainer = styled.div`
   position: fixed;
   inset: 0px;
@@ -57,35 +66,44 @@ const ModalContainer = styled.div`
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   visibility: 'visible';
+  z-index: 999;
 `;
+
 const Content = styled.div`
+  position: absolute;
+  top: 15%;
+  right: 50%;
   max-width: 100%;
+  width: 342px;
   min-width: 40%;
   min-height: 40vh;
-  border-radius: 1rem;
-  top: 20%;
-  right: 50%;
-  position: absolute;
-  background-color: #ffffff;
+  padding: 1rem;
+  background-color: #fafafa;
+  border-radius: 10px;
   transform: translate(50%);
 `;
 
 const Header = styled.div`
   display: flex;
-  background-color: #f8f9fa;
-  border-top-left-radius: 1rem;
-  border-top-right-radius: 1rem;
-  padding: 1rem;
   justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  background-color: #fafafa;
+  border-radius: 10px 10px 0 0;
 `;
 
 const CloseButton = styled.button`
   display: flex;
-  border: none;
-  background-color: #f8f9fa;
-  font-size: 1.5rem;
-  color: #868e96;
+  justify-content: center;
+  align-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  border: 1px solid ${palette.grey[200]};
+  background-color: #fafafa;
   cursor: pointer;
-`;
 
-export default Modal;
+  i {
+    font-size: ${typo.base};
+  }
+`;

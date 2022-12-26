@@ -8,7 +8,7 @@ const Dividers = () => {
 
 const Line = styled.div`
   width: 100%;
-  border-top: 1px solid ${palette.grey[400]};
+  border-top: 1px solid ${palette.grey[200]};
   margin: 1rem 0;
 `;
 export default Dividers;

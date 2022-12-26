@@ -6,28 +6,28 @@ import excludeTimes from '@/lib/utils/excludeTimes';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 
-interface TImeSelectListProps {
+interface TimeSelectListProps {
   openTime: string;
   closeTime: string;
 }
 
-const TImeSelectList = ({ openTime, closeTime }: TImeSelectListProps) => {
+const TimeSelectList = ({ openTime, closeTime }: TimeSelectListProps) => {
   const reservedTimes = useSelector((state: RootState) => state.stadiumReservation.data.reservedTimes);
   const amTime = excludeTimes({ excludeTime: openTime, type: 'am' });
   const pmTime = excludeTimes({ excludeTime: closeTime, type: 'pm' });
 
   return (
-    <div>
+    <TimeSelectButtonContainer>
       <span>오전</span>
       <TimeSelectItem times={amTime} reservedTimes={reservedTimes} />
       <Dividers />
       <span>오후</span>
       <TimeSelectItem times={pmTime} reservedTimes={reservedTimes} />
       <div></div>
-    </div>
+    </TimeSelectButtonContainer>
   );
 };
 
-const TomeSelectButtonContainer = styled.div``;
+const TimeSelectButtonContainer = styled.div``;
 
-export default TImeSelectList;
+export default TimeSelectList;

@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import { GetReservationStadiumTimeReseponse, reservationApi } from '@/api/reservationApi';
 import { typo } from '@/lib/styles/typo';
@@ -9,7 +8,8 @@ import ReservationPerson from './ReservationPerson';
 import ReservationDate from './ReservationDate';
 import ReservationButton from './ReservationButton';
 import ReservationAccordion from './ReservationAccordion';
-import TImeSelectList from './TImeSelectList';
+import TimeSelectList from './TImeSelectList';
+import { ScrollToTop } from '@/hooks/useScollToTop';
 
 interface ReservationStepOneProps {
   data: GetReservationStadiumTimeReseponse;
@@ -20,11 +20,12 @@ const ReservationStepOne = ({ data }: ReservationStepOneProps) => {
 
   return (
     <ReservationContainer>
+      <ScrollToTop />
       <Title fontSize={typo.large}>체육관 예약</Title>
-      <h4 className="sub-title">(날짜, 시간, 인원)</h4>
+      <SubTitle>날짜, 시간, 인원</SubTitle>
       <ReservationInfo>
         <ReservationDate trigger={trigger} />
-        <ReservationAccordion component={<TImeSelectList openTime={data.openTime} closeTime={data.closeTime} />} />
+        <ReservationAccordion component={<TimeSelectList openTime={data.openTime} closeTime={data.closeTime} />} />
         <ReservationPerson />
       </ReservationInfo>
       <ReservationButton />
@@ -35,10 +36,11 @@ const ReservationStepOne = ({ data }: ReservationStepOneProps) => {
 const ReservationContainer = styled.div`
   ${Responsive.ResponsiveWrapper}
   margin-top: 1rem;
+`;
 
-  .sub-title {
-    color: ${palette.grey[300]};
-  }
+const SubTitle = styled.h4`
+  margin-top: 4px;
+  color: ${palette.grey[300]};
 `;
 
 const ReservationInfo = styled.div`

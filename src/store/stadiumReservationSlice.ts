@@ -5,17 +5,19 @@ export interface RentalItemsToggleType extends RentalItemsType {
   toggle?: boolean;
 }
 
-interface StadiumReservationState {
+export interface StadiumReservationStateData {
+  headCount: number;
+  items: RentalItemsToggleType[];
+  paymentType: string;
+  reservingDate: string;
+  reservingTimes: string[];
+  reservedTimes: string[];
+  pricePerHalfHour: number;
+}
+
+export interface StadiumReservationState {
   id: string;
-  data: {
-    headCount: number;
-    items: RentalItemsToggleType[];
-    paymentType: number;
-    reservingDate: string;
-    reservingTimes: string[];
-    reservedTimes: string[];
-    pricePerHalfHour: number;
-  };
+  data: StadiumReservationStateData;
   step: number;
 }
 
@@ -24,7 +26,7 @@ const initialState: StadiumReservationState = {
   data: {
     headCount: 1,
     items: [],
-    paymentType: 0,
+    paymentType: '',
     reservingDate: '',
     reservingTimes: [],
     reservedTimes: [],
@@ -58,6 +60,9 @@ export const stadiumReservationSlice = createSlice({
       const findIdx = state.data.items.findIndex(item => item.id === action.payload.id);
       state.data.items[findIdx].count = action.payload.count;
     },
+    setPaymentType: (state, action: PayloadAction<string>) => {
+      state.data.paymentType = action.payload;
+    },
     clearReservation: () => initialState,
   },
   extraReducers: builder => {
@@ -72,7 +77,14 @@ export const stadiumReservationSlice = createSlice({
   },
 });
 
-export const { nextStep, selectDate, changeCount, changeRentalItemCount, toggleRentalItem, clearReservation } =
-  stadiumReservationSlice.actions;
+export const {
+  nextStep,
+  selectDate,
+  changeCount,
+  changeRentalItemCount,
+  toggleRentalItem,
+  setPaymentType,
+  clearReservation,
+} = stadiumReservationSlice.actions;
 
 export const stadiumReservationReducer = stadiumReservationSlice.reducer;

@@ -1,8 +1,8 @@
 import { RootState } from '@/store/store';
 import { useSelector } from 'react-redux';
+import StepComponentProcess from '../common/StepComponentProcess';
 import EnterNewPassWord from './EnterNewPassWord';
 import EnterValidateCode from './EnterValidateCode';
-import SearchPasswordProcess from './SearchPassWordProcess';
 import ValidateEmail from './ValidateEmail';
 
 interface FindPassWordProps {}
@@ -15,7 +15,7 @@ const SearchPassword = (props: FindPassWordProps) => {
     { index: 3, component: <EnterNewPassWord /> },
   ];
 
-  return <SearchPasswordProcess {...orderList[orderIndex]} />;
+  return <StepComponentProcess {...orderList.find(component => component.index === orderIndex)} />;
 };
 
 export default SearchPassword;

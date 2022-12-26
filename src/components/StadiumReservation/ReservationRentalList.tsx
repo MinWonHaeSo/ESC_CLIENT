@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import { RentalItemsType } from '@/api/reservationApi';
 import ReservationRentalItem from './ReservationRentalItem';
@@ -18,10 +17,10 @@ const ReservationRentalList = ({ rentalItems }: ReservationRentalListProps) => {
 };
 
 const ReservationRentalListContainer = styled.div`
-  height: 400px;
-  padding: 1rem 0.5rem;
+  height: 380px;
+  margin-top: 0.5rem;
+  padding: 4px 8px;
   overflow-y: scroll;
-  margin-top: 1rem;
 `;
 
 export default ReservationRentalList;
