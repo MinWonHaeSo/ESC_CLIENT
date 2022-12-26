@@ -11,6 +11,7 @@ const PATH = {
   ME_NOTIFICATION: '/me/notification',
   STADIUM_DETAIL: '/stadium/detail',
   STADIUM_RENTAL: '/stadium/rental',
+  STADIUM_RESERVATION_USER : '/stadium/reservation/user',
   MANAGER_STADIUM_UPLOAD: '/manager/stadium/upload',
   MANAGER_STADIUM_UPLOAD_LIST: '/manager/stadium/list',
   MANAGER_RESERVATION_LIST: '/manager/reservation',

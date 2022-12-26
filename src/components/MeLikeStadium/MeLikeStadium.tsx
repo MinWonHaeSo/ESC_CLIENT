@@ -22,7 +22,6 @@ const MeLikeStadium = ({}: MeLikeStadiumProps) => {
   });
 
   const likeStadiumList = data?.content;
-  console.log(likeStadiumList);
 
   if (error) {
     sw.toast.error('잘못된 요청입니다.');
