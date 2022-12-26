@@ -8,9 +8,10 @@ import { deleteCookie } from '@/lib/utils/cookies';
 import sw from '@/lib/utils/customSweetAlert';
 import { removeAuthToken } from '@/lib/utils/token';
 import { loggedOut } from '@/store/authSlice';
-import { useAppDispatch } from '@/store/store';
+import { RootState, useAppDispatch } from '@/store/store';
 import styled from '@emotion/styled';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import Button from '../common/atoms/Button';
 import Input from '../common/atoms/Input';
@@ -21,7 +22,7 @@ const SignOut = () => {
   const [inputEmail, setInputEmail] = useState<string>('');
   const [required, setRequired] = useState<boolean>(false);
   const navigate = useNavigate();
-
+  const authUserType = useSelector((state: RootState) => state.auth.type);
   const [signOutAPI] = useSignOutMutation();
   const dispatch = useAppDispatch();
 
@@ -55,6 +56,12 @@ const SignOut = () => {
         }
       });
     } catch {
+      if (authUserType === 'MANAGER') {
+        sw.toast.error('등록한 체육관을 삭제하고 탈퇴해 주세요!');
+      }
+      if (authUserType === 'USER') {
+        sw.toast.error('얘약을 취소하고 탈퇴해 주세요!');
+      }
       console.error('탈퇴하는데 문제가 발생하였습니다.');
     }
   };
