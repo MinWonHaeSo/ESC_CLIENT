@@ -1,5 +1,6 @@
-import { getCookie } from '@/lib/utils/cookies';
+import { deleteCookie, getCookie } from '@/lib/utils/cookies';
 import sw from '@/lib/utils/customSweetAlert';
+import { removeAuthToken } from '@/lib/utils/token';
 import { loggedOut, setCredentials } from '@/store/authSlice';
 import { RootState } from '@/store/store';
 import { BaseQueryFn, createApi, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
@@ -46,6 +47,12 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
     );
     console.log('refreshTokenResult', refreshResult.data);
 
+    if (refreshResult.error!.status === 409) {
+      api.dispatch(loggedOut());
+      removeAuthToken();
+      deleteCookie('refreshToken');
+    }
+
     if (refreshResult.data) {
       // accessToken, refreshToken 전역 상태(auth)에 저장
       api.dispatch(setCredentials({ ...refreshResult.data }));
@@ -63,6 +70,6 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 export const baseApi = createApi({
   reducerPath: 'baseApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['User'],
+  tagTypes: ['User', 'LikeStadium'],
   endpoints: builder => ({}),
 });
