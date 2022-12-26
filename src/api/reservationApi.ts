@@ -73,13 +73,13 @@ export const reservationApi = baseApi.injectEndpoints({
         body: finalReservationData,
       }),
     }),
-    finishStadiumUtilization: builder.mutation<FinishStadiumUtilization, { stadiumId: number; reservationId: number }>({
+    finishStadiumUtilization: builder.mutation<FinishStadiumUtilization, { stadiumId: string; reservationId: string }>({
       query: ({ stadiumId, reservationId }) => ({
         url: `/stadiums/${stadiumId}/reservations/${reservationId}`,
         method: 'PATCH',
       }),
     }),
-    cancelReservation: builder.mutation<CancelReservation, { stadiumId: number; reservationId: number }>({
+    cancelReservation: builder.mutation<CancelReservation, { stadiumId: string; reservationId: string }>({
       query: ({ stadiumId, reservationId }) => ({
         url: `/stadiums/${stadiumId}/reservations/${reservationId}`,
         method: 'DELETE',
