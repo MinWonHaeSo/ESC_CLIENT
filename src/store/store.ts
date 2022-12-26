@@ -1,3 +1,4 @@
+import { pagingReducer } from './pagingSlice';
 import { stadiumReservationReducer } from './stadiumReservationSlice';
 import { stadiumReviewReducer } from './stadiumReview';
 import { baseApi } from '@/api/baseApi';
@@ -18,6 +19,7 @@ export const store = configureStore({
     searchPassword: searchPasswordReducer,
     stadiumReview: stadiumReviewReducer,
     stadiumReservation: stadiumReservationReducer,
+    paging: pagingReducer,
     auth: authReducer,
     notification: notificationReducer,
     [baseApi.reducerPath]: baseApi.reducer,

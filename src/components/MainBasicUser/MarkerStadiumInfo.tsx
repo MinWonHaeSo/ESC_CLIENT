@@ -38,7 +38,7 @@ const MarkerStadiumInfo = ({ markerInfo }: MarkerStadiumInfoProps) => {
       <StadiumInfoContainer onClick={toUploadNavigate}>
         <div className="image-container">
           <img
-            src={markerInfo.img ? markerInfo.img : 'https://via.placeholder.com/100x110'}
+            src={markerInfo.imgUrl ? markerInfo.imgUrl : 'https://via.placeholder.com/100x110'}
             alt="체육관 이미지"
             width="100px"
             height="110px"
