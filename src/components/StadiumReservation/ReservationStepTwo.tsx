@@ -8,24 +8,37 @@ import ReservationPrevStepButton from './ReservationPrevStepButton';
 import ReservationRentalList from './ReservationRentalList';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
+import formatter from '@/lib/utils/formatter';
+import { ScrollToTop } from '@/hooks/useScollToTop';
 
 interface ReservationStepTwoProps {}
 
 const ReservationStepTwo = ({}: ReservationStepTwoProps) => {
   const rentalItems = useSelector((state: RootState) => state.stadiumReservation.data.items);
+  const totalPrice = rentalItems.reduce((acc, curr) => {
+    acc += curr.price * curr.count;
+    return acc;
+  }, 0);
 
   return (
     <ReservationContainer>
+      <ScrollToTop />
       <TitleContainer>
         <ReservationPrevStepButton />
         <Title fontSize={typo.large}>체육관 예약</Title>
       </TitleContainer>
       <SubTitle>대여 가능 상품</SubTitle>
       <ReservationRentalList rentalItems={rentalItems} />
+      <RentalItemTotalPrice>
+        <span>총 가격</span>
+        <span>{formatter.getIntlCurrencyKr(totalPrice)}원</span>
+      </RentalItemTotalPrice>
       <ReservationButton />
     </ReservationContainer>
   );
 };
+
+export default ReservationStepTwo;
 
 const ReservationContainer = styled.div`
   ${Responsive.ResponsiveWrapper}
@@ -44,4 +57,13 @@ const SubTitle = styled.h3`
   color: ${palette.grey[300]};
 `;
 
-export default ReservationStepTwo;
+const RentalItemTotalPrice = styled.p`
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 8px;
+  padding: 0 2rem;
+  span:last-of-type {
+    font-weight: 500;
+  }
+`;

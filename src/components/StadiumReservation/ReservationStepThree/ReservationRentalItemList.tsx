@@ -5,36 +5,40 @@ import styled from '@emotion/styled';
 import ReservationRentalItem from '../ReservationRentalItem';
 import AccordionToggleButton from './ToggleButton';
 import StyledSeparateLine from './StyledSerparateLine';
+import { useState } from 'react';
 
 interface ReservationRentalItemListProps {
-  rentalItemOpen: boolean;
-  onRentalItemToggle: () => void;
   rentalItems: RentalItemsToggleType[];
   step: number;
 }
 
-const ReservationRentalItemList = ({
-  rentalItemOpen,
-  onRentalItemToggle,
-  rentalItems,
-  step,
-}: ReservationRentalItemListProps) => {
+const ReservationRentalItemList = ({ rentalItems, step }: ReservationRentalItemListProps) => {
+  const [rentalItemOpen, setRentalItemOpen] = useState<boolean>(false);
+  const handleRentalItemToggle = () => {
+    setRentalItemOpen(prev => !prev);
+  };
+
+  const selectedRentalItemsCount = rentalItems.reduce((acc, curr) => {
+    if (curr.toggle === true) {
+      acc += curr.count;
+    }
+    return acc;
+  }, 0);
+
   return (
     <ReservationRentalItemListBlock>
       <TitleWrapper>
         <h2>대여 용품</h2>
         <div>
           <RentalItemTotalCount>
-            총&nbsp;<span>{rentalItems.length}</span>개
+            총&nbsp;<span>{selectedRentalItemsCount}</span>개
           </RentalItemTotalCount>
-          <AccordionToggleButton open={rentalItemOpen} onAccordionToggle={onRentalItemToggle} />
+          <AccordionToggleButton open={rentalItemOpen} onAccordionToggle={handleRentalItemToggle} />
         </div>
       </TitleWrapper>
       <StyledSeparateLine />
       <RentalItemList open={rentalItemOpen}>
-        {rentalItems.map(item => (
-          <ReservationRentalItem key={item.id} item={item} step={step} />
-        ))}
+        {rentalItems.map(item => item.toggle && <ReservationRentalItem key={item.id} item={item} step={step} />)}
       </RentalItemList>
     </ReservationRentalItemListBlock>
   );
@@ -58,24 +62,22 @@ const TitleWrapper = styled.div`
   div {
     display: flex;
     align-items: center;
-
-    div {
-      display: inline-block;
-      margin-right: 8px;
-
-      span {
-        color: ${palette.primary['green']};
-        font-size: ${typo.base};
-        font-weight: 500;
-      }
-    }
   }
 `;
 
 const RentalItemList = styled.div<{ open: boolean }>`
   display: ${({ open }) => (open ? 'flex' : 'none')};
+  flex-direction: column;
 `;
 
 const RentalItemTotalCount = styled.div`
-  font-size: ${typo.base};
+  /* font-size: ${typo.base}; */
+  display: inline-block;
+  margin-right: 8px;
+
+  span {
+    color: ${palette.primary['green']};
+    font-size: ${typo.medium};
+    font-weight: 500;
+  }
 `;

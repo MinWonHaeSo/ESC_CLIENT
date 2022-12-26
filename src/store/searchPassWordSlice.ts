@@ -12,7 +12,7 @@ interface SearchPasswordState {
 type ChangeNewPassword = Omit<SearchPasswordState, 'email'>;
 
 const initialState: SearchPasswordState = {
-  index: 0,
+  index: 1,
   email: '',
   prePassword: null,
   newPassword: '',

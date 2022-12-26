@@ -17,7 +17,7 @@ const ReservationRentalList = ({ rentalItems }: ReservationRentalListProps) => {
 };
 
 const ReservationRentalListContainer = styled.div`
-  height: 400px;
+  height: 380px;
   margin-top: 0.5rem;
   padding: 4px 8px;
   overflow-y: scroll;

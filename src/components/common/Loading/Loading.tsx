@@ -1,10 +1,16 @@
 import styled from '@emotion/styled';
 import Spinner from '@/assets/spinner.gif';
 import media from '@/lib/styles/media';
+import { typo } from '@/lib/styles/typo';
 
-const Loading = () => {
+interface LoadingProps {
+  message?: string;
+}
+
+const Loading = ({ message }: LoadingProps) => {
   return (
     <Background>
+      <p>{message}</p>
       <img src={Spinner} alt="로딩중" width="30%" />
     </Background>
   );
@@ -24,6 +30,11 @@ const Background = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  p {
+    font-size: ${typo.medium};
+    font-weight: 500;
+  }
 
   img {
     ${media.mediumMin} {

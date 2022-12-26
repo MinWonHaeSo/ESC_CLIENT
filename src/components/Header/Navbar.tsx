@@ -72,12 +72,14 @@ const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
           </div>
           <span>{nickname ? nickname : 'Welcome'}</span>
         </UserProfile>
-        <NotificationButton onListClick={handleListClick} />
-        {HEADER_NAV[loginType].map(nav => (
-          <li key={nav.id} onClick={handleListClick}>
-            <Link to={nav.to}>{nav.title}</Link>
-          </li>
-        ))}
+        {loggedIn ? <NotificationButton onListClick={handleListClick} /> : null}
+        <NavList>
+          {HEADER_NAV[loginType].map(nav => (
+            <li key={nav.id} onClick={handleListClick}>
+              <Link to={nav.to}>{nav.title}</Link>
+            </li>
+          ))}
+        </NavList>
         {loggedIn ? (
           <LogOutButton to={PATH.ROOT} onClick={handleLogOut}>
             <span>로그아웃</span>
@@ -100,7 +102,7 @@ type IsActiveProps = {
 
 const NavbarBlock = styled.div``;
 
-const NavbarMenu = styled.ul<IsActiveProps>`
+const NavbarMenu = styled.div<IsActiveProps>`
   position: fixed;
   visibility: hidden;
   top: 0;
@@ -113,7 +115,17 @@ const NavbarMenu = styled.ul<IsActiveProps>`
   z-index: 5;
   transition: all 0.2s ease-in;
 
-  & > li {
+  ${({ isActive }) =>
+    isActive &&
+    `
+    visibility: visible;
+    left:0;
+    box-shadow: 2px 0px 14px rgb(197 197 197);
+    `}
+`;
+
+const NavList = styled.ul`
+  li {
     flex: 1 1 auto;
     margin: 1rem 1rem;
     border: 1px solid #fff;
@@ -134,14 +146,6 @@ const NavbarMenu = styled.ul<IsActiveProps>`
     padding: 0.75rem 1rem;
     width: 100%;
   }
-
-  ${({ isActive }) =>
-    isActive &&
-    `
-    visibility: visible;
-    left:0;
-    box-shadow: 2px 0px 14px rgb(197 197 197);
-    `}
 `;
 
 const LogOutButton = styled(Link)`

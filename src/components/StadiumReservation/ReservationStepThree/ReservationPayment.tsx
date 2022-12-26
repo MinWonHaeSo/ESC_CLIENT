@@ -1,27 +1,51 @@
 import palette from '@/lib/styles/palette';
+import { typo } from '@/lib/styles/typo';
+import formatter from '@/lib/utils/formatter';
+import { setPaymentType } from '@/store/stadiumReservationSlice';
+import { useAppDispatch } from '@/store/store';
 import styled from '@emotion/styled';
+import React from 'react';
+import { useState } from 'react';
+import Radio from './Radio';
 import StyledSeparateLine from './StyledSerparateLine';
 
-interface ReservationPaymentProps {}
+interface ReservationPaymentProps {
+  totalPaymentPrice: number;
+}
 
-const ReservationPayment = ({}: ReservationPaymentProps) => {
+const ReservationPayment = ({ totalPaymentPrice }: ReservationPaymentProps) => {
+  const [inputStatus, setInputStatus] = useState('');
+  const paymentType = [
+    { id: 'CASH', method: '현장 결제' },
+    { id: 'CARD', method: '카드 결제' },
+    { id: 'ACCOUNT', method: '계좌 결제' },
+  ];
+
+  const dispatch = useAppDispatch();
+  const handlePaymentTypeClick = (id: string, e: React.MouseEvent<HTMLElement>) => {
+    setInputStatus(id);
+    dispatch(setPaymentType(e.currentTarget.id));
+  };
+
   return (
     <ReservationPaymentBlock>
-      <h2>결제 방법</h2>
+      <TitleWrapper>
+        <h2>결제 방법</h2>
+        <span>{formatter.getIntlCurrencyKr(totalPaymentPrice)}</span>
+      </TitleWrapper>
       <StyledSeparateLine />
       <PaymentMethod>
-        <li>
-          <input type="radio" id="local" name="payment" />
-          <label htmlFor="local">현장 결제</label>
-        </li>
-        <li>
-          <input type="radio" id="card" name="payment" />
-          <label htmlFor="card">카드 결제</label>
-        </li>
-        <li>
-          <input type="radio" id="account" name="payment" />
-          <label htmlFor="account">계좌 결제</label>
-        </li>
+        {paymentType.map(type => (
+          <li
+            key={type.id}
+            id={type.id}
+            onClick={(e: React.MouseEvent<HTMLLIElement>) => handlePaymentTypeClick(type.id, e)}
+          >
+            <Radio id={type.id} inputStatus={inputStatus}>
+              {type.method}
+            </Radio>
+          </li>
+        ))}
       </PaymentMethod>
     </ReservationPaymentBlock>
   );
@@ -37,6 +61,18 @@ const ReservationPaymentBlock = styled.div`
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 `;
 
+const TitleWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  span {
+    color: ${palette.black[200]};
+    font-size: ${typo.base};
+    font-weight: 500;
+  }
+`;
+
 const PaymentMethod = styled.ul`
   display: flex;
   flex-direction: column;
@@ -47,19 +83,5 @@ const PaymentMethod = styled.ul`
     display: flex;
     align-items: center;
     margin-left: 2px;
-  }
-
-  input[type='radio'] {
-    vertical-align: middle;
-    appearance: none;
-    margin-right: 0.6rem;
-    width: 21px;
-    height: 21px;
-    border: max(2px, 0.1em) solid ${palette.grey[200]};
-    border-radius: 50%;
-  }
-
-  input[type='radio']:checked {
-    border: 0.4em solid ${palette.primary['green']};
   }
 `;

@@ -8,7 +8,7 @@ interface ReviewHeaderProps {}
 const ReviewHeader = (props: ReviewHeaderProps) => {
   return (
     <ReviewHeaderContainer>
-      <span className="title">리뷰</span>
+      <span className="title">리 뷰</span>
       <ReviewDropdown />
     </ReviewHeaderContainer>
   );

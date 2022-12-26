@@ -1,5 +1,6 @@
 import { geoLocationType } from '@/hooks/useCurrentLocation';
 import { rentalItemType, stadiumWriteState } from '@/store/stadiumWriteSlice';
+import { PageType } from '@/types/pageType';
 import { baseApi } from './baseApi';
 
 export interface SearchStadiumContent {
@@ -56,9 +57,9 @@ interface LikeStadium {
   imgUrl: string;
 }
 
-export type LikeStadiumListResponse = {
+export interface LikeStadiumListResponse extends PageType {
   content: LikeStadium[];
-};
+}
 
 export type ReservationStatus = 'RESERVED' | 'EXECUTED' | 'CANCELED';
 
@@ -72,7 +73,7 @@ export interface RentalStadium {
   status?: ReservationStatus;
 }
 
-interface RentalStadiumListResponse {
+interface RentalStadiumListResponse extends PageType {
   content: RentalStadium[];
 }
 

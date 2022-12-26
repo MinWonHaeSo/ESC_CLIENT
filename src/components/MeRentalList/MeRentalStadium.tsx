@@ -27,8 +27,7 @@ const MeRentalStadium = ({ sort }: MeRentalStadiumProps) => {
     isLoading,
     refetch: rentalStadiumListRefetch,
   } = useGetRentalStadiumListQuery('', { refetchOnMountOrArgChange: true });
-  const rentalStadiumData = data?.content;
-
+  console.log(data);
   const [cancelReservationAPI, { isLoading: cancelLoading }] = useCancelReservationMutation();
 
   const handleShowDetailClick = async (reservationId: number, stadiumId: number) => {
@@ -51,11 +50,13 @@ const MeRentalStadium = ({ sort }: MeRentalStadiumProps) => {
     return <Loading />;
   }
 
+  const rentalStadiumData = data.content;
+
   return (
     <>
-      {rentalStadiumData!.length > 0 && sort === 'up' ? (
+      {rentalStadiumData.length > 0 && sort === 'up' ? (
         <MeRentalStadiumGrid>
-          {rentalStadiumData!.map(stadium => {
+          {rentalStadiumData.map(stadium => {
             const { reservationId, stadiumId } = stadium;
             return (
               <MeRentalStadiumBlock key={stadium.reservationId}>
@@ -86,7 +87,7 @@ const MeRentalStadium = ({ sort }: MeRentalStadiumProps) => {
         </MeRentalStadiumGrid>
       ) : sort === 'down' ? (
         <MeRentalStadiumGrid>
-          {rentalStadiumData!
+          {rentalStadiumData
             .map(stadium => {
               const { reservationId, stadiumId } = stadium;
               return (

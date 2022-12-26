@@ -7,6 +7,7 @@ import CardStadium from '../CardStadium/CardStadium';
 import Title from '../common/atoms/Title';
 import EmptyItemNotification from '../common/EmptyItemNotification';
 import Responsive from '../common/Responsive';
+import ScrollToTopButton from '../common/ScrollToTopButton';
 import StyledPadding from '../common/StyledPadding';
 
 interface MeRecentSearchProps {}
@@ -20,6 +21,11 @@ const MeRecentSearch = ({}: MeRecentSearchProps) => {
         <Title fontSize={`${typo.xxLarge}`} marginTop={'20px'}>
           최근 본 체육관
         </Title>
+        <SubDesc>
+          최대 10개까지 확인 가능합니다.
+          <br />
+          찾아본 지 가장 오래된 체육관 순으로 삭제됩니다.
+        </SubDesc>
       </TitleWrapper>
       {recentSearchStadiumList !== undefined ? (
         <RecentSearchList>
@@ -35,6 +41,7 @@ const MeRecentSearch = ({}: MeRecentSearchProps) => {
           path={PATH.ROOT}
         />
       )}
+      <ScrollToTopButton />
       <StyledPadding />
     </MeRecentSearchBlock>
   );
@@ -48,9 +55,13 @@ const MeRecentSearchBlock = styled.section`
 
 const TitleWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
   margin-bottom: 30px;
+`;
+
+const SubDesc = styled.p`
+  margin-top: 8px;
+  font-size: ${typo.small};
 `;
 
 const RecentSearchList = styled.ul`

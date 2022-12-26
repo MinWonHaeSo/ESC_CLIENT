@@ -14,6 +14,7 @@ export interface User {
 interface ApiResponse {
   message: string;
   statusCode: number;
+  errorMessage?: string;
 }
 
 interface LoginResponse {
