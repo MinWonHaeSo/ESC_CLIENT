@@ -53,14 +53,15 @@ const EnterValidateCode = (props: EnterValidateCodeProps) => {
       return;
     }
     try {
-      const response = await searchPasswordValidateEmailAPI(inputValue);
+      const response = await searchPasswordValidateEmailAPI(inputValue).unwrap();
       if (response) {
         sw.toast.success('인증코드가 일치합니다.');
         dispatch(changeIndex(orderIndex + 1));
       }
     } catch {
-      setNewCode(true);
       sw.toast.error('인증코드가 정확하지 않습니다.');
+      setNewCode(true);
+      console.error('에러가 발생했습니다.');
     }
   };
 
