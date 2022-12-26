@@ -24,7 +24,7 @@ const Notification = ({}: NotificationProps) => {
   };
 
   return (
-    <NotificationBlock>
+    <NotificationContainer>
       <TitleWrapper>
         <Title fontSize={typo.xxLarge} marginTop={'20px'}>
           알림 내역
@@ -39,13 +39,13 @@ const Notification = ({}: NotificationProps) => {
       <StyledLine />
       {currentTab === 'read' ? <NotificationRead content={content} /> : <NotificationUnread content={content} />}
       <ScrollToTopButton />
-    </NotificationBlock>
+    </NotificationContainer>
   );
 };
 
 export default Notification;
 
-const NotificationBlock = styled.section`
+const NotificationContainer = styled.section`
   position: relative;
   ${Responsive.ResponsiveWrapper}
 `;

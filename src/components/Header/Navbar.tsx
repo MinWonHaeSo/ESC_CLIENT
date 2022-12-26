@@ -64,7 +64,7 @@ const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
   }, [type]);
 
   return (
-    <NavbarBlock>
+    <NavBarContainer>
       <NavbarMenu isActive={isActive}>
         <UserProfile>
           <div>
@@ -90,7 +90,7 @@ const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
         )}
       </NavbarMenu>
       <BackgroundLayout isActive={isActive} onClick={onChangeIsActive} />
-    </NavbarBlock>
+    </NavBarContainer>
   );
 };
 
@@ -100,7 +100,7 @@ type IsActiveProps = {
   isActive: boolean;
 };
 
-const NavbarBlock = styled.div``;
+const NavBarContainer = styled.div``;
 
 const NavbarMenu = styled.div<IsActiveProps>`
   position: fixed;

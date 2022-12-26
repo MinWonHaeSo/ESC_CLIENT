@@ -60,7 +60,7 @@ const SignOut = () => {
   };
 
   return (
-    <SignOutBlock>
+    <SignOutContainer>
       <TitleWrapper>
         <Title fontSize={`${typo.xxLarge}`}>회원 탈퇴</Title>
       </TitleWrapper>
@@ -71,13 +71,13 @@ const SignOut = () => {
           탈퇴신청
         </Button>
       </InputWrapper>
-    </SignOutBlock>
+    </SignOutContainer>
   );
 };
 
 export default SignOut;
 
-const SignOutBlock = styled.section`
+const SignOutContainer = styled.section`
   ${Responsive.ResponsiveWrapper}
 `;
 

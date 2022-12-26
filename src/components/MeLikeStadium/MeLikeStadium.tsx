@@ -54,7 +54,7 @@ const MeLikeStadium = ({}: MeLikeStadiumProps) => {
   console.log(likeStadiumList);
 
   return (
-    <MeLikeStadiumBlock>
+    <MeLikeStadiumContainer>
       <TitleWrapper>
         <Title fontSize={`${typo.xxLarge}`} marginTop={'20px'}>
           찜한 체육관
@@ -77,13 +77,13 @@ const MeLikeStadium = ({}: MeLikeStadiumProps) => {
       <div ref={$observerTarget} />
       <StyledPadding />
       <ScrollToTopButton />
-    </MeLikeStadiumBlock>
+    </MeLikeStadiumContainer>
   );
 };
 
 export default MeLikeStadium;
 
-const MeLikeStadiumBlock = styled.section`
+const MeLikeStadiumContainer = styled.section`
   ${Responsive.ResponsiveWrapper}
 `;
 

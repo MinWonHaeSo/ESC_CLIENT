@@ -9,19 +9,19 @@ interface SignUpProps {}
 
 const SignUp = (props: SignUpProps) => {
   return (
-    <SignUpBlock>
+    <SignUpContainer>
       <Title fontSize={`${typo.large}`} marginLeft={'32px'} marginTop={'20px'}>
         회원가입
       </Title>
       <TabMenu />
       <SignUpForm />
-    </SignUpBlock>
+    </SignUpContainer>
   );
 };
 
 export default SignUp;
 
-const SignUpBlock = styled.section`
+const SignUpContainer = styled.section`
   overflow-y: scroll;
   ${Responsive.ResponsiveWrapper}
 `;

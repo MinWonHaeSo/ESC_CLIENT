@@ -87,7 +87,7 @@ const SignUpForm = React.memo(function SignupForm(props: SignUpFormProps) {
   }
 
   return (
-    <FormBlock onSubmit={handleFormSubmit}>
+    <SignUpFormBlock onSubmit={handleFormSubmit}>
       <InsertImage
         editDisabled={false}
         currentImage={authUserImage}
@@ -106,13 +106,13 @@ const SignUpForm = React.memo(function SignupForm(props: SignUpFormProps) {
       <QuestionDesc>
         이미 아이디가 있으신가요? <span onClick={goBack}>로그인</span>
       </QuestionDesc>
-    </FormBlock>
+    </SignUpFormBlock>
   );
 });
 
 export default SignUpForm;
 
-const FormBlock = styled.form`
+const SignUpFormBlock = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;

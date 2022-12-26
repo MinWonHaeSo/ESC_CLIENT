@@ -16,7 +16,7 @@ const MeRecentSearch = ({}: MeRecentSearchProps) => {
   const recentSearchStadiumList: CurrentStadium[] = getAccessStadium('stadiums');
 
   return (
-    <MeRecentSearchBlock>
+    <MeRecentSearchContainer>
       <TitleWrapper>
         <Title fontSize={`${typo.xxLarge}`} marginTop={'20px'}>
           최근 본 체육관
@@ -43,13 +43,13 @@ const MeRecentSearch = ({}: MeRecentSearchProps) => {
       )}
       <ScrollToTopButton />
       <StyledPadding />
-    </MeRecentSearchBlock>
+    </MeRecentSearchContainer>
   );
 };
 
 export default MeRecentSearch;
 
-const MeRecentSearchBlock = styled.section`
+const MeRecentSearchContainer = styled.section`
   ${Responsive.ResponsiveWrapper}
 `;
 

@@ -80,7 +80,7 @@ const Header = (props: HomeProps) => {
   }
 
   return (
-    <HeaderBlock>
+    <HeaderContainer>
       {checkHeader ? (
         <GoBackIconBlock onClick={goBack}>
           <i className="fa-solid fa-arrow-left" />
@@ -97,13 +97,13 @@ const Header = (props: HomeProps) => {
       </LogoBlock>
       <Navbar isActive={isActive} onChangeIsActive={handleChangeIsActive} />
       {loggedIn || checkHeader ? null : <UserMenu>{isLoading ? null : <Link to={PATH.LOGIN}>로그인</Link>}</UserMenu>}
-    </HeaderBlock>
+    </HeaderContainer>
   );
 };
 
 export default Header;
 
-const HeaderBlock = styled.nav`
+const HeaderContainer = styled.nav`
   position: relative;
   display: flex;
   height: 80px;
