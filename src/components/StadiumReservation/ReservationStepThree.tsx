@@ -26,6 +26,7 @@ const ReservationStepThree = ({}: ReservationStepThreeProps) => {
   const { nickname, email } = authUser;
   const reservationData = useSelector((state: RootState) => state.stadiumReservation);
   const { step, id } = reservationData;
+
   const {
     headCount,
     items,
@@ -43,6 +44,7 @@ const ReservationStepThree = ({}: ReservationStepThreeProps) => {
     acc += curr.price * curr.count;
     return acc;
   }, 0);
+  console.log(items);
 
   const totalPaymentPrice = pricePerHalfHour * reservingTimes.length + rentalItemTotalPrice;
 
@@ -53,7 +55,7 @@ const ReservationStepThree = ({}: ReservationStepThreeProps) => {
       pricePerHalfHour,
       items: items,
       totalPrice: totalPaymentPrice,
-      reservingTimes,
+      reservedTimes: reservingTimes,
       email,
       paymentType: selectedPaymentType,
     };

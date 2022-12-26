@@ -26,19 +26,22 @@ interface GetReservationStadiumTimeRequest {
   id: string;
   date?: string;
 }
-interface FinishStadiumUtilization {}
+interface FinishStadiumUtilization {
+  statusCode: number;
+  message: string;
+}
 
-interface CancelReservation {}
+type CancelReservation = FinishStadiumUtilization;
 
 interface MakeReservationData {
   date: string;
   openTime?: string;
   closeTime?: string;
+  pricePerHalfHour?: number;
   headCount: number;
-  pricePerHalfHour: number;
   items: RentalItemsType[];
   totalPrice: number;
-  reservingTimes: string[];
+  reservedTimes: string[];
   email: string;
   paymentType: string;
 }
@@ -70,13 +73,13 @@ export const reservationApi = baseApi.injectEndpoints({
         body: finalReservationData,
       }),
     }),
-    finishStadiumUtilization: builder.mutation<any, { stadiumId: number; reservationId: number }>({
+    finishStadiumUtilization: builder.mutation<FinishStadiumUtilization, { stadiumId: number; reservationId: number }>({
       query: ({ stadiumId, reservationId }) => ({
         url: `/stadiums/${stadiumId}/reservations/${reservationId}`,
         method: 'PATCH',
       }),
     }),
-    cancelReservation: builder.mutation<any, { stadiumId: number; reservationId: number }>({
+    cancelReservation: builder.mutation<CancelReservation, { stadiumId: number; reservationId: number }>({
       query: ({ stadiumId, reservationId }) => ({
         url: `/stadiums/${stadiumId}/reservations/${reservationId}`,
         method: 'DELETE',
