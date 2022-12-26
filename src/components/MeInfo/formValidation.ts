@@ -2,8 +2,15 @@ import formRegex from '@/constants/formRegex';
 import React from 'react';
 
 interface Required {
+  prePassword: boolean;
   password: boolean;
   passwordConfirm: boolean;
+}
+
+interface PrePasswordValidation {
+  prePassword: string;
+  setRequired: React.Dispatch<React.SetStateAction<Required>>;
+  required: Required;
 }
 
 interface PasswordValidation {
@@ -23,6 +30,14 @@ interface HandleKeyDown {
   e: React.KeyboardEvent<HTMLInputElement>;
   setNicknameCheck: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+const checkPrePasswordValidation = ({ prePassword, setRequired, required }: PrePasswordValidation) => {
+  const { passwordRegex } = formRegex;
+  if (!passwordRegex.test(prePassword)) {
+    return setRequired({ ...required, prePassword: true });
+  }
+  setRequired({ ...required, prePassword: false });
+};
 
 const checkPasswordValidation = ({ currentPassword, setRequired, required }: PasswordValidation) => {
   const { passwordRegex } = formRegex;
@@ -50,4 +65,4 @@ const handleKeyDown = ({ e, setNicknameCheck }: HandleKeyDown) => {
   }
 };
 
-export { checkPasswordValidation, checkPasswordConfirmValidation, handleKeyDown };
+export { checkPrePasswordValidation, checkPasswordValidation, checkPasswordConfirmValidation, handleKeyDown };

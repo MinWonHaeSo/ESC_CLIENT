@@ -34,7 +34,6 @@ interface RefetchUserResponse {
   name: string;
   nickname: string;
   imgUrl: string;
-  password: string;
   statusCode: number;
 }
 

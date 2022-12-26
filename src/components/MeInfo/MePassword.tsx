@@ -8,7 +8,7 @@ import React, { SetStateAction, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Button from '../common/atoms/Button';
 import Label from '../common/atoms/Label';
-import { checkPasswordConfirmValidation, checkPasswordValidation, handleKeyDown } from './formValidation';
+import { checkPasswordConfirmValidation, checkPasswordValidation, checkPrePasswordValidation } from './formValidation';
 
 interface MePasswordProps {
   showPassword: boolean;
@@ -17,21 +17,25 @@ interface MePasswordProps {
 }
 
 interface InitialFormState {
+  prePassword: string;
   password: string;
   passwordConfirm: string;
 }
 
 interface Required {
+  prePassword: boolean;
   password: boolean;
   passwordConfirm: boolean;
 }
 
 const initialFormState: InitialFormState = {
+  prePassword: '',
   password: '',
   passwordConfirm: '',
 };
 
 const initialRequiredState: Required = {
+  prePassword: false,
   password: false,
   passwordConfirm: false,
 };
@@ -39,11 +43,11 @@ const initialRequiredState: Required = {
 const MePassword = ({ showPassword, setShowPassword, setEditDisabled }: MePasswordProps) => {
   const [formState, setFormState] = useState<InitialFormState>(initialFormState);
   const [required, setRequired] = useState<Required>(initialRequiredState);
-  const { password, passwordConfirm } = formState;
+  const { password, passwordConfirm, prePassword } = formState;
 
   const dispatch = useAppDispatch();
   const authUser = useSelector((state: RootState) => state.auth);
-  const { email, password: prePassword } = authUser;
+  const { email } = authUser;
 
   const [changePasswordRequestAPI] = useChangePasswordRequestMutation();
 
@@ -54,6 +58,8 @@ const MePassword = ({ showPassword, setShowPassword, setEditDisabled }: MePasswo
       checkPasswordValidation({ currentPassword: value, setRequired, required });
     } else if (id === 'newPasswordConfirm') {
       checkPasswordConfirmValidation({ password, currentPasswordConfirm: value, setRequired, required });
+    } else if (id === 'prePassword') {
+      checkPrePasswordValidation({ prePassword: value, setRequired, required });
     }
   };
 
@@ -98,6 +104,27 @@ const MePassword = ({ showPassword, setShowPassword, setEditDisabled }: MePasswo
 
   return (
     <MePasswordBlock showPassword={showPassword}>
+      <PrePassword>
+        <Label htmlFor="password" required={false}>
+          이전 비밀번호
+        </Label>
+        <SWrapper>
+          <PasswordInput
+            type="text"
+            value={prePassword}
+            id="prePassword"
+            minLength={8}
+            placeholder={'이전 비밀번호'}
+            onChange={handleFormChange}
+            required={required.prePassword}
+          />
+          {password.length > 7 ? (
+            <i className="fa-solid fa-face-smile"></i>
+          ) : (
+            <i className="fa-regular fa-face-smile"></i>
+          )}
+        </SWrapper>
+      </PrePassword>
       <Password>
         <Label htmlFor="password" required={false}>
           새로운 비밀번호
@@ -165,6 +192,12 @@ const MePasswordBlock = styled.div<{ showPassword: boolean }>`
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 
   ${({ showPassword }) => showPassword && `border: 0.3px solid ${palette.black[200]}`}
+`;
+const PrePassword = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 300px;
 `;
 
 const Password = styled.div`
