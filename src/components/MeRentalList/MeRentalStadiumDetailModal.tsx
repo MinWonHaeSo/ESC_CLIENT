@@ -21,15 +21,17 @@ const MeRentalStadiumDetailModal = ({
   closeModal,
   rentalStadiumListRefetch,
 }: MeRentalStadiumDetailModal) => {
-  const { data, isLoading, error, refetch } = useGetRentalStadiumDetailQuery(
-    { reservationId, stadiumId },
-    { refetchOnMountOrArgChange: true },
-  );
+  const {
+    data,
+    isLoading,
+    error,
+    refetch: rentalStadiumDetailRefetch,
+  } = useGetRentalStadiumDetailQuery({ reservationId, stadiumId }, { refetchOnMountOrArgChange: true });
   const [finishStadiumUtilizationAPI, { isLoading: finishLoading }] = useFinishStadiumUtilizationMutation();
 
   const handleCompleteUtilization = async () => {
     await finishStadiumUtilizationAPI({ reservationId, stadiumId });
-    refetch();
+    rentalStadiumDetailRefetch();
     rentalStadiumListRefetch();
     closeModal();
   };
@@ -91,8 +93,8 @@ const MeRentalStadiumDetailModal = ({
               <tr key={item.id}>
                 <td>{item.name}</td>
                 <td>{item.count}EA</td>
-                <td>{item.price}</td>
-                <td>{item.price * item.count}원</td>
+                <td>{formatter.getIntlCurrencyKr(item.price)}원</td>
+                <td>{formatter.getIntlCurrencyKr(item.price * item.count)}원</td>
               </tr>
             ))}
           </tbody>
