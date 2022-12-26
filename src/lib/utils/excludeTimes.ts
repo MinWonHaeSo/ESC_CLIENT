@@ -1,3 +1,5 @@
+import formatter from './formatter';
+
 interface ExcludeTimesParams {
   excludeTime: string;
   type: 'am' | 'pm';
@@ -15,12 +17,12 @@ const excludeTimes = ({ excludeTime, type }: ExcludeTimesParams) => {
         if (Number(hour) > i) continue;
 
         if (Number(hour) === i && minutes === '30') {
-          time.push(`${i}:30`);
+          time.push(`${formatter.zeroPad(i)}:30`);
           continue;
         }
 
-        time.push(`${i}:00`);
-        time.push(`${i}:30`);
+        time.push(`${formatter.zeroPad(i)}:00`);
+        time.push(`${formatter.zeroPad(i)}:30`);
       }
       break;
 

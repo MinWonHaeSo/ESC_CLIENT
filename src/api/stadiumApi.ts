@@ -4,7 +4,7 @@ import { PageType } from '@/types/pageType';
 import { baseApi } from './baseApi';
 
 export interface SearchStadiumContent {
-  id: number;
+  stadiumId: number;
   name: string;
   address: string;
   imgUrl: string;

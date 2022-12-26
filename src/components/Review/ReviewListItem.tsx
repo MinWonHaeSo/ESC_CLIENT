@@ -21,6 +21,10 @@ const ReviewListItem = ({ content }: ReviewListItemProps) => {
     setIsEditBtn(false);
   };
 
+  console.log(content);
+
+  console.log(auth);
+
   return (
     <ReviewListItemContainer>
       <div className="user-name-container">
@@ -46,7 +50,7 @@ const ReviewListItem = ({ content }: ReviewListItemProps) => {
         ) : (
           <div className="review-content">{content.comment}</div>
         )}
-        {String(auth.id) === content.member.id ? (
+        {String(auth.id) == content.member.id ? (
           <div className="review-btn-container">
             {isEditBtn ? (
               <button className="review-submit-btn" onClick={handleSubmitEditComment}>
