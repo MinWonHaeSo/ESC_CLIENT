@@ -21,9 +21,9 @@ import { OriginFilesProvider } from './context/OriginFilesContext';
 import PATH from './constants/path';
 import StadiumDetailPage from './pages/StadiumDetailPage';
 import StadiumReservationPage from './pages/StadiumReservationPage';
-import StadiumListPage from './pages/StadiumListPage';
 import { ScrollToTop } from './hooks/useScollToTop';
 import ModalProvider from './context/ModalContext';
+import ManagerStadiumListPage from './pages/ManagerStadiumListPage';
 
 const App = () => {
   return (
@@ -40,7 +40,6 @@ const App = () => {
                   <Route path="/oauth2/:social" element={<OAuthRedirectPage />} />
                   <Route path={PATH.SEARCH_PASSWORD} element={<SearchPasswordPage />} />
                   <Route path={PATH.SIGN_UP} element={<SignUpPage />} />
-                  <Route path={PATH.STADIUM_DETAIL} element={<StadiumListPage />} />
                   <Route path="*" element={<NotFoundPage />} />
                   <Route element={<PrivateRoute />}>
                     <Route path={PATH.ME} element={<MyPage />} />
@@ -52,6 +51,7 @@ const App = () => {
                     <Route path={PATH.ME_RECENT_SEARCH_LIST} element={<MeRecentSearchPage />} />
                     <Route path={PATH.ME_LIKE_STADIUM_LIST} element={<MeLikeStadiumPage />} />
                     <Route path={PATH.MANAGER_STADIUM_UPLOAD} element={<StadiumUploadPage />} />
+                    <Route path={PATH.MANAGER_STADIUM_UPLOAD_LIST} element={<ManagerStadiumListPage />} />
                   </Route>
                 </Route>
               </Routes>
