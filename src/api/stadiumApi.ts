@@ -78,7 +78,7 @@ export type ReservationStatus = 'RESERVED' | 'EXECUTED' | 'CANCELED';
 
 export interface RentalStadium {
   reservationId?: number;
-  stadiumId: number;
+  stadiumId: string;
   name: string;
   address: string;
   imgUrl: string;
