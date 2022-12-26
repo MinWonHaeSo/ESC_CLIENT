@@ -12,6 +12,7 @@ const PATH = {
   STADIUM_DETAIL: '/stadium/detail',
   STADIUM_RENTAL: '/stadium/rental',
   MANAGER_STADIUM_UPLOAD: '/manager/stadium/upload',
+  MANAGER_STADIUM_UPLOAD_LIST: '/manager/stadium/list',
   MANAGER_RESERVATION_LIST: '/manager/reservation',
   MANAGER_RESERVATION_DETAILS: '/manager/reservation/details',
   MANAGER_HOME: '/manager/home',

@@ -7,7 +7,7 @@ export interface SearchStadiumContent {
   id: number;
   name: string;
   address: string;
-  img: string;
+  imgUrl: string;
   likes: number;
   tags: string[];
   star_avg: number;
@@ -22,6 +22,19 @@ export interface SearchStadiumResponse {
   number: number;
   totalElements: number;
   totalPages: number;
+}
+
+export interface ManagerListStadium {
+  id: string;
+  address: string;
+  name: string;
+  weekdayPricePerHalfHour: number;
+  holidayPricePerHalfHour: number;
+  tags: string[];
+  starAvg: number;
+  imgUrl: string;
+  lat: string;
+  lnt: string;
 }
 
 export type ImagesType = {
@@ -85,6 +98,10 @@ interface RentalStadiumItems {
   count: number;
 }
 
+interface GetManagerListResponse extends PageType {
+  content: RentalStadium[];
+}
+
 export interface RentalStadiumDetail {
   reservationId: number;
   stadiumId: number;
@@ -115,6 +132,12 @@ export const stadiumApi = baseApi.injectEndpoints({
     getStadiumList: builder.query({
       query: (location: geoLocationType) => ({
         url: `/stadiums/near-loc?lat=${location.lat}&lnt=${location.lnt}`,
+        method: 'GET',
+      }),
+    }),
+    getStadiumManagerList: builder.query<GetManagerListResponse, number>({
+      query: page => ({
+        url: `/stadiums/manager?page=${page}&size=${5}&sort=${'createdAt'},DESC`,
         method: 'GET',
       }),
     }),
@@ -168,6 +191,7 @@ export const stadiumApi = baseApi.injectEndpoints({
 
 export const {
   useGetStadiumListQuery,
+  useGetStadiumManagerListQuery,
   useGetStadiumDetailQuery,
   useAddStadiumMutation,
   useUpdateStadiumInfoMutation,
