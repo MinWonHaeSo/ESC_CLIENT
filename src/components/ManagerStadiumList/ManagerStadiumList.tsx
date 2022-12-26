@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { stadiumApi } from '@/api/stadiumApi';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
+import { modalContext } from '@/context/ModalContext';
 import CardStadium from '../CardStadium/CardStadium';
 import Title from '../common/atoms/Title';
 import Responsive from '../common/Responsive';
@@ -12,12 +13,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/store/store';
 import { clearPaging } from '@/store/pagingSlice';
 import PATH from '@/constants/path';
+import StadiumInfoModal from './StadiumInfoModal';
 
 interface ManagerStadiumListProps {}
 
 const ManagerStadiumList = (props: ManagerStadiumListProps) => {
   const [trigger] = stadiumApi.endpoints.getStadiumManagerList.useLazyQuery();
   const { content, isLast, nextPage } = useSelector((state: RootState) => state.paging);
+  const openModal = useContext(modalContext)?.openModal;
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
@@ -58,6 +61,7 @@ const ManagerStadiumList = (props: ManagerStadiumListProps) => {
       {content.map(stadium => (
         <CardStadiumWrapper key={stadium.stadiumId}>
           <CardStadium stadium={stadium} currentLocation={location.pathname} />
+        <CardStadiumWrapper>
           <ManagerButtonContainer>
             <button className="btn btn-detail" onClick={() => handleDetailModalOpen(stadium.stadiumId)}>
               <span>상세정보</span>
