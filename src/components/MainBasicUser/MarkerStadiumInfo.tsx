@@ -16,7 +16,7 @@ const MarkerStadiumInfo = ({ markerInfo }: MarkerStadiumInfoProps) => {
   const navigate = useNavigate();
 
   const [postLikeStadiumAPI] = usePostLikeStadiumMutation();
-  const likeCallbackAPI = useThrottleRef(() => postLikeStadiumAPI(String(markerInfo.id)));
+  const likeCallbackAPI = useThrottleRef(() => postLikeStadiumAPI(String(markerInfo.stadiumId)));
 
   const handleChangeStadiumLike = () => {
     setStadiumLike(true);
@@ -24,7 +24,7 @@ const MarkerStadiumInfo = ({ markerInfo }: MarkerStadiumInfoProps) => {
   };
 
   const toUploadNavigate = () => {
-    navigate(`${PATH.STADIUM_DETAIL}/${markerInfo.id}`);
+    navigate(`${PATH.STADIUM_DETAIL}/${markerInfo.stadiumId}`);
   };
 
   if (!Object.keys(markerInfo).length) {

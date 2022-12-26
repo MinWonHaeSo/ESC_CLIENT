@@ -4,11 +4,13 @@ const formatter = {
     const month = date.getMonth() + 1;
     const day = date.getDate();
 
-    return `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
+    return `${year}-${this.zeroPad(month)}-${this.zeroPad(day)}`;
   },
-
   getIntlCurrencyKr(price: number) {
     return new Intl.NumberFormat('ko', { style: 'currency', currency: 'KRW' }).format(price);
+  },
+  zeroPad(day: number) {
+    return day < 10 ? '0' + day : day;
   },
 };
 

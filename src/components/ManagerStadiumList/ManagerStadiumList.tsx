@@ -1,22 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled from '@emotion/styled';
-import { stadiumApi, useGetStadiumManagerListQuery } from '@/api/stadiumApi';
+import { useLocation } from 'react-router-dom';
+import { stadiumApi } from '@/api/stadiumApi';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
+import { modalContext } from '@/context/ModalContext';
+import CardStadium from '../CardStadium/CardStadium';
 import Title from '../common/atoms/Title';
 import Responsive from '../common/Responsive';
 import useInfinityScroll from '@/hooks/useInfinityScroll';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/store/store';
-import CardStadium from '../CardStadium/CardStadium';
 import { clearPaging } from '@/store/pagingSlice';
-import { useLocation } from 'react-router-dom';
+import StadiumInfoModal from './StadiumInfoModal';
 
 interface ManagerStadiumListProps {}
 
 const ManagerStadiumList = (props: ManagerStadiumListProps) => {
   const [trigger, { isLoading }] = stadiumApi.endpoints.getStadiumManagerList.useLazyQuery();
   const { content, isLast, nextPage } = useSelector((state: RootState) => state.paging);
+  const openModal = useContext(modalContext)?.openModal;
   const dispatch = useDispatch();
   const location = useLocation();
 
@@ -29,11 +32,11 @@ const ManagerStadiumList = (props: ManagerStadiumListProps) => {
 
   const $observerTarget = useInfinityScroll(fetchNextPage);
 
-  const handleDetailModalOpen = () => {
-    // modal open
+  const handleDetailModalOpen = (id: number) => {
+    openModal?.(<StadiumInfoModal id={id} />);
   };
 
-  const handleRemoveStadium = () => {
+  const handleRemoveStadium = (id: number) => {
     // remove staidum API
   };
 
@@ -53,19 +56,19 @@ const ManagerStadiumList = (props: ManagerStadiumListProps) => {
           <span>{content.length} </span>개
         </TotalNotification>
       </TitleWrapper>
-      <CardStadiumWrapper>
-        {content.map(stadium => (
+      {content.map(stadium => (
+        <CardStadiumWrapper>
           <CardStadium key={stadium.name} stadium={stadium} currentLocation={location.pathname} />
-        ))}
-        <ManagerButtonContainer>
-          <button className="btn btn-detail" onClick={handleDetailModalOpen}>
-            <span>상세정보</span>
-          </button>
-          <button className="btn btn-remove" onClick={handleRemoveStadium}>
-            <span>삭제하기</span>
-          </button>
-        </ManagerButtonContainer>
-      </CardStadiumWrapper>
+          <ManagerButtonContainer>
+            <button className="btn btn-detail" onClick={() => handleDetailModalOpen(stadium.stadiumId)}>
+              <span>상세정보</span>
+            </button>
+            <button className="btn btn-remove" onClick={() => handleRemoveStadium(stadium.stadiumId)}>
+              <span>삭제하기</span>
+            </button>
+          </ManagerButtonContainer>
+        </CardStadiumWrapper>
+      ))}
       <div ref={$observerTarget}></div>
     </ManagerStadiumListContainer>
   );
@@ -93,31 +96,25 @@ const TotalNotification = styled.div`
 
 const CardStadiumWrapper = styled.div`
   display: flex;
+  flex-direction: column;
 `;
 
 const ManagerButtonContainer = styled.div`
-  position: relative;
-  width: 100%;
   display: flex;
-  flex-direction: column;
+  gap: 0.5rem;
 
   .btn {
-    position: absolute;
     width: 80px;
     padding: 0.3rem 0.5rem;
     border-radius: 10px;
   }
 
   .btn-detail {
-    bottom: 3.5rem;
-    right: 0;
     background-color: #000;
     color: #fff;
   }
 
   .btn-remove {
-    bottom: 1rem;
-    right: 0;
     background-color: ${palette.primary.point};
     color: #fff;
   }
