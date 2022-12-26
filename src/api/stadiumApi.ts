@@ -62,8 +62,8 @@ export interface DetailStadiumResponse {
 }
 
 interface LikeStadium {
-  id: number;
-  stadiumId: number;
+  id: string;
+  stadiumId: string;
   name: string;
   address: string;
   starAvg: number;
@@ -77,8 +77,8 @@ export interface LikeStadiumListResponse extends PageType {
 export type ReservationStatus = 'RESERVED' | 'EXECUTED' | 'CANCELED';
 
 export interface RentalStadium {
-  reservationId?: number;
-  stadiumId: number;
+  reservationId?: string;
+  stadiumId: string;
   name: string;
   address: string;
   imgUrl: string;
@@ -103,8 +103,8 @@ interface GetManagerListResponse extends PageType {
 }
 
 export interface RentalStadiumDetail {
-  reservationId: number;
-  stadiumId: number;
+  reservationId: string;
+  stadiumId: string;
   name: string;
   status: 'RESERVED' | 'EXECUTED' | 'CANCELED';
   member: {
@@ -166,21 +166,24 @@ export const stadiumApi = baseApi.injectEndpoints({
         url: `/stadiums/${id}/likes`,
         method: 'POST',
       }),
+      invalidatesTags: ['LikeStadium'],
     }),
     getLikeStadiumList: builder.query<LikeStadiumListResponse, string>({
-      query: () => ({
-        url: `/stadiums/likelist`,
+      query: (page: string) => ({
+        url: `/stadiums/likelist?page=${page}&size=${5}`,
+        transformResponse: (response: { data: LikeStadium }) => response.data,
         method: 'GET',
       }),
-      providesTags: ['User'],
+      providesTags: ['LikeStadium'],
     }),
     getRentalStadiumList: builder.query<RentalStadiumListResponse, string>({
-      query: () => ({
-        url: `/stadiums/reservations`,
+      query: (page: string) => ({
+        url: `/stadiums/reservations?page=${page}&size=${5}&sort=${'createdAt'},DESC`,
+        transformResponse: (response: { data: RentalStadium }) => response.data,
         method: 'GET',
       }),
     }),
-    getRentalStadiumDetail: builder.query<RentalStadiumDetail, { reservationId: number; stadiumId: number }>({
+    getRentalStadiumDetail: builder.query<RentalStadiumDetail, { reservationId: string; stadiumId: string }>({
       query: ({ stadiumId, reservationId }) => ({
         url: `/stadiums/${stadiumId}/reservations/${reservationId}`,
         method: 'GET',
