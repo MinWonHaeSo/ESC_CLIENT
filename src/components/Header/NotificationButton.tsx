@@ -1,4 +1,4 @@
-import { useGetUnreadNotificationQuery } from '@/api/notificationApi';
+import { useCheckUnreadNotificationQuery } from '@/api/notificationApi';
 import PATH from '@/constants/path';
 import palette from '@/lib/styles/palette';
 import { RootState } from '@/store/store';
@@ -13,7 +13,7 @@ interface NotificationButton {
 
 const NotificationButton = ({ onListClick }: NotificationButton) => {
   const loggedIn = useSelector((state: RootState) => state.auth.loggedIn);
-  const { currentData = { cnt: 0, result: true }, isLoading: unreadIsLoading } = useGetUnreadNotificationQuery('');
+  const { currentData = { cnt: 0, result: true }, isLoading: unreadIsLoading } = useCheckUnreadNotificationQuery('');
 
   if (unreadIsLoading || !currentData) {
     return <Loading />;
