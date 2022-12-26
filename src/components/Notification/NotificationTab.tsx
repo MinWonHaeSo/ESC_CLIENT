@@ -2,10 +2,11 @@ import { NotificationTabList } from '@/constants/notificationTab';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
+import { TabType } from './Notification';
 
 interface NotificationTabProps {
-  currentTab: number;
-  onTabClick: (index: number) => void;
+  currentTab: TabType;
+  onTabClick: (tab: TabType) => void;
 }
 
 const NotificationTab = ({ currentTab, onTabClick }: NotificationTabProps) => {

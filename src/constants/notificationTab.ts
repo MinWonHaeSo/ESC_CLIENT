@@ -1,15 +1,17 @@
+import { TabType } from '@/components/Notification/Notification';
+
 interface NotificationTabList {
-  id: number;
+  id: TabType;
   name: string;
 }
 
 export const NotificationTabList: NotificationTabList[] = [
   {
-    id: 0,
+    id: 'unRead',
     name: '미확인',
   },
   {
-    id: 1,
+    id: 'read',
     name: '확인',
   },
 ];

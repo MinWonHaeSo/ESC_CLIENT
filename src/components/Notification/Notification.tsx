@@ -1,75 +1,27 @@
-import {
-  useGetReadNotificationQuery,
-  useGetUnreadNotificationQuery,
-  useReadNotificationMutation,
-} from '@/api/notificationApi';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
+import { RootState, useAppDispatch } from '@/store/store';
 import styled from '@emotion/styled';
-import { useCallback } from 'react';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import Title from '../common/atoms/Title';
-import Loading from '../common/Loading/Loading';
 import Responsive from '../common/Responsive';
 import ScrollToTopButton from '../common/ScrollToTopButton';
-import NotificationList from './NotificationList';
+import NotificationRead from './NotificationRead';
 import NotificationTab from './NotificationTab';
+import NotificationUnread from './NotificationUnread';
+
+export type TabType = 'read' | 'unRead';
 
 interface NotificationProps {}
 
 const Notification = ({}: NotificationProps) => {
-  const [currentTab, setCurrentTab] = useState<number>(0);
-  const {
-    data: readData,
-    isLoading: readDataIsLoading,
-    refetch: readDataRefetch,
-  } = useGetReadNotificationQuery('', { refetchOnMountOrArgChange: true });
+  const [currentTab, setCurrentTab] = useState<TabType>('unRead');
+  const { content, isLast, nextPage, totalCount } = useSelector((state: RootState) => state.notification);
 
-  const {
-    data: unReadData,
-    isLoading: unReadDataIsLoading,
-    refetch: unReadDataRefetch,
-  } = useGetUnreadNotificationQuery('', {
-    refetchOnMountOrArgChange: true,
-  });
-
-  const [readNotificationAPI, { isLoading: readMutationIsLoading }] = useReadNotificationMutation();
-
-  console.log(unReadData);
-  console.log(readData);
-
-  const handleTabClick = (index: number) => {
-    setCurrentTab(index);
-    if (index === 0) {
-      unReadDataRefetch();
-    }
-    if (index === 1) {
-      readDataRefetch();
-    }
+  const handleChangeTab = (tab: TabType) => {
+    setCurrentTab(tab);
   };
-
-  const handleNotificationClick = useCallback(async (notificationId: number) => {
-    const response = await readNotificationAPI(notificationId);
-    try {
-      if (response) {
-        console.log('읽음 처리 되었습니다.');
-      }
-    } catch (error) {
-      console.log(error);
-      console.error('알림 내역을 다시 가져오는데 실패하였습니다.');
-    }
-  }, []);
-
-  if (readDataIsLoading || !readData || !unReadData || readMutationIsLoading) {
-    return <Loading />;
-  }
-
-  if (unReadDataIsLoading || !unReadData) {
-    return <Loading />;
-  }
-
-  const readNotificationData = readData.content;
-  const unReadNotificationData = unReadData.content;
 
   return (
     <NotificationBlock>
@@ -78,26 +30,14 @@ const Notification = ({}: NotificationProps) => {
           알림 내역
         </Title>
         <TotalNotification>
-          {currentTab === 0 ? (
-            <div>
-              <span>{unReadData.totalElements} </span>개
-            </div>
-          ) : (
-            <div>
-              <span>{readData.totalElements} </span>개
-            </div>
-          )}
+          <div>
+            <span>{totalCount} </span>개
+          </div>
         </TotalNotification>
       </TitleWrapper>
-      <NotificationTab currentTab={currentTab} onTabClick={handleTabClick} />
+      <NotificationTab currentTab={currentTab} onTabClick={handleChangeTab} />
       <StyledLine />
-      <NotificationList
-        currentTab={currentTab}
-        onNotificationClick={handleNotificationClick}
-        readNotificationData={readNotificationData}
-        unReadNotificationData={unReadNotificationData}
-      />
-      {unReadNotificationData.length === 0 || readNotificationData.length < 2 ? <StyledPadding /> : null}
+      {currentTab === 'read' ? <NotificationRead content={content} /> : <NotificationUnread content={content} />}
       <ScrollToTopButton />
     </NotificationBlock>
   );
@@ -136,8 +76,4 @@ const StyledLine = styled.div`
   width: 100%;
   height: 1px;
   background-color: ${palette.grey[200]};
-`;
-
-const StyledPadding = styled.div`
-  height: 210px;
 `;
