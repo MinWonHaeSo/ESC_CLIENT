@@ -149,7 +149,13 @@ export const stadiumApi = baseApi.injectEndpoints({
         method: 'GET',
       }),
     }),
-    getStadiumManagerList: builder.query<GetManagerListResponse, number>({
+    getStadiumManagerList: builder.query<GetManagerListResponse, void>({
+      query: () => ({
+        url: `/stadiums/manager?page=${0}&size=${5}&sort=${'createdAt'},DESC`,
+        method: 'GET',
+      }),
+    }),
+    getMoreStadiumManagerList: builder.query<GetManagerListResponse, number>({
       query: page => ({
         url: `/stadiums/manager?page=${page}&size=${5}&sort=${'createdAt'},DESC`,
         method: 'GET',
@@ -243,6 +249,7 @@ export const stadiumApi = baseApi.injectEndpoints({
 export const {
   useGetStadiumListQuery,
   useGetStadiumManagerListQuery,
+  useGetMoreStadiumManagerListQuery,
   useGetStadiumManagerReservationUserListQuery,
   useGetStadiumManagerReservationUserDetailQuery,
   useGetStadiumDetailQuery,

@@ -2,8 +2,13 @@ import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { stadiumApi, useRemoveStadiumMutation } from '@/api/stadiumApi';
-import { clearPaging } from '@/store/pagingSlice';
+import {
+  stadiumApi,
+  useGetMoreStadiumManagerListQuery,
+  useGetStadiumManagerListQuery,
+  useRemoveStadiumMutation,
+} from '@/api/stadiumApi';
+import { clearPaging, removeStadium } from '@/store/pagingSlice';
 import { RootState } from '@/store/store';
 import useInfinityScroll from '@/hooks/useInfinityScroll';
 import { typo } from '@/lib/styles/typo';
@@ -15,12 +20,14 @@ import Loading from '../common/Loading/Loading';
 import Responsive from '../common/Responsive';
 import StadiumList from './StadiumList';
 import sw from '@/lib/utils/customSweetAlert';
+import PagingSpinner from '../common/Loading/PagingSpinner';
 
 interface ManagerStadiumListProps {}
 
 const ManagerStadiumList = (props: ManagerStadiumListProps) => {
-  const [trigger] = stadiumApi.endpoints.getStadiumManagerList.useLazyQuery();
-  const [stadiumRemoveAPI, { isLoading }] = useRemoveStadiumMutation();
+  const { data, isLoading, isError, refetch } = useGetStadiumManagerListQuery();
+  const [trigger, { isLoading: pageLoading }] = stadiumApi.endpoints.getMoreStadiumManagerList.useLazyQuery();
+  const [stadiumRemoveAPI] = useRemoveStadiumMutation();
   const { content, isLast, nextPage, totalElements } = useSelector((state: RootState) => state.paging);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,7 +35,6 @@ const ManagerStadiumList = (props: ManagerStadiumListProps) => {
   const fetchNextPage = () => {
     if (isLast) return;
     const page = nextPage ? nextPage : 0;
-
     trigger(page);
   };
 
@@ -45,6 +51,7 @@ const ManagerStadiumList = (props: ManagerStadiumListProps) => {
   const handleRemoveStadium = async (id: string) => {
     try {
       const response = await stadiumRemoveAPI(id);
+      dispatch(removeStadium({ id }));
       sw.toast.success('체육관 삭제 성공');
     } catch {
       sw.toast.error('다시 시도해 주세요.');
@@ -57,9 +64,12 @@ const ManagerStadiumList = (props: ManagerStadiumListProps) => {
     };
   }, []);
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <Container>
-      {isLoading ? <Loading /> : null}
       <TitleBlock>
         <Title fontSize={`${typo.xLarge}`} marginTop="20px">
           등록한 체육관
