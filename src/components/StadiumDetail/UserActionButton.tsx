@@ -14,9 +14,11 @@ interface UserActionButtonProps {
   post: stadiumWriteState;
   stadiumId: string;
   stadiumLike: boolean;
+  refetch: () => void;
 }
 
-const UserActionButton = ({ post, stadiumId, stadiumLike }: UserActionButtonProps) => {
+const UserActionButton = ({ post, stadiumId, stadiumLike, refetch }: UserActionButtonProps) => {
+  const [like, setLike] = useState(stadiumLike);
   const userId = useSelector((state: RootState) => state.auth.id);
   const [postLikeStadiumAPI] = usePostLikeStadiumMutation();
   const likeCallbackAPI = useThrottleRef(() => postLikeStadiumAPI(stadiumId));
@@ -25,6 +27,8 @@ const UserActionButton = ({ post, stadiumId, stadiumLike }: UserActionButtonProp
 
   const handleChangeStadiumLike = () => {
     likeCallbackAPI();
+    setLike(!like);
+    refetch();
   };
 
   const handleGotoEdit = useCallback(() => {
@@ -51,7 +55,7 @@ const UserActionButton = ({ post, stadiumId, stadiumLike }: UserActionButtonProp
       ) : (
         <>
           <button className="book-mark" onClick={handleChangeStadiumLike}>
-            <i className={stadiumLike ? 'fa-solid fa-bookmark' : 'fa-regular fa-bookmark'}></i>
+            <i className={like ? 'fa-solid fa-bookmark' : 'fa-regular fa-bookmark'}></i>
           </button>
           <button className="btn btn-action" onClick={handleGotoRental}>
             예약하기
