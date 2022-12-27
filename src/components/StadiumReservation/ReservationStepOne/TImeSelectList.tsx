@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import Dividers from '../common/Dividers';
+import Dividers from '../../common/Dividers';
 import TimeSelectItem from './TimeSelectItem';
 import excludeTimes from '@/lib/utils/excludeTimes';
 import { useSelector } from 'react-redux';

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import CustomTime from '../common/CustomTime';
+import CustomTime from '../../common/CustomTime';
 
 interface ReservationTimeProps {}
 
