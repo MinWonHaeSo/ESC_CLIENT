@@ -34,13 +34,11 @@ const ManagerStadiumList = (props: ManagerStadiumListProps) => {
 
   const $observerTarget = useInfinityScroll(fetchNextPage);
 
-
   const handleDetailModalOpen = (id: string) => {
     navigate(PATH.STADIUM_RESERVATION_USER);
   };
 
-  const handleRemoveStadium = (id: string) => {
-  };
+  const handleRemoveStadium = (id: string) => {};
 
   useEffect(() => {
     return () => {
@@ -61,7 +59,6 @@ const ManagerStadiumList = (props: ManagerStadiumListProps) => {
       {content.map(stadium => (
         <CardStadiumWrapper key={stadium.stadiumId}>
           <CardStadium stadium={stadium} currentLocation={location.pathname} />
-        <CardStadiumWrapper>
           <ManagerButtonContainer>
             <button className="btn btn-detail" onClick={() => handleDetailModalOpen(stadium.stadiumId)}>
               <span>상세정보</span>
