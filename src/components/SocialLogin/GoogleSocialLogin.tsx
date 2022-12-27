@@ -5,7 +5,7 @@ import GoogleLogo from '@/assets/GoogleLogo';
 
 const GOOGLE_CLIENT_ID = `${
   import.meta.env.VITE_BASE_URL
-}/oauth2/authorization/google?redirect_uri=http://localhost:5173/oauth/redirect`;
+}/oauth2/authorization/google?redirect_uri=https://d3k8rrzs9omv1v.cloudfront.net/oauth/redirect`;
 
 const GoogleSocialLogin = () => {
   const getAuthToken = () => {
