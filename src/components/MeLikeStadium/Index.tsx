@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
@@ -33,18 +33,19 @@ const MeLikeStadium = ({}: MeLikeStadiumProps) => {
   };
 
   const $observerTarget = useInfinityScroll(fetchNextPage);
+  const likeStadiumList = useMemo(() => content.filter(stadium => stadium.like === true), [content]);
 
   useEffect(() => {
     return () => {
       dispatch(clearPaging());
     };
-  }, [dispatch]);
+  }, []);
 
   if (isLoading) {
     return <Loading />;
   }
-
-  const likeStadiumList = content;
+  console.log(data);
+  console.log(content);
 
   return (
     <MeLikeStadiumContainer>
