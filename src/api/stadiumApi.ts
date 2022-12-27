@@ -70,6 +70,19 @@ interface LikeStadium {
   imgUrl: string;
 }
 
+export interface ReservationUser {
+  name: string;
+  paymentDate: string;
+  reservationId: string;
+  reservingDate: string;
+  stadiumId: string;
+  status: ReservationStatus;
+}
+
+export interface GetReservationUserListResponse extends PageType {
+  content: ReservationUser[];
+}
+
 export interface LikeStadiumListResponse extends PageType {
   content: LikeStadium[];
 }
@@ -138,6 +151,21 @@ export const stadiumApi = baseApi.injectEndpoints({
     getStadiumManagerList: builder.query<GetManagerListResponse, number>({
       query: page => ({
         url: `/stadiums/manager?page=${page}&size=${5}&sort=${'createdAt'},DESC`,
+        method: 'GET',
+      }),
+    }),
+    getStadiumManagerReservationUserList: builder.query<GetReservationUserListResponse, string>({
+      query: id => ({
+        url: `/stadiums/manager/${id}`,
+        method: 'GET',
+      }),
+    }),
+    getStadiumManagerReservationUserDetail: builder.query<
+      RentalStadiumDetail,
+      { stadiumId: string; reservationId: string }
+    >({
+      query: ({ reservationId, stadiumId }) => ({
+        url: `/stadiums/manager/${stadiumId}/reservations/${reservationId}`,
         method: 'GET',
       }),
     }),
@@ -210,6 +238,8 @@ export const stadiumApi = baseApi.injectEndpoints({
 export const {
   useGetStadiumListQuery,
   useGetStadiumManagerListQuery,
+  useGetStadiumManagerReservationUserListQuery,
+  useGetStadiumManagerReservationUserDetailQuery,
   useGetStadiumDetailQuery,
   useAddStadiumMutation,
   useUpdateStadiumInfoMutation,

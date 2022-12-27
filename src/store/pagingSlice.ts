@@ -6,6 +6,7 @@ interface pagingState {
   currentPage: number;
   nextPage: number;
   totalPage: number;
+  totalElements: number;
   isLast: boolean;
   type: string;
 }
@@ -15,6 +16,7 @@ const pagingDispatch = (state: pagingState, payload: any) => {
   state.currentPage = payload.number;
   state.nextPage = payload.number + 1;
   state.totalPage = payload.totalPages;
+  state.totalElements = payload.totalElements;
   state.isLast = payload.last;
 };
 
@@ -23,6 +25,7 @@ const initialState: pagingState = {
   currentPage: 0,
   nextPage: 0,
   totalPage: 0,
+  totalElements: 0,
   isLast: false,
   type: '',
 };
