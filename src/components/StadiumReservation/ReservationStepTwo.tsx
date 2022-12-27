@@ -5,7 +5,7 @@ import Title from '../common/atoms/Title';
 import Responsive from '../common/Responsive';
 import ReservationButton from './ReservationButton';
 import ReservationPrevStepButton from './ReservationPrevStepButton';
-import ReservationRentalList from './ReservationRentalList';
+import ReservationRentalList from './ReservationStepTwo/ReservationRentalList';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import formatter from '@/lib/utils/formatter';

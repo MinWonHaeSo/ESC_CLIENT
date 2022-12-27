@@ -17,7 +17,7 @@ import ReservationPrevStepButton from './ReservationPrevStepButton';
 import ReservationInfo from './ReservationStepThree/ReservationInfo';
 import ReservationPayment from './ReservationStepThree/ReservationPayment';
 import ReservationProfile from './ReservationStepThree/ReservationProfile';
-import ReservationRentalItemList from './ReservationStepThree/ReservationRentalItemList';
+import ReservationRentalItemList from './ReservationStepTwo/ReservationRentalItemList';
 
 interface ReservationStepThreeProps {}
 

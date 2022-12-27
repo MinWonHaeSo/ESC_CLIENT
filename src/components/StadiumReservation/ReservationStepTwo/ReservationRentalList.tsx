@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { RentalItemsType } from '@/api/reservationApi';
-import ReservationRentalItem from './ReservationRentalItem';
+import ReservationRentalItem from '../ReservationStepThree/ReservationRentalItem';
 
 interface ReservationRentalListProps {
   rentalItems: RentalItemsType[];

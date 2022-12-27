@@ -31,11 +31,11 @@ const ManagerStadiumList = (props: ManagerStadiumListProps) => {
 
   const $observerTarget = useInfinityScroll(fetchNextPage);
 
-  const handleDetailModalOpen = (id: number) => {
+  const handleDetailModalOpen = (id: string) => {
     navigate(PATH.STADIUM_RESERVATION_USER);
   };
 
-  const handleRemoveStadium = (id: number) => {
+  const handleRemoveStadium = (id: string) => {
     // remove staidum API
   };
 

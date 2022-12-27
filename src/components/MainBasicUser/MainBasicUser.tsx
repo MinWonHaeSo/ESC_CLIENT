@@ -18,7 +18,6 @@ const MainBasicUser = ({ currentLocation }: MainBasicUserProps) => {
   const { searchResults, markerInfo } = useSelector((state: RootState) => state.stadiumMarker);
   const dispatch = useDispatch();
 
-  console.log(data);
   const handleClickMarker = useMemo(
     () => (el: any) => {
       dispatch(clickMarker(el));
@@ -31,8 +30,6 @@ const MainBasicUser = ({ currentLocation }: MainBasicUserProps) => {
       dispatch(clearMarkerInfo());
     };
   }, []);
-
-  console.log(markerInfo);
 
   return (
     <HomeWrapper>
