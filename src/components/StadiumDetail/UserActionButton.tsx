@@ -47,7 +47,7 @@ const UserActionButton = ({ post, stadiumId }: UserActionButtonProps) => {
 
   return (
     <ButtonActionContainer>
-      {userId === post.memberId ? (
+      {userId === String(post.memberId) ? (
         <button className="btn btn-action" onClick={handleGotoEdit}>
           수정하기
         </button>
