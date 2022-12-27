@@ -17,7 +17,7 @@ interface DetailProps {
 }
 
 const Detail = ({ stadiumId }: DetailProps) => {
-  const { data, isLoading, error } = useGetStadiumDetailQuery(stadiumId);
+  const { data, isLoading, error, refetch } = useGetStadiumDetailQuery(stadiumId);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const Detail = ({ stadiumId }: DetailProps) => {
       </SliderWrapper>
       <Tag tags={data.tags} />
       <Info info={data} />
-      <UserActionButton post={data} stadiumId={stadiumId} stadiumLike={data.like} />
+      <UserActionButton post={data} stadiumId={stadiumId} stadiumLike={data.like} refetch={refetch} />
     </div>
   );
 };

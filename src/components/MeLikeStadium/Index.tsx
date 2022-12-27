@@ -44,8 +44,6 @@ const MeLikeStadium = ({}: MeLikeStadiumProps) => {
   if (isLoading) {
     return <Loading />;
   }
-  console.log(data);
-  console.log(content);
 
   return (
     <MeLikeStadiumContainer>
