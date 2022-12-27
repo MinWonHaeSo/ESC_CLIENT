@@ -22,8 +22,9 @@ export interface stadiumWriteState {
   rentalItems: rentalItemType[];
   lat: string;
   lnt: string;
+  like: boolean;
 
-  [key: string]: string | string[] | number | imagesType[] | tagType[] | rentalItemType[];
+  [key: string]: string | string[] | number | boolean | imagesType[] | tagType[] | rentalItemType[];
 }
 
 const initialState: stadiumWriteState = {
@@ -42,6 +43,7 @@ const initialState: stadiumWriteState = {
   rentalItems: [],
   lat: '',
   lnt: '',
+  like: false,
 };
 
 export const stadiumWriteSlice = createSlice({
