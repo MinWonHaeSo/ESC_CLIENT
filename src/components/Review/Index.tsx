@@ -39,8 +39,8 @@ const Review = ({ stadiumId }: ReviewProps) => {
   return (
     <ReviewContainer>
       <ReviewHeader />
-      <ReviewSubmit id={stadiumId} />
-      <ReviewList />
+      <ReviewSubmit stadiumId={stadiumId} />
+      <ReviewList stadiumId={stadiumId} />
       <div ref={$observerTarget}></div>
     </ReviewContainer>
   );

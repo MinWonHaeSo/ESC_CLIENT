@@ -6,48 +6,35 @@ import Responsive from '../common/Responsive';
 import Title from '../common/atoms/Title';
 import ReservationUserInfoList from './ReservationUserInfoList';
 import PrevButton from './PrevButton';
+import { useGetStadiumManagerReservationUserListQuery } from '@/api/stadiumApi';
+import EmptyItemNotification from '../common/EmptyItemNotification';
+import Loading from '../common/Loading/Loading';
 
-const data = [
-  {
-    id: 1,
-    userName: '장비',
-    date: '2022-12-31',
-  },
-  {
-    id: 2,
-    userName: '유비',
-    date: '2022-12-31',
-  },
-  {
-    id: 3,
-    userName: '조조',
-    date: '2022-12-31',
-  },
-  {
-    id: 4,
-    userName: '관우',
-    date: '2022-12-31',
-  },
-  {
-    id: 5,
-    userName: '손권',
-    date: '2022-12-31',
-  },
-];
+interface ReservationUserInfoProps {
+  id: string;
+}
 
-interface ReservationUserInfoProps {}
+const ReservationUserInfo = ({ id }: ReservationUserInfoProps) => {
+  const { data, isLoading } = useGetStadiumManagerReservationUserListQuery(id);
 
-const ReservationUserInfo = (props: ReservationUserInfoProps) => {
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <Container>
       <TitleBlock>
         <PrevButton />
         <Title fontSize={`${typo.xLarge}`}>예약 유저</Title>
         <TotalCountBlock>
-          <span>0 </span>명
+          <span>{data?.totalElements} </span>명
         </TotalCountBlock>
       </TitleBlock>
-      <ReservationUserInfoList list={data} />
+      {data?.content.length === 0 ? (
+        <EmptyItemNotification message="예약한 유저가 없습니다." btnActive={false} />
+      ) : (
+        <ReservationUserInfoList id={id} list={data?.content!} />
+      )}
     </Container>
   );
 };
@@ -61,6 +48,7 @@ const TitleBlock = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
+  margin-bottom: 1rem;
 `;
 
 const TotalCountBlock = styled.div`

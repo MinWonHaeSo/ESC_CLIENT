@@ -1,28 +1,28 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeComment, clearReview } from '@/store/stadiumReview';
+import { addComment, clearReview } from '@/store/stadiumReview';
 import { RootState } from '@/store/store';
 import { useAddReviewMutation } from '@/api/reviewApi';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 
 interface ReviewSubmitProps {
-  id: string;
+  stadiumId: string;
 }
 
-const ReviewSubmit = ({ id }: ReviewSubmitProps) => {
+const ReviewSubmit = ({ stadiumId }: ReviewSubmitProps) => {
   const review = useSelector((state: RootState) => state.stadiumReview);
   const [addReviewAPI] = useAddReviewMutation();
   const dispatch = useDispatch();
 
   const handleSumbitReview = async () => {
-    const response = await addReviewAPI({ id, comment: review.comment, star: review.star });
+    const response = await addReviewAPI({ id: stadiumId, comment: review.comment, star: review.star });
     dispatch(clearReview());
   };
 
   const handleChangeReviewComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    dispatch(changeComment(e.target.value));
+    dispatch(addComment(e.target.value));
   };
 
   return (

@@ -1,17 +1,18 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import ReservationUserInfoItem from './ReservationUserInfoItem';
+import { ReservationUser } from '@/api/stadiumApi';
 
 interface ReservationUserInfoListProps {
-  list: any[];
+  id: string;
+  list: ReservationUser[];
 }
 
-const ReservationUserInfoList = ({ list }: ReservationUserInfoListProps) => {
-  console.log(list);
+const ReservationUserInfoList = ({ id, list }: ReservationUserInfoListProps) => {
   return (
     <Container>
       {list.map(item => (
-        <ReservationUserInfoItem key={item.id} item={item} />
+        <ReservationUserInfoItem key={item.reservationId} stadiumId={id} item={item} />
       ))}
     </Container>
   );

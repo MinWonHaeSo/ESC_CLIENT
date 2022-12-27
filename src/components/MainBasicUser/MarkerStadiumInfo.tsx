@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import { SearchStadiumContent, usePostLikeStadiumMutation } from '@/api/stadiumApi';
-import useThrottleRef from '@/hooks/useThrottleRef';
+import { SearchStadiumContent } from '@/api/stadiumApi';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import PATH from '@/constants/path';
@@ -12,16 +11,7 @@ interface MarkerStadiumInfoProps {
 }
 
 const MarkerStadiumInfo = ({ markerInfo }: MarkerStadiumInfoProps) => {
-  const [stadiumLike, setStadiumLike] = useState(false);
   const navigate = useNavigate();
-
-  const [postLikeStadiumAPI] = usePostLikeStadiumMutation();
-  const likeCallbackAPI = useThrottleRef(() => postLikeStadiumAPI(String(markerInfo.stadiumId)));
-
-  const handleChangeStadiumLike = () => {
-    setStadiumLike(true);
-    likeCallbackAPI();
-  };
 
   const toUploadNavigate = () => {
     navigate(`${PATH.STADIUM_DETAIL}/${markerInfo.stadiumId}`);
@@ -32,9 +22,6 @@ const MarkerStadiumInfo = ({ markerInfo }: MarkerStadiumInfoProps) => {
   }
   return (
     <MarkerInfoContainer>
-      <div className="book-mark" onClick={handleChangeStadiumLike}>
-        <i className={stadiumLike ? 'fa-solid fa-bookmark' : 'fa-regular fa-bookmark'}></i>
-      </div>
       <StadiumInfoContainer onClick={toUploadNavigate}>
         <div className="image-container">
           <img
@@ -74,17 +61,6 @@ const MarkerInfoContainer = styled.div`
   z-index: 1;
   transform: translate(-50%);
   box-shadow: 5px 1px 19px rgba(77, 78, 79, 0.3);
-
-  .book-mark {
-    position: absolute;
-    top: 0;
-    right: 0.4rem;
-    font-size: ${typo.medium};
-  }
-
-  i {
-    color: ${palette.primary['orange']};
-  }
 `;
 
 const StadiumInfoContainer = styled.div`

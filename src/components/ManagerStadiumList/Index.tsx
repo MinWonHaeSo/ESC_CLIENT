@@ -1,25 +1,25 @@
 import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { stadiumApi } from '@/api/stadiumApi';
-import { RootState } from '@/store/store';
 import { clearPaging } from '@/store/pagingSlice';
+import { RootState } from '@/store/store';
 import useInfinityScroll from '@/hooks/useInfinityScroll';
-import PATH from '@/constants/path';
-import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
+import palette from '@/lib/styles/palette';
+import media from '@/lib/styles/media';
+import PATH from '@/constants/path';
 import Title from '../common/atoms/Title';
 import Responsive from '../common/Responsive';
-import CardStadium from '../CardStadium/Index';
+import StadiumList from './StadiumList';
 
 interface ManagerStadiumListProps {}
 
 const ManagerStadiumList = (props: ManagerStadiumListProps) => {
   const [trigger] = stadiumApi.endpoints.getStadiumManagerList.useLazyQuery();
-  const { content, isLast, nextPage } = useSelector((state: RootState) => state.paging);
+  const { content, isLast, nextPage, totalElements } = useSelector((state: RootState) => state.paging);
   const dispatch = useDispatch();
-  const location = useLocation();
   const navigate = useNavigate();
 
   const fetchNextPage = () => {
@@ -32,7 +32,11 @@ const ManagerStadiumList = (props: ManagerStadiumListProps) => {
   const $observerTarget = useInfinityScroll(fetchNextPage);
 
   const handleDetailModalOpen = (id: string) => {
-    navigate(PATH.STADIUM_RESERVATION_USER);
+    navigate(PATH.STADIUM_RESERVATION_USER, {
+      state: {
+        id: '100',
+      },
+    });
   };
 
   const handleRemoveStadium = (id: string) => {};
@@ -44,38 +48,35 @@ const ManagerStadiumList = (props: ManagerStadiumListProps) => {
   }, []);
 
   return (
-    <ManagerStadiumListContainer>
-      <TitleWrapper>
+    <Container>
+      <TitleBlock>
         <Title fontSize={`${typo.xLarge}`} marginTop="20px">
           등록한 체육관
         </Title>
         <TotalCountBlock>
-          <span>{content.length} </span>개
+          <span>{totalElements} </span>개
         </TotalCountBlock>
-      </TitleWrapper>
-      {content.map(stadium => (
-        <CardStadiumWrapper key={stadium.stadiumId}>
-          <CardStadium stadium={stadium} currentLocation={location.pathname} />
-          <ManagerButtonContainer>
-            <button className="btn btn-detail" onClick={() => handleDetailModalOpen(stadium.stadiumId)}>
-              <span>상세정보</span>
-            </button>
-            <button className="btn btn-remove" onClick={() => handleRemoveStadium(stadium.stadiumId)}>
-              <span>삭제하기</span>
-            </button>
-          </ManagerButtonContainer>
-        </CardStadiumWrapper>
-      ))}
+      </TitleBlock>
+      <StadiumBlock>
+        {content.map(stadium => (
+          <StadiumList
+            key={stadium.stadiumId}
+            stadium={stadium}
+            onMoveDetail={handleDetailModalOpen}
+            onRemove={handleRemoveStadium}
+          />
+        ))}
+      </StadiumBlock>
       <div ref={$observerTarget}></div>
-    </ManagerStadiumListContainer>
+    </Container>
   );
 };
 
-const ManagerStadiumListContainer = styled.div`
+const Container = styled.div`
   ${Responsive.ResponsiveWrapper}
 `;
 
-const TitleWrapper = styled.div`
+const TitleBlock = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -91,29 +92,16 @@ const TotalCountBlock = styled.div`
   }
 `;
 
-const CardStadiumWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const ManagerButtonContainer = styled.div`
-  display: flex;
-  gap: 0.5rem;
-
-  .btn {
-    width: 80px;
-    padding: 0.3rem 0.5rem;
-    border-radius: 10px;
+const StadiumBlock = styled.div`
+  display: grid;
+  gap: 12px;
+  ${media.xsmallMin} {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .btn-detail {
-    background-color: #000;
-    color: #fff;
-  }
-
-  .btn-remove {
-    background-color: ${palette.primary.point};
-    color: #fff;
+  ${media.mediumMin} {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
   }
 `;
 

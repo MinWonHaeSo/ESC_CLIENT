@@ -4,23 +4,27 @@ import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import { modalContext } from '@/context/ModalContext';
 import ReservationUserInfoModal from './ReservationUserInfoModal';
+import { ReservationUser } from '@/api/stadiumApi';
+import MeRentalStadiumDetailModal from '../MeRentalList/MeRentalStadiumDetailModal';
 
 interface ReservationUserInfoItemProps {
-  item: any;
+  item: ReservationUser;
+  stadiumId: string;
 }
 
-const ReservationUserInfoItem = ({ item }: ReservationUserInfoItemProps) => {
+const ReservationUserInfoItem = ({ item, stadiumId }: ReservationUserInfoItemProps) => {
   const modal = useContext(modalContext)?.openModal;
 
   const handleOpenDetailModal = () => {
-    modal?.(<ReservationUserInfoModal id={item.id} />);
+    modal?.(<ReservationUserInfoModal reservationId={item.reservationId} stadiumId={stadiumId} />);
   };
+
   return (
     <Conatiner aria-label="user reservation modal open" role="button" onClick={handleOpenDetailModal}>
       <UserInfoWrapper>
-        <span>{item.userName} 님의 예약 정보</span>
+        <span>{item.name} 님의 예약 정보</span>
       </UserInfoWrapper>
-      <ReservationTimeWrapper>예약 날자 : {item.date}</ReservationTimeWrapper>
+      <ReservationTimeWrapper>예약 날자 : {item.reservingDate}</ReservationTimeWrapper>
       <div>결제 금액 : 150,000 원</div>
     </Conatiner>
   );

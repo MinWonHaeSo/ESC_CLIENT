@@ -25,8 +25,16 @@ export const stadiumReviewSlice = createSlice({
   name: 'stadiumReview',
   initialState,
   reducers: {
-    changeComment: (state, action: PayloadAction<string>) => {
+    addComment: (state, action: PayloadAction<string>) => {
       state.comment = action.payload;
+    },
+    updateComment: (state, action: PayloadAction<{ id: string; comment: string }>) => {
+      const findIdx = state.list.findIndex(review => review.id === action.payload.id);
+      state.list[findIdx].comment = action.payload.comment;
+    },
+    removeReview: (state, action: PayloadAction<{ id: string }>) => {
+      const findIdx = state.list.findIndex(review => review.id === action.payload.id);
+      state.list.splice(findIdx, 1);
     },
     changeStar: (state, action: PayloadAction<number>) => {
       state.star = action.payload;
@@ -44,6 +52,6 @@ export const stadiumReviewSlice = createSlice({
   },
 });
 
-export const { changeComment, changeStar, clearReview } = stadiumReviewSlice.actions;
+export const { addComment, updateComment, removeReview, changeStar, clearReview } = stadiumReviewSlice.actions;
 
 export const stadiumReviewReducer = stadiumReviewSlice.reducer;
