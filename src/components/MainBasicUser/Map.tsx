@@ -12,6 +12,8 @@ const Map = ({ searchResults, onClickMarker }: MapProps) => {
   }, []);
 
   useEffect(() => {
+    if (searchResults === undefined) return;
+    if (Object.keys(searchResults).length === 0) return;
     kakaoService.setMarker({ place: searchResults, handleClick: onClickMarker });
   }, [searchResults]);
 
