@@ -168,16 +168,31 @@ export const stadiumApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['LikeStadium'],
     }),
-    getLikeStadiumList: builder.query<LikeStadiumListResponse, string>({
-      query: (page: string) => ({
+    getLikeStadiumList: builder.query<LikeStadiumListResponse, void>({
+      query: () => ({
+        url: `/stadiums/likelist?page=${0}&size=${5}`,
+        transformResponse: (response: { data: LikeStadium }) => response.data,
+        method: 'GET',
+      }),
+      providesTags: ['LikeStadium'],
+    }),
+    getMoreLikeStadiumList: builder.query<LikeStadiumListResponse, number>({
+      query: (page: number) => ({
         url: `/stadiums/likelist?page=${page}&size=${5}`,
         transformResponse: (response: { data: LikeStadium }) => response.data,
         method: 'GET',
       }),
       providesTags: ['LikeStadium'],
     }),
-    getRentalStadiumList: builder.query<RentalStadiumListResponse, string>({
-      query: (page: string) => ({
+    getRentalStadiumList: builder.query<RentalStadiumListResponse, void>({
+      query: () => ({
+        url: `/stadiums/reservations?page=${0}&size=${5}&sort=${'createdAt'},DESC`,
+        transformResponse: (response: { data: RentalStadium }) => response.data,
+        method: 'GET',
+      }),
+    }),
+    getMoreRentalStadiumList: builder.query<RentalStadiumListResponse, number>({
+      query: (page: number) => ({
         url: `/stadiums/reservations?page=${page}&size=${5}&sort=${'createdAt'},DESC`,
         transformResponse: (response: { data: RentalStadium }) => response.data,
         method: 'GET',
@@ -201,6 +216,8 @@ export const {
   useSearchStadiumMutation,
   usePostLikeStadiumMutation,
   useGetLikeStadiumListQuery,
+  useGetMoreLikeStadiumListQuery,
   useGetRentalStadiumListQuery,
+  useGetMoreRentalStadiumListQuery,
   useGetRentalStadiumDetailQuery,
 } = stadiumApi;
