@@ -23,6 +23,8 @@ interface StadiumEditProps {
   write: stadiumWriteState;
 }
 
+const CLOUDINARY_URL = 'http://res.cloudinary.com/dsbjcdw4r/image/upload/';
+
 const StadiumEdit = ({ write }: StadiumEditProps) => {
   const [addStadiumAPI] = useAddStadiumMutation();
   const [updateStadiumAPI] = useUpdateStadiumInfoMutation();
@@ -62,10 +64,13 @@ const StadiumEdit = ({ write }: StadiumEditProps) => {
       // 반환 받은 데이터 url, public_id 추출
       const resStadiumImage = uploadStadium.map(image => ({
         publicId: image.data.public_id,
-        imgUrl: image.data.url,
+        imgUrl: image.data.url.slice(0, 49) + 'f_auto,q_auto/' + image.data.url.slice(49),
       }));
 
-      const resRentalImage = uploadRental.map(image => ({ url: image.data.url, public_id: image.data.public_id }));
+      const resRentalImage = uploadRental.map(image => ({
+        url: image.data.url.slice(0, 49) + 'f_auto,q_auto/' + image.data.url.slice(49),
+        public_id: image.data.public_id,
+      }));
 
       // form stadiumImages 데이터 변경
       const stadiumImages = form.imgs.map((img, idx) => ({
