@@ -1,8 +1,12 @@
-import { ManagerListStadium, RentalStadium, ReservationStatus, stadiumApi } from '@/api/stadiumApi';
+import { RentalStadium, ReservationStatus, stadiumApi } from '@/api/stadiumApi';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+export interface StatdiumData extends RentalStadium {
+  like?: boolean;
+}
+
 interface pagingState {
-  content: RentalStadium[];
+  content: StatdiumData[];
   currentPage: number;
   nextPage: number;
   totalPage: number;
@@ -35,8 +39,9 @@ export const pagingSlice = createSlice({
       const findIdx = state.content.findIndex(item => item.reservationId === action.payload.id);
       state.content[findIdx].status = action.payload.status;
     },
-    toggleLike: (state, action: PayloadAction<{ id: string; value: boolean }>) => {
-      // const findIdx = state.content.findIndex(item => item.);
+    toggleLike: (state, action: PayloadAction<{ id: string }>) => {
+      const findIdx = state.content.findIndex(item => item.stadiumId === action.payload.id);
+      state.content.splice(findIdx, 1);
     },
     clearPaging: () => initialState,
   },
@@ -64,6 +69,6 @@ export const pagingSlice = createSlice({
   },
 });
 
-export const { changeStatus, clearPaging } = pagingSlice.actions;
+export const { changeStatus, toggleLike, clearPaging } = pagingSlice.actions;
 
 export const pagingReducer = pagingSlice.reducer;
