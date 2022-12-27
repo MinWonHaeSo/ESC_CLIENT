@@ -4,7 +4,9 @@ import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import sw from '@/lib/utils/customSweetAlert';
 import formatter from '@/lib/utils/formatter';
+import { changeStatus } from '@/store/pagingSlice';
 import styled from '@emotion/styled';
+import { useDispatch } from 'react-redux';
 import Button from '../common/atoms/Button';
 import Loading from '../common/Loading/Loading';
 
@@ -15,17 +17,13 @@ interface MeRentalStadiumDetailModal {
 }
 
 const MeRentalStadiumDetailModal = ({ reservationId, stadiumId, closeModal }: MeRentalStadiumDetailModal) => {
-  const {
-    data,
-    isLoading,
-    error,
-    refetch: rentalStadiumDetailRefetch,
-  } = useGetRentalStadiumDetailQuery({ stadiumId, reservationId }, { refetchOnMountOrArgChange: true });
+  const { data, isLoading, error } = useGetRentalStadiumDetailQuery({ stadiumId, reservationId });
   const [finishStadiumUtilizationAPI, { isLoading: finishLoading }] = useFinishStadiumUtilizationMutation();
+  const dispatch = useDispatch();
 
   const handleCompleteUtilization = async () => {
     await finishStadiumUtilizationAPI({ reservationId, stadiumId });
-    rentalStadiumDetailRefetch();
+    dispatch(changeStatus({ id: reservationId, status: 'EXECUTED' }));
     closeModal();
   };
 
