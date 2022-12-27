@@ -44,8 +44,22 @@ export const reviewApi = baseApi.injectEndpoints({
       }),
     }),
     updateReview: builder.mutation({
-      query: ({ stadiumId, reviewId }: { stadiumId: string; reviewId: string }) => ({
+      query: ({
+        stadiumId,
+        reviewId,
+        comment,
+        star,
+      }: {
+        stadiumId: string;
+        reviewId: string;
+        comment: string;
+        star: number;
+      }) => ({
         url: `/stadiums/${stadiumId}/reviews/${reviewId}`,
+        body: {
+          comment,
+          star,
+        },
         method: 'PATCH',
       }),
     }),

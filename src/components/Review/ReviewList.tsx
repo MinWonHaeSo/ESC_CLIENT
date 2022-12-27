@@ -5,15 +5,17 @@ import { RootState } from '@/store/store';
 import EmptyItemNotification from '../common/EmptyItemNotification';
 import ReviewListItem from './ReviewListItem';
 
-interface ReviewListProps {}
+interface ReviewListProps {
+  stadiumId: string;
+}
 
-const ReviewList = ({}: ReviewListProps) => {
+const ReviewList = ({ stadiumId }: ReviewListProps) => {
   const reviewList = useSelector((state: RootState) => state.stadiumReview.list);
 
   return (
     <ReviewListContainer>
       {reviewList.length ? (
-        reviewList.map((review, idx) => <ReviewListItem key={idx} content={review} />)
+        reviewList.map(review => <ReviewListItem key={review.id} stadiumId={stadiumId} content={review} />)
       ) : (
         <EmptyItemNotification message={'작성된 리뷰가 없습니다.'} btnActive={false} />
       )}

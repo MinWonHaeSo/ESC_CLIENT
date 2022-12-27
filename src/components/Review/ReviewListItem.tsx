@@ -1,32 +1,42 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import { useSelector } from 'react-redux';
-import { ContentType } from '@/api/reviewApi';
+import { useDispatch, useSelector } from 'react-redux';
+import { ContentType, useRemoveReviewMutation, useUpdateReviewMutation } from '@/api/reviewApi';
 import { RootState } from '@/store/store';
 import palette from '@/lib/styles/palette';
 import StarRate from '../common/StarRate';
+import Loading from '../common/Loading/Loading';
+import { removeReview, updateComment } from '@/store/stadiumReview';
 
 interface ReviewListItemProps {
   content: ContentType;
+  stadiumId: string;
 }
 
-const ReviewListItem = ({ content }: ReviewListItemProps) => {
+const ReviewListItem = ({ content, stadiumId }: ReviewListItemProps) => {
   const [isEditBtn, setIsEditBtn] = useState(false);
   const [editComment, setEditComment] = useState(content.comment);
   const auth = useSelector((state: RootState) => state.auth);
+  const [updateReviewAPI, { isLoading: fetchLoading }] = useUpdateReviewMutation();
+  const [removeReviewAPI, { isLoading: deleteLoading }] = useRemoveReviewMutation();
+  const dispatch = useDispatch();
 
-  const handleSubmitEditComment = () => {
+  const handleSubmitEditComment = async (reviewId: string) => {
     // submit POST API
-
+    const response = await updateReviewAPI({ stadiumId, reviewId, comment: editComment, star: content.star });
+    dispatch(updateComment({ id: reviewId, comment: editComment }));
     setIsEditBtn(false);
   };
 
-  console.log(content);
-
-  console.log(auth);
+  const handleRemoveComment = async (reviewId: string) => {
+    // submit DELETE API
+    const reponse = await removeReviewAPI({ stadiumId, reviewId });
+    dispatch(removeReview({ id: reviewId }));
+  };
 
   return (
     <ReviewListItemContainer>
+      {fetchLoading || deleteLoading ? <Loading /> : null}
       <div className="user-name-container">
         <img src={content.member.imgUrl} alt="유저프로필" width="50px" height="50px" />
         <div>
@@ -53,7 +63,7 @@ const ReviewListItem = ({ content }: ReviewListItemProps) => {
         {String(auth.id) == content.member.id ? (
           <div className="review-btn-container">
             {isEditBtn ? (
-              <button className="review-submit-btn" onClick={handleSubmitEditComment}>
+              <button className="review-submit-btn" onClick={() => handleSubmitEditComment(content.id)}>
                 등록
               </button>
             ) : (
@@ -61,7 +71,9 @@ const ReviewListItem = ({ content }: ReviewListItemProps) => {
                 수정
               </button>
             )}
-            <button className="review-remove-btn">삭제</button>
+            <button className="review-remove-btn" onClick={() => handleRemoveComment(content.id)}>
+              삭제
+            </button>
           </div>
         ) : null}
       </div>
