@@ -1,35 +1,54 @@
+import { UserType } from '@/types/userType';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-export type UserType = 'user' | 'manager';
 
 interface UserState {
-  userId: number;
-  userType: UserType;
-  email?: string;
-  name?: string;
-  nickname?: string;
-  image?: string;
-  loggedIn: boolean;
+  key: string;
+  type: UserType;
+  email: string;
+  name: string;
+  password: string;
+  nickname: string;
+  image: string;
 }
 
 const initialState: UserState = {
-  userId: 0,
-  userType: 'user',
-  loggedIn: false,
+  key: '',
+  type: 'USER',
+  email: '',
+  name: '',
+  password: '',
+  nickname: '',
+  image: '',
 };
 
-export const userSlice = createSlice({
+const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    changeUser: (state, action: PayloadAction<UserType>) => {
-      state.userType = action.payload;
+    setKey: (state, action: PayloadAction<string>) => {
+      state.key = action.payload;
     },
-    checkLoggedIn: (state, action: PayloadAction<boolean>) => {
-      state.loggedIn = action.payload;
+    setUserType: (state, action: PayloadAction<UserType>) => {
+      state.type = action.payload;
+    },
+    setEmail: (state, action: PayloadAction<string>) => {
+      state.email = action.payload;
+    },
+    setName: (state, action: PayloadAction<string>) => {
+      state.name = action.payload;
+    },
+    setPassword: (state, action: PayloadAction<string>) => {
+      state.password = action.payload;
+    },
+    setNickname: (state, action: PayloadAction<string>) => {
+      state.nickname = action.payload;
+    },
+    setImage: (state, action: PayloadAction<string>) => {
+      state.image = action.payload;
     },
   },
 });
 
-export const { changeUser, checkLoggedIn } = userSlice.actions;
+export const { setKey, setUserType, setEmail, setName, setPassword, setNickname, setImage } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;

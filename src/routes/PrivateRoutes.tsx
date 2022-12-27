@@ -1,6 +1,6 @@
+import { getCookie } from '@/lib/utils/cookies';
 import sw from '@/lib/utils/customSweetAlert';
-import { RootState } from '@/store/store';
-import { useSelector } from 'react-redux';
+import { getAuthToken } from '@/lib/utils/token';
 import { Navigate, Outlet } from 'react-router';
 
 interface PrivateRouteProps {
@@ -8,11 +8,14 @@ interface PrivateRouteProps {
 }
 
 const PrivateRoute = ({}: PrivateRouteProps) => {
-  const loggedIn = useSelector((state: RootState) => state.user.loggedIn);
-  if (!loggedIn) {
-    sw.toast.error('올바른 접근이 아닙니다.');
+  const accessToken = getAuthToken();
+  const refreshToken = getCookie('refreshToken');
+
+  if (!accessToken || !refreshToken) {
+    sw.toast.error('권한이 없습니다.');
   }
-  return loggedIn ? <Outlet /> : <Navigate to="/login" />;
+
+  return accessToken && refreshToken ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export default PrivateRoute;

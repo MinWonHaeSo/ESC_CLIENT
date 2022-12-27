@@ -1,4 +1,4 @@
-type UserType = 'user' | 'manager';
+import { UserType } from '@/types/userType';
 
 interface Tab {
   id: number;
@@ -10,11 +10,11 @@ export const tabMenus: Tab[] = [
   {
     id: 0,
     name: '일반 사용자',
-    type: 'user',
+    type: 'USER',
   },
   {
     id: 1,
     name: '판매자',
-    type: 'manager',
+    type: 'MANAGER',
   },
 ];

@@ -1,14 +1,20 @@
+import { useState, useEffect } from 'react';
+import styled from '@emotion/styled';
+import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { useLogoutMutation } from '@/api/authApi';
+import { RootState, useAppDispatch } from '@/store/store';
+import { loggedOut } from '@/store/authSlice';
+import { DEFAULT_ICONURL } from '@/constants/defaultImage';
 import HEADER_NAV from '@/constants/headerNav';
 import PATH from '@/constants/path';
+import { getAuthToken, removeAuthToken } from '@/lib/utils/token';
+import { deleteCookie, getCookie } from '@/lib/utils/cookies';
+import { typo } from '@/lib/styles/typo';
 import palette from '@/lib/styles/palette';
-import { RootState, useAppDispatch } from '@/store/store';
-import styled from '@emotion/styled';
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { checkLoggedIn } from '@/store/userSlice';
 import sw from '@/lib/utils/customSweetAlert';
-import { changeMemberType } from '@/store/memberCheckSlice';
+import { UserType } from '@/types/userType';
+import NotificationButton from './NotificationButton';
 
 interface NavbarProps {
   isActive: boolean;
@@ -16,69 +22,115 @@ interface NavbarProps {
 }
 
 const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
-  const [loginType, setLoginType] = useState<'user' | 'manager'>('user'); //user, manager, undefinedUser
-  const loggedIn = useSelector((state: RootState) => state.user.loggedIn);
-  const memberType = useSelector((state: RootState) => state.member.memberType);
+  const [loginType, setLoginType] = useState<UserType>('USER'); //user, manager
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const handleLogOut = () => {
-    dispatch(checkLoggedIn(false));
-    dispatch(changeMemberType('user'));
-    onChangeIsActive();
-    sw.toast.success('로그아웃 되었습니다.');
+  const authUser = useSelector((state: RootState) => state.auth);
+  const { nickname, loggedIn, type, image } = authUser;
+
+  const [logoutAPI] = useLogoutMutation();
+
+  const handleLogOut = async () => {
+    try {
+      // cookied에서 RefreshToken 꺼내기
+      const refreshToken = getCookie('refreshToken');
+      const response = await logoutAPI(refreshToken).unwrap();
+      if (response) {
+        dispatch(loggedOut());
+        onChangeIsActive();
+
+        deleteCookie('refreshToken', { path: `${PATH.ROOT}` });
+
+        // accessToken localStorage에서 삭제
+        removeAuthToken();
+        localStorage.removeItem('userType');
+        sw.toast.success('로그아웃 되었습니다.');
+      }
+    } catch {
+      console.error('로그아웃 하는데 문제가 생겼습니다.');
+    }
   };
 
   const handleListClick = () => {
+    if (!loggedIn && !getAuthToken()) {
+      navigate(`${PATH.LOGIN}`);
+      console.error('로그인 해주세요');
+    }
     onChangeIsActive();
   };
 
   useEffect(() => {
-    setLoginType(memberType);
-  }, [memberType]);
+    setLoginType(type);
+  }, [type]);
 
   return (
-    <NavbarBlock>
+    <NavBarContainer>
       <NavbarMenu isActive={isActive}>
-        <UerProfile>
+        <UserProfile>
           <div>
-            <img src="src/assets/defaultUserImage.png" alt="프로필" width="70px" height="70px" />
+            <img src={image ? image : DEFAULT_ICONURL} alt="프로필" width="70px" height="70px" />
           </div>
-          <span>닉네임</span>
-        </UerProfile>
-        {HEADER_NAV[loginType].map(nav => (
-          <li key={nav.id} onClick={handleListClick}>
-            <Link to={nav.to}>{nav.title}</Link>
-          </li>
-        ))}
-        {loggedIn && (
+          <span>{nickname ? nickname : 'Welcome'}</span>
+        </UserProfile>
+        {loggedIn ? <NotificationButton onListClick={handleListClick} /> : <SNullNotificationBlock />}
+        <NavList>
+          {HEADER_NAV[loginType].map(nav => (
+            <li aria-label="header navigation bar" role="button" key={nav.id} onClick={handleListClick}>
+              <Link to={nav.to}>{nav.title}</Link>
+            </li>
+          ))}
+        </NavList>
+        {loggedIn ? (
           <LogOutButton to={PATH.ROOT} onClick={handleLogOut}>
-            로그아웃
+            <span>로그아웃</span>
+            <i className="fa-solid fa-arrow-right-from-bracket" />
           </LogOutButton>
+        ) : (
+          <LoginCheckMessage>로그인 후 이용이 가능합니다 💡</LoginCheckMessage>
         )}
       </NavbarMenu>
       <BackgroundLayout isActive={isActive} onClick={onChangeIsActive} />
-    </NavbarBlock>
+    </NavBarContainer>
   );
 };
+
+export default Navbar;
 
 type IsActiveProps = {
   isActive: boolean;
 };
 
-const NavbarBlock = styled.div``;
+const NavBarContainer = styled.div``;
 
-const NavbarMenu = styled.ul<IsActiveProps>`
+const NavbarMenu = styled.div<IsActiveProps>`
   position: fixed;
   visibility: hidden;
   top: 0;
   left: -10rem;
+  min-width: 220px;
   height: 100%;
   overflow-x: hidden;
   background-color: #fff;
-  font-size: 15px;
-  z-index: 2;
+  font-size: ${typo.base};
+  z-index: 5;
   transition: all 0.2s ease-in;
 
-  & > li {
+  ${({ isActive }) =>
+    isActive &&
+    `
+    visibility: visible;
+    left:0;
+    box-shadow: 2px 0px 14px rgb(197 197 197);
+    `}
+`;
+
+const SNullNotificationBlock = styled.div`
+  margin: 1rem 1rem 3rem 0;
+  padding: 0.2rem 0.6rem;
+`;
+
+const NavList = styled.ul`
+  li {
     flex: 1 1 auto;
     margin: 1rem 1rem;
     border: 1px solid #fff;
@@ -99,24 +151,23 @@ const NavbarMenu = styled.ul<IsActiveProps>`
     padding: 0.75rem 1rem;
     width: 100%;
   }
-
-  ${({ isActive }) =>
-    isActive &&
-    `
-    visibility: visible;
-    left:0;
-    box-shadow: 2px 0px 14px rgb(197 197 197);
-    `}
 `;
 
 const LogOutButton = styled(Link)`
   position: absolute;
   bottom: 0;
-  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
   width: 100%;
   border-radius: 10px 10px 0 0;
   border: 1px solid ${palette.grey[200]};
   background-color: ${palette.grey[100]};
+  box-shadow: rgba(29, 34, 53, 0.08) 0 3px 6px 0;
+  &:active {
+    opacity: 0.9;
+  }
 `;
 
 const BackgroundLayout = styled.div<IsActiveProps>`
@@ -132,16 +183,20 @@ const BackgroundLayout = styled.div<IsActiveProps>`
     height: 100%;
     top: 0;
     right: 0;
-    background-color: rgba(33, 38, 41);
+    background-color: rgb(33, 38, 41);
     opacity: 0.5;
     `}
 `;
 
-const UerProfile = styled.div`
+const UserProfile = styled.div`
   display: flex;
   align-items: center;
-  gap: 3rem;
-  margin: 2rem 2rem 4rem 2rem;
+  gap: 2rem;
+  margin: 1rem 1rem 1rem 1rem;
+  padding: 0.75rem 1rem;
+  background-color: ${palette.grey[100]};
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border-radius: 10px;
 
   & > div {
     width: 70px;
@@ -150,14 +205,29 @@ const UerProfile = styled.div`
 
     img {
       border-radius: 50%;
-      box-shadow: 5px 5px 10px rgba(57, 60, 64, 0.8);
+      box-shadow: rgba(0, 0, 0, 0.4) 0px 1px 4px;
     }
   }
 
   span {
-    font-size: 18px;
+    display: inline-block;
+    padding-top: 1.5rem;
+    font-size: ${typo.medium};
     font-weight: 600;
   }
 `;
 
-export default Navbar;
+const LoginCheckMessage = styled.p`
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  width: 100%;
+  font-size: ${typo.small};
+  font-weight: 400;
+  text-align: start;
+  color: ${palette.grey[500]};
+  border: 1px solid ${palette.grey[200]};
+  box-shadow: rgba(29, 34, 53, 0.08) 0 3px 6px 0;
+`;

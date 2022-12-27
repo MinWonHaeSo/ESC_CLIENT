@@ -1,61 +1,77 @@
-import { UserType } from '@/store/userSlice';
+import { UserType } from '@/types/userType';
 import { baseApi } from './baseApi';
 
-interface Image {
-  imageUrl: string;
-}
-
 export interface User {
+  key: string;
   type: UserType;
   email: string;
   name: string;
   password: string;
   nickname: string;
-  key: string;
-  images: Image[];
+  image: string;
+}
+
+interface Response {
+  message: string;
+  statusCode: number;
+  error?: string;
 }
 
 export interface SignUpResponse {
+  statusCode: number;
   name: string;
-  images: Image[];
+  nickname: string;
+  image: string;
 }
 
 type SignUpRequest = User;
 
-interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
-  name: string;
-  images: Image[];
-}
-
-type LoginRequest = Pick<User, 'email' | 'password'>;
+type Email = Pick<User, 'email'>;
 
 const userApi = baseApi.injectEndpoints({
   endpoints: builder => ({
-    getUserList: builder.query({
-      query: () => ({
-        url: '/posts',
-        method: 'GET',
-      }),
-      providesTags: ['User'],
-    }),
-    login: builder.mutation<LoginResponse, LoginRequest>({
-      query: credentials => ({
-        url: '/members/auth/login',
-        method: 'POST',
-        body: credentials,
-      }),
-      invalidatesTags: ['User'],
-    }),
     signUp: builder.mutation<SignUpResponse, SignUpRequest>({
-      query: () => ({
-        url: `/members/auth/signup`,
+      query: (userData: User) => ({
+        url: `/members/signup`,
         method: 'POST',
+        body: userData,
       }),
       invalidatesTags: ['User'],
+    }),
+    emailDoubleCheck: builder.mutation<Response, Email>({
+      query: (email: Email) => ({
+        url: '/members/email-dup',
+        method: 'POST',
+        body: email,
+      }),
+    }),
+    sendEmailValidateCode: builder.mutation<Response, Email>({
+      query: (email: Email) => ({
+        url: `/members/email-auth`,
+        method: 'POST',
+        body: email,
+      }),
+    }),
+    checkEmailValidate: builder.mutation<{ statusCode: number; error: string; message: string }, string>({
+      query: (key: string) => ({
+        url: `/members/email-authentication`,
+        method: 'POST',
+        body: { key },
+      }),
+    }),
+    signOut: builder.mutation({
+      query: () => ({
+        url: `/members/profiles/info`,
+        method: 'DELETE',
+      }),
     }),
   }),
 });
 
-export const { useGetUserListQuery, useLoginMutation, useSignUpMutation } = userApi;
+export const {
+  useSignUpMutation,
+  useEmailDoubleCheckMutation,
+  useSendEmailValidateCodeMutation,
+  useCheckEmailValidateMutation,
+  useSignOutMutation,
+} = userApi;

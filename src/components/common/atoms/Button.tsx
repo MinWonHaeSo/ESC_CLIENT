@@ -52,7 +52,7 @@ const SButton = styled.button<CSSProperties & { size: SizeList }>`
   cursor: pointer;
 
   &:active {
-    background-color: ${palette.black[200]};
+    opacity: 0.85;
   }
 
   ${({ size }) => size && sizeStyle[size]}

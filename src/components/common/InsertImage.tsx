@@ -1,56 +1,65 @@
 import { useRef, useState } from 'react';
 import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
+import { useAppDispatch } from '@/store/store';
+import { uploadImage } from '@/store/authSlice';
+import { setImage } from '@/store/userSlice';
+import { useEffect } from 'react';
+import { DEFAULT_PROFILE_IMGURL } from '@/constants/defaultImage';
 
 interface InsertImageProps {
   editDisabled: boolean;
+  currentImage: string;
+  currentLocation: string;
+  onChangeImage: (file: File) => void;
 }
 
-interface UploadImage {
-  file: File;
-  url: string;
-  name: string;
-  type: string;
-  size: number;
+interface ImageFile {
+  imageURL: string;
 }
 
-const InsertImage = ({ editDisabled }: InsertImageProps) => {
+const InsertImage = ({ editDisabled, currentImage, currentLocation, onChangeImage }: InsertImageProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [imageFile, setImageFile] = useState<UploadImage | null>(null);
+  const [imageFile, setImageFile] = useState<ImageFile>({ imageURL: '' });
+
+  const dispatch = useAppDispatch();
 
   const handleClickFileButton = () => {
-    if (!fileInputRef.current) {
-      return;
-    }
+    if (!fileInputRef.current) return;
     if (!editDisabled) {
       fileInputRef.current.click();
     }
   };
 
-  const onUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) {
-      return;
-    }
+  const handleUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
     const selectedImg = e.target.files[0];
     const imageURL = URL.createObjectURL(selectedImg);
-    setImageFile({
-      file: selectedImg,
-      url: imageURL,
-      name: selectedImg.name,
-      type: selectedImg.type,
-      size: selectedImg.size,
-    });
-    const formData = new FormData();
-    formData.append('image', selectedImg);
+    setImageFile({ ...imageFile, imageURL: imageURL });
+    onChangeImage(selectedImg);
+
+    if (currentLocation === '/mypage') {
+      dispatch(uploadImage(imageURL));
+    } else if (currentLocation === '/signup') {
+      dispatch(uploadImage(imageURL));
+      dispatch(setImage(imageURL));
+    }
   };
+
+  useEffect(() => {
+    if (!fileInputRef) {
+      return;
+    }
+    setImageFile({ ...imageFile, imageURL: currentImage });
+  }, [currentImage]);
 
   return (
     <ImgBlock>
-      <Img src={imageFile?.url ?? 'src/assets/defaultProfileImage.svg'} alt="프로필" disabled={editDisabled} />
-      <PlusButton onClick={handleClickFileButton}>
+      <Img src={currentImage ? imageFile.imageURL : DEFAULT_PROFILE_IMGURL} alt="프로필" disabled={editDisabled} />
+      <PlusButton onClick={handleClickFileButton} type={'button'}>
         {editDisabled ? null : <i className="fa-solid fa-plus" />}
       </PlusButton>
-      <FileInput type="file" ref={fileInputRef} onChange={onUploadImage} accept="image/*" />
+      <FileInput type="file" ref={fileInputRef} onChange={handleUploadImage} accept="image/*" />
     </ImgBlock>
   );
 };

@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
-const useDefaultTime = (hours:number, minutes:number) => {
+
+const useDefaultTime = (timeZone: string) => {
   const [time, setTime] = useState<Date>(new Date);
 
   useEffect(() => {
     const defaultTime = new Date();
-    defaultTime.setHours(hours);
-    defaultTime.setMinutes(minutes);
+    defaultTime.setHours(Number(timeZone.split(':')[0]));
+    defaultTime.setMinutes(Number(timeZone.split(':')[1]));
   
     setTime(defaultTime);
-  },[hours, minutes])
+  },[timeZone])
 
   return time
 }

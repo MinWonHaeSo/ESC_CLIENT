@@ -2,17 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
+    <link rel="icon" type="image/*" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1" />
     <script
       type="text/javascript"
-      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=<%= kakaoMapKey %>"
+      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=<%= kakaoMapKey %>&libraries=services"
     ></script>
-    <script src="https://kit.fontawesome.com/<%= fontaesomeKey %>.js" crossorigin="anonymous"></script>
-    <title>Vite + React + TS</title>
+    <script
+      type="text/javascript"
+      src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js"
+      charset="utf-8"
+    ></script>
+    <script src="https://kit.fontawesome.com/afb2d825bb.js" crossorigin="anonymous"></script>
+    <title>Easy Sports Club</title>
   </head>
   <body>
     <div id="root"></div>
+    <div id="modal"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

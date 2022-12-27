@@ -1,9 +1,16 @@
-import Header from '@/components/Header/Header';
+import Footer from '@/components/Footer/Index';
+import Header from '@/components/Header/Index';
+import { page } from '@/constants/nonFooterPage';
+import media from '@/lib/styles/media';
 import palette from '@/lib/styles/palette';
+import { RootState } from '@/store/store';
 import styled from '@emotion/styled';
-import { Outlet } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Outlet, useLocation } from 'react-router-dom';
 
 const Layout = () => {
+  const userType = useSelector((state: RootState) => state.user.type);
+  const location = useLocation();
   return (
     <>
       <HeaderWrapper>
@@ -12,6 +19,11 @@ const Layout = () => {
       <MainWrapper>
         <Outlet />
       </MainWrapper>
+      {page.includes(location.pathname) ? null : (
+        <FooterWrapper userType={userType}>
+          <Footer />
+        </FooterWrapper>
+      )}
     </>
   );
 };
@@ -27,7 +39,13 @@ const HeaderWrapper = styled.header`
 `;
 
 const MainWrapper = styled.main`
+  height: calc(100% - 240px);
   padding-top: 5rem;
 `;
 
+const FooterWrapper = styled.footer<{ userType: 'USER' | 'MANAGER' }>`
+  ${media.xsmallMin} {
+    margin-top: 5rem;
+  }
+`;
 export default Layout;

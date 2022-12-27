@@ -1,119 +1,141 @@
 import React, { useState, useCallback } from 'react';
-import formRegex from '@/constants/formRegex';
-import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
-import sw from '@/lib/utils/customSweetAlert';
-import { RootState, useAppDispatch } from '@/store/store';
-import { changeUser, checkLoggedIn } from '@/store/userSlice';
-import { changeMemberType } from '@/store/memberCheckSlice';
 import { useNavigate } from 'react-router';
-import Input from '../common/atoms/Input';
-import Button from '../common/atoms/Button';
 import { useSelector } from 'react-redux';
+import { useLoginMutation } from '@/api/authApi';
+import { RootState, useAppDispatch } from '@/store/store';
+import { setLogin } from '@/store/authSlice';
+import { getCookie, setCookie } from '@/lib/utils/cookies';
+import { setAuthToken } from '@/lib/utils/token';
+import palette from '@/lib/styles/palette';
+import sw from '@/lib/utils/customSweetAlert';
+import PATH from '@/constants/path';
+import Button from '../common/atoms/Button';
+import Input from '../common/atoms/Input';
+import { checkEmailValidation, checkPassWordValidation } from './formValidation';
 
 interface LoginFormProps {}
 
-interface InitialRequiredState {
-  email: boolean;
-  passWord: boolean;
+interface InitialFormState {
+  email: string;
+  password: string;
 }
+
+export interface InitialRequiredState {
+  email: boolean;
+  password: boolean;
+}
+
+const initialFormState: InitialFormState = {
+  email: '',
+  password: '',
+};
 
 const initialRequiredState: InitialRequiredState = {
   email: false,
-  passWord: false,
+  password: false,
 };
 
 const LoginForm = (props: LoginFormProps) => {
-  const [inputEmail, setInputEmail] = useState<string>('');
-  const [inputPassWord, setInputPassWord] = useState<string>('');
+  const [formState, setFormState] = useState<InitialFormState>(initialFormState);
   const [required, setRequired] = useState<InitialRequiredState>(initialRequiredState);
-  const bothRequiredCheck = Object.values(required).filter(item => !item).length === 2;
   const [loaded, setLoaded] = useState<boolean>(false);
-
-  const dispatch = useAppDispatch();
-  const userType = useSelector((state: RootState) => state.user.userType);
+  const { email, password } = formState;
 
   const navigate = useNavigate();
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const dispatch = useAppDispatch();
+  const userType = useSelector((state: RootState) => state.user.type);
+
+  const [loginAPI] = useLoginMutation();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  };
+    try {
+      const userData = await loginAPI({ email: email, password: password, type: userType }).unwrap();
+      if (userData) {
+        const { type, id, name, nickname, imgUrl, accessToken, refreshToken } = userData;
 
-  const checkEmailValidation = (currentEmail: string) => {
-    const { emailRegex } = formRegex;
-    if (!emailRegex.test(currentEmail)) {
-      return setRequired({ ...required, email: true });
+        // cookie에 refreshToken 저장
+        setCookie('refreshToken', refreshToken, {
+          path: '/',
+          secure: true,
+        });
+
+        setAuthToken(accessToken);
+        localStorage.setItem('userType', type);
+
+        dispatch(
+          setLogin({
+            id: id,
+            type: type,
+            email: email,
+            name: name,
+            password: password,
+            nickname: nickname,
+            image: imgUrl,
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+            loggedIn: true,
+          }),
+        );
+        sw.toast.success('로그인 되었습니다.');
+        navigate(`${PATH.ROOT}`);
+      }
+    } catch {
+      sw.toast.error('입력한 정보를 다시 확인해 주세요.');
+      return navigate(`${PATH.LOGIN}`);
     }
-    setRequired({ ...required, email: false });
   };
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const currentEmail = e.target.value;
-    setInputEmail(currentEmail);
-    checkEmailValidation(currentEmail);
-  };
-
-  const handleEmailKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Backspace') {
-      return setRequired({ ...required, email: true });
-    }
-  };
-
-  const checkPassWordValidation = (currentPassWord: string) => {
-    const { passWordRegex } = formRegex;
-    if (!passWordRegex.test(currentPassWord)) {
-      return setRequired({ ...required, passWord: true });
-    }
-    setLoaded(true);
-    setRequired({ ...required, passWord: false });
-  };
-
-  const handlePassWordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const currentPassWord = e.target.value;
-    setInputPassWord(currentPassWord);
-    checkPassWordValidation(currentPassWord);
-  };
-
-  const handlePassWordKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Backspace') {
-      return setRequired({ ...required, passWord: true });
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormState({ ...formState, [id]: value });
+    if (id === 'email') {
+      checkEmailValidation(value, setLoaded, setRequired, required);
+    } else if (id === 'password') {
+      checkPassWordValidation(value, setLoaded, setRequired, required);
     }
   };
 
   const handleButtonClick = () => {
-    if (!bothRequiredCheck) {
+    if (formState.email.length === 0) {
+      return sw.toast.warn('이메일을 입력해주세요');
+    }
+    if (required.email) {
+      return sw.toast.warn('이메일을 올바르게 입력해주세요.');
+    }
+    if (required.password) {
+      return sw.toast.warn('비밀번호를 바르게 입력해주세요.');
+    }
+    if (!loaded) {
       return;
     }
-    dispatch(checkLoggedIn(true));
-    dispatch(changeMemberType(userType));
-    dispatch(changeUser(userType));
-    sw.toast.success('로그인 되었습니다.');
-    navigate('/');
   };
 
   return (
     <FormBlock onSubmit={handleSubmit}>
       <Input
         type={'text'}
-        value={inputEmail}
+        value={email}
         id={'email'}
         placeholder={'아이디(이메일)'}
-        onChange={handleEmailChange}
-        onKeyDown={handleEmailKeyDown}
+        onChange={handleFormChange}
         required={required.email}
       />
       <Input
         type={'password'}
-        value={inputPassWord}
+        value={password}
         id={'password'}
         placeholder={'비밀번호'}
-        onChange={handlePassWordChange}
-        onKeyDown={handlePassWordKeyDown}
-        required={required.passWord}
+        onChange={handleFormChange}
+        required={required.password}
+        autoComplete="off"
       />
       <Button
         type={'submit'}
         size={'large'}
-        backgroundColor={bothRequiredCheck && loaded ? `${palette.black[100]}` : `${palette.grey[200]}`}
+        backgroundColor={loaded ? `${palette.black[100]}` : `${palette.grey[200]}`}
         onClick={handleButtonClick}
       >
         로그인

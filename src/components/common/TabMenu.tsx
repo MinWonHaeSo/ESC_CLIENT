@@ -3,14 +3,15 @@ import styled from '@emotion/styled';
 import { tabMenus } from '@/constants/tabMenu';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '@/store/store';
-import { changeUser } from '@/store/userSlice';
+import { setUserType } from '@/store/userSlice';
+import { UserType } from '@/types/userType';
 
 interface TabMenuProps {}
 
 const TabMenu = (props: TabMenuProps) => {
-  const userType = useSelector((state: RootState) => state.user.userType);
+  const userType = useSelector((state: RootState) => state.user.type);
   const dispatch = useAppDispatch();
-
+  console.log(userType);
   return (
     <TabMenuBlock>
       {tabMenus.map(tab => (
@@ -18,8 +19,10 @@ const TabMenu = (props: TabMenuProps) => {
           key={tab.type}
           type={tab.type}
           focus={userType === tab.type}
+          aria-label="login type tab"
+          role={'tab'}
           onClick={() => {
-            dispatch(changeUser(tab.type));
+            dispatch(setUserType(tab.type));
           }}
         >
           {tab.name}
@@ -32,7 +35,7 @@ const TabMenu = (props: TabMenuProps) => {
 export default TabMenu;
 
 type tabStyleProps = {
-  type: 'user' | 'manager';
+  type: UserType;
   focus: boolean;
 };
 
@@ -51,8 +54,9 @@ const Tab = styled.li<tabStyleProps>`
   border: 1px solid ${palette.black[100]};
   border-radius: 10px 0 0 10px;
   color: ${palette.black[100]};
+  cursor: pointer;
 
-  ${({ type }) => type === 'manager' && `border-radius: 0 10px 10px 0;`};
+  ${({ type }) => type === 'MANAGER' && `border-radius: 0 10px 10px 0;`};
 
   ${({ focus }) =>
     focus &&

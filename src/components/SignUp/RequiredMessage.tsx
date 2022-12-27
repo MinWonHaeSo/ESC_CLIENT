@@ -1,6 +1,6 @@
+import styled from '@emotion/styled';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
-import styled from '@emotion/styled';
 
 interface RequiredMessageProps {
   children?: React.ReactNode;
