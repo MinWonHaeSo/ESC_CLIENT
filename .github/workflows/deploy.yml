@@ -3,8 +3,8 @@ name: FE React Deploy
 on:
   push:
     branches: [main]
-  # pull_request:
-  #   branches: [main]
+  pull_request:
+    branches: [main]
 
 permissions:
   contents: read
@@ -23,7 +23,7 @@ jobs:
       # Github Repository Secrets를 통해 환경 변수 파일을 생성합니다.
       - name: Generate Environment Variables File
         run: |
-          echo "VITE_API_SERVER=$VITE_API_SERVER" >> .env
+          echo "VITE_BASE_URL=$VITE_BASE_URL" >> .env
           echo "VITE_KAKAO_KEY=$VITE_KAKAO_KEY" >> .env
           echo "VITE_FONTAWESOME_KEY=$VITE_FONTAWESOME_KEY" >> .env
           echo "VITE_CLOUDINARY_KEY=$VITE_CLOUDINARY_KEY" >> .env
@@ -31,7 +31,7 @@ jobs:
           echo "VITE_CLOUDINARY_NAME=$VITE_CLOUDINARY_NAME" >> .env
 
         env:
-          VITE_API_SERVER: ${{ secrets.VITE_API_SERVER }}
+          VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
           VITE_KAKAO_KEY: ${{ secrets.VITE_KAKAO_KEY }}
           VITE_FONTAWESOM_KEY: ${{ secrets.VITE_FONTAWESOME_KEY }}
           VITE_CLOUDINARY_KEY: ${{ secrets.VITE_CLOUDINARY_KEY }}
