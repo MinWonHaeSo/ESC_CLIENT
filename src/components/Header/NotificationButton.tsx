@@ -20,7 +20,7 @@ const NotificationButton = ({ onListClick }: NotificationButton) => {
   }
 
   const notificationFigure = currentData.result as boolean;
-  console.log(notificationFigure);
+
   return (
     <NotificationButtonBlock onClick={onListClick}>
       <NotificationLink to={PATH.ME_NOTIFICATION}>
