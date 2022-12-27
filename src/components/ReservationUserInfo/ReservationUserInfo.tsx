@@ -61,7 +61,6 @@ const TitleBlock = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 8px;
 `;
 
 const TotalCountBlock = styled.div`

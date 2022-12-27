@@ -31,6 +31,8 @@ const MainBasicUser = ({ currentLocation }: MainBasicUserProps) => {
     };
   }, []);
 
+  console.log(markerInfo);
+
   return (
     <HomeWrapper>
       <Map searchResults={searchResults.length === 0 ? data : searchResults} onClickMarker={handleClickMarker} />

@@ -54,7 +54,6 @@ const App = () => {
                   <Route path={PATH.ME_LIKE_STADIUM_LIST} element={<MeLikeStadiumPage />} />
                   <Route path={PATH.MANAGER_STADIUM_UPLOAD} element={<StadiumUploadPage />} />
                   <Route path={PATH.MANAGER_STADIUM_UPLOAD_LIST} element={<ManagerStadiumListPage />} />
-
                   {/* </Route> */}
                 </Route>
               </Routes>
