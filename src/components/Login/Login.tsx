@@ -16,7 +16,7 @@ const Login = (props: LoginProps) => {
   const userType = useSelector((state: RootState) => state.user.type);
 
   return (
-    <LoginBlock>
+    <LoginContainer>
       <TabMenu />
       <LoginForm />
       {userType === 'USER' && <SocialLogin />}
@@ -28,13 +28,13 @@ const Login = (props: LoginProps) => {
           <Link to={PATH.SEARCH_PASSWORD}>비밀번호 찾기</Link>
         </Li>
       </RegisterBlock>
-    </LoginBlock>
+    </LoginContainer>
   );
 };
 
 export default Login;
 
-const LoginBlock = styled.section`
+const LoginContainer = styled.section`
   position: relative;
   width: 100%;
   ${Responsive.ResponsiveWrapper}

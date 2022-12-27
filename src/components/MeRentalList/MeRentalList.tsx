@@ -29,45 +29,43 @@ const MeRentalList = ({}: MeRentalListProps) => {
   };
 
   return (
-    <>
-      <MeRentalListBlock>
-        <TitleWrapper>
-          <Title fontSize={`${typo.xxLarge}`} marginTop={'20px'}>
-            예약 내역
-          </Title>
-          <SortFilter onClick={handleSortFilterClick}>
-            <i className="fa-solid fa-filter" />
-            정렬
-          </SortFilter>
-        </TitleWrapper>
-        <MeRentalStadium sort={sort} />
-        <StyledPadding />
+    <MeRentalListContainer>
+      <TitleWrapper>
+        <Title fontSize={`${typo.xxLarge}`} marginTop={'20px'}>
+          예약 내역
+        </Title>
+        <SortFilter onClick={handleSortFilterClick}>
+          <i className="fa-solid fa-filter" />
+          정렬
+        </SortFilter>
+      </TitleWrapper>
+      <MeRentalStadium sort={sort} />
+      <StyledPadding />
 
-        <SortUl show={show}>
-          <li title={'up'} onClick={handleSortClick}>
-            <i className="fa-solid fa-arrow-up" />
-            오름차순
-          </li>
-          <li title={'down'} onClick={handleSortClick}>
-            <i className="fa-solid fa-arrow-down" />
-            내림차순
-          </li>
-        </SortUl>
-        <DimmedBackground
-          show={show}
-          onClick={() => {
-            setShow(prev => !prev);
-          }}
-        />
-        <ScrollToTopButton />
-      </MeRentalListBlock>
-    </>
+      <SortUl show={show}>
+        <li title={'up'} onClick={handleSortClick}>
+          <i className="fa-solid fa-arrow-up" />
+          오름차순
+        </li>
+        <li title={'down'} onClick={handleSortClick}>
+          <i className="fa-solid fa-arrow-down" />
+          내림차순
+        </li>
+      </SortUl>
+      <DimmedBackground
+        show={show}
+        onClick={() => {
+          setShow(prev => !prev);
+        }}
+      />
+      <ScrollToTopButton />
+    </MeRentalListContainer>
   );
 };
 
 export default MeRentalList;
 
-const MeRentalListBlock = styled.section`
+const MeRentalListContainer = styled.section`
   ${Responsive.ResponsiveWrapper}
 `;
 

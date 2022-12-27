@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { ReactComponent as NavbarLogo } from '@/assets/esc-logo.svg';
 import Responsive from '@/components/common/Responsive';
@@ -26,6 +26,7 @@ const Header = (props: HomeProps) => {
   const checkHeader = usePathHeaderOnlyLogo();
 
   const goBack = useGoBack();
+  const navigate = useNavigate();
 
   const [refetchUserInfoAPI, { isLoading }] = useRefetchUserInfoMutation();
 
@@ -46,9 +47,8 @@ const Header = (props: HomeProps) => {
 
     try {
       const response = await refetchUserInfoAPI('').unwrap();
-      const { id, nickname, name, email, imgUrl, password } = response;
+      const { id, nickname, name, email, imgUrl } = response;
       const accessToken = getAuthToken();
-
       if (response) {
         dispatch(
           sustainLogin({
@@ -59,12 +59,12 @@ const Header = (props: HomeProps) => {
             name: name,
             imgUrl: imgUrl,
             accessToken: accessToken,
-            password: password,
             loggedIn: true,
           }),
         );
       }
     } catch {
+      navigate(PATH.LOGIN);
       console.error('회원 정보를 다시 받아오는데 문제가 발생했습니다.');
     }
   }, []);
@@ -80,7 +80,7 @@ const Header = (props: HomeProps) => {
   }
 
   return (
-    <HeaderBlock>
+    <HeaderContainer>
       {checkHeader ? (
         <GoBackIconBlock onClick={goBack}>
           <i className="fa-solid fa-arrow-left" />
@@ -97,13 +97,13 @@ const Header = (props: HomeProps) => {
       </LogoBlock>
       <Navbar isActive={isActive} onChangeIsActive={handleChangeIsActive} />
       {loggedIn || checkHeader ? null : <UserMenu>{isLoading ? null : <Link to={PATH.LOGIN}>로그인</Link>}</UserMenu>}
-    </HeaderBlock>
+    </HeaderContainer>
   );
 };
 
 export default Header;
 
-const HeaderBlock = styled.nav`
+const HeaderContainer = styled.nav`
   position: relative;
   display: flex;
   height: 80px;

@@ -7,7 +7,7 @@ const Footer = () => {
   const [show, setShow] = useState<boolean>(false);
   const developers = ['dongjjji', 'SoaLee', 'phc09188', 'younjaewon', 'olhkyle'];
   return (
-    <FooterBlock>
+    <FooterContainer>
       <FooterTitle>ESC Sports Club</FooterTitle>
       <Sponsor>
         <label>Sponsored</label>
@@ -27,13 +27,13 @@ const Footer = () => {
           ))}
         </Developers>
       ) : null}
-    </FooterBlock>
+    </FooterContainer>
   );
 };
 
 export default Footer;
 
-const FooterBlock = styled.div`
+const FooterContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -18,6 +18,14 @@ const ReservationButton = (props: ReservationButtonProps) => {
     if (selectedDate.length === 0) {
       return sw.toast.warn('예약 시간을 선택해 주세요.');
     }
+    if (
+      step === 2 &&
+      rentalItems.some(item => {
+        return item.toggle === false && item.count > 0;
+      })
+    ) {
+      return sw.toast.warn('상품을 대여하고 싶은 경우 체크해 주세요.');
+    }
     dispatch(nextStep(step + 1));
   };
 

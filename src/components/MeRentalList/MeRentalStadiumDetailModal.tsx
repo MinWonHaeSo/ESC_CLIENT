@@ -9,30 +9,23 @@ import Button from '../common/atoms/Button';
 import Loading from '../common/Loading/Loading';
 
 interface MeRentalStadiumDetailModal {
-  reservationId: number;
-  stadiumId: number;
+  reservationId: string;
+  stadiumId: string;
   closeModal: () => void;
-  rentalStadiumListRefetch: () => void;
 }
 
-const MeRentalStadiumDetailModal = ({
-  reservationId,
-  stadiumId,
-  closeModal,
-  rentalStadiumListRefetch,
-}: MeRentalStadiumDetailModal) => {
+const MeRentalStadiumDetailModal = ({ reservationId, stadiumId, closeModal }: MeRentalStadiumDetailModal) => {
   const {
     data,
     isLoading,
     error,
     refetch: rentalStadiumDetailRefetch,
-  } = useGetRentalStadiumDetailQuery({ reservationId, stadiumId }, { refetchOnMountOrArgChange: true });
+  } = useGetRentalStadiumDetailQuery({ stadiumId, reservationId }, { refetchOnMountOrArgChange: true });
   const [finishStadiumUtilizationAPI, { isLoading: finishLoading }] = useFinishStadiumUtilizationMutation();
 
   const handleCompleteUtilization = async () => {
     await finishStadiumUtilizationAPI({ reservationId, stadiumId });
     rentalStadiumDetailRefetch();
-    rentalStadiumListRefetch();
     closeModal();
   };
 
@@ -108,7 +101,7 @@ const MeRentalStadiumDetailModal = ({
             </PaymentType>
             <Price status={status}>
               <dt>최종 결제 금액</dt>
-              <dd>{formatter.getIntlCurrencyKr(price)}</dd>
+              <dd>{formatter.getIntlCurrencyKr(price)}원</dd>
             </Price>
           </PaymentInfo>
         </Payment>

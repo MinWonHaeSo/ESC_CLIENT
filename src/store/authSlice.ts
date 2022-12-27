@@ -1,7 +1,9 @@
+import PATH from '@/constants/path';
 import { setCookie } from '@/lib/utils/cookies';
 import { setAuthToken } from '@/lib/utils/token';
 import { UserType } from '@/types/userType';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { useNavigate } from 'react-router';
 
 interface AuthState {
   grantType?: string;
@@ -36,7 +38,6 @@ const initialState: AuthState = {
   loggedIn: false,
 };
 
-// 로그인,
 const authSlice = createSlice({
   name: 'auth',
   initialState,

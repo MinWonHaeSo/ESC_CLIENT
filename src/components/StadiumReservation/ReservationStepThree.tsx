@@ -5,7 +5,7 @@ import { ScrollToTop } from '@/hooks/useScollToTop';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import sw from '@/lib/utils/customSweetAlert';
-import { RootState } from '@/store/store';
+import { RootState, useAppDispatch } from '@/store/store';
 import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
@@ -13,6 +13,7 @@ import Button from '../common/atoms/Button';
 import Title from '../common/atoms/Title';
 import Loading from '../common/Loading/Loading';
 import Responsive from '../common/Responsive';
+import { nextStep } from '@/store/stadiumReservationSlice';
 import ReservationPrevStepButton from './ReservationPrevStepButton';
 import ReservationInfo from './ReservationStepThree/ReservationInfo';
 import ReservationPayment from './ReservationStepThree/ReservationPayment';
@@ -26,6 +27,7 @@ const ReservationStepThree = ({}: ReservationStepThreeProps) => {
   const { nickname, email } = authUser;
   const reservationData = useSelector((state: RootState) => state.stadiumReservation);
   const { step, id } = reservationData;
+  const dispatch = useAppDispatch();
 
   const {
     headCount,
@@ -44,7 +46,6 @@ const ReservationStepThree = ({}: ReservationStepThreeProps) => {
     acc += curr.price * curr.count;
     return acc;
   }, 0);
-  console.log(items);
 
   const totalPaymentPrice = pricePerHalfHour * reservingTimes.length + rentalItemTotalPrice;
 
@@ -68,7 +69,8 @@ const ReservationStepThree = ({}: ReservationStepThreeProps) => {
       const response = await makeReservationAPI({ id, finalReservationData });
       if (response) {
         sw.toast.success('결제가 성공적으로 완료되었습니다.');
-        setTimeout(() => navigate(PATH.ME_RENTAL_LIST), MILLI_SECONDS.oneHalf);
+        setTimeout(() => navigate(PATH.ME_RENTAL_LIST), MILLI_SECONDS.one);
+        dispatch(nextStep(step - 2));
       }
     } catch {
       sw.toast.error('예약에 문제가 발생했습니다.');

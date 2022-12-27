@@ -1,16 +1,20 @@
 import { useCancelReservationMutation } from '@/api/reservationApi';
-import { useGetRentalStadiumListQuery } from '@/api/stadiumApi';
+import { stadiumApi } from '@/api/stadiumApi';
 import { modalContext } from '@/context/ModalContext';
+import useInfinityScroll from '@/hooks/useInfinityScroll';
 import media from '@/lib/styles/media';
 import palette from '@/lib/styles/palette';
+import { RootState, useAppDispatch } from '@/store/store';
 import styled from '@emotion/styled';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
 import CardStadium from '../CardStadium/CardStadium';
 import Button from '../common/atoms/Button';
 import EmptyItemNotification from '../common/EmptyItemNotification';
 import Loading from '../common/Loading/Loading';
 import MeRentalStadiumDetailModal from './MeRentalStadiumDetailModal';
+import { clearPaging } from '../../store/pagingSlice';
 
 interface MeRentalStadiumProps {
   sort: 'up' | 'down';
@@ -21,36 +25,44 @@ const MeRentalStadium = ({ sort }: MeRentalStadiumProps) => {
 
   const openModal = useContext(modalContext)?.openModal;
   const closeModal = useContext(modalContext)?.closeModal;
+  const dispatch = useAppDispatch();
 
-  const {
-    data,
-    isLoading,
-    refetch: rentalStadiumListRefetch,
-  } = useGetRentalStadiumListQuery('', { refetchOnMountOrArgChange: true });
-  console.log(data);
+  const [trigger, { isLoading }] = stadiumApi.endpoints.getRentalStadiumList.useLazyQuery();
+  const { content, isLast, nextPage } = useSelector((state: RootState) => state.paging);
+
+  const fetchNextPage = () => {
+    if (isLast) return;
+    const page = nextPage ? nextPage : 0;
+    trigger(page.toString()).refetch();
+  };
+
+  const $observerTarget = useInfinityScroll(fetchNextPage);
+
   const [cancelReservationAPI, { isLoading: cancelLoading }] = useCancelReservationMutation();
 
-  const handleShowDetailClick = async (reservationId: number, stadiumId: number) => {
+  const handleShowDetailClick = async (reservationId: string, stadiumId: string) => {
     openModal?.(
-      <MeRentalStadiumDetailModal
-        reservationId={reservationId}
-        stadiumId={stadiumId}
-        closeModal={closeModal!}
-        rentalStadiumListRefetch={rentalStadiumListRefetch}
-      />,
+      <MeRentalStadiumDetailModal reservationId={reservationId} stadiumId={stadiumId} closeModal={closeModal!} />,
     );
   };
 
-  const handleCancelClick = async (reservationId: number, stadiumId: number) => {
+  const handleCancelClick = async (reservationId: string, stadiumId: string) => {
     await cancelReservationAPI({ reservationId, stadiumId });
-    rentalStadiumListRefetch();
+    // rentalStadiumListRefetch();
   };
 
-  if (isLoading || !data || cancelLoading) {
+  useEffect(() => {
+    return () => {
+      dispatch(clearPaging());
+    };
+  }, [dispatch]);
+
+  if (isLoading || cancelLoading) {
     return <Loading />;
   }
 
-  const rentalStadiumData = data.content;
+  const rentalStadiumData = content;
+  console.log(rentalStadiumData);
 
   return (
     <>
@@ -121,6 +133,7 @@ const MeRentalStadium = ({ sort }: MeRentalStadiumProps) => {
       ) : (
         <EmptyItemNotification message="예약한 체육관이 없습니다." btnActive={false} />
       )}
+      <div ref={$observerTarget}></div>
     </>
   );
 };
@@ -161,6 +174,5 @@ const MeRentalStadiumBlock = styled.div`
 
 const ButtonWrapper = styled.div`
   display: flex;
-  /* justify-content: space-between; */
   gap: 8px;
 `;

@@ -75,7 +75,7 @@ const MeInfo = (props: MeInfoProps) => {
   };
 
   return (
-    <MeInfoBlock>
+    <MeInfoContainer>
       {cloudinaryApiLoading || isLoading ? <Loading /> : null}
       <TitleWrapper>
         <Title fontSize={`${typo.xxLarge}`}>내 정보</Title>
@@ -116,13 +116,13 @@ const MeInfo = (props: MeInfoProps) => {
           </SWrapper>
         </SWrapper>
       )}
-    </MeInfoBlock>
+    </MeInfoContainer>
   );
 };
 
 export default MeInfo;
 
-const MeInfoBlock = styled.section`
+const MeInfoContainer = styled.section`
   width: 100%;
   ${Responsive.ResponsiveWrapper}
 `;

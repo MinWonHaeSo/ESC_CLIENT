@@ -1,5 +1,5 @@
 export interface CurrentStadium {
-  stadiumId: number;
+  stadiumId: string;
   name: string;
   address: string;
   imgUrl: string;

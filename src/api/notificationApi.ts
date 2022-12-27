@@ -2,7 +2,7 @@ import { PageType } from '@/types/pageType';
 import { baseApi } from './baseApi';
 
 export interface Notification {
-  id: number;
+  id: string;
   url: string;
   message: string;
   read: boolean;
@@ -26,17 +26,18 @@ interface ReadNotificationResponse {
   result: boolean;
 }
 
-const authApi = baseApi.injectEndpoints({
+export const notificationApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     getReadNotification: builder.query<GetReadNotificationState, string>({
-      query: () => ({
-        url: '/notifications/read',
+      query: (page: string) => ({
+        url: `/notifications/read?page=${page}&size=${5}&sort=${'createdAt'},DESC`,
+        transformResponse: (response: { data: Notification }) => response.data,
         method: 'GET',
       }),
     }),
     getUnreadNotification: builder.query<GetUnreadNotificationState, string>({
-      query: () => ({
-        url: `/notifications/unread`,
+      query: (page: string) => ({
+        url: `/notifications/unread?page=${page}&size=${5}&sort=${'createdAt'},DESC`,
         method: 'GET',
       }),
     }),
@@ -47,8 +48,8 @@ const authApi = baseApi.injectEndpoints({
       }),
       providesTags: (result, error, id) => [{ type: 'User', id }],
     }),
-    readNotification: builder.mutation<ReadNotificationResponse, number>({
-      query: (notificationId: number) => ({
+    readNotification: builder.mutation<ReadNotificationResponse, string>({
+      query: (notificationId: string) => ({
         url: `/notifications/${notificationId}`,
         method: 'PATCH',
       }),
@@ -61,4 +62,4 @@ export const {
   useGetUnreadNotificationQuery,
   useCheckUnreadNotificationQuery,
   useReadNotificationMutation,
-} = authApi;
+} = notificationApi;

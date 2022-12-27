@@ -25,7 +25,7 @@ const CardStadium = ({ stadium, currentLocation, refetch }: CardStadiumProps) =>
   const [postLikeStadiumAPI] = usePostLikeStadiumMutation();
   const likeCallbackAPI = useThrottleRef(async () => {
     await postLikeStadiumAPI(String(stadiumId));
-    refetch();
+    // refetch();
   });
 
   const handleChangeStadiumLike = async () => {
@@ -118,7 +118,7 @@ const StadiumImageWrapper = styled.div`
 
 const StadiumDesc = styled.div`
   display: grid;
-  grid-template-rows: 1fr 0.5fr 1fr;
+  grid-template-rows: 1fr 0.5fr auto;
   gap: 6px;
 `;
 

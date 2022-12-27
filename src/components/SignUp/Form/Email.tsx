@@ -55,15 +55,15 @@ const Email = ({ allChecked, setAllChecked }: EmailFormProps) => {
       return sw.toast.warn('이메일을 입력하세요.');
     }
     try {
-      const response = await emailDoubleCheckAPI({ email: inputEmail });
+      const response = await emailDoubleCheckAPI({ email: inputEmail }).unwrap();
       if (response) {
         sw.toast.success(`중복검사가 완료되었습니다.`);
         setTimeout(() => {
           setValidateProcess({ ...validateProcess, emailOverlapCheck: true });
         }, MILLI_SECONDS.one);
       }
-    } catch {
-      sw.toast.error('중복된 이메일 입니다.');
+    } catch (error) {
+      sw.toast.warn('중복된 이메일 입니다.');
       throw new Error('중복된 이메일 입니다.');
     }
   };

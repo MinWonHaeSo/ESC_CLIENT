@@ -22,19 +22,18 @@ interface LoginResponse {
   accessToken: string;
   refreshToken: string;
   type: UserType;
-  id: number;
+  id: string;
   name: string;
   nickname: string;
   imgUrl: string;
 }
 
 interface RefetchUserResponse {
-  id: number;
+  id: string;
   email: string;
   name: string;
   nickname: string;
   imgUrl: string;
-  password: string;
   statusCode: number;
 }
 
