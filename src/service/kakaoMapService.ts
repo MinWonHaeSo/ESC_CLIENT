@@ -58,8 +58,6 @@ class KaKaoMap {
   }
 
   setMarker({ place, handleClick }: setMarkerParam) {
-    if (!place) return;
-
     place.forEach((el: any) => {
       // 마커를 생성합니다
       const marker = new kakao.maps.Marker({
@@ -76,7 +74,6 @@ class KaKaoMap {
         this.map.setLevel(8);
         this.goToLocation({ lat: el.lat, lnt: el.lnt });
       });
-
       this.markers.push(marker);
     });
 
