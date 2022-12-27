@@ -45,6 +45,7 @@ const ManagerStadiumList = (props: ManagerStadiumListProps) => {
   const handleRemoveStadium = async (id: string) => {
     try {
       const response = await stadiumRemoveAPI(id);
+      sw.toast.success('체육관 삭제 성공');
     } catch {
       sw.toast.error('다시 시도해 주세요.');
     }
