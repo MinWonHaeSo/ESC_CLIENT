@@ -42,6 +42,11 @@ export const pagingSlice = createSlice({
       const findIdx = state.content.findIndex(item => item.reservationId === action.payload.id);
       state.content[findIdx].status = action.payload.status;
     },
+    removeStadium: (state, action: PayloadAction<{ id: string }>) => {
+      const findIdx = state.content.findIndex(item => item.reservationId === action.payload.id);
+      state.totalElements = state.totalElements - 1;
+      state.content.splice(findIdx, 1);
+    },
     toggleLike: (state, action: PayloadAction<{ id: string }>) => {
       const findIdx = state.content.findIndex(item => item.stadiumId === action.payload.id);
       state.content.splice(findIdx, 1);
@@ -50,6 +55,10 @@ export const pagingSlice = createSlice({
   },
   extraReducers: builder => {
     builder.addMatcher(stadiumApi.endpoints.getStadiumManagerList.matchFulfilled, (state, { payload }) => {
+      pagingDispatch(state, payload);
+      state.type = 'managerStadiumList';
+    });
+    builder.addMatcher(stadiumApi.endpoints.getMoreStadiumManagerList.matchFulfilled, (state, { payload }) => {
       pagingDispatch(state, payload);
       state.type = 'managerStadiumList';
     });
@@ -72,6 +81,6 @@ export const pagingSlice = createSlice({
   },
 });
 
-export const { changeStatus, toggleLike, clearPaging } = pagingSlice.actions;
+export const { changeStatus, removeStadium, toggleLike, clearPaging } = pagingSlice.actions;
 
 export const pagingReducer = pagingSlice.reducer;
