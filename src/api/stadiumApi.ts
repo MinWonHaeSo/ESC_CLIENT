@@ -176,26 +176,6 @@ export const stadiumApi = baseApi.injectEndpoints({
         method: 'GET',
       }),
     }),
-    addStadium: builder.mutation({
-      query: (stadium: stadiumWriteState) => ({
-        url: '/stadiums/register',
-        method: 'POST',
-        body: stadium,
-      }),
-    }),
-    updateStadiumInfo: builder.mutation({
-      query: ({ stadium, id }: { stadium: stadiumWriteState; id: string }) => ({
-        url: `/stadiums/${id}/info`,
-        method: 'PATCH',
-        body: stadium,
-      }),
-    }),
-    postLikeStadium: builder.mutation<any, string>({
-      query: id => ({
-        url: `/stadiums/${id}/likes`,
-        method: 'POST',
-      }),
-    }),
     getLikeStadiumList: builder.query<LikeStadiumListResponse, void>({
       query: () => ({
         url: `/stadiums/likelist?page=${0}&size=${5}`,
@@ -230,6 +210,33 @@ export const stadiumApi = baseApi.injectEndpoints({
         method: 'GET',
       }),
     }),
+    addStadium: builder.mutation({
+      query: (stadium: stadiumWriteState) => ({
+        url: '/stadiums/register',
+        method: 'POST',
+        body: stadium,
+      }),
+    }),
+    updateStadiumInfo: builder.mutation({
+      query: ({ stadium, id }: { stadium: stadiumWriteState; id: string }) => ({
+        url: `/stadiums/${id}/info`,
+        method: 'PATCH',
+        body: stadium,
+      }),
+    }),
+    postLikeStadium: builder.mutation<any, string>({
+      query: id => ({
+        url: `/stadiums/${id}/likes`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['LikeStadium'],
+    }),
+    removeStadium: builder.mutation<any, string>({
+      query: id => ({
+        url: `/stadiums/${id}/info`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
@@ -248,4 +255,5 @@ export const {
   useGetRentalStadiumListQuery,
   useGetMoreRentalStadiumListQuery,
   useGetRentalStadiumDetailQuery,
+  useRemoveStadiumMutation,
 } = stadiumApi;
