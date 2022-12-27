@@ -1,4 +1,4 @@
-import SearchPassWord from '@/components/SearchPassword/SearchPassword';
+import SearchPassWord from '@/components/SearchPassword/Index';
 
 const SearchPasswordPage = () => {
   return <SearchPassWord />;

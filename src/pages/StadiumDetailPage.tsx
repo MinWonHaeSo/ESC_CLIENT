@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import Review from '@/components/Review/Review';
+import Review from '@/components/Review/Index';
 import Dividers from '@/components/common/Dividers';
 import Detail from '@/components/StadiumDetail/Detail';
 import Responsive from '@/components/common/Responsive';

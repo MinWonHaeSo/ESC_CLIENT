@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import sw from '@/lib/utils/customSweetAlert';
-import Reservation from '@/components/StadiumReservation/Reservation';
+import Reservation from '@/components/StadiumReservation/Index';
 import { useGoBack } from '@/hooks/useGoBack';
 
 type MyLocationState = {
