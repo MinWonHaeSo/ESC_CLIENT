@@ -13,10 +13,10 @@ import PATH from '@/constants/path';
 interface UserActionButtonProps {
   post: stadiumWriteState;
   stadiumId: string;
+  stadiumLike: boolean;
 }
 
-const UserActionButton = ({ post, stadiumId }: UserActionButtonProps) => {
-  const [stadiumLike, setStadiumLike] = useState(false);
+const UserActionButton = ({ post, stadiumId, stadiumLike }: UserActionButtonProps) => {
   const userId = useSelector((state: RootState) => state.auth.id);
   const [postLikeStadiumAPI] = usePostLikeStadiumMutation();
   const likeCallbackAPI = useThrottleRef(() => postLikeStadiumAPI(stadiumId));
@@ -24,7 +24,6 @@ const UserActionButton = ({ post, stadiumId }: UserActionButtonProps) => {
   const navigate = useNavigate();
 
   const handleChangeStadiumLike = () => {
-    setStadiumLike(!stadiumLike);
     likeCallbackAPI();
   };
 
@@ -42,8 +41,6 @@ const UserActionButton = ({ post, stadiumId }: UserActionButtonProps) => {
       },
     });
   };
-
-  console.log(post);
 
   return (
     <ButtonActionContainer>

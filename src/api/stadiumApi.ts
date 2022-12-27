@@ -61,13 +61,14 @@ export interface DetailStadiumResponse {
   likes: any;
 }
 
-interface LikeStadium {
+export interface LikeStadium {
   id: string;
   stadiumId: string;
   name: string;
   address: string;
   starAvg: number;
   imgUrl: string;
+  like: boolean;
 }
 
 export interface ReservationUser {
@@ -194,7 +195,6 @@ export const stadiumApi = baseApi.injectEndpoints({
         url: `/stadiums/${id}/likes`,
         method: 'POST',
       }),
-      invalidatesTags: ['LikeStadium'],
     }),
     getLikeStadiumList: builder.query<LikeStadiumListResponse, void>({
       query: () => ({
@@ -202,7 +202,6 @@ export const stadiumApi = baseApi.injectEndpoints({
         transformResponse: (response: { data: LikeStadium }) => response.data,
         method: 'GET',
       }),
-      providesTags: ['LikeStadium'],
     }),
     getMoreLikeStadiumList: builder.query<LikeStadiumListResponse, number>({
       query: (page: number) => ({
@@ -210,7 +209,6 @@ export const stadiumApi = baseApi.injectEndpoints({
         transformResponse: (response: { data: LikeStadium }) => response.data,
         method: 'GET',
       }),
-      providesTags: ['LikeStadium'],
     }),
     getRentalStadiumList: builder.query<RentalStadiumListResponse, void>({
       query: () => ({

@@ -1,36 +1,36 @@
-import { RentalStadium, ReservationStatus, usePostLikeStadiumMutation } from '@/api/stadiumApi';
+import { usePostLikeStadiumMutation } from '@/api/stadiumApi';
 import PATH from '@/constants/path';
 import useThrottleRef from '@/hooks/useThrottleRef';
 import media from '@/lib/styles/media';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
+import { StatdiumData, toggleLike } from '@/store/pagingSlice';
+import { useAppDispatch } from '@/store/store';
 import styled from '@emotion/styled';
 import { useCallback } from 'react';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StatusTag from './StatusTag';
 
 interface CardStadiumProps {
-  stadium: RentalStadium;
+  stadium: StatdiumData;
   currentLocation: string;
   refetch?: any;
 }
 
-const CardStadium = ({ stadium, currentLocation, refetch }: CardStadiumProps) => {
-  const [stadiumLike, setStadiumLike] = useState<boolean>(true);
-  const { stadiumId, name, address, starAvg, imgUrl, status } = stadium;
+const CardStadium = ({ stadium, currentLocation }: CardStadiumProps) => {
+  const { stadiumId, name, address, starAvg, imgUrl, status, like } = stadium;
 
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const [postLikeStadiumAPI] = usePostLikeStadiumMutation();
   const likeCallbackAPI = useThrottleRef(async () => {
     await postLikeStadiumAPI(String(stadiumId));
-    // refetch();
   });
 
   const handleChangeStadiumLike = async () => {
-    setStadiumLike(false);
     likeCallbackAPI();
+    dispatch(toggleLike({ id: stadiumId }));
   };
 
   const handleCardClick = useCallback(() => {
@@ -44,7 +44,7 @@ const CardStadium = ({ stadium, currentLocation, refetch }: CardStadiumProps) =>
         {currentLocation !== `${PATH.ME_RENTAL_LIST}` ? null : <StatusTag status={status!} />}
         {currentLocation === `${PATH.ME_LIKE_STADIUM_LIST}` ? (
           <Bookmark onClick={handleChangeStadiumLike}>
-            <i className={stadiumLike ? 'fa-solid fa-bookmark' : 'fa-regular fa-bookmark'} />
+            <i className={like ? 'fa-solid fa-bookmark' : 'fa-regular fa-bookmark'} />
           </Bookmark>
         ) : null}
       </StadiumImageWrapper>
