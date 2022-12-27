@@ -7,7 +7,7 @@ export type rentalItemType = { publicId: string; imgUrl: string; name: string; p
 export type imagesType = { publicId: string; imgUrl: string };
 
 export interface stadiumWriteState {
-  id: number;
+  id: string;
   memberId: number;
   name: string;
   address: string;
@@ -27,7 +27,7 @@ export interface stadiumWriteState {
 }
 
 const initialState: stadiumWriteState = {
-  id: 0,
+  id: '',
   memberId: 0,
   name: '',
   address: '',

@@ -1,13 +1,13 @@
 import React, { useCallback } from 'react';
-import Label from '@/components/common/atoms/Label';
-import RentalItemList from '@/components/Stadium/EditElements/EditRentalItemList';
-import palette from '@/lib/styles/palette';
-import { typo } from '@/lib/styles/typo';
-import { addRentalItem, removeRentalItem, rentalItemType } from '@/store/stadiumWriteSlice';
 import styled from '@emotion/styled';
-import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
+import { useDispatch } from 'react-redux';
+import { addRentalItem, removeRentalItem, rentalItemType } from '@/store/stadiumWriteSlice';
 import { contextFileType } from '@/context/OriginFilesContext';
+import RentalItemList from '@/components/Stadium/EditElements/EditRentalItemList';
+import Label from '@/components/common/atoms/Label';
+import { typo } from '@/lib/styles/typo';
+import palette from '@/lib/styles/palette';
 
 interface EditRentalItemProps {
   rentalItems: rentalItemType[];

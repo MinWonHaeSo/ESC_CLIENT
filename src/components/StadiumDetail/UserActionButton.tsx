@@ -1,15 +1,14 @@
 import React, { useCallback, useState } from 'react';
 import styled from '@emotion/styled';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { stadiumWriteState, updateStadium } from '@/store/stadiumWriteSlice';
 import { usePostLikeStadiumMutation } from '@/api/stadiumApi';
-import PATH from '@/constants/path';
-import useThrottleRef from '@/hooks/useThrottleRef';
-import palette from '@/lib/styles/palette';
-import { typo } from '@/lib/styles/typo';
-import { useSelector } from 'react-redux';
+import { stadiumWriteState, updateStadium } from '@/store/stadiumWriteSlice';
 import { RootState } from '@/store/store';
+import useThrottleRef from '@/hooks/useThrottleRef';
+import { typo } from '@/lib/styles/typo';
+import palette from '@/lib/styles/palette';
+import PATH from '@/constants/path';
 
 interface UserActionButtonProps {
   post: stadiumWriteState;

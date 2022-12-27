@@ -1,8 +1,8 @@
-import { RootState } from '@/store/store';
 import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 import StepComponentProcess from '../common/StepComponentProcess';
-import EnterNewPassWord from './EnterNewPassWord';
 import EnterValidateCode from './EnterValidateCode';
+import EnterNewPassWord from './EnterNewPassWord';
 import ValidateEmail from './ValidateEmail';
 
 interface FindPassWordProps {}

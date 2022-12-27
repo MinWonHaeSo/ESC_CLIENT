@@ -2,9 +2,9 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
 import { changeFiled } from '@/store/stadiumWriteSlice';
+import FormInputDivisionBlock from '@/components/common/Responsive/FormInputDivisionBlock';
 import Input from '@/components/common/atoms/Input';
 import Label from '@/components/common/atoms/Label';
-import FormInputDivisionBlock from '@/components/common/Responsive/FormInputDivisionBlock';
 
 interface EditInputProps {
   value: string | number;

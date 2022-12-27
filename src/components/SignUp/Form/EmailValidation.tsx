@@ -1,13 +1,12 @@
+import React, { useState, useEffect } from 'react';
+import styled from '@emotion/styled';
 import { useCheckEmailValidateMutation } from '@/api/userApi';
-import MILLI_SECONDS from '@/constants/milliSeconds';
-import palette from '@/lib/styles/palette';
-import { typo } from '@/lib/styles/typo';
-import sw from '@/lib/utils/customSweetAlert';
 import { useAppDispatch } from '@/store/store';
 import { setKey } from '@/store/userSlice';
-import styled from '@emotion/styled';
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+import { typo } from '@/lib/styles/typo';
+import palette from '@/lib/styles/palette';
+import sw from '@/lib/utils/customSweetAlert';
+import MILLI_SECONDS from '@/constants/milliSeconds';
 import Button from '../../common/atoms/Button';
 import { ValidateState } from './Email';
 

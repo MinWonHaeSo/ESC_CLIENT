@@ -1,4 +1,4 @@
-import ManagerStadiumList from '@/components/ManagerStadiumList/ManagerStadiumList';
+import ManagerStadiumList from '@/components/ManagerStadiumList/Index';
 import React from 'react';
 
 interface ManagerStadiumListPageProps {}

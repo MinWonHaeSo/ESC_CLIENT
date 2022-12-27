@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
+import palette from '@/lib/styles/palette';
 import ReviewDropdown from './ReviewDropdown';
 
 interface ReviewHeaderProps {}

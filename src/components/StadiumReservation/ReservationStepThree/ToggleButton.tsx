@@ -1,6 +1,6 @@
-import palette from '@/lib/styles/palette';
-import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
+import { typo } from '@/lib/styles/typo';
+import palette from '@/lib/styles/palette';
 
 interface ToggleButtonProps {
   open: boolean;

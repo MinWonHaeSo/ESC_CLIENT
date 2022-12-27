@@ -1,10 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import styled from '@emotion/styled';
-import { RootState } from '@/store/store';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { typo } from '@/lib/styles/typo';
+import { useDispatch, useSelector } from 'react-redux';
 import { changeCount } from '@/store/stadiumReservationSlice';
+import { RootState } from '@/store/store';
+import { typo } from '@/lib/styles/typo';
 import palette from '@/lib/styles/palette';
 
 interface ReservationPersonProps {}

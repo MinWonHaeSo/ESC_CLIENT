@@ -1,11 +1,11 @@
-import palette from '@/lib/styles/palette';
-import { typo } from '@/lib/styles/typo';
-import formatter from '@/lib/utils/formatter';
-import { StadiumReservationStateData } from '@/store/stadiumReservationSlice';
-import styled from '@emotion/styled';
-import AccordionToggleButton from './ToggleButton';
-import StyledSeparateLine from './StyledSerparateLine';
 import { useState } from 'react';
+import styled from '@emotion/styled';
+import { StadiumReservationStateData } from '@/store/stadiumReservationSlice';
+import formatter from '@/lib/utils/formatter';
+import { typo } from '@/lib/styles/typo';
+import palette from '@/lib/styles/palette';
+import StyledSeparateLine from './StyledSerparateLine';
+import AccordionToggleButton from './ToggleButton';
 
 interface ReservationInfoProps {
   infoData: StadiumReservationStateData;

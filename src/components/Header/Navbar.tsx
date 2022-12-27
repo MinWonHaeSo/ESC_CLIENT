@@ -1,19 +1,19 @@
-import HEADER_NAV from '@/constants/headerNav';
-import PATH from '@/constants/path';
-import palette from '@/lib/styles/palette';
-import { RootState, useAppDispatch } from '@/store/store';
-import styled from '@emotion/styled';
 import { useState, useEffect } from 'react';
+import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { useLogoutMutation } from '@/api/authApi';
+import { RootState, useAppDispatch } from '@/store/store';
 import { loggedOut } from '@/store/authSlice';
+import { DEFAULT_ICONURL } from '@/constants/defaultImage';
+import HEADER_NAV from '@/constants/headerNav';
+import PATH from '@/constants/path';
+import { getAuthToken, removeAuthToken } from '@/lib/utils/token';
+import { deleteCookie, getCookie } from '@/lib/utils/cookies';
+import { typo } from '@/lib/styles/typo';
+import palette from '@/lib/styles/palette';
 import sw from '@/lib/utils/customSweetAlert';
 import { UserType } from '@/types/userType';
-import { useLogoutMutation } from '@/api/authApi';
-import { deleteCookie, getCookie } from '@/lib/utils/cookies';
-import { getAuthToken, removeAuthToken } from '@/lib/utils/token';
-import { typo } from '@/lib/styles/typo';
-import { DEFAULT_ICONURL } from '@/constants/defaultImage';
 import NotificationButton from './NotificationButton';
 
 interface NavbarProps {
@@ -75,7 +75,7 @@ const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
         {loggedIn ? <NotificationButton onListClick={handleListClick} /> : null}
         <NavList>
           {HEADER_NAV[loginType].map(nav => (
-            <li key={nav.id} onClick={handleListClick}>
+            <li aria-label="header navigation bar" role="button" key={nav.id} onClick={handleListClick}>
               <Link to={nav.to}>{nav.title}</Link>
             </li>
           ))}

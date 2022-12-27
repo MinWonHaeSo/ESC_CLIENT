@@ -1,9 +1,7 @@
-import { ContentType } from '@/api/reviewApi';
-import palette from '@/lib/styles/palette';
-import { RootState } from '@/store/store';
-import styled from '@emotion/styled';
 import React from 'react';
+import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 import EmptyItemNotification from '../common/EmptyItemNotification';
 import ReviewListItem from './ReviewListItem';
 

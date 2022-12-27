@@ -1,13 +1,12 @@
-import palette from '@/lib/styles/palette';
-import { typo } from '@/lib/styles/typo';
-import formatter from '@/lib/utils/formatter';
+import React, { useState } from 'react';
+import styled from '@emotion/styled';
 import { setPaymentType } from '@/store/stadiumReservationSlice';
 import { useAppDispatch } from '@/store/store';
-import styled from '@emotion/styled';
-import React from 'react';
-import { useState } from 'react';
-import Radio from './Radio';
+import formatter from '@/lib/utils/formatter';
+import { typo } from '@/lib/styles/typo';
+import palette from '@/lib/styles/palette';
 import StyledSeparateLine from './StyledSerparateLine';
+import Radio from './Radio';
 
 interface ReservationPaymentProps {
   totalPaymentPrice: number;

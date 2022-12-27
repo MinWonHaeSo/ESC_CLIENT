@@ -1,10 +1,10 @@
-import { useCheckUnreadNotificationQuery } from '@/api/notificationApi';
-import PATH from '@/constants/path';
-import palette from '@/lib/styles/palette';
-import { RootState } from '@/store/store';
-import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import styled from '@emotion/styled';
+import { useCheckUnreadNotificationQuery } from '@/api/notificationApi';
+import { RootState } from '@/store/store';
+import PATH from '@/constants/path';
+import palette from '@/lib/styles/palette';
 import Loading from '../common/Loading/Loading';
 
 interface NotificationButton {

@@ -1,9 +1,9 @@
-import { ImagesType } from '@/api/stadiumApi';
-import styled from '@emotion/styled';
 import React, { useState } from 'react';
-import SliderBtn from './SliderBtn';
+import styled from '@emotion/styled';
+import { ImagesType } from '@/api/stadiumApi';
 import SliderCurrentInfo from './SliderCurrentInfo';
 import SliderList from './SliderList';
+import SliderBtn from './SliderBtn';
 
 interface SliderProps {
   images: ImagesType[] | undefined;

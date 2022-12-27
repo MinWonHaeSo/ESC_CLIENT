@@ -1,8 +1,8 @@
-import { modalContext } from '@/context/ModalContext';
+import React, { useContext } from 'react';
+import styled from '@emotion/styled';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
-import styled from '@emotion/styled';
-import React, { useContext } from 'react';
+import { modalContext } from '@/context/ModalContext';
 import ReservationUserInfoModal from './ReservationUserInfoModal';
 
 interface ReservationUserInfoItemProps {

@@ -1,11 +1,11 @@
+import React from 'react';
+import styled from '@emotion/styled';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
-import styled from '@emotion/styled';
-import React from 'react';
-import Title from '../common/atoms/Title';
 import Responsive from '../common/Responsive';
-import PrevButton from './PrevButton';
+import Title from '../common/atoms/Title';
 import ReservationUserInfoList from './ReservationUserInfoList';
+import PrevButton from './PrevButton';
 
 const data = [
   {

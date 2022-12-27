@@ -1,13 +1,13 @@
 import React from 'react';
-import palette from '@/lib/styles/palette';
-import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
-import Label from '@/components/common/atoms/Label';
-import CustomTime from '@/components/common/CustomTime';
+import { useDispatch } from 'react-redux';
+import { changeTimes } from '@/store/stadiumWriteSlice';
 import useDatepickerTIme from '@/hooks/useDatepickerTIme';
 import useDefaultTime from '@/hooks/useDefaultTime';
-import { changeTimes } from '@/store/stadiumWriteSlice';
-import { useDispatch } from 'react-redux';
+import palette from '@/lib/styles/palette';
+import { typo } from '@/lib/styles/typo';
+import CustomTime from '@/components/common/CustomTime';
+import Label from '@/components/common/atoms/Label';
 
 interface EditStadiumTimeProps {
   startTime: string;

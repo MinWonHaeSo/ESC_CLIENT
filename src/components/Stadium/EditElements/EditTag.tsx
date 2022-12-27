@@ -2,11 +2,11 @@ import React, { useCallback, useState } from 'react';
 import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
 import { addTags, removeTags } from '@/store/stadiumWriteSlice';
-import palette from '@/lib/styles/palette';
+import useThrottleRef from '@/hooks/useThrottleRef';
 import { typo } from '@/lib/styles/typo';
+import palette from '@/lib/styles/palette';
 import Input from '@/components/common/atoms/Input';
 import Tag from '@/components/Tag/Tag';
-import useThrottleRef from '@/hooks/useThrottleRef';
 
 interface EditTagProps {
   tags: string[];

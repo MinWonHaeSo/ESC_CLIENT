@@ -1,4 +1,4 @@
-import MainBasicUser from '@/components/MainBasicUser/MainBasicUser';
+import MainBasicUser from '@/components/MainBasicUser/Index';
 import useCurrentLocation from '@/hooks/useCurrentLocation';
 
 const MainPage = () => {

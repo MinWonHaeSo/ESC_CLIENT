@@ -1,15 +1,15 @@
 import styled from '@emotion/styled';
 import { GetReservationStadiumTimeReseponse, reservationApi } from '@/api/reservationApi';
-import { typo } from '@/lib/styles/typo';
+import { ScrollToTop } from '@/hooks/useScollToTop';
 import palette from '@/lib/styles/palette';
-import Title from '../common/atoms/Title';
+import { typo } from '@/lib/styles/typo';
 import Responsive from '../common/Responsive';
+import Title from '../common/atoms/Title';
+import ReservationAccordion from './ReservationStepOne/ReservationAccordion';
+import ReservationButton from './ReservationButton';
 import ReservationPerson from './ReservationStepOne/ReservationPerson';
 import ReservationDate from './ReservationStepOne/ReservationDate';
-import ReservationButton from './ReservationButton';
-import ReservationAccordion from './ReservationStepOne/ReservationAccordion';
 import TimeSelectList from './ReservationStepOne/TImeSelectList';
-import { ScrollToTop } from '@/hooks/useScollToTop';
 
 interface ReservationStepOneProps {
   data: GetReservationStadiumTimeReseponse;

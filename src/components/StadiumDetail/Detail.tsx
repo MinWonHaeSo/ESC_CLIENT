@@ -3,14 +3,14 @@ import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import { useGetStadiumDetailQuery } from '@/api/stadiumApi';
 import sw from '@/lib/utils/customSweetAlert';
-import PATH from '@/constants/path';
 import { typo } from '@/lib/styles/typo';
+import PATH from '@/constants/path';
+import Loading from '../common/Loading/Loading';
 import Title from '../common/atoms/Title';
 import Slider from '../Slide/Slider';
-import Loading from '../common/Loading/Loading';
 import Tag from '../Tag/Tag';
-import Info from './Info';
 import UserActionButton from './UserActionButton';
+import Info from './Info';
 
 interface DetailProps {
   stadiumId: string;

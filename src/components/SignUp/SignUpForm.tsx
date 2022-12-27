@@ -1,25 +1,25 @@
-import { useGoBack } from '@/hooks/useGoBack';
+import React, { useState } from 'react';
+import styled from '@emotion/styled';
+import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
+import { useSignUpMutation } from '@/api/userApi';
+import { userFileUpload } from '@/api/fileUpload';
+import { RootState, useAppDispatch } from '@/store/store';
+import { uploadImage } from '@/store/authSlice';
+import { useGoBack } from '@/hooks/useGoBack';
+import formStateCheck from '@/lib/utils/formStateCheck';
+import sw from '@/lib/utils/customSweetAlert';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
-import styled from '@emotion/styled';
+import MILLI_SECONDS from '@/constants/milliSeconds';
+import PATH from '@/constants/path';
+import InsertImage from '../common/InsertImage';
+import Loading from '../common/Loading/Loading';
 import Button from '../common/atoms/Button';
 import UserName from './Form/UserName';
-import Email from './Form/Email';
 import Password from './Form/PassWord';
 import NickName from './Form/NickName';
-import React, { useState } from 'react';
-import sw from '@/lib/utils/customSweetAlert';
-import { useSignUpMutation } from '@/api/userApi';
-import formStateCheck from '@/lib/utils/formStateCheck';
-import InsertImage from '../common/InsertImage';
-import { RootState, useAppDispatch } from '@/store/store';
-import { useSelector } from 'react-redux';
-import PATH from '@/constants/path';
-import { userFileUpload } from '@/api/fileUpload';
-import Loading from '../common/Loading/Loading';
-import MILLI_SECONDS from '@/constants/milliSeconds';
-import { uploadImage } from '@/store/authSlice';
+import Email from './Form/Email';
 
 interface SignUpFormProps {}
 

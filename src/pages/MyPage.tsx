@@ -1,4 +1,4 @@
-import MeInfo from '@/components/MeInfo/MeInfo';
+import MeInfo from '@/components/MeInfo/Index';
 
 const MyPage = () => {
   return <MeInfo />;
