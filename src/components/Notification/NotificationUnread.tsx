@@ -1,13 +1,13 @@
+import { useCallback, useEffect } from 'react';
+import styled from '@emotion/styled';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 import { Notification, notificationApi, useReadNotificationMutation } from '@/api/notificationApi';
+import { clearNotification } from '@/store/notificationSlice';
+import { RootState, useAppDispatch } from '@/store/store';
 import useInfinityScroll from '@/hooks/useInfinityScroll';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
-import { clearNotification } from '@/store/notificationSlice';
-import { RootState, useAppDispatch } from '@/store/store';
-import styled from '@emotion/styled';
-import { useCallback, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
 import EmptyItemNotification from '../common/EmptyItemNotification';
 import Loading from '../common/Loading/Loading';
 
@@ -68,7 +68,7 @@ const NotificationUnread = ({ content }: NotificationUnreadProps) => {
           </button>
         </Li>
       ))}
-      {content.length === 0 ? <EmptyItemNotification message={'알림을 모두 확인하였습니다'} btnActive={false} /> : null}
+      {content.length === 0 ? <EmptyItemNotification message={'알림이 없습니다.'} btnActive={false} /> : null}
       <div ref={$observerTarget} />
     </Container>
   );

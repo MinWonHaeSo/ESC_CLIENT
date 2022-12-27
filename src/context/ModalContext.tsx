@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react';
 import Portal from '@/Portal/Portal';
-import Modal from '@/components/Modal/Modal';
+import Modal from '@/components/Modal/Index';
 
 interface modalContextValue {
   isModalOpened: boolean;

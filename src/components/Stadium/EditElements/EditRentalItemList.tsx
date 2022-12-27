@@ -1,10 +1,10 @@
 import React, { useRef } from 'react';
-import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
-import { changeRentalItemImage, changeRentalItemInput, rentalItemType } from '@/store/stadiumWriteSlice';
 import { useDispatch } from 'react-redux';
+import { changeRentalItemImage, changeRentalItemInput, rentalItemType } from '@/store/stadiumWriteSlice';
 import { contextFileType } from '@/context/OriginFilesContext';
 import fileObjectToIdUrlFile from '@/lib/utils/fileObjectToIdUrlFile';
+import palette from '@/lib/styles/palette';
 
 interface EditRentalItemLisProps {
   rentalItem: rentalItemType;

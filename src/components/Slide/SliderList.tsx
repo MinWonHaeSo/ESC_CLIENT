@@ -1,5 +1,5 @@
-import { ImagesType } from '@/api/stadiumApi';
 import styled from '@emotion/styled';
+import { ImagesType } from '@/api/stadiumApi';
 import SliderItem from './SliderItem';
 
 type slideType = {};

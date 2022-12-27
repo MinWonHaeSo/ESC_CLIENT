@@ -1,23 +1,21 @@
-import { stadiumApi, useGetLikeStadiumListQuery } from '@/api/stadiumApi';
-import PATH from '@/constants/path';
-import useInfinityScroll from '@/hooks/useInfinityScroll';
-import media from '@/lib/styles/media';
-import { typo } from '@/lib/styles/typo';
-import sw from '@/lib/utils/customSweetAlert';
-import { clearPaging } from '@/store/pagingSlice';
-import { RootState, useAppDispatch } from '@/store/store';
-import styled from '@emotion/styled';
 import { useEffect } from 'react';
+import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
-import CardStadium from '../CardStadium/CardStadium';
-import Title from '../common/atoms/Title';
+import { stadiumApi, useGetLikeStadiumListQuery } from '@/api/stadiumApi';
+import { RootState, useAppDispatch } from '@/store/store';
+import { clearPaging } from '@/store/pagingSlice';
+import useInfinityScroll from '@/hooks/useInfinityScroll';
+import { typo } from '@/lib/styles/typo';
+import media from '@/lib/styles/media';
+import PATH from '@/constants/path';
 import EmptyItemNotification from '../common/EmptyItemNotification';
-import Loading from '../common/Loading/Loading';
+import ScrollToTopButton from '../common/ScrollToTopButton';
 import PagingSpinner from '../common/Loading/PagingSpinner';
 import Responsive from '../common/Responsive';
-import ScrollToTopButton from '../common/ScrollToTopButton';
-import StyledPadding from '../common/StyledPadding';
+import Loading from '../common/Loading/Loading';
+import Title from '../common/atoms/Title';
+import CardStadium from '../CardStadium/Index';
 
 interface MeLikeStadiumProps {}
 
@@ -70,9 +68,7 @@ const MeLikeStadium = ({}: MeLikeStadiumProps) => {
         />
       )}
       {pageLoading ? <PagingSpinner /> : null}
-      {/* <PagingSpinner /> */}
       <div ref={$observerTarget} />
-      <StyledPadding />
       <ScrollToTopButton />
     </MeLikeStadiumContainer>
   );

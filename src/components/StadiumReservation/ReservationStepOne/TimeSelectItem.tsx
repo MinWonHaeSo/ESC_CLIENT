@@ -1,10 +1,9 @@
 import React, { useCallback } from 'react';
-import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectDate } from '@/store/stadiumReservationSlice';
-import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
+import palette from '@/lib/styles/palette';
 
 interface TimeSelectItemProps {
   times: string[];

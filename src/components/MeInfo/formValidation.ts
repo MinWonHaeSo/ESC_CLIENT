@@ -1,5 +1,5 @@
-import formRegex from '@/constants/formRegex';
 import React from 'react';
+import formRegex from '@/constants/formRegex';
 
 interface Required {
   prePassword: boolean;

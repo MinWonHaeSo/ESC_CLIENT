@@ -1,5 +1,5 @@
-import Footer from '@/components/Footer/Footer';
-import Header from '@/components/Header/Header';
+import Footer from '@/components/Footer/Index';
+import Header from '@/components/Header/Index';
 import { page } from '@/constants/nonFooterPage';
 import media from '@/lib/styles/media';
 import palette from '@/lib/styles/palette';

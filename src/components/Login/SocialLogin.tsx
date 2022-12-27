@@ -1,5 +1,5 @@
-import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
+import palette from '@/lib/styles/palette';
 import GoogleSocialLogin from '../SocialLogin/GoogleSocialLogin';
 import KakaoSocialLogin from '../SocialLogin/KakaoSocialLogin';
 import NaverSocialLogin from '../SocialLogin/NaverSocialLogin';

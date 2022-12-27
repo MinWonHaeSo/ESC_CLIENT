@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router';
 interface AuthState {
   grantType?: string;
   key: string;
-  id: number;
+  id: string;
   type: UserType;
   email: string;
   name: string;
@@ -25,7 +25,7 @@ type SocialLoginType = Omit<AuthState, 'key' | 'password'>;
 
 const initialState: AuthState = {
   grantType: '',
-  id: 0,
+  id: '',
   key: '',
   type: 'USER',
   email: '',

@@ -19,6 +19,8 @@ const TabMenu = (props: TabMenuProps) => {
           key={tab.type}
           type={tab.type}
           focus={userType === tab.type}
+          aria-label="login type tab"
+          role={'tab'}
           onClick={() => {
             dispatch(setUserType(tab.type));
           }}

@@ -1,10 +1,10 @@
+import React, { useEffect } from 'react';
+import styled from '@emotion/styled';
+import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import { RootState } from '@/store/store';
-import styled from '@emotion/styled';
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router';
 import InsertImage from '../common/InsertImage';
 import { handleKeyDown } from './formValidation';
 

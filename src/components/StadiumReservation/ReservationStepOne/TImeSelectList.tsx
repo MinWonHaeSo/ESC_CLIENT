@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import Dividers from '../../common/Dividers';
-import TimeSelectItem from './TimeSelectItem';
-import excludeTimes from '@/lib/utils/excludeTimes';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
+import excludeTimes from '@/lib/utils/excludeTimes';
+import Dividers from '../../common/Dividers';
+import TimeSelectItem from './TimeSelectItem';
 
 interface TimeSelectListProps {
   openTime: string;

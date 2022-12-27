@@ -1,11 +1,10 @@
 import { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
 import styled from '@emotion/styled';
-import CustomDate from '../../common/CustomDate';
-import formatter from '@/lib/utils/formatter';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
+import formatter from '@/lib/utils/formatter';
 import { typo } from '@/lib/styles/typo';
+import CustomDate from '../../common/CustomDate';
 
 interface ReservationDateProps {
   trigger: any;

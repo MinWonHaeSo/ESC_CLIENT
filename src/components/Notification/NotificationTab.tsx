@@ -1,8 +1,8 @@
-import { NotificationTabList } from '@/constants/notificationTab';
-import palette from '@/lib/styles/palette';
-import { typo } from '@/lib/styles/typo';
 import styled from '@emotion/styled';
-import { TabType } from './Notification';
+import { typo } from '@/lib/styles/typo';
+import palette from '@/lib/styles/palette';
+import { NotificationTabList } from '@/constants/notificationTab';
+import { TabType } from './Index';
 
 interface NotificationTabProps {
   currentTab: TabType;

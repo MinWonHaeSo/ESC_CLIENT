@@ -1,4 +1,4 @@
-import { TabType } from '@/components/Notification/Notification';
+import { TabType } from '@/components/Notification/Index';
 
 interface NotificationTabList {
   id: TabType;

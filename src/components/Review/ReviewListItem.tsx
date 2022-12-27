@@ -1,9 +1,9 @@
-import { ContentType } from '@/api/reviewApi';
-import palette from '@/lib/styles/palette';
-import { RootState } from '@/store/store';
-import styled from '@emotion/styled';
 import React, { useState } from 'react';
+import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
+import { ContentType } from '@/api/reviewApi';
+import { RootState } from '@/store/store';
+import palette from '@/lib/styles/palette';
 import StarRate from '../common/StarRate';
 
 interface ReviewListItemProps {

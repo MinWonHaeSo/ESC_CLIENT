@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '@/store/store';
 import { changeStar } from '@/store/stadiumReview';
+import { RootState } from '@/store/store';
 import palette from '@/lib/styles/palette';
 import StarRate from '../common/StarRate';
 

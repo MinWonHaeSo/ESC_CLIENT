@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import Responsive from '../common/Responsive';
 import { typo } from '@/lib/styles/typo';
+import Responsive from '../common/Responsive';
 import Title from '../common/atoms/Title';
 import TabMenu from '../common/TabMenu';
 import SignUpForm from './SignUpForm';

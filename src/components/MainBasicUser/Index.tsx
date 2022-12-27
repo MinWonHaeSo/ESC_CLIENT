@@ -1,13 +1,12 @@
 import React, { useEffect, useMemo } from 'react';
 import styled from '@emotion/styled';
-import Map from './Map';
-import MarkerStadiumInfo from './MarkerStadiumInfo';
-import StadiumSearch from './StadiumSearch';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store/store';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { clearMarkerInfo, clickMarker } from '@/store/stadiumMarkerSlice';
 import { useGetStadiumListQuery } from '@/api/stadiumApi';
+import { RootState } from '@/store/store';
+import MarkerStadiumInfo from './MarkerStadiumInfo';
+import StadiumSearch from './StadiumSearch';
+import Map from './Map';
 
 interface MainBasicUserProps {
   currentLocation: { lat: string; lnt: string };

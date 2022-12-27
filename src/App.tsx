@@ -1,30 +1,36 @@
-import { Provider } from 'react-redux';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import MainPage from './pages/MainPage';
-import NotFoundPage from './pages/NotFoundPage';
-import Layout from './routes/Layout';
-import LoginPage from './pages/LoginPage';
-import { store } from './store/store';
-import SignUpPage from './pages/SignUpPage';
-import MyPage from './pages/MyPage';
-import PrivateRoute from './routes/PrivateRoutes';
-import StadiumUploadPage from './pages/StadiumUploadPage';
-import SearchPasswordPage from './pages/SearchPasswordPage';
-import SignOutPage from './pages/SignOutPage';
-import OAuthRedirectPage from './pages/OAuthRedirectPage';
-import MeRentalListPage from './pages/MeRentalListPage';
-import MeRecentSearchPage from './pages/MeRecentSearchPage';
-import MeLikeStadiumPage from './pages/MeLikeStadiumPage';
-import NotificationPage from './pages/NotificationPage';
 import { CookiesProvider } from 'react-cookie';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import { store } from './store/store';
+import { Provider } from 'react-redux';
 import { OriginFilesProvider } from './context/OriginFilesContext';
-import PATH from './constants/path';
-import StadiumDetailPage from './pages/StadiumDetailPage';
-import StadiumReservationPage from './pages/StadiumReservationPage';
-import { ScrollToTop } from './hooks/useScollToTop';
 import ModalProvider from './context/ModalContext';
-import ManagerStadiumListPage from './pages/ManagerStadiumListPage';
+
+import { ScrollToTop } from './hooks/useScollToTop';
+
+import PrivateRoute from './routes/PrivateRoutes';
+import Layout from './routes/Layout';
+
+import PATH from './constants/path';
+
+// 페이지
 import ReservationUserInfoPage from './pages/ReservationUserInfoPage';
+import StadiumReservationPage from './pages/StadiumReservationPage';
+import ManagerStadiumListPage from './pages/ManagerStadiumListPage';
+import MeRecentSearchPage from './pages/MeRecentSearchPage';
+import SearchPasswordPage from './pages/SearchPasswordPage';
+import OAuthRedirectPage from './pages/OAuthRedirectPage';
+import MeLikeStadiumPage from './pages/MeLikeStadiumPage';
+import StadiumDetailPage from './pages/StadiumDetailPage';
+import StadiumUploadPage from './pages/StadiumUploadPage';
+import MeRentalListPage from './pages/MeRentalListPage';
+import NotificationPage from './pages/NotificationPage';
+import NotFoundPage from './pages/NotFoundPage';
+import SignOutPage from './pages/SignOutPage';
+import SignUpPage from './pages/SignUpPage';
+import LoginPage from './pages/LoginPage';
+import MainPage from './pages/MainPage';
+import MyPage from './pages/MyPage';
 
 const App = () => {
   return (

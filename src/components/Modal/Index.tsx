@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import Portal from '@/Portal/Portal';
 import styled from '@emotion/styled';
-import Title from '../common/atoms/Title';
+import Portal from '@/Portal/Portal';
 import { typo } from '@/lib/styles/typo';
 import palette from '@/lib/styles/palette';
+import Title from '../common/atoms/Title';
 
 interface Props {
   children: React.ReactNode;
@@ -22,6 +22,7 @@ const Modal = ({ children, openModal, setOpenModal }: Props) => {
     setOpenModal(false);
   };
 
+  // 스크롤 방지
   useEffect(() => {
     if (openModal) {
       document.body.style.cssText = `

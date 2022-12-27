@@ -1,13 +1,11 @@
 import { useCallback } from 'react';
 import styled from '@emotion/styled';
-import { RentalItemsType } from '@/api/reservationApi';
 import { useDispatch } from 'react-redux';
+import { RentalItemsType } from '@/api/reservationApi';
 import { changeRentalItemCount, RentalItemsToggleType, toggleRentalItem } from '@/store/stadiumReservationSlice';
 import formatter from '@/lib/utils/formatter';
-import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store/store';
+import palette from '@/lib/styles/palette';
 
 interface ReservationRentalItemProps {
   item: RentalItemsToggleType;

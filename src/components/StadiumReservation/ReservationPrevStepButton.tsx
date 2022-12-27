@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '@/store/store';
-import { nextStep } from '@/store/stadiumReservationSlice';
 import styled from '@emotion/styled';
+import { useSelector, useDispatch } from 'react-redux';
+import { nextStep } from '@/store/stadiumReservationSlice';
+import { RootState } from '@/store/store';
 import { typo } from '@/lib/styles/typo';
 import palette from '@/lib/styles/palette';
 

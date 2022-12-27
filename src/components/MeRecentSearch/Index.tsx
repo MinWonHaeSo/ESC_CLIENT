@@ -1,14 +1,13 @@
-import PATH from '@/constants/path';
-import media from '@/lib/styles/media';
-import { typo } from '@/lib/styles/typo';
-import { CurrentStadium, getAccessStadium } from '@/lib/utils/accessStadium';
 import styled from '@emotion/styled';
-import CardStadium from '../CardStadium/CardStadium';
-import Title from '../common/atoms/Title';
+import { CurrentStadium, getAccessStadium } from '@/lib/utils/accessStadium';
+import { typo } from '@/lib/styles/typo';
+import media from '@/lib/styles/media';
+import PATH from '@/constants/path';
 import EmptyItemNotification from '../common/EmptyItemNotification';
-import Responsive from '../common/Responsive';
 import ScrollToTopButton from '../common/ScrollToTopButton';
-import StyledPadding from '../common/StyledPadding';
+import Responsive from '../common/Responsive';
+import Title from '../common/atoms/Title';
+import CardStadium from '../CardStadium/Index';
 
 interface MeRecentSearchProps {}
 
@@ -42,7 +41,6 @@ const MeRecentSearch = ({}: MeRecentSearchProps) => {
         />
       )}
       <ScrollToTopButton />
-      <StyledPadding />
     </MeRecentSearchContainer>
   );
 };

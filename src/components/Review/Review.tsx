@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { useDispatch } from 'react-redux';
-import { reviewApi, useGetReviewListQuery } from '@/api/reviewApi';
+import { useSelector, useDispatch } from 'react-redux';
+import { reviewApi } from '@/api/reviewApi';
 import { clearReview } from '@/store/stadiumReview';
+import { RootState } from '@/store/store';
 import useInfinityScroll from '@/hooks/useInfinityScroll';
-import Loading from '../common/Loading/Loading';
 import ReviewHeader from './ReviewHeader';
 import ReviewSubmit from './ReviewSubmit';
 import ReviewList from './ReviewList';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store/store';
 
 interface ReviewProps {
   stadiumId: string;
 }
 
 const Review = ({ stadiumId }: ReviewProps) => {
-  // const { isLoading, error } = useGetReviewListQuery({ id: stadiumId });
   const [trigger] = reviewApi.endpoints.getReviewList.useLazyQuery();
   const { isLast, nextPage } = useSelector((state: RootState) => ({
     isLast: state.stadiumReview.isLast,

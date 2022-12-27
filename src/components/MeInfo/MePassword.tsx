@@ -1,11 +1,11 @@
+import React, { SetStateAction, useState } from 'react';
+import styled from '@emotion/styled';
+import { useSelector } from 'react-redux';
 import { useChangePasswordRequestMutation } from '@/api/authApi';
+import { RootState, useAppDispatch } from '@/store/store';
+import { changePassword } from '@/store/authSlice';
 import palette from '@/lib/styles/palette';
 import sw from '@/lib/utils/customSweetAlert';
-import { changePassword } from '@/store/authSlice';
-import { RootState, useAppDispatch } from '@/store/store';
-import styled from '@emotion/styled';
-import React, { SetStateAction, useState } from 'react';
-import { useSelector } from 'react-redux';
 import Button from '../common/atoms/Button';
 import Label from '../common/atoms/Label';
 import { checkPasswordConfirmValidation, checkPasswordValidation, checkPrePasswordValidation } from './formValidation';

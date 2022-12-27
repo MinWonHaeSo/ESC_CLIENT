@@ -1,6 +1,6 @@
-import palette from '@/lib/styles/palette';
-import styled from '@emotion/styled';
 import React from 'react';
+import styled from '@emotion/styled';
+import palette from '@/lib/styles/palette';
 
 type SliderCurrentInfoProps = {
   currentIndex: number;
