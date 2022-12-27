@@ -23,10 +23,10 @@ const ReservationStepTwo = ({}: ReservationStepTwoProps) => {
   return (
     <ReservationContainer>
       <ScrollToTop />
-      <TitleContainer>
+      <TitleBlock>
         <ReservationPrevStepButton />
         <Title fontSize={typo.large}>체육관 예약</Title>
-      </TitleContainer>
+      </TitleBlock>
       <SubTitle>대여 가능 상품</SubTitle>
       <ReservationRentalList rentalItems={rentalItems} />
       <RentalItemTotalPrice>
@@ -45,7 +45,7 @@ const ReservationContainer = styled.div`
   margin-top: 1rem;
 `;
 
-const TitleContainer = styled.div`
+const TitleBlock = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;

@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import React from 'react';
 import Title from '../common/atoms/Title';
 import Responsive from '../common/Responsive';
+import PrevButton from './PrevButton';
 import ReservationUserInfoList from './ReservationUserInfoList';
 
 const data = [
@@ -39,14 +40,13 @@ interface ReservationUserInfoProps {}
 const ReservationUserInfo = (props: ReservationUserInfoProps) => {
   return (
     <Container>
-      <TitleWrapper>
-        <Title fontSize={`${typo.xLarge}`} marginTop="20px">
-          예약 유저
-        </Title>
+      <TitleBlock>
+        <PrevButton />
+        <Title fontSize={`${typo.xLarge}`}>예약 유저</Title>
         <TotalCountBlock>
           <span>0 </span>명
         </TotalCountBlock>
-      </TitleWrapper>
+      </TitleBlock>
       <ReservationUserInfoList list={data} />
     </Container>
   );
@@ -54,16 +54,19 @@ const ReservationUserInfo = (props: ReservationUserInfoProps) => {
 
 const Container = styled.div`
   ${Responsive.ResponsiveWrapper}
+  margin-top: 1rem;
 `;
 
-const TitleWrapper = styled.div`
+const TitleBlock = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
+  gap: 1rem;
   margin-bottom: 8px;
 `;
 
 const TotalCountBlock = styled.div`
+  flex-grow: 3;
+  text-align: end;
   margin-right: 8px;
   font-weight: 600;
   span {
