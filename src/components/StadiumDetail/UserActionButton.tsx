@@ -43,8 +43,6 @@ const UserActionButton = ({ post, stadiumId }: UserActionButtonProps) => {
     });
   };
 
-  console.log(post);
-
   return (
     <ButtonActionContainer>
       {userId === String(post.memberId) ? (

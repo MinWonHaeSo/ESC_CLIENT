@@ -27,7 +27,6 @@ const EditAddress = ({ address, detailAddress }: EditAddressProps) => {
     // 주소 string -> 위도 경도 변환
     const geoLocation = (await kakaoService.getGeoCode(data.address)) as GeoLocationType;
 
-    console.log(geoLocation);
     dispatch(changeAddress({ address: data.address, lat: geoLocation.lat, lnt: geoLocation.lnt }));
     setOpenPostcode(false);
   };

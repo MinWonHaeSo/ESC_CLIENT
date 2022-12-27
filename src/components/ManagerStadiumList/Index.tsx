@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { stadiumApi } from '@/api/stadiumApi';
+import { stadiumApi, useRemoveStadiumMutation } from '@/api/stadiumApi';
 import { clearPaging } from '@/store/pagingSlice';
 import { RootState } from '@/store/store';
 import useInfinityScroll from '@/hooks/useInfinityScroll';
@@ -13,11 +13,13 @@ import PATH from '@/constants/path';
 import Title from '../common/atoms/Title';
 import Responsive from '../common/Responsive';
 import StadiumList from './StadiumList';
+import sw from '@/lib/utils/customSweetAlert';
 
 interface ManagerStadiumListProps {}
 
 const ManagerStadiumList = (props: ManagerStadiumListProps) => {
   const [trigger] = stadiumApi.endpoints.getStadiumManagerList.useLazyQuery();
+  const [stadiumRemoveAPI] = useRemoveStadiumMutation();
   const { content, isLast, nextPage, totalElements } = useSelector((state: RootState) => state.paging);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -39,7 +41,13 @@ const ManagerStadiumList = (props: ManagerStadiumListProps) => {
     });
   };
 
-  const handleRemoveStadium = (id: string) => {};
+  const handleRemoveStadium = async (id: string) => {
+    try {
+      const response = await stadiumRemoveAPI(id);
+    } catch {
+      sw.toast.error('다시 시도해 주세요.');
+    }
+  };
 
   useEffect(() => {
     return () => {
