@@ -11,6 +11,7 @@ import palette from '@/lib/styles/palette';
 import media from '@/lib/styles/media';
 import PATH from '@/constants/path';
 import Title from '../common/atoms/Title';
+import Loading from '../common/Loading/Loading';
 import Responsive from '../common/Responsive';
 import StadiumList from './StadiumList';
 import sw from '@/lib/utils/customSweetAlert';
@@ -19,7 +20,7 @@ interface ManagerStadiumListProps {}
 
 const ManagerStadiumList = (props: ManagerStadiumListProps) => {
   const [trigger] = stadiumApi.endpoints.getStadiumManagerList.useLazyQuery();
-  const [stadiumRemoveAPI] = useRemoveStadiumMutation();
+  const [stadiumRemoveAPI, { isLoading }] = useRemoveStadiumMutation();
   const { content, isLast, nextPage, totalElements } = useSelector((state: RootState) => state.paging);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -44,6 +45,7 @@ const ManagerStadiumList = (props: ManagerStadiumListProps) => {
   const handleRemoveStadium = async (id: string) => {
     try {
       const response = await stadiumRemoveAPI(id);
+      sw.toast.success('체육관 삭제 성공');
     } catch {
       sw.toast.error('다시 시도해 주세요.');
     }
@@ -57,6 +59,7 @@ const ManagerStadiumList = (props: ManagerStadiumListProps) => {
 
   return (
     <Container>
+      {isLoading ? <Loading /> : null}
       <TitleBlock>
         <Title fontSize={`${typo.xLarge}`} marginTop="20px">
           등록한 체육관

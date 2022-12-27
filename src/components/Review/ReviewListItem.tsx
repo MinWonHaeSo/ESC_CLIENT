@@ -38,7 +38,12 @@ const ReviewListItem = ({ content, stadiumId }: ReviewListItemProps) => {
     <ReviewListItemContainer>
       {fetchLoading || deleteLoading ? <Loading /> : null}
       <div className="user-name-container">
-        <img src={content.member.imgUrl} alt="유저프로필" width="50px" height="50px" />
+        <img
+          src={content.member.imgUrl ? content.member.imgUrl : 'https://via.placeholder.com/50x50'}
+          alt="유저프로필"
+          width="50px"
+          height="50px"
+        />
         <div>
           <span className="user-name">{content.member.nickname}</span>
         </div>
