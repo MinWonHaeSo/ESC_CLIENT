@@ -1,4 +1,4 @@
-import MeRecentSearch from '@/components/MeRecentSearch/MeRecentSearch';
+import MeRecentSearch from '@/components/MeRecentSearch/Index';
 
 const MeRecentSearchPage = () => {
   return <MeRecentSearch />;

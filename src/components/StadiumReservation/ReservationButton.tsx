@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 import { useDispatch, useSelector } from 'react-redux';
-import palette from '@/lib/styles/palette';
 import { nextStep } from '@/store/stadiumReservationSlice';
 import { RootState } from '@/store/store';
-import Button from '../common/atoms/Button';
 import sw from '@/lib/utils/customSweetAlert';
+import palette from '@/lib/styles/palette';
+import Button from '../common/atoms/Button';
 
 interface ReservationButtonProps {}
 

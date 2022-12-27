@@ -1,13 +1,13 @@
+import { useEffect } from 'react';
+import jwt_decode from 'jwt-decode';
+import { useNavigate, useParams } from 'react-router';
 import { useSocialLoginMutation } from '@/api/authApi';
-import { setCookie } from '@/lib/utils/cookies';
 import { setSocialLogin } from '@/store/authSlice';
 import { useAppDispatch } from '@/store/store';
-import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router';
-import Loading from '../common/Loading/Loading';
-import jwt_decode from 'jwt-decode';
+import { setCookie } from '@/lib/utils/cookies';
 import { setAuthToken } from '@/lib/utils/token';
 import PATH from '@/constants/path';
+import Loading from '../common/Loading/Loading';
 
 interface DecodedUserInfo {
   email: string;

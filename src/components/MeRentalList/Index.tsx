@@ -1,13 +1,12 @@
+import React, { useState } from 'react';
+import styled from '@emotion/styled';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
-import { RootState } from '@/store/store';
-import styled from '@emotion/styled';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import Title from '../common/atoms/Title';
-import Responsive from '../common/Responsive';
 import ScrollToTopButton from '../common/ScrollToTopButton';
-import StyledPadding from '../common/StyledPadding';
+import Responsive from '../common/Responsive';
+import Title from '../common/atoms/Title';
 import MeRentalStadium from './MeRentalStadium';
 
 interface MeRentalListProps {}
@@ -43,7 +42,6 @@ const MeRentalList = ({}: MeRentalListProps) => {
         </SortFilter>
       </TitleWrapper>
       <MeRentalStadium content={sort === 'up' ? content : [...content].reverse()} />
-      <StyledPadding />
       <SortUl show={show}>
         <li title={'up'} onClick={handleSortClick}>
           <i className="fa-solid fa-arrow-up" />

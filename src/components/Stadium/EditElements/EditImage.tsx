@@ -1,11 +1,11 @@
 import React, { useRef } from 'react';
-import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
-import { addImages, imagesType, removeImage } from '@/store/stadiumWriteSlice';
 import { useDispatch } from 'react-redux';
-import EditImageList from './EditImageList';
+import { addImages, imagesType, removeImage } from '@/store/stadiumWriteSlice';
 import { contextFileType } from '@/context/OriginFilesContext';
 import fileObjectToIdUrlFile from '@/lib/utils/fileObjectToIdUrlFile';
+import palette from '@/lib/styles/palette';
+import EditImageList from './EditImageList';
 
 interface EditImageProps {
   images: imagesType[];

@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
-import { useCancelReservationMutation } from '@/api/reservationApi';
 import { RentalStadium, stadiumApi, useGetRentalStadiumListQuery } from '@/api/stadiumApi';
+import { useCancelReservationMutation } from '@/api/reservationApi';
+import { RootState, useAppDispatch } from '@/store/store';
+import { changeStatus, clearPaging } from '@/store/pagingSlice';
 import useInfinityScroll from '@/hooks/useInfinityScroll';
 import media from '@/lib/styles/media';
-import { RootState, useAppDispatch } from '@/store/store';
-import EmptyItemNotification from '../common/EmptyItemNotification';
-import Loading from '../common/Loading/Loading';
-import { changeStatus, clearPaging } from '../../store/pagingSlice';
-import MeRentalStadiumItem from './MeRentalStadiumItem';
-import PagingSpinner from '../common/Loading/PagingSpinner';
 import sw from '@/lib/utils/customSweetAlert';
+import EmptyItemNotification from '../common/EmptyItemNotification';
+import PagingSpinner from '../common/Loading/PagingSpinner';
+import Loading from '../common/Loading/Loading';
+import MeRentalStadiumItem from './MeRentalStadiumItem';
 
 interface MeRentalStadiumProps {
   content: RentalStadium[];

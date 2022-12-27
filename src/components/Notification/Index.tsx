@@ -1,15 +1,15 @@
+import { useState } from 'react';
+import styled from '@emotion/styled';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
-import { RootState, useAppDispatch } from '@/store/store';
-import styled from '@emotion/styled';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import Title from '../common/atoms/Title';
-import Responsive from '../common/Responsive';
 import ScrollToTopButton from '../common/ScrollToTopButton';
+import Responsive from '../common/Responsive';
+import Title from '../common/atoms/Title';
+import NotificationUnread from './NotificationUnread';
 import NotificationRead from './NotificationRead';
 import NotificationTab from './NotificationTab';
-import NotificationUnread from './NotificationUnread';
 
 export type TabType = 'read' | 'unRead';
 

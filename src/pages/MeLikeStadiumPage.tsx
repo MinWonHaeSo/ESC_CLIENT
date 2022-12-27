@@ -1,4 +1,4 @@
-import MeLikeStadium from '@/components/MeLikeStadium/MeLikeStadium';
+import MeLikeStadium from '@/components/MeLikeStadium/Index';
 
 const MeLikeStadiumPage = () => {
   return <MeLikeStadium />;

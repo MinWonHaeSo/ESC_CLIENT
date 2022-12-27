@@ -1,5 +1,5 @@
 import React from 'react';
-import ReservationUserInfo from '@/components/ReservationUserInfo/ReservationUserInfo';
+import ReservationUserInfo from '@/components/ReservationUserInfo/Index';
 
 interface ReservationUserInfoPageProps {}
 

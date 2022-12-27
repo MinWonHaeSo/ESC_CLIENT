@@ -1,14 +1,14 @@
-import { RootState } from '@/store/store';
 import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import palette from '@/lib/styles/palette';
+import { RootState } from '@/store/store';
 import { typo } from '@/lib/styles/typo';
-import LoginForm from './LoginForm';
-import SocialLogin from './SocialLogin';
-import TabMenu from '../common/TabMenu';
-import Responsive from '../common/Responsive';
+import palette from '@/lib/styles/palette';
 import PATH from '@/constants/path';
+import Responsive from '../common/Responsive';
+import TabMenu from '../common/TabMenu';
+import SocialLogin from './SocialLogin';
+import LoginForm from './LoginForm';
 
 interface LoginProps {}
 

@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
-import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
 import { stadiumWriteState } from '@/store/stadiumWriteSlice';
-import { typo } from '@/lib/styles/typo';
-import { useLocation } from 'react-router';
 import { addAccessStadium } from '@/lib/utils/accessStadium';
 import formatter from '@/lib/utils/formatter';
+import { typo } from '@/lib/styles/typo';
+import palette from '@/lib/styles/palette';
 
 interface InfoProps {
   info: stadiumWriteState;

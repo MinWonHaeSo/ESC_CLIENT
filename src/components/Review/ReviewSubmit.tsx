@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '@/store/store';
 import { changeComment, clearReview } from '@/store/stadiumReview';
+import { RootState } from '@/store/store';
 import { useAddReviewMutation } from '@/api/reviewApi';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';

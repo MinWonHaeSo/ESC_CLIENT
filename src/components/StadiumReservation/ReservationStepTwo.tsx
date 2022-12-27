@@ -1,15 +1,15 @@
 import styled from '@emotion/styled';
-import palette from '@/lib/styles/palette';
-import { typo } from '@/lib/styles/typo';
-import Title from '../common/atoms/Title';
-import Responsive from '../common/Responsive';
-import ReservationButton from './ReservationButton';
-import ReservationPrevStepButton from './ReservationPrevStepButton';
-import ReservationRentalList from './ReservationStepTwo/ReservationRentalList';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
-import formatter from '@/lib/utils/formatter';
 import { ScrollToTop } from '@/hooks/useScollToTop';
+import formatter from '@/lib/utils/formatter';
+import { typo } from '@/lib/styles/typo';
+import palette from '@/lib/styles/palette';
+import Responsive from '../common/Responsive';
+import Title from '../common/atoms/Title';
+import ReservationPrevStepButton from './ReservationPrevStepButton';
+import ReservationRentalList from './ReservationStepTwo/ReservationRentalList';
+import ReservationButton from './ReservationButton';
 
 interface ReservationStepTwoProps {}
 

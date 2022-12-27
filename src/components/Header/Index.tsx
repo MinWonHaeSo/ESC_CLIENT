@@ -1,36 +1,31 @@
-import { useCallback, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useCallback, useState } from 'react';
 import styled from '@emotion/styled';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { setCredentials, sustainLogin } from '@/store/authSlice';
+import { RootState, useAppDispatch } from '@/store/store';
+import { useRefetchUserInfoMutation } from '@/api/authApi';
 import { ReactComponent as NavbarLogo } from '@/assets/esc-logo.svg';
 import Responsive from '@/components/common/Responsive';
-import Navbar from './Navbar';
+import usePathHeaderOnlyLogo from '@/hooks/usePathHeaderOnlyLogo';
+import { getAuthToken } from '@/lib/utils/token';
+import { getCookie } from '@/lib/utils/cookies';
 import palette from '@/lib/styles/palette';
 import PATH from '@/constants/path';
-import usePathHeaderOnlyLogo from '@/hooks/usePathHeaderOnlyLogo';
 import { useGoBack } from '@/hooks/useGoBack';
-import { useSelector } from 'react-redux';
-import { RootState, useAppDispatch } from '@/store/store';
-import { useEffect } from 'react';
-import { setCredentials, sustainLogin } from '@/store/authSlice';
-import { useRefetchUserInfoMutation } from '@/api/authApi';
-import { getAuthToken } from '@/lib/utils/token';
 import Loading from '../common/Loading/Loading';
-import { getCookie } from '@/lib/utils/cookies';
+import Navbar from './Navbar';
 
 interface HomeProps {}
 
 const Header = (props: HomeProps) => {
-  const loggedIn = useSelector((state: RootState) => state.auth.loggedIn);
-
   const [isActive, setIsActive] = useState(false);
+  const loggedIn = useSelector((state: RootState) => state.auth.loggedIn);
+  const [refetchUserInfoAPI, { isLoading }] = useRefetchUserInfoMutation();
   const checkHeader = usePathHeaderOnlyLogo();
-
+  const dispatch = useAppDispatch();
   const goBack = useGoBack();
   const navigate = useNavigate();
-
-  const [refetchUserInfoAPI, { isLoading }] = useRefetchUserInfoMutation();
-
-  const dispatch = useAppDispatch();
 
   const handleChangeIsActive = () => {
     setIsActive(!isActive);

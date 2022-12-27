@@ -1,3 +1,6 @@
+import { useState, useRef, useCallback } from 'react';
+import styled from '@emotion/styled';
+import { useNavigate } from 'react-router';
 import { useChangeUserInfoMutation } from '@/api/authApi';
 import { userFileUpload } from '@/api/fileUpload';
 import MILLI_SECONDS from '@/constants/milliSeconds';
@@ -7,10 +10,6 @@ import { typo } from '@/lib/styles/typo';
 import sw from '@/lib/utils/customSweetAlert';
 import { changeNickname, uploadImage } from '@/store/authSlice';
 import { useAppDispatch } from '@/store/store';
-import styled from '@emotion/styled';
-import { useCallback } from 'react';
-import { useState, useRef } from 'react';
-import { useNavigate } from 'react-router';
 import Button from '../common/atoms/Button';
 import Title from '../common/atoms/Title';
 import Loading from '../common/Loading/Loading';

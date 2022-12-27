@@ -1,7 +1,7 @@
+import { useEffect, useState } from 'react';
+import styled from '@emotion/styled';
 import { useAppDispatch } from '@/store/store';
 import { setName } from '@/store/userSlice';
-import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
 import Input from '../../common/atoms/Input';
 import Label from '../../common/atoms/Label';
 import RequiredMessage from '../RequiredMessage';

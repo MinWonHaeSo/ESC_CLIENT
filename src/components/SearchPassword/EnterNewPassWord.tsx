@@ -1,19 +1,19 @@
+import React, { useState } from 'react';
+import styled from '@emotion/styled';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 import { useChangePasswordRequestMutation } from '@/api/authApi';
 import MILLI_SECONDS from '@/constants/milliSeconds';
 import PATH from '@/constants/path';
+import sw from '@/lib/utils/customSweetAlert';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
-import sw from '@/lib/utils/customSweetAlert';
 import { changeNewPassword } from '@/store/searchPassWordSlice';
 import { RootState, useAppDispatch } from '@/store/store';
-import styled from '@emotion/styled';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
+import Responsive from '../common/Responsive';
 import Button from '../common/atoms/Button';
 import Input from '../common/atoms/Input';
 import Title from '../common/atoms/Title';
-import Responsive from '../common/Responsive';
 import RequiredMessage from '../SignUp/RequiredMessage';
 import { checkPasswordConfirmValidation, checkPasswordValidation } from './formValidation';
 

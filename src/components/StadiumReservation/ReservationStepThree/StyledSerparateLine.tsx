@@ -1,5 +1,5 @@
-import palette from '@/lib/styles/palette';
 import styled from '@emotion/styled';
+import palette from '@/lib/styles/palette';
 
 const StyledSeparateLine = () => {
   return <Line></Line>;
