@@ -43,7 +43,7 @@ const Detail = ({ stadiumId }: DetailProps) => {
       </SliderWrapper>
       <Tag tags={data.tags} />
       <Info info={data} />
-      <UserActionButton post={data} stadiumId={stadiumId} />
+      <UserActionButton post={data} stadiumId={stadiumId} stadiumLike={data.like} />
     </div>
   );
 };
