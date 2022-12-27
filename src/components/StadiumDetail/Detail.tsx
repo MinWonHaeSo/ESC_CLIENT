@@ -7,8 +7,8 @@ import { typo } from '@/lib/styles/typo';
 import PATH from '@/constants/path';
 import Loading from '../common/Loading/Loading';
 import Title from '../common/atoms/Title';
-import Slider from '../Slide/Slider';
-import Tag from '../Tag/Tag';
+import Slide from '../Slide/Index';
+import Tag from '../Tag/Index';
 import UserActionButton from './UserActionButton';
 import Info from './Info';
 
@@ -39,7 +39,7 @@ const Detail = ({ stadiumId }: DetailProps) => {
     <div>
       <Title fontSize={`${typo.xLarge}`}>{data.name}</Title>
       <SliderWrapper>
-        <Slider images={data.imgs} />
+        <Slide images={data.imgs} />
       </SliderWrapper>
       <Tag tags={data.tags} />
       <Info info={data} />

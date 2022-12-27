@@ -1,4 +1,4 @@
-import SignOut from '@/components/SignOut/SignOut';
+import SignOut from '@/components/SignOut/Index';
 
 const SignOutPage = () => {
   return <SignOut />;

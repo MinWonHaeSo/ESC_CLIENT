@@ -155,7 +155,7 @@ export const stadiumApi = baseApi.injectEndpoints({
       }),
     }),
     updateStadiumInfo: builder.mutation({
-      query: ({ stadium, id }: { stadium: stadiumWriteState; id: number }) => ({
+      query: ({ stadium, id }: { stadium: stadiumWriteState; id: string }) => ({
         url: `/stadiums/${id}/info`,
         method: 'PATCH',
         body: stadium,

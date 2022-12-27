@@ -5,11 +5,11 @@ import SliderCurrentInfo from './SliderCurrentInfo';
 import SliderList from './SliderList';
 import SliderBtn from './SliderBtn';
 
-interface SliderProps {
+interface SlideProps {
   images: ImagesType[] | undefined;
 }
 
-const Slider = ({ images }: SliderProps) => {
+const Slide = ({ images }: SlideProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   if (!images) {
@@ -47,4 +47,4 @@ const SliderContainer = styled.div`
   border-radius: 15px;
 `;
 
-export default Slider;
+export default Slide;

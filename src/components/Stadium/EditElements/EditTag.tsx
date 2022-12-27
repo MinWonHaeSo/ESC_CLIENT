@@ -6,7 +6,7 @@ import useThrottleRef from '@/hooks/useThrottleRef';
 import { typo } from '@/lib/styles/typo';
 import palette from '@/lib/styles/palette';
 import Input from '@/components/common/atoms/Input';
-import Tag from '@/components/Tag/Tag';
+import Tag from '@/components/Tag/Index';
 
 interface EditTagProps {
   tags: string[];
