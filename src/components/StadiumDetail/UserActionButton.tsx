@@ -48,7 +48,7 @@ const UserActionButton = ({ post, stadiumId, stadiumLike, refetch }: UserActionB
 
   return (
     <ButtonActionContainer>
-      {userId === String(post.memberId) ? (
+      {userId == String(post.memberId) ? (
         <button className="btn btn-action" onClick={handleGotoEdit}>
           수정하기
         </button>
