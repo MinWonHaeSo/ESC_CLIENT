@@ -41,6 +41,7 @@ const MeLikeStadium = ({}: MeLikeStadiumProps) => {
     };
   }, [dispatch]);
 
+
   if (error) {
     sw.toast.error('잘못된 요청입니다.');
     console.error('잘못된 요청입니다.');

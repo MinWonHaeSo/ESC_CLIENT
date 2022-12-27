@@ -24,6 +24,7 @@ import StadiumReservationPage from './pages/StadiumReservationPage';
 import { ScrollToTop } from './hooks/useScollToTop';
 import ModalProvider from './context/ModalContext';
 import ManagerStadiumListPage from './pages/ManagerStadiumListPage';
+import ReservationUserInfoPage from './pages/ReservationUserInfoPage';
 
 const App = () => {
   return (
@@ -47,6 +48,7 @@ const App = () => {
                   <Route path={PATH.SIGN_OUT} element={<SignOutPage />} />
                   <Route path={`${PATH.STADIUM_DETAIL}/:id`} element={<StadiumDetailPage />} />
                   <Route path={PATH.STADIUM_RENTAL} element={<StadiumReservationPage />} />
+                  <Route path={PATH.STADIUM_RESERVATION_USER} element={<ReservationUserInfoPage />} />
                   <Route path={PATH.ME_RENTAL_LIST} element={<MeRentalListPage />} />
                   <Route path={PATH.ME_RECENT_SEARCH_LIST} element={<MeRecentSearchPage />} />
                   <Route path={PATH.ME_LIKE_STADIUM_LIST} element={<MeLikeStadiumPage />} />

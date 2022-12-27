@@ -2,9 +2,9 @@ import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import { RentalItemsToggleType } from '@/store/stadiumReservationSlice';
 import styled from '@emotion/styled';
-import ReservationRentalItem from '../ReservationRentalItem';
-import AccordionToggleButton from './ToggleButton';
-import StyledSeparateLine from './StyledSerparateLine';
+import ReservationRentalItem from '../ReservationStepThree/ReservationRentalItem';
+import AccordionToggleButton from '../ReservationStepThree/ToggleButton';
+import StyledSeparateLine from '../ReservationStepThree/StyledSerparateLine';
 import { useState } from 'react';
 
 interface ReservationRentalItemListProps {

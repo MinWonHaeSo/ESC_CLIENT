@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import styled from '@emotion/styled';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { stadiumApi } from '@/api/stadiumApi';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
@@ -12,16 +12,18 @@ import useInfinityScroll from '@/hooks/useInfinityScroll';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/store/store';
 import { clearPaging } from '@/store/pagingSlice';
+import PATH from '@/constants/path';
 import StadiumInfoModal from './StadiumInfoModal';
 
 interface ManagerStadiumListProps {}
 
 const ManagerStadiumList = (props: ManagerStadiumListProps) => {
-  const [trigger, { isLoading }] = stadiumApi.endpoints.getStadiumManagerList.useLazyQuery();
+  const [trigger] = stadiumApi.endpoints.getStadiumManagerList.useLazyQuery();
   const { content, isLast, nextPage } = useSelector((state: RootState) => state.paging);
   const openModal = useContext(modalContext)?.openModal;
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const fetchNextPage = () => {
     if (isLast) return;
@@ -32,12 +34,12 @@ const ManagerStadiumList = (props: ManagerStadiumListProps) => {
 
   const $observerTarget = useInfinityScroll(fetchNextPage);
 
-  const handleDetailModalOpen = (id: number) => {
-    openModal?.(<StadiumInfoModal id={id} />);
+
+  const handleDetailModalOpen = (id: string) => {
+    navigate(PATH.STADIUM_RESERVATION_USER);
   };
 
-  const handleRemoveStadium = (id: number) => {
-    // remove staidum API
+  const handleRemoveStadium = (id: string) => {
   };
 
   useEffect(() => {
@@ -52,13 +54,14 @@ const ManagerStadiumList = (props: ManagerStadiumListProps) => {
         <Title fontSize={`${typo.xLarge}`} marginTop="20px">
           등록한 체육관
         </Title>
-        <TotalNotification>
+        <TotalCountBlock>
           <span>{content.length} </span>개
-        </TotalNotification>
+        </TotalCountBlock>
       </TitleWrapper>
       {content.map(stadium => (
+        <CardStadiumWrapper key={stadium.stadiumId}>
+          <CardStadium stadium={stadium} currentLocation={location.pathname} />
         <CardStadiumWrapper>
-          <CardStadium key={stadium.name} stadium={stadium} currentLocation={location.pathname} />
           <ManagerButtonContainer>
             <button className="btn btn-detail" onClick={() => handleDetailModalOpen(stadium.stadiumId)}>
               <span>상세정보</span>
@@ -85,7 +88,7 @@ const TitleWrapper = styled.div`
   margin-bottom: 8px;
 `;
 
-const TotalNotification = styled.div`
+const TotalCountBlock = styled.div`
   margin-right: 8px;
   font-weight: 600;
   span {

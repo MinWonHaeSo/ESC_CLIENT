@@ -81,14 +81,21 @@ const EditRentalItemList = ({ rentalItem, onRemoveRental, onAddImages }: EditRen
 
 const RentalItemListContainer = styled.div`
   display: flex;
+  padding: 1rem;
   flex-direction: column;
   gap: 1rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid ${palette.grey[400]};
+  border: 1px solid ${palette.grey[100]};
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 
   .rental-list-content {
     display: flex;
     gap: 1rem;
+
+    img {
+      border: 1px solid ${palette.grey[100]};
+      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    }
   }
 
   .rental-item-remove-btn {
@@ -113,6 +120,7 @@ const RentalItemListContainer = styled.div`
     gap: 0.5rem;
 
     input {
+      width: 100%;
       padding: 0.2rem 0.5rem;
       border-radius: 10px;
       border: 1px solid ${palette.grey[400]};

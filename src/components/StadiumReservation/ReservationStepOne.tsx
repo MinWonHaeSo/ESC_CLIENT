@@ -4,11 +4,11 @@ import { typo } from '@/lib/styles/typo';
 import palette from '@/lib/styles/palette';
 import Title from '../common/atoms/Title';
 import Responsive from '../common/Responsive';
-import ReservationPerson from './ReservationPerson';
-import ReservationDate from './ReservationDate';
+import ReservationPerson from './ReservationStepOne/ReservationPerson';
+import ReservationDate from './ReservationStepOne/ReservationDate';
 import ReservationButton from './ReservationButton';
-import ReservationAccordion from './ReservationAccordion';
-import TimeSelectList from './TImeSelectList';
+import ReservationAccordion from './ReservationStepOne/ReservationAccordion';
+import TimeSelectList from './ReservationStepOne/TImeSelectList';
 import { ScrollToTop } from '@/hooks/useScollToTop';
 
 interface ReservationStepOneProps {
