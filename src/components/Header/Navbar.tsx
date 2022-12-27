@@ -72,7 +72,7 @@ const Navbar = ({ isActive, onChangeIsActive }: NavbarProps) => {
           </div>
           <span>{nickname ? nickname : 'Welcome'}</span>
         </UserProfile>
-        {loggedIn ? <NotificationButton onListClick={handleListClick} /> : null}
+        {loggedIn ? <NotificationButton onListClick={handleListClick} /> : <SNullNotificationBlock />}
         <NavList>
           {HEADER_NAV[loginType].map(nav => (
             <li aria-label="header navigation bar" role="button" key={nav.id} onClick={handleListClick}>
@@ -122,6 +122,11 @@ const NavbarMenu = styled.div<IsActiveProps>`
     left:0;
     box-shadow: 2px 0px 14px rgb(197 197 197);
     `}
+`;
+
+const SNullNotificationBlock = styled.div`
+  margin: 1rem 1rem 3rem 0;
+  padding: 0.2rem 0.6rem;
 `;
 
 const NavList = styled.ul`
