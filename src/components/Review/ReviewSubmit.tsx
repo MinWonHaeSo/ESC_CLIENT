@@ -6,6 +6,7 @@ import { RootState } from '@/store/store';
 import { useAddReviewMutation } from '@/api/reviewApi';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
+import sw from '@/lib/utils/customSweetAlert';
 
 interface ReviewSubmitProps {
   stadiumId: string;
@@ -17,8 +18,12 @@ const ReviewSubmit = ({ stadiumId }: ReviewSubmitProps) => {
   const dispatch = useDispatch();
 
   const handleSumbitReview = async () => {
-    const response = await addReviewAPI({ id: stadiumId, comment: review.comment, star: review.star });
-    dispatch(clearReview());
+    try {
+      const response = await addReviewAPI({ id: stadiumId, comment: review.comment, star: review.star }).unwrap();
+      dispatch(clearReview());
+    } catch {
+      sw.toast.error('권한이 없습니다.');
+    }
   };
 
   const handleChangeReviewComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

@@ -36,7 +36,7 @@ const ManagerStadiumList = (props: ManagerStadiumListProps) => {
   const handleDetailModalOpen = (id: string) => {
     navigate(PATH.STADIUM_RESERVATION_USER, {
       state: {
-        id: '100',
+        id,
       },
     });
   };
