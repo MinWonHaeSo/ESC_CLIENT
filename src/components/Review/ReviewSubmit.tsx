@@ -20,10 +20,10 @@ const ReviewSubmit = ({ stadiumId }: ReviewSubmitProps) => {
   const handleSumbitReview = async () => {
     try {
       const response = await addReviewAPI({ id: stadiumId, comment: review.comment, star: review.star }).unwrap();
+      dispatch(clearReview());
     } catch {
       sw.toast.error('권한이 없습니다.');
     }
-    dispatch(clearReview());
   };
 
   const handleChangeReviewComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
