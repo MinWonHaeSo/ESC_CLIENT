@@ -1,20 +1,13 @@
 import { PageType } from './../types/pageType';
 import { baseApi } from '@/api/baseApi';
-
-interface MemberType {
-  id: string;
-  email: string;
-  imgUrl: string;
-  name: string;
-  nickname: string;
-}
+import { BaseMemberType } from '@/types/memberType';
 
 export interface ContentType {
   id: string;
   star: number;
   comment: string;
   createdAt: string;
-  member: MemberType;
+  member: BaseMemberType;
 }
 
 interface GetReviewResponse extends PageType {

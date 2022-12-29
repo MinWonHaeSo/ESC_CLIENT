@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react';
 import styled from '@emotion/styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearMarkerInfo, clickMarker } from '@/store/stadiumMarkerSlice';
-import { useGetStadiumListQuery } from '@/api/stadiumApi';
+import { SearchStadiumContentType, useGetStadiumListQuery } from '@/api/stadiumApi';
 import { RootState } from '@/store/store';
 import MarkerStadiumInfo from './MarkerStadiumInfo';
 import StadiumSearch from './StadiumSearch';
@@ -18,7 +18,7 @@ const MainBasicUser = ({ currentLocation }: MainBasicUserProps) => {
   const dispatch = useDispatch();
 
   const handleClickMarker = useMemo(
-    () => (el: any) => {
+    () => (el: SearchStadiumContentType) => {
       dispatch(clickMarker(el));
     },
     [dispatch],

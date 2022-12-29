@@ -1,17 +1,7 @@
-import { UserType } from '@/types/userType';
+import { BaseUserType, EmailType } from '@/types/userType';
 import { baseApi } from './baseApi';
 
-export interface User {
-  key: string;
-  type: UserType;
-  email: string;
-  name: string;
-  password: string;
-  nickname: string;
-  image: string;
-}
-
-interface Response {
+interface EmailResponse {
   message: string;
   statusCode: number;
   error?: string;
@@ -24,36 +14,32 @@ export interface SignUpResponse {
   image: string;
 }
 
-type SignUpRequest = User;
-
-type Email = Pick<User, 'email'>;
-
 const userApi = baseApi.injectEndpoints({
   endpoints: builder => ({
-    signUp: builder.mutation<SignUpResponse, SignUpRequest>({
-      query: (userData: User) => ({
+    signUp: builder.mutation<SignUpResponse, BaseUserType>({
+      query: userData => ({
         url: `/members/signup`,
         method: 'POST',
         body: userData,
       }),
       invalidatesTags: ['User'],
     }),
-    emailDoubleCheck: builder.mutation<Response, Email>({
-      query: (email: Email) => ({
+    emailDoubleCheck: builder.mutation<EmailResponse, EmailType>({
+      query: email => ({
         url: '/members/email-dup',
         method: 'POST',
         body: email,
       }),
     }),
-    sendEmailValidateCode: builder.mutation<Response, Email>({
-      query: (email: Email) => ({
+    sendEmailValidateCode: builder.mutation<EmailResponse, EmailType>({
+      query: email => ({
         url: `/members/email-auth`,
         method: 'POST',
         body: email,
       }),
     }),
-    checkEmailValidate: builder.mutation<{ statusCode: number; error: string; message: string }, string>({
-      query: (key: string) => ({
+    checkEmailValidate: builder.mutation<EmailResponse, string>({
+      query: key => ({
         url: `/members/email-authentication`,
         method: 'POST',
         body: { key },

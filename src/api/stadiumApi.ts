@@ -1,108 +1,18 @@
 import { geoLocationType } from '@/hooks/useCurrentLocation';
-import { rentalItemType, stadiumWriteState } from '@/store/stadiumWriteSlice';
+import { stadiumWriteState } from '@/store/stadiumWriteSlice';
+import { LikeStadiumType, LocationStadiumType, PriceStadiumType, RentalStadiumType } from '@/types/stadiumType';
+import { RentalMemberType } from '@/types/memberType';
 import { PageType } from '@/types/pageType';
 import { baseApi } from './baseApi';
 
-export interface SearchStadiumContent {
+export interface SearchStadiumContentType extends PriceStadiumType, LocationStadiumType {
   stadiumId: number;
-  name: string;
-  address: string;
-  imgUrl: string;
-  likes: number;
-  tags: string[];
-  star_avg: number;
-  holidayPricePerHalfHour: number;
-  weekdayPricePerHalfHour: number;
-  lat: string;
-  lnt: string;
-}
-
-export interface SearchStadiumResponse {
-  content: SearchStadiumContent[];
-  number: number;
-  totalElements: number;
-  totalPages: number;
-}
-
-export interface ManagerListStadium {
-  id: string;
-  address: string;
-  name: string;
-  weekdayPricePerHalfHour: number;
-  holidayPricePerHalfHour: number;
-  tags: string[];
-  starAvg: number;
-  imgUrl: string;
-  lat: string;
-  lnt: string;
 }
 
 export type ImagesType = {
   imgUrl: string;
   publicId: string;
 };
-
-export interface DetailStadiumResponse {
-  id: string;
-  name: string;
-  address: string;
-  detailAddress: string;
-  memberId: string;
-  phone: string;
-  lnt: string;
-  lat: string;
-  imgs: ImagesType[];
-  imtes: rentalItemType[];
-  openTime: string;
-  closeTime: string;
-  holidayPricePerHalfHour: number;
-  weekdayPricePerHalfHour: number;
-  tags: string[];
-  likes: any;
-}
-
-export interface LikeStadium {
-  id: string;
-  stadiumId: string;
-  name: string;
-  address: string;
-  starAvg: number;
-  imgUrl: string;
-  like: boolean;
-}
-
-export interface ReservationUser {
-  name: string;
-  paymentDate: string;
-  reservationId: string;
-  reservingDate: string;
-  stadiumId: string;
-  status: ReservationStatus;
-}
-
-export interface GetReservationUserListResponse extends PageType {
-  content: ReservationUser[];
-}
-
-export interface LikeStadiumListResponse extends PageType {
-  content: LikeStadium[];
-}
-
-export type ReservationStatus = 'RESERVED' | 'EXECUTED' | 'CANCELED';
-
-export interface RentalStadium {
-  reservationId?: string;
-  stadiumId: string;
-  name: string;
-  address: string;
-  imgUrl: string;
-  starAvg: number;
-  status?: ReservationStatus;
-}
-
-interface RentalStadiumListResponse extends PageType {
-  content: RentalStadium[];
-}
 
 interface RentalStadiumItems {
   id: number;
@@ -112,20 +22,30 @@ interface RentalStadiumItems {
   count: number;
 }
 
-interface GetManagerListResponse extends PageType {
-  content: RentalStadium[];
+export interface ReservationUserType {
+  name: string;
+  paymentDate: string;
+  reservationId: string;
+  reservingDate: string;
+  stadiumId: string;
+  status: ReservationStatus;
 }
 
-export interface RentalStadiumDetail {
+export type ReservationStatus = 'RESERVED' | 'EXECUTED' | 'CANCELED';
+
+interface GetSearchStadiumResponse {
+  content: SearchStadiumContentType[];
+  number: number;
+  totalElements: number;
+  totalPages: number;
+}
+
+export interface GetRentalStadiumDetailResponse {
   reservationId: string;
   stadiumId: string;
   name: string;
-  status: 'RESERVED' | 'EXECUTED' | 'CANCELED';
-  member: {
-    id: number;
-    nickname: string;
-    email: string;
-  };
+  status: ReservationStatus;
+  member: RentalMemberType;
   reservingDate: string;
   reservingTime: string[];
   headCount: number;
@@ -134,12 +54,28 @@ export interface RentalStadiumDetail {
   items: RentalStadiumItems[];
 }
 
+export interface GetReservationUserListResponse extends PageType {
+  content: ReservationUserType[];
+}
+
+export interface LikeStadiumListResponse extends PageType {
+  content: LikeStadiumType[];
+}
+
+interface RentalStadiumListResponse extends PageType {
+  content: RentalStadiumType[];
+}
+
+interface GetManagerListResponse extends PageType {
+  content: RentalStadiumType[];
+}
+
 export const stadiumApi = baseApi.injectEndpoints({
   endpoints: builder => ({
-    searchStadium: builder.mutation<SearchStadiumResponse, string>({
+    searchStadium: builder.mutation<GetSearchStadiumResponse, string>({
       query: search => ({
         url: `/stadiums/search?searchValue=${search}`,
-        transformResponse: (response: { data: SearchStadiumResponse }) => response.data,
+        transformResponse: (response: { data: GetSearchStadiumResponse }) => response.data,
         method: 'GET',
       }),
     }),
@@ -168,7 +104,7 @@ export const stadiumApi = baseApi.injectEndpoints({
       }),
     }),
     getStadiumManagerReservationUserDetail: builder.query<
-      RentalStadiumDetail,
+      GetRentalStadiumDetailResponse,
       { stadiumId: string; reservationId: string }
     >({
       query: ({ reservationId, stadiumId }) => ({
@@ -185,37 +121,39 @@ export const stadiumApi = baseApi.injectEndpoints({
     getLikeStadiumList: builder.query<LikeStadiumListResponse, void>({
       query: () => ({
         url: `/stadiums/likelist?page=${0}&size=${5}`,
-        transformResponse: (response: { data: LikeStadium }) => response.data,
+        transformResponse: (response: { data: LikeStadiumListResponse }) => response.data,
         method: 'GET',
       }),
     }),
     getMoreLikeStadiumList: builder.query<LikeStadiumListResponse, number>({
       query: (page: number) => ({
         url: `/stadiums/likelist?page=${page}&size=${5}`,
-        transformResponse: (response: { data: LikeStadium }) => response.data,
+        transformResponse: (response: { data: LikeStadiumListResponse }) => response.data,
         method: 'GET',
       }),
     }),
     getRentalStadiumList: builder.query<RentalStadiumListResponse, void>({
       query: () => ({
         url: `/stadiums/reservations?page=${0}&size=${5}&sort=${'createdAt'},DESC`,
-        transformResponse: (response: { data: RentalStadium }) => response.data,
+        transformResponse: (response: { data: RentalStadiumListResponse }) => response.data,
         method: 'GET',
       }),
     }),
     getMoreRentalStadiumList: builder.query<RentalStadiumListResponse, number>({
       query: (page: number) => ({
         url: `/stadiums/reservations?page=${page}&size=${5}&sort=${'createdAt'},DESC`,
-        transformResponse: (response: { data: RentalStadium }) => response.data,
+        transformResponse: (response: { data: RentalStadiumListResponse }) => response.data,
         method: 'GET',
       }),
     }),
-    getRentalStadiumDetail: builder.query<RentalStadiumDetail, { reservationId: string; stadiumId: string }>({
-      query: ({ stadiumId, reservationId }) => ({
-        url: `/stadiums/${stadiumId}/reservations/${reservationId}`,
-        method: 'GET',
-      }),
-    }),
+    getRentalStadiumDetail: builder.query<GetRentalStadiumDetailResponse, { reservationId: string; stadiumId: string }>(
+      {
+        query: ({ stadiumId, reservationId }) => ({
+          url: `/stadiums/${stadiumId}/reservations/${reservationId}`,
+          method: 'GET',
+        }),
+      },
+    ),
     addStadium: builder.mutation({
       query: (stadium: stadiumWriteState) => ({
         url: '/stadiums/register',

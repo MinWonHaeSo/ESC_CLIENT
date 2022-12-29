@@ -1,14 +1,14 @@
-import { SearchStadiumContent, stadiumApi } from '../api/stadiumApi';
+import { SearchStadiumContentType, stadiumApi } from '../api/stadiumApi';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface stadiumState {
-  searchResults: SearchStadiumContent[];
-  markerInfo: SearchStadiumContent;
+  searchResults: SearchStadiumContentType[];
+  markerInfo: SearchStadiumContentType;
 }
 
 const initialState: stadiumState = {
   searchResults: [],
-  markerInfo: {} as SearchStadiumContent,
+  markerInfo: {} as SearchStadiumContentType,
 };
 
 export const stadiumMarkerSlice = createSlice({

@@ -4,11 +4,10 @@ import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import { modalContext } from '@/context/ModalContext';
 import ReservationUserInfoModal from './ReservationUserInfoModal';
-import { ReservationUser } from '@/api/stadiumApi';
-import MeRentalStadiumDetailModal from '../MeRentalList/MeRentalStadiumDetailModal';
+import { ReservationUserType } from '@/api/stadiumApi';
 
 interface ReservationUserInfoItemProps {
-  item: ReservationUser;
+  item: ReservationUserType;
   stadiumId: string;
 }
 
