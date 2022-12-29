@@ -23,8 +23,7 @@ const ReservationUserInfoItem = ({ item, stadiumId }: ReservationUserInfoItemPro
       <UserInfoWrapper>
         <span>{item.name} 님의 예약 정보</span>
       </UserInfoWrapper>
-      <ReservationTimeWrapper>예약 날자 : {item.reservingDate}</ReservationTimeWrapper>
-      <div>결제 금액 : </div>
+      <ReservationTimeWrapper>예약 날짜 : {item.reservingDate}</ReservationTimeWrapper>
     </Conatiner>
   );
 };

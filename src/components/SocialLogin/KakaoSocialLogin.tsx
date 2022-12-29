@@ -3,7 +3,7 @@ import KakaoLogo from '@/assets/KakaoLogo';
 
 const KAKAO_AUTH_URL = `${
   import.meta.env.VITE_BASE_URL
-}/oauth2/authorization/kakao?redirect_uri=http://localhost:5173/oauth/redirect`;
+}oauth2/authorization/kakao?redirect_uri=https://d3k8rrzs9omv1v.cloudfront.net/oauth/redirect`;
 
 const KakaoSocialLogin = () => {
   const getAuthToken = () => {

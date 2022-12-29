@@ -62,13 +62,13 @@ const authApi = baseApi.injectEndpoints({
     }),
     refetchUserInfo: builder.mutation<RefetchUserResponse, string>({
       query: () => ({
-        url: 'members/profiles/info',
+        url: '/members/profiles/info',
         method: 'POST',
       }),
     }),
     changeUserInfo: builder.mutation<ChangeUserInfoResponse, { nickname: string; imgUrl: string }>({
       query: userInfo => ({
-        url: 'members/profiles/info',
+        url: '/members/profiles/info',
         method: 'PATCH',
         body: { ...userInfo },
       }),
