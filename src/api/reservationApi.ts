@@ -1,5 +1,12 @@
+import { imagesType, rentalItemType } from '@/store/stadiumWriteSlice';
+import { DetailStadiumType } from '@/types/stadiumType';
 import { baseApi } from './baseApi';
-import { DetailStadiumResponse } from './stadiumApi';
+
+export interface ReservationStadiumType extends DetailStadiumType {
+  id: string;
+  imgs: imagesType[];
+  imtes: rentalItemType[];
+}
 
 export interface RentalItemsType {
   id: string;
@@ -9,7 +16,7 @@ export interface RentalItemsType {
   count: number;
 }
 
-export interface GetReservationStadiumResponse extends DetailStadiumResponse {
+export interface GetReservationStadiumResponse extends ReservationStadiumType {
   rentalItems: RentalItemsType[];
 }
 

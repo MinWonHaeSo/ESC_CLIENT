@@ -4,11 +4,10 @@ import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import { modalContext } from '@/context/ModalContext';
 import ReservationUserInfoModal from './ReservationUserInfoModal';
-import { ReservationUser } from '@/api/stadiumApi';
-import MeRentalStadiumDetailModal from '../MeRentalList/MeRentalStadiumDetailModal';
+import { ReservationUserType } from '@/api/stadiumApi';
 
 interface ReservationUserInfoItemProps {
-  item: ReservationUser;
+  item: ReservationUserType;
   stadiumId: string;
 }
 
@@ -25,7 +24,7 @@ const ReservationUserInfoItem = ({ item, stadiumId }: ReservationUserInfoItemPro
         <span>{item.name} 님의 예약 정보</span>
       </UserInfoWrapper>
       <ReservationTimeWrapper>예약 날자 : {item.reservingDate}</ReservationTimeWrapper>
-      <div>결제 금액 : 150,000 원</div>
+      <div>결제 금액 : </div>
     </Conatiner>
   );
 };

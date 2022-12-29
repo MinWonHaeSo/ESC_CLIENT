@@ -1,16 +1,16 @@
 import React, { useContext } from 'react';
 import styled from '@emotion/styled';
 import { useLocation } from 'react-router-dom';
-import { RentalStadium } from '@/api/stadiumApi';
 import { modalContext } from '@/context/ModalContext';
 import palette from '@/lib/styles/palette';
 import media from '@/lib/styles/media';
+import { RentalStadiumType } from '@/types/stadiumType';
 import Button from '../common/atoms/Button';
 import CardStadium from '../CardStadium/Index';
 import MeRentalStadiumDetailModal from './MeRentalStadiumDetailModal';
 
 interface MeRentalStadiumItemProps {
-  item: RentalStadium;
+  item: RentalStadiumType;
   onCancelClick: (reservationId: string, stadiumId: string) => void;
 }
 

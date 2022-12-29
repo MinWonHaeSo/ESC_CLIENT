@@ -1,71 +1,50 @@
-import { UserType } from '@/types/userType';
+import { EmailType, LoginParamsType, UserType } from '@/types/userType';
 import { baseApi } from './baseApi';
 
-export interface User {
-  key: string;
-  type: UserType;
-  email: string;
-  name: string;
-  password: string;
-  nickname: string;
-  image: string;
-}
-
-interface ApiResponse {
+interface BaseApiResponse {
   message: string;
   statusCode: number;
   errorMessage?: string;
 }
 
 interface LoginResponse {
-  statusCode: number;
+  id: string;
+  name: string;
+  nickname: string;
+  imgUrl: string;
+  type: UserType;
   accessToken: string;
   refreshToken: string;
-  type: UserType;
-  id: string;
-  name: string;
-  nickname: string;
-  imgUrl: string;
+  statusCode: number;
 }
 
-interface RefetchUserResponse {
-  id: string;
+interface RefetchUserResponse extends Omit<LoginResponse, 'type' | 'accessToken' | 'refreshToken'> {
   email: string;
-  name: string;
-  nickname: string;
-  imgUrl: string;
-  statusCode: number;
 }
 
-interface ChangeUserInfoResponse {
-  message: string;
-  statusCode: number;
-  nickname: string;
+interface ChangeUserInfoResponse extends BaseApiResponse {
   imgUrl: string;
+  nickname: string;
 }
 
-type LoginRequest = Pick<User, 'email' | 'password' | 'type'>;
-
-type PasswordChangeRequest = {
+interface PasswordChangeRequest {
   email: string;
   prePassword: string | null;
   newPassword: string;
   confirmPassword: string;
   hasToken: boolean;
-};
-
-type Email = Pick<User, 'email'>;
+}
 
 const authApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     socialLogin: builder.mutation({
-      query: (email: Email) => ({
+      query: (email: EmailType) => ({
         url: '/members/oauth2/info',
         method: 'POST',
         body: email,
       }),
     }),
-    login: builder.mutation<LoginResponse, LoginRequest>({
+    login: builder.mutation<LoginResponse, LoginParamsType>({
       query: credentials => ({
         url: '/members/auth/login',
         method: 'POST',
@@ -94,21 +73,21 @@ const authApi = baseApi.injectEndpoints({
         body: { ...userInfo },
       }),
     }),
-    searchPasswordSendEmail: builder.mutation<ApiResponse, Email>({
-      query: (email: Email) => ({
+    searchPasswordSendEmail: builder.mutation<BaseApiResponse, EmailType>({
+      query: email => ({
         url: '/members/profiles/password/send-email',
         method: 'POST',
         body: email,
       }),
     }),
-    searchPasswordValidateEmail: builder.mutation<ApiResponse, string>({
+    searchPasswordValidateEmail: builder.mutation<BaseApiResponse, string>({
       query: key => ({
         url: `/members/profiles/password/config`,
         method: 'POST',
         body: { key },
       }),
     }),
-    changePasswordRequest: builder.mutation<ApiResponse, PasswordChangeRequest>({
+    changePasswordRequest: builder.mutation<BaseApiResponse, PasswordChangeRequest>({
       query: ({ email, prePassword, newPassword, confirmPassword, hasToken }) => ({
         url: `/members/profiles/password`,
         method: 'POST',

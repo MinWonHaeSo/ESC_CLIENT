@@ -1,7 +1,8 @@
-import { RentalStadium, ReservationStatus, stadiumApi } from '@/api/stadiumApi';
+import { ReservationStatus, stadiumApi } from '@/api/stadiumApi';
+import { RentalStadiumType } from '@/types/stadiumType';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export interface StatdiumData extends RentalStadium {
+export interface StatdiumData extends RentalStadiumType {
   like?: boolean;
 }
 
@@ -45,6 +46,7 @@ export const pagingSlice = createSlice({
     removeStadium: (state, action: PayloadAction<{ id: string }>) => {
       const findIdx = state.content.findIndex(item => item.reservationId === action.payload.id);
       state.totalElements = state.totalElements - 1;
+      console.log(findIdx);
       state.content.splice(findIdx, 1);
     },
     toggleLike: (state, action: PayloadAction<{ id: string }>) => {

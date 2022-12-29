@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import { SearchStadiumContent } from '@/api/stadiumApi';
+import { SearchStadiumContentType } from '@/api/stadiumApi';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
 import PATH from '@/constants/path';
 
 interface MarkerStadiumInfoProps {
-  markerInfo: SearchStadiumContent;
+  markerInfo: SearchStadiumContentType;
 }
 
 const MarkerStadiumInfo = ({ markerInfo }: MarkerStadiumInfoProps) => {

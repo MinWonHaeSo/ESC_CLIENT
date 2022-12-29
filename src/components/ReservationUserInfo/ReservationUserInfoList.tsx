@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import ReservationUserInfoItem from './ReservationUserInfoItem';
-import { ReservationUser } from '@/api/stadiumApi';
+import { ReservationUserType } from '@/api/stadiumApi';
 
 interface ReservationUserInfoListProps {
   id: string;
-  list: ReservationUser[];
+  list: ReservationUserType[];
 }
 
 const ReservationUserInfoList = ({ id, list }: ReservationUserInfoListProps) => {

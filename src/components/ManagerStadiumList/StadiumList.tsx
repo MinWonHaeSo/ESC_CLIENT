@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { RentalStadium } from '@/api/stadiumApi';
 import palette from '@/lib/styles/palette';
+import { RentalStadiumType } from '@/types/stadiumType';
 import CardStadium from '../CardStadium/Index';
 
 interface StadiumListProps {
-  stadium: RentalStadium;
+  stadium: RentalStadiumType;
   onMoveDetail: (id: string) => void;
   onRemove: (id: string) => void;
 }
