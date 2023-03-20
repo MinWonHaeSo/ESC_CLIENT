@@ -19,8 +19,8 @@ type setMarkerParam = {
 const { kakao } = window;
 
 class KaKaoMap {
-  map: any = null;
-  markers: any[] = [];
+  private map: any = null;
+  private markers: any[] = [];
 
   initScript() {
     const container = document.getElementById('myMap');
