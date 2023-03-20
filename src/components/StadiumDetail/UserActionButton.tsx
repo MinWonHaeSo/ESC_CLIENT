@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { usePostLikeStadiumMutation } from '@/api/stadiumApi';
 import { stadiumWriteState, updateStadium } from '@/store/stadiumWriteSlice';
 import { RootState } from '@/store/store';
-import useThrottleRef from '@/hooks/useThrottleRef';
+import useDebounce from '@/hooks/useDebounce';
 import { typo } from '@/lib/styles/typo';
 import palette from '@/lib/styles/palette';
 import PATH from '@/constants/path';
@@ -21,7 +21,7 @@ const UserActionButton = ({ post, stadiumId, stadiumLike, refetch }: UserActionB
   const [like, setLike] = useState(stadiumLike);
   const userId = useSelector((state: RootState) => state.auth.id);
   const [postLikeStadiumAPI] = usePostLikeStadiumMutation();
-  const likeCallbackAPI = useThrottleRef(() => postLikeStadiumAPI(stadiumId));
+  const likeCallbackAPI = useDebounce(() => postLikeStadiumAPI(stadiumId));
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

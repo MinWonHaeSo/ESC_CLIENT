@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
 import { addTags, removeTags } from '@/store/stadiumWriteSlice';
-import useThrottleRef from '@/hooks/useThrottleRef';
+import useDebounce from '@/hooks/useDebounce';
 import { typo } from '@/lib/styles/typo';
 import palette from '@/lib/styles/palette';
 import Input from '@/components/common/atoms/Input';
@@ -29,7 +29,7 @@ const EditTag = ({ tags }: EditTagProps) => {
     setTagText('');
   };
 
-  const intervallCall = useThrottleRef(() => handleAddTags());
+  const intervallCall = useDebounce(() => handleAddTags());
 
   const handleEnterTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {

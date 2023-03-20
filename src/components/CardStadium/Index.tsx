@@ -1,6 +1,6 @@
 import { usePostLikeStadiumMutation } from '@/api/stadiumApi';
 import PATH from '@/constants/path';
-import useThrottleRef from '@/hooks/useThrottleRef';
+import useDebounce from '@/hooks/useDebounce';
 import media from '@/lib/styles/media';
 import palette from '@/lib/styles/palette';
 import { typo } from '@/lib/styles/typo';
@@ -24,7 +24,7 @@ const CardStadium = ({ stadium, currentLocation }: CardStadiumProps) => {
   const navigate = useNavigate();
 
   const [postLikeStadiumAPI] = usePostLikeStadiumMutation();
-  const likeCallbackAPI = useThrottleRef(async () => {
+  const likeCallbackAPI = useDebounce(async () => {
     await postLikeStadiumAPI(String(stadiumId));
   });
 
