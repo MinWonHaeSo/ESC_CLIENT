@@ -1,5 +1,7 @@
 # ⚽ Easy Sports Club ⚽
 
+<img src="https://github.com/MinWonHaeSo/ESC_CLIENT/assets/99726297/d6075174-35b3-47ea-a704-0054726585a2" alt="esc"/>
+
 <br/>
 
 ## 📎 프로젝트 소개
